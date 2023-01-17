@@ -21,6 +21,20 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
+    public function getArticles(string $object, int $object_id): array
+    {
+        $query = $this->createQueryBuilder('a')
+            ->where('a.object = :objet_nom')
+            ->andWhere('a.object_id = :object_id')
+            ->setParameter('object', $object)
+            ->setParameter('object_id', $object_id)
+            ->getQuery();
+
+        // returns an array.
+        return $query->getResult();
+    }
+
+
     public function save(Article $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);

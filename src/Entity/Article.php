@@ -13,9 +13,19 @@ class Article
     use CMSTrait;
     use TimestampableTrait;
 
+    /**
+     * @var string|null
+     *
+     * Name of the associated object : 'category' or 'section'
+     */
     #[ORM\Column(length: 25)]
     private ?string $object = null;
 
+    /**
+     * @var int|null
+     *
+     * Id of the associated object
+     */
     #[ORM\Column]
     private ?int $object_id = null;
 

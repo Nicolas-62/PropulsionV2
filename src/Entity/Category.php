@@ -15,6 +15,7 @@ class Category
     use CMSTrait;
     use TimestampableTrait;
 
+
     #[ORM\Column]
     private ?bool $canCreate = null;
 
@@ -49,7 +50,16 @@ class Category
 
     #[ORM\OneToMany(targetEntity: self::class, mappedBy:"parent")]
     #[ORM\JoinColumn(name:"category_id", referencedColumnName:"id")]
-    protected ArrayCollection $children;
+    protected Collection $children;
+
+
+    /**
+     * @var int|null
+     *
+     * Identifiant du parent [Optional]
+     */
+    #[ORM\Column(nullable: true)]
+    private ?int $category_id = null;
 
     public function __construct()
     {
@@ -58,7 +68,7 @@ class Category
     }
 
 
-    public function isCanCreate(): ?bool
+    public function canCreate(): ?bool
     {
         return $this->canCreate;
     }
@@ -70,7 +80,7 @@ class Category
         return $this;
     }
 
-    public function isHasMulti(): ?bool
+    public function hasMulti(): ?bool
     {
         return $this->hasMulti;
     }
@@ -82,7 +92,7 @@ class Category
         return $this;
     }
 
-    public function isHasTheme(): ?bool
+    public function hasTheme(): ?bool
     {
         return $this->hasTheme;
     }
@@ -94,7 +104,7 @@ class Category
         return $this;
     }
 
-    public function isHasTitle(): ?bool
+    public function hasTitle(): ?bool
     {
         return $this->hasTitle;
     }
@@ -106,7 +116,7 @@ class Category
         return $this;
     }
 
-    public function isHasSubTitle(): ?bool
+    public function hasSubTitle(): ?bool
     {
         return $this->hasSubTitle;
     }
@@ -118,7 +128,7 @@ class Category
         return $this;
     }
 
-    public function isHasContent(): ?bool
+    public function hasContent(): ?bool
     {
         return $this->hasContent;
     }
@@ -130,7 +140,7 @@ class Category
         return $this;
     }
 
-    public function isHasSeo(): ?bool
+    public function hasSeo(): ?bool
     {
         return $this->hasSeo;
     }
@@ -142,7 +152,7 @@ class Category
         return $this;
     }
 
-    public function isHasLink(): ?bool
+    public function hasLink(): ?bool
     {
         return $this->hasLink;
     }
@@ -233,6 +243,18 @@ class Category
     public function setChildren(ArrayCollection $children): Category
     {
         $this->children = $children;
+        return $this;
+    }
+
+    public function getCategoryId(): ?int
+    {
+        return $this->category_id;
+    }
+
+    public function setCategoryId(?int $category_id): self
+    {
+        $this->category_id = $category_id;
+
         return $this;
     }
 }

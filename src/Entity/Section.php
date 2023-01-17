@@ -37,15 +37,12 @@ class Section
     #[ORM\Column]
     private ?bool $hasLink = null;
 
-    #[ORM\Column]
-    private ?int $category_id = null;
-
     #[ORM\ManyToOne(inversedBy: 'sections')]
     private ?Category $category = null;
 
 
 
-    public function isCanCreate(): ?bool
+    public function canCreate(): ?bool
     {
         return $this->canCreate;
     }
@@ -57,7 +54,7 @@ class Section
         return $this;
     }
 
-    public function isHasMulti(): ?bool
+    public function hasMulti(): ?bool
     {
         return $this->hasMulti;
     }
@@ -69,7 +66,7 @@ class Section
         return $this;
     }
 
-    public function isHasTheme(): ?bool
+    public function hasTheme(): ?bool
     {
         return $this->hasTheme;
     }
@@ -81,7 +78,7 @@ class Section
         return $this;
     }
 
-    public function isHasTitle(): ?bool
+    public function hasTitle(): ?bool
     {
         return $this->hasTitle;
     }
@@ -93,7 +90,7 @@ class Section
         return $this;
     }
 
-    public function isHasSubTitle(): ?bool
+    public function hasSubTitle(): ?bool
     {
         return $this->hasSubTitle;
     }
@@ -105,7 +102,7 @@ class Section
         return $this;
     }
 
-    public function isHasContent(): ?bool
+    public function hasContent(): ?bool
     {
         return $this->hasContent;
     }
@@ -117,7 +114,7 @@ class Section
         return $this;
     }
 
-    public function isHasSeo(): ?bool
+    public function hasSeo(): ?bool
     {
         return $this->hasSeo;
     }
@@ -129,7 +126,7 @@ class Section
         return $this;
     }
 
-    public function isHasLink(): ?bool
+    public function hasLink(): ?bool
     {
         return $this->hasLink;
     }
@@ -137,18 +134,6 @@ class Section
     public function setHasLink(bool $hasLink): self
     {
         $this->hasLink = $hasLink;
-
-        return $this;
-    }
-
-    public function getCategoryId(): ?int
-    {
-        return $this->category_id;
-    }
-
-    public function setCategoryId(int $category_id): self
-    {
-        $this->category_id = $category_id;
 
         return $this;
     }

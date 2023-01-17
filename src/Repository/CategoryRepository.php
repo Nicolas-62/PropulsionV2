@@ -21,6 +21,16 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
+    public function getParents(): array
+    {
+        $query = $this->createQueryBuilder('c')
+            ->where('c.category_id IS NULL')
+            ->orderBy('c.title', 'ASC')
+            ->getQuery();
+        // returns an array of Product objects
+        return $query->getResult();
+    }
+
     public function save(Category $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);

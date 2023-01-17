@@ -1,0 +1,28 @@
+{# /templates/cms/home.html.twig #}
+{% extends 'cms/layout.html.twig' %}
+{% block sousTitre %}Liste des catégories{% endblock %}
+{% block contenuPrincipal %}
+    <ul class="list-group">
+        {% for category in categories %}
+            <li class="list-group-item">
+                <h3>{{ category.title }}</h3>
+                {% if category.children.isEmpty == false %}
+                    <div class="container-fluid">
+                        <ul class="list-group">
+                            {% for child in category.children %}
+                                <li class="list-group-item">
+                                    {{ child.title }}
+                                    {% if child.sections.isEmpty == false %}
+                                        <a href="{{ path('category', {id: child.id}) }}">Voir</a>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+
+                        </ul>
+                    </div>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
