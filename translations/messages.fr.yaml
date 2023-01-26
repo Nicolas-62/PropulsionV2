@@ -1,0 +1,30 @@
+dashboard: Accueil
+Category: Categorie
+categories: Categories
+admin: Administration
+medias: Medias
+title: titre
+position: position
+creation: creation
+
+hello: salut
+
+login:
+  signin: Inscription
+  email: Email
+  password: Mot de passe
+
+security:
+  reset-password: Récupérer le mot de passe
+  forgetten-password: Mot de passe oublié
+  enter-email: Tapez votre E-mail
+  send-email:  Envoyez le lien pour récupérer le mot de passe
+  email: E-mail
+  password: Mot de passe
+  username: Nom et prénom de l'utilisateur
+  remember-me: Se souvenir de moi
+  login: Se connecter
+  dont-have-account: Je n'ai pas de compte
+  register: S'inscrire
+  accept: J'accepte toutes 
+  terms: les conditions d'utilisation

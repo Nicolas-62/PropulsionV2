@@ -1,0 +1,13 @@
+dashboard: Accueil
+Category: Categorie
+categories: Categories
+admin: Administration
+medias: Medias
+title: titre
+position: position
+creation: creation
+
+hello: Hie
+
+login:
+  signin: Please sign in

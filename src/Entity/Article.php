@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Entity\Traits\CMSTrait;
 use App\Entity\Traits\TimesTampableTrait;
 use App\Repository\ArticleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
@@ -13,49 +15,30 @@ class Article
     use CMSTrait;
     use TimestampableTrait;
 
-    /**
-     * @var string|null
-     *
-     * Name of the associated object : 'category' or 'section'
-     */
-    #[ORM\Column(length: 25)]
-    private ?string $object = null;
 
-    /**
-     * @var int|null
-     *
-     * Id of the associated object
-     */
-    #[ORM\Column]
-    private ?int $object_id = null;
+    public function __construct()
+    {
+        $this->children = new ArrayCollection();
+    }
+
 
     #[ORM\Column(length: 255)]
     private ?string $content = null;
 
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy:'children')]
+    #[ORM\JoinColumn(name:"article_id", referencedColumnName:"id")]
+    protected ?Article $parent;
 
-    public function getObject(): ?string
-    {
-        return $this->object;
-    }
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy:"parent")]
+    #[ORM\JoinColumn(name:"article_id", referencedColumnName:"id")]
+    protected Collection $children;
 
-    public function setObject(string $object): self
-    {
-        $this->object = $object;
+    #[ORM\Column(nullable: true)]
+    private ?int $article_id = null;
 
-        return $this;
-    }
+    #[ORM\ManyToOne(inversedBy: 'articles')]
+    private ?Category $category = null;
 
-    public function getObjectId(): ?int
-    {
-        return $this->object_id;
-    }
-
-    public function setObjectId(int $object_id): self
-    {
-        $this->object_id = $object_id;
-
-        return $this;
-    }
 
     public function getContent(): ?string
     {
@@ -65,6 +48,30 @@ class Article
     public function setContent(string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function getArticleId(): ?int
+    {
+        return $this->article_id;
+    }
+
+    public function setArticleId(?int $article_id): self
+    {
+        $this->article_id = $article_id;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

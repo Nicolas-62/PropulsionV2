@@ -16,6 +16,13 @@ class Category
     use TimestampableTrait;
 
 
+    public function __construct()
+    {
+        $this->articles = new ArrayCollection();
+        $this->children = new ArrayCollection();
+    }
+
+
     #[ORM\Column]
     private ?bool $canCreate = null;
 
@@ -40,10 +47,6 @@ class Category
     #[ORM\Column]
     private ?bool $hasLink = null;
 
-
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Section::class, fetch:"EXTRA_LAZY")]
-    private Collection $sections;
-
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy:'children')]
     #[ORM\JoinColumn(name:"category_id", referencedColumnName:"id")]
     protected ?Category $parent;
@@ -51,7 +54,6 @@ class Category
     #[ORM\OneToMany(targetEntity: self::class, mappedBy:"parent")]
     #[ORM\JoinColumn(name:"category_id", referencedColumnName:"id")]
     protected Collection $children;
-
 
     /**
      * @var int|null
@@ -61,12 +63,8 @@ class Category
     #[ORM\Column(nullable: true)]
     private ?int $category_id = null;
 
-    public function __construct()
-    {
-        $this->sections = new ArrayCollection();
-        $this->children = new ArrayCollection();
-    }
-
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Article::class, fetch:"EXTRA_LAZY")]
+    private Collection $articles;
 
     public function canCreate(): ?bool
     {
@@ -165,84 +163,32 @@ class Category
     }
 
     /**
-     * @return Collection<int, Section>
+     * @return Collection<int, Article>
      */
-    public function getSections(): Collection
+    public function getArticles(): Collection
     {
-        return $this->sections;
+        return $this->articles;
     }
 
-    public function addSection(Section $section): self
+    public function addArticle(Article $article): self
     {
-        if (!$this->sections->contains($section)) {
-            $this->sections->add($section);
-            $section->setCategory($this);
+        if (!$this->articles->contains($article)) {
+            $this->articles->add($article);
+            $article->setCategory($this);
         }
 
         return $this;
     }
 
-    public function removeSection(Section $section): self
+    public function removeArticle(Article $article): self
     {
-        if ($this->sections->removeElement($section)) {
+        if ($this->articles->removeElement($article)) {
             // set the owning side to null (unless already changed)
-            if ($section->getCategory() === $this) {
-                $section->setCategory(null);
+            if ($article->getCategory() === $this) {
+                $article->setCategory(null);
             }
         }
 
-        return $this;
-    }
-
-    public function getParent(): ?self
-    {
-        return $this->parent;
-    }
-
-    public function setParent(?self $parent): self
-    {
-        $this->parent = $parent;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, self>
-     */
-    public function getChildren(): Collection
-    {
-        return $this->children;
-    }
-
-    public function addChild(self $child): self
-    {
-        if (!$this->children->contains($child)) {
-            $this->children->add($child);
-            $child->setParent($this);
-        }
-
-        return $this;
-    }
-
-    public function removeChild(self $child): self
-    {
-        if ($this->children->removeElement($child)) {
-            // set the owning side to null (unless already changed)
-            if ($child->getParent() === $this) {
-                $child->setParent(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ArrayCollection $children
-     * @return Category
-     */
-    public function setChildren(ArrayCollection $children): Category
-    {
-        $this->children = $children;
         return $this;
     }
 
