@@ -10,7 +10,7 @@ creation: creation
 hello: salut
 
 login:
-  signin: Inscription
+  signin: Connexion
   email: Email
   password: Mot de passe
 

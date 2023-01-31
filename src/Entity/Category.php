@@ -7,6 +7,7 @@ use App\Entity\Traits\TimesTampableTrait;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
@@ -20,8 +21,8 @@ class Category
     {
         $this->articles = new ArrayCollection();
         $this->children = new ArrayCollection();
+        
     }
-
 
     #[ORM\Column]
     private ?bool $canCreate = null;
@@ -65,6 +66,8 @@ class Category
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Article::class, fetch:"EXTRA_LAZY")]
     private Collection $articles;
+
+
 
     public function canCreate(): ?bool
     {
@@ -203,4 +206,6 @@ class Category
 
         return $this;
     }
+
+
 }

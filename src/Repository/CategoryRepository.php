@@ -25,7 +25,7 @@ class CategoryRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('c')
             ->where('c.category_id IS NULL')
-            ->orderBy('c.title', 'ASC')
+            ->orderBy('c.position', 'ASC')
             ->getQuery();
         // returns an array of Product objects
         return $query->getResult();
