@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
@@ -15,6 +16,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
@@ -22,6 +24,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 
 
 class CategoryCrudController extends AbstractCrudController
@@ -74,20 +77,22 @@ class CategoryCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id','id')->hideOnForm(),
             TextField::new('title', 'title')->setColumns(6),
             IntegerField::new('position', 'position')->setColumns(6),
             DateField::new('created_at', 'creation')->hideOnForm(),
             DateField::new('updated_at', 'update')->hideOnForm(),
-            IdField::new('category_id', 'Parent ID'),
-            BooleanField::new('can_create','can_create')->hideOnIndex()->setColumns(3),
-            BooleanField::new('has_multi','has_multi')->hideOnIndex()->setColumns(3),
-            BooleanField::new('has_title','has_title')->hideOnIndex()->setColumns(3),
-            BooleanField::new('has_sub_title','has_sub_title')->hideOnIndex()->setColumns(3),
-            BooleanField::new('has_seo','has_seo')->hideOnIndex()->setColumns(3),
-            BooleanField::new('has_link','has_link')->hideOnIndex()->setColumns(3),
-            BooleanField::new('has_theme','has_theme')->hideOnIndex()->setColumns(3),
-            BooleanField::new('has_content','has_content')->hideOnIndex()->setColumns(3),
+            IdField::new('category_id', 'Parent ID')->hideOnDetail()->hideOnIndex(),
+            BooleanField::new('can_create','can_create')->hideOnIndex()->hideOnDetail()->setColumns(3),
+            BooleanField::new('has_multi','has_multi')->hideOnIndex()->hideOnDetail()->setColumns(3),
+            BooleanField::new('has_title','has_title')->hideOnIndex()->hideOnDetail()->setColumns(3),
+            BooleanField::new('has_sub_title','has_sub_title')->hideOnIndex()->hideOnDetail()->setColumns(3),
+            BooleanField::new('has_seo','has_seo')->hideOnIndex()->hideOnDetail()->setColumns(3),
+            BooleanField::new('has_link','has_link')->hideOnIndex()->hideOnDetail()->setColumns(3),
+            BooleanField::new('has_theme','has_theme')->hideOnIndex()->hideOnDetail()->setColumns(3),
+            BooleanField::new('has_content','has_content')->hideOnIndex()->hideOnDetail()->setColumns(3),
+            CollectionField::new('children','Nombre Enfants'),
+            CollectionField::new('parent','Parent')->hideOnIndex(),
+            CollectionField::new('grandParent','Grand Parent')->hideOnIndex()->hideOnForm(),
 
         ];
     }
@@ -169,9 +174,10 @@ class CategoryCrudController extends AbstractCrudController
      */
     public function configureResponseParameters(KeyValueStore $responseParameters): KeyValueStore
     {
+
+
         $categories = $this->entityManager->getRepository(Category::class)->findAll();
         $responseParameters->set('categories',$categories);
-
         return parent::configureResponseParameters($responseParameters);
     }
 
@@ -201,5 +207,10 @@ class CategoryCrudController extends AbstractCrudController
         }
 
         return parent::getRedirectResponseAfterSave($context, $action);
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions;
     }
 }

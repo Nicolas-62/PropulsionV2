@@ -25,7 +25,6 @@ trait CMSTrait
     #[ORM\Column]
     private ?int $position = null;
 
-
     public function getId(): ?int
     {
         return $this->id;

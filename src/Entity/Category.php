@@ -56,6 +56,16 @@ class Category
     #[ORM\JoinColumn(name:"category_id", referencedColumnName:"id")]
     protected Collection $children;
 
+    private ?Category $grandParent = null;
+
+    public function getGrandParent(): ?Category
+    {
+        if($this->parent !== null){
+            $this->grandParent = $this->parent->getParent();
+        }
+        return $this->grandParent;
+    }
+
     /**
      * @var int|null
      *
@@ -206,6 +216,4 @@ class Category
 
         return $this;
     }
-
-
 }
