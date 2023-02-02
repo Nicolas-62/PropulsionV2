@@ -162,6 +162,8 @@ class CategoryCrudController extends AbstractCrudController
         if($this->entityId != 0) {
             $response->where('entity.category_id = :entity_id');
             $response->setParameter('entity_id', $this->entityId);
+        }else{
+            $response->where('entity.category_id IS NULL');
         }
 
         return $response;

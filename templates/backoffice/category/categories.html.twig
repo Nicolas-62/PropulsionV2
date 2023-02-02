@@ -46,178 +46,153 @@
         {%  endfor %}
     {%  endblock %}
     {% for entity in entities %}
-    {% dump(ea.crud) %}
-{#    Condition pour n'afficher que les parents (attention, touche aussi les pages détails pour le moment)    #}
-        {% for categ in categories %}
-            {% set indiceParent = 0 %}
-            {% if entity.primaryKeyValue == categ.id %}
-                {% if categ.children.count > 0 %}
-                    {% set indiceParent = 1 %}
+    {% dump(ea.crud.currentAction) %}
+        {% if entity.isAccessible %}
+            <tr data-id="{{ entity.primaryKeyValueAsString }}">
+                {% if has_batch_actions %}
+                    <td class="batch-actions-selector">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input form-batch-checkbox" value="{{ entity.primaryKeyValue }}">
+                        </div>
+                    </td>
                 {% endif %}
-            {% endif %}
-            {% if indiceParent == 1 %}
-{#     Reste de la condition en bas            #}
-                {% if entity.isAccessible %}
-                    <tr data-id="{{ entity.primaryKeyValueAsString }}">
-                        {% if has_batch_actions %}
-                            <td class="batch-actions-selector">
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input form-batch-checkbox" value="{{ entity.primaryKeyValue }}">
+                {% for field in entity.fields %}
+                    <td data-label="{{ field.label|trans|e('html_attr') }}" class=" {{ field.property == sort_field_name ? 'sorted' }} text-{{ field.textAlign }} {{ field.cssClass }}" dir="{{ ea.i18n.textDirection }}">
+                        {#  Titre #}
+                        {% if field.label == 'title' %}
+                            {% if entity.fields.getByProperty('children').formattedValue > 0 %}
+                                {% set url = ea_url()
+                                    .setController('App\\Controller\\Backoffice\\CategoryCrudController')
+                                    .setAction('detail')
+                                    .setEntityId(entity.primaryKeyValue)
+                                %}
+
+                                <a href="{{ url }}">
+                                    {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
+                                </a>
+                            {% else %}
+                                {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
+                            {% endif %}
+                        {# Pour label 'Nombre Enfants'#}
+                        {% elseif field.label == 'Nombre Enfants' %}
+                            {% if field.value != null %}
+                                {% set url = ea_url()
+                                    .setController('App\\Controller\\Backoffice\\CategoryCrudController')
+                                    .setAction('detail')
+                                    .setEntityId(entity.primaryKeyValue)
+                                %}
+                                <div>
+                                    <a href="{{ url }}">
+                                        {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
+                                    </a>
                                 </div>
-                            </td>
-                        {% endif %}
-                        {% for field in entity.fields %}
-                            <td data-label="{{ field.label|trans|e('html_attr') }}" class=" {{ field.property == sort_field_name ? 'sorted' }} text-{{ field.textAlign }} {{ field.cssClass }}" dir="{{ ea.i18n.textDirection }}">
+                            {% else %}
+                                {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
+                            {% endif %}
 
-                                {# Pour label 'Nombre Enfants'#}
-                                {% if field.label == 'Nombre Enfants' %}
-                                    {% if field.value != null %}
-                                        {% set url = ea_url()
-                                            .setController('App\\Controller\\Backoffice\\CategoryCrudController')
-                                            .setAction('detail')
-                                            .setEntityId(entity.primaryKeyValue)
-                                        %}
-                                        <div>
-                                            <a href="{{ url }}">
-                                                {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
-                                            </a>
-                                        </div>
-                                    {% else %}
-                                        {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
-                                    {% endif %}
+                        {# Pour label 'Parent ID' #}
+                        {% elseif field.label == 'Parent ID' %}
+                            {% if field.value != null %}
+                                {% set url = ea_url()
+                                    .setController('App\\Controller\\Backoffice\\CategoryCrudController')
+                                    .setAction('detail')
+                                    .setEntityId(field.value)
+                                %}
 
-                                {# Pour label 'Parent ID' #}
-                                {% elseif field.label == 'Parent ID' %}
-                                    {% if field.value != null %}
-                                        {% set url = ea_url()
-                                            .setController('App\\Controller\\Backoffice\\CategoryCrudController')
-                                            .setAction('detail')
-                                            .setEntityId(field.value)
-                                        %}
+                                <a href="{{ url }}">
+                                    {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
+                                </a>
+                            {% else %}
+                                {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
+                            {% endif %}
 
-                                        <a href="{{ url }}">
-                                            {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
-                                        </a>
-                                    {% else %}
-                                        {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
-                                    {% endif %}
+                        {# Pour label 'Parent' #}
+                        {% elseif field.label == 'Parent' %}
+                            {% if field.value != null %}
+                                {% set url = ea_url()
+                                    .setController('App\\Controller\\Backoffice\\CategoryCrudController')
+                                    .setAction('detail')
+                                    .setEntityId(field.value.id)
+                                %}
+                                <a href="{{ url }}">
+                                    {{ field.value.title }}
+                                </a>
+                            {% else %}
+                                {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
+                            {% endif %}
 
-                                {# Pour label 'Parent' #}
-                                {% elseif field.label == 'Parent' %}
-                                    {% if field.value != null %}
-                                        {% set url = ea_url()
-                                            .setController('App\\Controller\\Backoffice\\CategoryCrudController')
-                                            .setAction('detail')
-                                            .setEntityId(field.value.id)
-                                        %}
-                                        <a href="{{ url }}">
-                                            {{ field.value.title }}
-                                        </a>
-                                    {% else %}
-                                        {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
-                                    {% endif %}
-
-                                {#  Pour label 'Grand Parent' #}
-                                {% elseif field.label == 'Grand Parent' %}
-                                    {% if field.value != null %}
-                                        {% if field.value.id != null %}
-                                        {% set url = ea_url()
-                                            .setController('App\\Controller\\Backoffice\\CategoryCrudController')
-                                            .setAction('detail')
-                                            .setEntityId(field.value.id)
-                                        %}
-                                        {% for cat in categories %}
-                                            {% if field.value.id == cat.id %}
-                                                <a href="{{ url }}">
-                                                    {{ cat.title }}
-                                                </a>
-                                            {% endif %}
-                                        {% endfor %}
-                                        {% else %}
-                                            Aucun
-                                        {% endif %}
-                                    {% endif %}
-
-                                {#  Pour label 'Title' #}
+                        {#  Pour label 'Grand Parent' #}
+                        {% elseif field.property == 'grandParent' %}
+                            {% if field.value != null %}
+                                {% if field.value.id != null %}
+                                    {% set url = ea_url()
+                                        .setController('App\\Controller\\Backoffice\\CategoryCrudController')
+                                        .setAction('detail')
+                                        .setEntityId(field.value.id)
+                                    %}
+                                    <a href="{{ url }}">
+                                        {{ field.value.title }}
+                                    </a>
                                 {% else %}
-                                    {% if field.label == 'title' %}
-                                        {% if entity.fields.getByProperty('children').formattedValue > 0 %}
-                                            {% set url = ea_url()
-                                                .setController('App\\Controller\\Backoffice\\CategoryCrudController')
-                                                .setAction('detail')
-                                                .setEntityId(entity.primaryKeyValue)
-                                            %}
-
-                                            <a href="{{ url }}">
-                                                {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
-                                            </a>
-                                            {% else %}
-                                                {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
-                                            {% endif %}
-                                    {% else %}
-                                        {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
-                                    {% endif %}
+                                    Aucun
                                 {% endif %}
+                            {% endif %}
+                        {# Autres cas#}
+                        {% else %}
+                            {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
+                        {% endif %}
+                    </td>
+                {% endfor %}
 
+                {% block entity_actions %}
+                    <td class="actions {{ ea.crud.showEntityActionsAsDropdown ? 'actions-as-dropdown' }}">
+                        {% if entity.actions.count > 0 %}
+                            {% if ea.crud.showEntityActionsAsDropdown %}
+                                <div class="dropdown dropdown-actions">
+                                    <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {# don't use FontAwesome 'fa-ellipsis-h' icon here because it doesn't look good #}
+                                        {# this icon is 'dots-horizontal' icon from https://heroicons.com/ #}
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="21" width="21" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
+                                        </svg>
+                                    </a>
 
-                            </td>
-                        {% endfor %}
-
-                        {% block entity_actions %}
-                            <td class="actions {{ ea.crud.showEntityActionsAsDropdown ? 'actions-as-dropdown' }}">
-                                {% if entity.actions.count > 0 %}
-                                    {% if ea.crud.showEntityActionsAsDropdown %}
-                                        <div class="dropdown dropdown-actions">
-                                            <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                {# don't use FontAwesome 'fa-ellipsis-h' icon here because it doesn't look good #}
-                                                {# this icon is 'dots-horizontal' icon from https://heroicons.com/ #}
-                                                <svg xmlns="http://www.w3.org/2000/svg" height="21" width="21" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
-                                                </svg>
-                                            </a>
-
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                {% for action in entity.actions %}
-                                                    {{ include(action.templatePath, { action: action, entity: entity, isIncludedInDropdown: ea.crud.showEntityActionsAsDropdown }, with_context = false) }}
-                                                {% endfor %}
-                                            </div>
-                                        </div>
-                                    {% else %}
+                                    <div class="dropdown-menu dropdown-menu-right">
                                         {% for action in entity.actions %}
                                             {{ include(action.templatePath, { action: action, entity: entity, isIncludedInDropdown: ea.crud.showEntityActionsAsDropdown }, with_context = false) }}
                                         {% endfor %}
-                                    {% endif %}
-                                {% endif %}
+                                    </div>
+                                </div>
+                            {% else %}
+                                {% for action in entity.actions %}
+                                    {{ include(action.templatePath, { action: action, entity: entity, isIncludedInDropdown: ea.crud.showEntityActionsAsDropdown }, with_context = false) }}
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                {% endblock entity_actions %}
+            </tr>
+        {% else %}
+            {% block table_body_empty %}
+                {% for i in 1..14 %}
+                    <tr class="empty-row">
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                        <td><span></span></td>
+                    </tr>
+                    {% if 3 == loop.index %}
+                        <tr class="no-results">
+                            <td colspan="100">
+                                {{ t('datagrid.no_results', ea.i18n.translationParameters, 'EasyAdminBundle')|trans }}
                             </td>
-                        {% endblock entity_actions %}
-                    </tr>
-
-                {% endif %}
-{#    Début de la fin de la condition pour ne mettre que les parents            #}
-            {% endif %}
-        {% endfor %}
-{#    Fin de la condition pour ne mettre que les parents    #}
-    {% else %}
-        {% block table_body_empty %}
-            {% for i in 1..14 %}
-                <tr class="empty-row">
-                    <td><span></span></td>
-                    <td><span></span></td>
-                    <td><span></span></td>
-                    <td><span></span></td>
-                    <td><span></span></td>
-                    <td><span></span></td>
-                </tr>
-
-                {% if 3 == loop.index %}
-                    <tr class="no-results">
-                        <td colspan="100">
-                            {{ t('datagrid.no_results', ea.i18n.translationParameters, 'EasyAdminBundle')|trans }}
-                        </td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        {% endblock table_body_empty %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% endblock table_body_empty %}
+        {% endif %}
     {% endfor %}
 
     {% if some_results_are_hidden %}
