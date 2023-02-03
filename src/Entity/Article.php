@@ -50,6 +50,12 @@ class Article
     #[ORM\ManyToOne(inversedBy: 'articles')]
     private ?Category $category = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $illustration = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $illustration2 = null;
+
 
     public function getContent(): ?string
     {
@@ -83,6 +89,30 @@ class Article
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getIllustration(): ?string
+    {
+        return $this->illustration;
+    }
+
+    public function setIllustration(?string $illustration): self
+    {
+        $this->illustration = $illustration;
+
+        return $this;
+    }
+
+    public function getIllustration2(): ?string
+    {
+        return $this->illustration2;
+    }
+
+    public function setIllustration2(?string $illustration2): self
+    {
+        $this->illustration2 = $illustration2;
 
         return $this;
     }

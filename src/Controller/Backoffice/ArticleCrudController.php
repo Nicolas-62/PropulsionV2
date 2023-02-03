@@ -16,8 +16,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ColorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -67,7 +69,19 @@ class ArticleCrudController extends AbstractCrudController
             DateField::new('updated_at','dernière édition')->hideOnForm(),
             IdField::new('article_id','article parent')->hideOnIndex()->hideOnDetail(),
             CollectionField::new('children','Enfants'),
-            CollectionField::new('parent','Parent')->hideOnIndex()->hideOnDetail(),
+            CollectionField::new('parent','Parent')->hideOnDetail(),
+            CollectionField::new('category'),
+            ImageField::new('illustration')
+                ->setBasePath('assets/images')
+                ->setUploadDir('public/assets/images')
+                ->setUploadedFileNamePattern('[randomhash].[extension]')
+                ->setRequired(false),
+            ImageField::new('illustration2')
+                ->setBasePath('assets/images')
+                ->setUploadDir('public/assets/images')
+                ->setUploadedFileNamePattern('[randomhash].[extension]')
+                ->setRequired(false),
+            // ColorField::new('parent')
 
         ];
     }
@@ -150,9 +164,12 @@ class ArticleCrudController extends AbstractCrudController
     {
         return $crud
             // ...
-
-            ->overrideTemplate('crud/index', 'backoffice/article/articles.html.twig');
-
+            // Permet de choisir son template plutôt que le template général
+            ->overrideTemplate('crud/index', 'backoffice/article/articles.html.twig')
+            //showEntityActionsInlined : permet d'afficher les actions en ligne plutot que dans un menu
+            ->showEntityActionsInlined()
+            // Help : met une icône ? à coté du titre avec un text quand on passe la souris dessus
+            ->setHelp('detail',"Message d'aide");
     }
 
     /**
