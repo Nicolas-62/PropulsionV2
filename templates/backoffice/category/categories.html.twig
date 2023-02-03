@@ -1,22 +1,20 @@
 {# DO THIS: the '!' symbol tells Symfony to extend from the original template #}
 {% extends '@!EasyAdmin/crud/index.html.twig' %}
-{%  block test %}
-{% endblock %}
+
 {% block table_body %}
 
+    {% set url = ea_url()
+        .setController('App\\Controller\\Backoffice\\CategoryCrudController')
+        .setAction('detail')
+    %}
     {% block lien %}
-
-        {% set url = ea_url()
-            .setController('App\\Controller\\Backoffice\\CategoryCrudController')
-            .setAction('index')
-        %}
-        <a href="{{ url }}" class="btn btn-primary mt-3 mb-3">Accueil</a>
+        {% dump(pageName) %}
         {% set i = 0 %}
         {% set indice = 0 %}
         {% for entity in entities %}
             {% if entity.fields %}
                 {% for field in entity.fields %}
-                    {% if field.label == 'Parent' %}
+                    {% if field.property == 'parent' %}
                         {% if field.value %}
                             {% if field.value.title %}
                                 {% if indice == 0 %}
@@ -28,16 +26,12 @@
                         {% endif %}
                     {% endif %}
 
-                    {% if field.label == 'Grand Parent' %}
+                    {% if field.property == 'grandParent' %}
                         {% if i == 0 %}
                         {% set i = i + 1 %}
                             {% if field.value %}
-                                {% set url = ea_url()
-                                    .setController('App\\Controller\\Backoffice\\CategoryCrudController')
-                                    .setAction('detail')
-                                    .setEntityId(field.value.id )
-                                %}
-                                <a href="{{ url }}" class="btn btn-primary mt-3 mb-3">Grand Parent</a>
+                                <a href="{{ url.setEntityId(field.value.id ) }}" class="btn btn-primary mt-3 mb-3">Grand Parent</a>
+
                             {% endif %}
                         {% endif %}
                     {% endif %}
@@ -45,8 +39,8 @@
             {% endif %}
         {%  endfor %}
     {%  endblock %}
+
     {% for entity in entities %}
-    {% dump(ea.crud.currentAction) %}
         {% if entity.isAccessible %}
             <tr data-id="{{ entity.primaryKeyValueAsString }}">
                 {% if has_batch_actions %}
@@ -58,31 +52,22 @@
                 {% endif %}
                 {% for field in entity.fields %}
                     <td data-label="{{ field.label|trans|e('html_attr') }}" class=" {{ field.property == sort_field_name ? 'sorted' }} text-{{ field.textAlign }} {{ field.cssClass }}" dir="{{ ea.i18n.textDirection }}">
-                        {#  Titre #}
-                        {% if field.label == 'title' %}
-                            {% if entity.fields.getByProperty('children').formattedValue > 0 %}
-                                {% set url = ea_url()
-                                    .setController('App\\Controller\\Backoffice\\CategoryCrudController')
-                                    .setAction('detail')
-                                    .setEntityId(entity.primaryKeyValue)
-                                %}
 
-                                <a href="{{ url }}">
+                        {#  Titre #}
+                        {% if field.property == 'title' %}
+                            {% if entity.fields.getByProperty('children').formattedValue > 0 %}
+                                <a href="{{ url.setAction('detail').setEntityId(entity.primaryKeyValue) }}">
                                     {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
                                 </a>
                             {% else %}
                                 {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
                             {% endif %}
-                        {# Pour label 'Nombre Enfants'#}
-                        {% elseif field.label == 'Nombre Enfants' %}
+
+                        {# Pour property 'Nombre Enfants'#}
+                        {% elseif field.property == 'children' %}
                             {% if field.value != null %}
-                                {% set url = ea_url()
-                                    .setController('App\\Controller\\Backoffice\\CategoryCrudController')
-                                    .setAction('detail')
-                                    .setEntityId(entity.primaryKeyValue)
-                                %}
                                 <div>
-                                    <a href="{{ url }}">
+                                    <a href="{{ url.setAction('detail').setEntityId(entity.primaryKeyValue) }}">
                                         {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
                                     </a>
                                 </div>
@@ -90,53 +75,38 @@
                                 {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
                             {% endif %}
 
-                        {# Pour label 'Parent ID' #}
-                        {% elseif field.label == 'Parent ID' %}
+                        {# Pour property 'Parent ID' #}
+                        {% elseif field.property == 'category_id' %}
                             {% if field.value != null %}
-                                {% set url = ea_url()
-                                    .setController('App\\Controller\\Backoffice\\CategoryCrudController')
-                                    .setAction('detail')
-                                    .setEntityId(field.value)
-                                %}
-
-                                <a href="{{ url }}">
+                                <a href="{{ url.setAction('detail').setEntityId(field.value) }}">
                                     {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
                                 </a>
                             {% else %}
                                 {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
                             {% endif %}
 
-                        {# Pour label 'Parent' #}
-                        {% elseif field.label == 'Parent' %}
+                        {# Pour property 'Parent' #}
+                        {% elseif field.property == 'parent' %}
                             {% if field.value != null %}
-                                {% set url = ea_url()
-                                    .setController('App\\Controller\\Backoffice\\CategoryCrudController')
-                                    .setAction('detail')
-                                    .setEntityId(field.value.id)
-                                %}
-                                <a href="{{ url }}">
+                                <a href="{{ url.setAction('detail').setEntityId(field.value.id) }}">
                                     {{ field.value.title }}
                                 </a>
                             {% else %}
                                 {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
                             {% endif %}
 
-                        {#  Pour label 'Grand Parent' #}
+                        {#  Pour property 'Grand Parent' #}
                         {% elseif field.property == 'grandParent' %}
                             {% if field.value != null %}
                                 {% if field.value.id != null %}
-                                    {% set url = ea_url()
-                                        .setController('App\\Controller\\Backoffice\\CategoryCrudController')
-                                        .setAction('detail')
-                                        .setEntityId(field.value.id)
-                                    %}
-                                    <a href="{{ url }}">
+                                    <a href="{{ url.setAction('detail').setEntityId(field.value.id) }}">
                                         {{ field.value.title }}
                                     </a>
                                 {% else %}
                                     Aucun
                                 {% endif %}
                             {% endif %}
+
                         {# Autres cas#}
                         {% else %}
                             {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}

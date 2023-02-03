@@ -4,36 +4,51 @@ namespace App\Controller\Backoffice;
 
 use App\Entity\Article;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
-use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ArticleCrudController extends AbstractCrudController
 {
-    public static function getEntityFqcn(): string
-    {
-        return Article::class;
-    }
 
     private AdminUrlGenerator $adminUrlGenerator;
     private EntityManagerInterface $entityManager;
     private EntityRepository $entityRepository;
-
     private int $entityId;
+    private ?Article $parentEntity = null;
+    private ?Article $entity = null;
 
     public function __construct(AdminUrlGenerator $adminUrlGenerator, EntityRepository $entityRepository, EntityManagerInterface $entityManager)
     {
         $this->adminUrlGenerator = $adminUrlGenerator;
         $this->entityRepository  = $entityRepository;
-        $this->entityManager  = $entityManager;
+        $this->entityManager     = $entityManager;
         $this->entityId          = 0;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getEntityFqcn(): string
+    {
+        return Article::class;
     }
 
     /**
@@ -44,12 +59,16 @@ class ArticleCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id')->hideOnForm(),
+            IdField::new('id')->hideOnForm()->hideOnIndex()->hideOnDetail(),
+            IntegerField::new('position', 'position')->setColumns(6),
             TextField::new('title','titre'),
             TextEditorField::new('content','description'),
             DateField::new('created_at','créé à')->hideOnForm(),
             DateField::new('updated_at','dernière édition')->hideOnForm(),
-            IdField::new('article_id'),
+            IdField::new('article_id','article parent')->hideOnIndex()->hideOnDetail(),
+            CollectionField::new('children','Enfants'),
+            CollectionField::new('parent','Parent')->hideOnIndex()->hideOnDetail(),
+
         ];
     }
 
@@ -70,8 +89,55 @@ class ArticleCrudController extends AbstractCrudController
         $article->setCreatedAt( new \DateTimeImmutable() );
         $article->setUpdatedAt( new \DateTimeImmutable() );
         $article->setPosition( $indice + 1 );
+//        if($entityId != null){
+//            $article->setArticleId($entityId);
+//        }
+//
+//        return $article;
+    }
 
-        return $article;
+
+    /**
+     * @param SearchDto $searchDto
+     * @param EntityDto $entityDto
+     * @param FieldCollection $fields
+     * @param FilterCollection $filters
+     * @return QueryBuilder
+     */
+    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
+    {
+        $response = $this->entityRepository->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
+        $response->orderBy('entity.position');
+        if($this->entity != null) {
+            $response->where('entity.article_id = :entity_id');
+            $response->setParameter('entity_id', $this->entity->getId());
+        }else{
+            $response->where('entity.article_id IS NULL');
+        }
+
+        return $response;
+    }
+
+
+    /**
+     * index renvois vers la page de base de la catégorie souvent lié à la liste
+     * @param AdminContext $context
+     * @return KeyValueStore|RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function index(AdminContext $context)
+    {
+        return parent::index($context);
+    }
+
+    /**
+     * detail renvois vers une page détaillant un des objets mis en bdd
+     * @param AdminContext $context
+     * @return KeyValueStore|RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function detail(AdminContext $context)
+    {
+        $this->entity = $context->getEntity()->getInstance();
+        return parent::index($context);
     }
 
 
@@ -89,7 +155,10 @@ class ArticleCrudController extends AbstractCrudController
 
     }
 
-
+    /**
+     * @param KeyValueStore $responseParameters
+     * @return KeyValueStore
+     */
     public function configureResponseParameters(KeyValueStore $responseParameters): KeyValueStore
     {
 
@@ -98,6 +167,69 @@ class ArticleCrudController extends AbstractCrudController
 
 
         return parent::configureResponseParameters($responseParameters);
+    }
+
+    /**
+     * @param Actions $actions
+     * @return Actions
+     */
+    public function configureActions(Actions $actions): Actions
+    {
+
+        // Bouton Revenir
+        $returnAction = Action::new('returnAction', 'Revenir', 'fa fa-arrow-left');
+        // renders the action as a <a> HTML element
+        $returnAction->displayAsLink();
+
+        if($this->parentEntity != null) {
+            $returnAction->linkToRoute(Action::DETAIL, [
+                'entityId' => $this->parentEntity->getId()
+            ]);
+        }else{
+            $returnAction->linkToCrudAction('index');
+        }
+        $returnAction->createAsGlobalAction();
+        $returnAction->addCssClass('btn btn-primary');
+
+        $actions->add(Crud::PAGE_DETAIL, $returnAction);
+
+
+        // Bouton Créer un paragraphe
+        $addArticle = Action::new('addArticle', 'Créer paragraphe', 'fa fa-square-plus');
+        // renders the action as a <a> HTML element
+        $addArticle->displayAsLink();
+
+        if($this->parentEntity != null) {
+
+            $addArticle->linkToCrudAction(Action::NEW,[
+                'entityId' => $this->parentEntity->getId()
+            ]);
+        }else{
+            $addArticle->linkToCrudAction(Action::NEW);
+        }
+        $addArticle->createAsGlobalAction();
+        $addArticle->addCssClass('btn btn-primary');
+        $actions->add(Crud::PAGE_DETAIL, $addArticle);
+
+
+
+        // Bouton Aperçu
+        $apercu = Action::new('$apercu', 'Aperçu', 'fa fa-magnifying-glass');
+        // renders the action as a <a> HTML element
+        $apercu->displayAsLink();
+
+        if($this->parentEntity != null) {
+            $apercu->linkToRoute(Action::DETAIL, [
+                'entityId' => $this->parentEntity->getId()
+            ]);
+        }else{
+            $apercu->linkToCrudAction('index');
+        }
+        $apercu->createAsGlobalAction();
+        $apercu->addCssClass('btn btn-primary');
+        $actions->add(Crud::PAGE_DETAIL, $apercu);
+
+        return $actions;
     }
 
 }
