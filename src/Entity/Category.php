@@ -21,7 +21,6 @@ class Category
     {
         $this->articles = new ArrayCollection();
         $this->children = new ArrayCollection();
-        
     }
 
     #[ORM\Column]

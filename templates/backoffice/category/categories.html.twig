@@ -1,45 +1,22 @@
 {# DO THIS: the '!' symbol tells Symfony to extend from the original template #}
 {% extends '@!EasyAdmin/crud/index.html.twig' %}
 
-{% block table_body %}
+{# Surcharge du block des boutons d'action global #}
+{% block global_actions %}
+    <div class="global-actions">
+        {% for action in global_actions %}
+            {# Passage du parentId pour retour vers le détail du parent. #}
+            {{ include(action.templatePath, { action: action, parentId: parentId }, with_context = false) }}
+        {% endfor %}
+    </div>
+{% endblock global_actions %}
 
+{% block table_body %}
+    {# Définition de l'URL d'accès au détail d'une entité #}
     {% set url = ea_url()
         .setController('App\\Controller\\Backoffice\\CategoryCrudController')
         .setAction('detail')
     %}
-    {% block lien %}
-        {% dump(pageName) %}
-        {% set i = 0 %}
-        {% set indice = 0 %}
-        {% for entity in entities %}
-            {% if entity.fields %}
-                {% for field in entity.fields %}
-                    {% if field.property == 'parent' %}
-                        {% if field.value %}
-                            {% if field.value.title %}
-                                {% if indice == 0 %}
-                                    {% set titre = field.value.title %}
-                                    {% set indice = indice + 1 %}
-                                    <h3>{{ titre }}</h3>
-                                {% endif %}
-                            {% endif %}
-                        {% endif %}
-                    {% endif %}
-
-                    {% if field.property == 'grandParent' %}
-                        {% if i == 0 %}
-                        {% set i = i + 1 %}
-                            {% if field.value %}
-                                <a href="{{ url.setEntityId(field.value.id ) }}" class="btn btn-primary mt-3 mb-3">Grand Parent</a>
-
-                            {% endif %}
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-        {%  endfor %}
-    {%  endblock %}
-
     {% for entity in entities %}
         {% if entity.isAccessible %}
             <tr data-id="{{ entity.primaryKeyValueAsString }}">

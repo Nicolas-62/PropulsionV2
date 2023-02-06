@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -43,6 +44,7 @@ class CategoryCrudController extends AbstractCrudController
         $this->entityRepository  = $entityRepository;
         $this->entityManager  = $entityManager;
     }
+
     public static function getEntityFqcn(): string
     {
         return Category::class;
@@ -55,17 +57,10 @@ class CategoryCrudController extends AbstractCrudController
      */
     public function createEntity(string $entityFqcn)
     {
-        $categories = $this->entityManager->getRepository(Category::class)->findAll();
-
-        $indice = 0 ;
-        foreach ( $categories as $cat){
-            $indice = $indice + 1;
-        }
-
         $category = new Category();
         $category->setCreatedAt(new \DateTimeImmutable());
         $category->setUpdatedAt(new \DateTimeImmutable());
-        $category->setPosition($indice + 1 );
+        $category->setPosition($this->entityManager->getRepository(Category::class)->count([]) + 1 );
 
         return $category;
     }
@@ -78,22 +73,28 @@ class CategoryCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
+            // Champs de la vue liste
             IntegerField::new('position', 'position')->setColumns(6),
             TextField::new('title', 'title')->setColumns(6),
             DateField::new('created_at', 'creation')->hideOnForm(),
             DateField::new('updated_at', 'dernière édition')->hideOnForm(),
-            IdField::new('category_id', 'Parent ID')->hideOnDetail()->hideOnIndex(),
-            BooleanField::new('can_create','can_create')->hideOnIndex()->hideOnDetail()->setColumns(3),
-            BooleanField::new('has_multi','has_multi')->hideOnIndex()->hideOnDetail()->setColumns(3),
-            BooleanField::new('has_title','has_title')->hideOnIndex()->hideOnDetail()->setColumns(3),
-            BooleanField::new('has_sub_title','has_sub_title')->hideOnIndex()->hideOnDetail()->setColumns(3),
-            BooleanField::new('has_seo','has_seo')->hideOnIndex()->hideOnDetail()->setColumns(3),
-            BooleanField::new('has_link','has_link')->hideOnIndex()->hideOnDetail()->setColumns(3),
-            BooleanField::new('has_theme','has_theme')->hideOnIndex()->hideOnDetail()->setColumns(3),
-            BooleanField::new('has_content','has_content')->hideOnIndex()->hideOnDetail()->setColumns(3),
-            CollectionField::new('children','Enfants'),
+
+            // Champs du formulaire
+            IdField::new('category_id', 'Parent ID')->hideOnIndex(),
+            BooleanField::new('can_create','can_create')->hideOnIndex()->setColumns(3),
+            BooleanField::new('has_multi','has_multi')->hideOnIndex()->setColumns(3),
+            BooleanField::new('has_title','has_title')->hideOnIndex()->setColumns(3),
+            BooleanField::new('has_sub_title','has_sub_title')->hideOnIndex()->setColumns(3),
+            BooleanField::new('has_seo','has_seo')->hideOnIndex()->setColumns(3),
+            BooleanField::new('has_link','has_link')->hideOnIndex()->setColumns(3),
+            BooleanField::new('has_theme','has_theme')->hideOnIndex()->setColumns(3),
+            BooleanField::new('has_content','has_content')->hideOnIndex()->setColumns(3),
             CollectionField::new('parent','Parent')->hideOnIndex(),
-            CollectionField::new('grandParent','Grand Parent')->hideOnIndex()->hideOnForm(),
+
+            // Champs communs
+            CollectionField::new('children','Enfants'),
+
+            // CollectionField::new('grandParent','Grand Parent')->hideOnIndex()->hideOnForm(),
 
         ];
     }
@@ -107,51 +108,73 @@ class CategoryCrudController extends AbstractCrudController
     {
         return $crud
             // ...
-
+            ->setEntityLabelInPlural('Categories')
+            // Titre de la page et nom de la liste affichée
+            ->setPageTitle('index', function (){
+                if($this->entity != null){
+                    return 'Categorie : '.$this->entity->getTitle();
+                }
+            })
+            ->setHelp('index', 'Liste des sous catégories')
+            // Template personnalisé
             ->overrideTemplate('crud/index', 'backoffice/category/categories.html.twig')
-            // ->setSearchFields(['name', 'description'])
+           // Champs de recherche
+            //->setSearchFields(['title'])
             // ->setDefaultSort(['id' => 'DESC'])
             // ->setPaginatorPageSize(30)
             // ->setPaginatorRangeSize(4)
+            // Actions sur la liste visible (par défaut cachées dans un dropdown)
             ->showEntityActionsInlined()
-
             ;
 
     }
 
 
     /**
-     * index renvois vers la page de base de la catégorie souvent lié à la liste
+     * index
+     *
+     * Affiche la liste des categories, affiche les categories enfant si l'id d'un parent est passé en paramètre
      * @param AdminContext $context
      * @return KeyValueStore|RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function index(AdminContext $context)
     {
-        $entity_id = $this->adminUrlGenerator->get('entityId');
 
-        dump($context);
-        if($entity_id != null) {
-            $this->entity = $this->entityManager->getRepository(Category::class)->find($entity_id);
+        // Récupération de l'id de la categorie parent.
+        $entityId = $this->adminUrlGenerator->get('entityId');
+        // Si on doit afficher les enfants d'une catégorie
+        if($entityId != null) {
+            // Récupère la categorie pour filtrer dans la requète (voir fonction createIndexQueryBuilder)
+            $this->entity = $this->entityManager->getRepository(Category::class)->find($entityId);
         }
         return parent::index($context);
     }
 
     /**
-     * detail renvois vers une page détaillant un des objets mis en bdd
+     * detail
+     *
+     * Affiche la liste des enfants de la categorie dont l'id est passé en paramètre
+     * , redirige vers la méthode : index
      * @param AdminContext $context
      * @return KeyValueStore|RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function detail(AdminContext $context)
     {
+        // Génération de l'URL, ajout en paramètre de l'id de la categorie.
         $url = $this->adminUrlGenerator->setAction(Action::INDEX)
                 ->set('entityId', $context->getEntity()->getInstance()->getId())
             ->generateUrl();
+
+        // Redirection
         return $this->redirect($url);
-        //return parent::index($context);
     }
 
 
     /**
+     * createIndexQueryBuilder
+     *
+     * Execute la requête qui récupère les categories à afficher en vue liste
+     *
      * @param SearchDto $searchDto
      * @param EntityDto $entityDto
      * @param FieldCollection $fields
@@ -160,16 +183,40 @@ class CategoryCrudController extends AbstractCrudController
      */
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
-        $response = $this->entityRepository->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
-        $response->orderBy('entity.position');
-        if($this->entity != null) {
-            $response->where('entity.category_id = :entity_id');
-            $response->setParameter('entity_id', $this->entity->getId());
-        }else{
-            $response->where('entity.category_id IS NULL');
-        }
+        // DEBUG
+        //dump($searchDto);
 
+        // Récupération du query builder
+        $response = $this->entityRepository->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
+        // Si pas d'ordre
+        if($searchDto->getSort() == []) {
+            // Ordonne par position
+            $response->orderBy('entity.position');
+        }
+        // Si pas de recherche
+        if($searchDto->getQuery() == '') {
+            // Si une categorie a été précisée, on veut afficher uniquement ses enfants
+            if ($this->entity != null) {
+                $response->where('entity.category_id = :entityId');
+                $response->setParameter('entityId', $this->entity->getId());
+                // Sinon on affiche que les categories qui n'ont pas de parent.
+            } else {
+                $response->andwhere('entity.category_id IS NULL');
+            }
+        }
+        // Retour
         return $response;
+    }
+
+    /**
+     * @param Filters $filters
+     * @return Filters
+     */
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('category_id')
+            ;
     }
 
     /**
@@ -179,16 +226,9 @@ class CategoryCrudController extends AbstractCrudController
      */
     public function configureResponseParameters(KeyValueStore $responseParameters): KeyValueStore
     {
-
-
-//        $categories = $this->entityManager->getRepository(Category::class)->findAll();
-//        $responseParameters->set('categories',$categories);
-//
-//        $category = null;
-//        if($this->entity != null) {
-//            $category = $this->entityManager->getRepository(Category::class)->find($this->entity);
-//        }
-//        $responseParameters->set('category',$category);
+        // Envoi de l'id du parent à la vue.
+        $parentId = $this->entity?->getParentId();
+        $responseParameters->set('parentId', $parentId);
 
         return parent::configureResponseParameters($responseParameters);
     }
@@ -220,62 +260,25 @@ class CategoryCrudController extends AbstractCrudController
 
         return parent::getRedirectResponseAfterSave($context, $action);
     }
-
     /**
-     * Définis la redirection du bouton de retour, si l'entité possède un grand parent, redirige vers le détail du grand parent, sinon vers la liste des categories.
+     * configureActions
      *
-     * @param AdminContext $context
-     * @return RedirectResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * Configure les boutons d'action disponibles dans l'interface.
+     * @param Actions $actions
+     * @return Actions
      */
-//    public function defineReturn(AdminContext $context)
-//    {
-//        // URL par défaut, liste des catégories.
-//        $url = $this->container->get(AdminUrlGenerator::class)
-//            ->setAction(Action::INDEX)
-//            ->generateUrl();
-//
-//        $category = $context->getEntity()->getInstance();
-//        if($category != null) {
-//            $parent= $category->getParent();
-//            if($parent != null){
-//                $url = $this->container->get(AdminUrlGenerator::class)
-//                    ->setAction(Action::DETAIL)
-//                    ->setEntityId($parent->getId())
-//                    ->generateUrl();
-//            }
-//        }
-//        return $this->redirect($url);
-//    }
-    public function returnAction(AdminContext $context)
-    {
-        // URL par défaut, liste des catégories.
-        $url = $this->container->get(AdminUrlGenerator::class)
-            ->setAction(Action::INDEX);
-        $entity_id     = $context->getRequest()->query->get('entityId');
-        $category = $this->entityManager->getRepository(Category::class)->find($entity_id);
-
-        if($category != null) {
-            dump($category->getId());
-            $parent= $category->getParent();
-            dump($parent->getId());
-            if($parent->getId() != null){
-                $url->set('entityId', $context->getEntity()->getInstance()->getId());
-            }
-        }
-        $url->generateUrl();
-        return $this->redirect($url);
-    }
     public function configureActions(Actions $actions): Actions
     {
-        $returnAction = Action::new('returnAction', 'Revenir', 'fa fa-arrow-left');
+        // Bouton de retour au détail du parent.
+        $returnAction = Action::new('backToParent', 'Revenir', 'fa fa-arrow-left');
+        $returnAction->setTemplatePath('backoffice/actions/back_to_parent.html.twig');
         // renders the action as a <a> HTML element
         $returnAction->displayAsLink();
-        $returnAction->linkToCrudAction('returnAction');
+        $returnAction->linkToCrudAction('index');
         $returnAction->createAsGlobalAction();
         $returnAction->addCssClass('btn btn-primary');
 
+        // Ajout des boutons à la liste des actions disponibles.
         $actions->add(Crud::PAGE_INDEX, $returnAction);
 
         return $actions;

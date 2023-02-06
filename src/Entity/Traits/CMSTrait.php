@@ -67,6 +67,15 @@ trait CMSTrait
         return $this->parent;
     }
 
+    public function getParentId(): ?int
+    {
+        if($this->getParent() != null){
+            return $this->getParent()->getId();
+        }else{
+            return null;
+        }
+    }
+
     public function setParent(?self $parent): self
     {
         $this->parent = $parent;
