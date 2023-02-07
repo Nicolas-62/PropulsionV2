@@ -1,13 +1,39 @@
 dashboard: Accueil
 Category: categorie
-categories: Categories
+categories: categories
+Categories: Categories
 admin: Administration
 medias: Medias
 title: titre
 position: position
 creation: creation
-
+can_create: peut créer
+has_title: possède un titre
+has_sub_title: possède un sous-titre
+has_seo: possède SEO
+has_link: possède un lien
+has_theme: possède un thème
+has_content: possède du contenu
 hello: salut
+has_multi: peut être plusieurs
+Articles: Articles
+Parent: Parent
+Enfants: Enfants
+Parent ID: Parent ID
+Revenir: Revenir
+dernière édition: dernière édition
+Article: Article
+description: description
+créé à: créé à
+Illustration: Illustration
+Illustration2: Illustration2
+titre: titre
+Message d'aide: Message d'aide
+Aperçu: Aperçu
+Créer paragraphe: Créer paragraphe
+article parent: article parent
+files: fichiers
+
 
 login:
   signin: Connexion

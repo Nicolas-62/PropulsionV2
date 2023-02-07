@@ -3,6 +3,7 @@
 namespace App\Controller\Backoffice;
 
 use App\Entity\Article;
+use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -10,11 +11,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ColorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
@@ -26,7 +29,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-
 class ArticleCrudController extends AbstractCrudController
 {
 
@@ -54,6 +56,19 @@ class ArticleCrudController extends AbstractCrudController
     }
 
     /**
+     * @param Filters $filters
+     * @return Filters
+     */
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('article_id')
+            ;
+    }
+
+
+
+    /**
      * configureFields permet la configuration des différents champs que l'on va retrouver sur les pages du crud
      * @param string $pageName
      * @return iterable
@@ -62,21 +77,24 @@ class ArticleCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm()->hideOnIndex()->hideOnDetail(),
-            IntegerField::new('position', 'position')->setColumns(6),
-            TextField::new('title','titre'),
-            TextEditorField::new('content','description'),
+            IntegerField::new('position', 'position')->hideOnForm(),
+            TextField::new('title','titre')->setColumns(6),
+            TextEditorField::new('content','description')->setColumns(12),
             DateField::new('created_at','créé à')->hideOnForm(),
             DateField::new('updated_at','dernière édition')->hideOnForm(),
-            IdField::new('article_id','article parent')->hideOnIndex()->hideOnDetail(),
-            CollectionField::new('children','Enfants'),
-            CollectionField::new('parent','Parent')->hideOnDetail(),
-            CollectionField::new('category'),
+            CollectionField::new('children','Enfants')->hideOnForm(),
+            AssociationField::new('children','Enfants')->hideOnForm(),
+            AssociationField::new('parent','Article Parent')->hideOnDetail()->setColumns(6),
+            CollectionField::new('category','Categorie parent')->hideOnForm()->hideOnIndex(),
+            AssociationField::new('category','Categorie parent')->setColumns(6),
             ImageField::new('illustration')
+                ->setColumns(6)
                 ->setBasePath('assets/images')
                 ->setUploadDir('public/assets/images')
                 ->setUploadedFileNamePattern('[randomhash].[extension]')
                 ->setRequired(false),
             ImageField::new('illustration2')
+                ->setColumns(6)
                 ->setBasePath('assets/images')
                 ->setUploadDir('public/assets/images')
                 ->setUploadedFileNamePattern('[randomhash].[extension]')
@@ -85,6 +103,11 @@ class ArticleCrudController extends AbstractCrudController
 
         ];
     }
+//      by_reference
+//    Similarly, if you're using the CollectionType field where your underlying collection data is an object (like with Doctrine's ArrayCollection),
+//    then by_reference must be set to false if you need the adder and remover (e.g. addAuthor() and removeAuthor()) to be called.
+//    https://symfony.com/doc/current/reference/forms/types/collection.html#by-reference
+
 
     /**
      * createEntity permet de definir les valeurs par défaut de l'entité
@@ -93,23 +116,17 @@ class ArticleCrudController extends AbstractCrudController
      */
     public function createEntity(string $entityFqcn)
     {
-        $articles = $this->entityManager->getRepository(Article::class)->findAll();
-        $indice = 0;
-        foreach ( $articles as $art ){
-            $indice = $indice + 1;
-        }
 
         $article = new Article();
         $article->setCreatedAt( new \DateTimeImmutable() );
         $article->setUpdatedAt( new \DateTimeImmutable() );
-        $article->setPosition( $indice + 1 );
+        $article->setPosition( $this->entityManager->getRepository(Article::class)->count([]) + 1 );
 //        if($entityId != null){
 //            $article->setArticleId($entityId);
 //        }
 //
-//        return $article;
+        return $article;
     }
-
 
     /**
      * @param SearchDto $searchDto

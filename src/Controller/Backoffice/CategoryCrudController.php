@@ -16,6 +16,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
@@ -74,13 +75,13 @@ class CategoryCrudController extends AbstractCrudController
     {
         return [
             // Champs de la vue liste
-            IntegerField::new('position', 'position')->setColumns(6),
+            IntegerField::new('position', 'position')->setColumns(6)->hideOnForm(),
             TextField::new('title', 'title')->setColumns(6),
             DateField::new('created_at', 'creation')->hideOnForm(),
             DateField::new('updated_at', 'dernière édition')->hideOnForm(),
 
             // Champs du formulaire
-            IdField::new('category_id', 'Parent ID')->hideOnIndex(),
+            AssociationField::new('parent','Parent')->hideOnIndex(),
             BooleanField::new('can_create','can_create')->hideOnIndex()->setColumns(3),
             BooleanField::new('has_multi','has_multi')->hideOnIndex()->setColumns(3),
             BooleanField::new('has_title','has_title')->hideOnIndex()->setColumns(3),
@@ -89,10 +90,8 @@ class CategoryCrudController extends AbstractCrudController
             BooleanField::new('has_link','has_link')->hideOnIndex()->setColumns(3),
             BooleanField::new('has_theme','has_theme')->hideOnIndex()->setColumns(3),
             BooleanField::new('has_content','has_content')->hideOnIndex()->setColumns(3),
-            CollectionField::new('parent','Parent')->hideOnIndex(),
-
+            AssociationField::new('children','Enfants'),
             // Champs communs
-            CollectionField::new('children','Enfants'),
 
             // CollectionField::new('grandParent','Grand Parent')->hideOnIndex()->hideOnForm(),
 

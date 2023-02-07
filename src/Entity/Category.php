@@ -209,6 +209,12 @@ class Category
         return $this->category_id;
     }
 
+    public function __toString(): string
+    {
+        return $this->title;
+    }
+
+
     public function setCategoryId(?int $category_id): self
     {
         $this->category_id = $category_id;

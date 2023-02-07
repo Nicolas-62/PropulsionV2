@@ -1,13 +1,32 @@
 dashboard: Accueil
 Category: Categorie
-categories: Categories
+categories: categories
+Categories: Categories
+Articles: Articles
 admin: Administration
 medias: Medias
 title: titre
 position: position
 creation: creation
+Enfants: Children
+Parent: Parent
+Parent ID: Parent ID
+Revenir: Back
+dernière édition: Last Update
+Article: Article
+description: description
+créé à: Create at
+Illustration: Illustration
+Illustration2: Illustration2
+titre: title
+Message d'aide: Help Message
+Aperçu: Aperçu
+Créer paragraphe: Create paragraph
+article parent: parent article
+files: files
 
-hello: Hi
+
+
 
 login:
   signin: Please sign in
