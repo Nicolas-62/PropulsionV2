@@ -4,6 +4,7 @@ namespace App\Controller\Backoffice;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\Media;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -45,18 +46,32 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('PropulsionV2');
+            ->setTitle('PropulsionV2')
+            ->setLocales([
+                'en' => '🇬🇧 English', // locale without custom options
+                'fr' => '🇫🇷 Français',
+                'nl' => '🇳🇱 Nederland',
+                'es' => '🇪🇸 Spanish',
+                'de' => '🇩🇪 German'
+
+            ]);
     }
 
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Categories',  'fa fa-tags', Category::class);
-        yield MenuItem::linkToCrud('Articles',  'fa fa-tags', Article::class);
-        if(true) {
-            yield MenuItem::section('admin');
-        }
-        yield MenuItem::section('medias');
+        yield MenuItem::section('Contenu');
+        yield MenuItem::linkToCrud('Categories',  'fa-solid fa-bars', Category::class);
+        yield MenuItem::linkToCrud('Articles',  'fa-solid fa-newspaper', Article::class);
+        yield MenuItem::linkToCrud('Medias',  'fa-regular fa-image', Media::class);
+        yield MenuItem::section('Administration', 'fa-solid fa-wrench');
+        yield MenuItem::section('Medias', 'fa-solid fa-photo-film');
+        yield MenuItem::section('Galerie','fa-regular fa-image');
+        yield MenuItem::section('Theme', 'fa-solid fa-palette');
+        yield MenuItem::section('Preferences','fa-solid fa-gears');
+        yield MenuItem::section('Preview', 'fa-solid fa-eye');
+        yield MenuItem::linkToLogout('Logout', 'fa fa-arrow-left');
+
 
     }
 

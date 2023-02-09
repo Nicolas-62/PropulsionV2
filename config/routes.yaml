@@ -4,6 +4,9 @@ controllers:
     prefix:
         fr: ''
         en: '/en'
+        nl: '/nl'
+        de: '/de'
+        es: '/es'
 
 kernel:
     resource: ../src/Kernel.php

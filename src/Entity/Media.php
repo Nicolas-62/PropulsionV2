@@ -5,8 +5,10 @@ namespace App\Entity;
 use App\Repository\MediaRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
+#[CustomAssert\OneFilled]
 class Media
 {
     #[ORM\Id]
@@ -14,8 +16,6 @@ class Media
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $objet = null;
 
     #[ORM\ManyToOne(inversedBy: 'media')]
     #[ORM\JoinColumn(nullable: false)]
@@ -39,22 +39,37 @@ class Media
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_modification = null;
 
+    /**
+     * @Assert\NotNull(groups={"article_filled"})
+     */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\Article', inversedBy: "media")]
+    #[ORM\JoinColumn(nullable: true)]
+    private $article = null;
+
+    /**
+     * @Assert\NotNull(groups={"category_filled"})
+     */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\Category', inversedBy: "media")]
+    #[ORM\JoinColumn(nullable: true)]
+    private $category = null;
+
+    /**
+     * @Assert\Expression(
+     *     "this.getCategory() != null xor this.getArticle() != null",
+     *     message="Category ou Article doit être remplit, l'autre doit être null.",
+     *     groups={"category_filled", "article_filled"}
+     * )
+     */
+    public function isOneFilled()
+    {
+        return true;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getObjet(): ?string
-    {
-        return $this->objet;
-    }
-
-    public function setObjet(string $objet): self
-    {
-        $this->objet = $objet;
-
-        return $this;
-    }
 
     public function getMediaTypeId(): ?MediasTypes
     {
@@ -136,6 +151,30 @@ class Media
     public function setDateModification(\DateTimeInterface $date_modification): self
     {
         $this->date_modification = $date_modification;
+
+        return $this;
+    }
+
+    public function getArticle(): ?Article
+    {
+        return $this->article;
+    }
+
+    public function setArticle(?Article $article): self
+    {
+        $this->article = $article;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

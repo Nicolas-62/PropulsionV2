@@ -55,6 +55,10 @@ class Category
     #[ORM\JoinColumn(name:"category_id", referencedColumnName:"id")]
     protected Collection $children;
 
+
+    #[ORM\OneToMany(targetEntity: 'App\Entity\Media', mappedBy: "category",cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: true)]
+    private $media;
     private ?Category $grandParent = null;
 
     public function getGrandParent(): ?Category

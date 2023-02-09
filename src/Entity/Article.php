@@ -57,6 +57,11 @@ class Article
     private ?string $illustration2 = null;
 
 
+    #[ORM\OneToMany(targetEntity: 'App\Entity\Media', mappedBy: "category",cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: true)]
+    private $media;
+
+
     public function getContent(): ?string
     {
         return $this->content;

@@ -1,13 +1,14 @@
 dashboard: Accueil
-Category: Categorie
+Categorie: Category
 categories: categories
 Categories: Categories
 Articles: Articles
 admin: Administration
 medias: Medias
-title: titre
+title: title
 position: position
-creation: creation
+creation: create
+Creation: Create
 Enfants: Children
 Parent: Parent
 Parent ID: Parent ID
@@ -24,6 +25,7 @@ Aperçu: Aperçu
 Créer paragraphe: Create paragraph
 article parent: parent article
 files: files
+Galerie: Galery
 
 
 

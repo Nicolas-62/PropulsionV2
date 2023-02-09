@@ -63,6 +63,7 @@ class ArticleCrudController extends AbstractCrudController
     {
         return $filters
             ->add('article_id')
+            ->add('category')
             ;
     }
 
@@ -82,9 +83,9 @@ class ArticleCrudController extends AbstractCrudController
             TextEditorField::new('content','description')->setColumns(12),
             DateField::new('created_at','créé à')->hideOnForm(),
             DateField::new('updated_at','dernière édition')->hideOnForm(),
-            CollectionField::new('children','Enfants')->hideOnForm(),
+            CollectionField::new('children','Enfants')->hideOnForm()->hideOnIndex(),
             AssociationField::new('children','Enfants')->hideOnForm(),
-            AssociationField::new('parent','Article Parent')->hideOnDetail()->setColumns(6),
+            AssociationField::new('parent','Article Parent')->hideOnDetail()->setColumns(6)->hideOnIndex(),
             CollectionField::new('category','Categorie parent')->hideOnForm()->hideOnIndex(),
             AssociationField::new('category','Categorie parent')->setColumns(6),
             ImageField::new('illustration')
