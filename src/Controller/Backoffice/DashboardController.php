@@ -5,6 +5,7 @@ namespace App\Controller\Backoffice;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Media;
+use App\Entity\Mediaspecs;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -59,17 +60,23 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('dashboard', 'fa fa-home');
-        yield MenuItem::section('Contenu');
+        // yield MenuItem::linkToDashboard('dashboard', 'fa fa-home');
+        yield MenuItem::section('Contenu','fa-solid fa-folder');
         yield MenuItem::linkToCrud('Categories',  'fa-solid fa-bars', Category::class);
         yield MenuItem::linkToCrud('Articles',  'fa-solid fa-newspaper', Article::class);
         yield MenuItem::linkToCrud('Medias',  'fa-regular fa-image', Media::class);
+        yield MenuItem::linkToCrud('Mediaspecs',  'fa-regular fa-image', Mediaspecs::class);
         yield MenuItem::section('Administration', 'fa-solid fa-wrench');
-        yield MenuItem::section('Medias', 'fa-solid fa-photo-film');
-        yield MenuItem::section('Galerie','fa-regular fa-image');
+        yield MenuItem::linkToRoute('Profils/Droits','fa-solid fa-lock','',[]);
+        yield MenuItem::linkToRoute('Utilisateurs','fa-solid fa-user','',[]);
+        yield MenuItem::linkToRoute('Préférences','fa-solid fa-gears','',[]);
+        yield MenuItem::linkToRoute('Vider le Cache','fa-solid fa-trash','',[]);
+        yield MenuItem::section('Galerie','fa-solid fa-photo-film');
+        yield MenuItem::linkToRoute('Images','fa-solid fa-image','',[]);
+        yield MenuItem::linkToRoute('Video','fa-solid fa-film','',[]);
         yield MenuItem::section('Theme', 'fa-solid fa-palette');
-        yield MenuItem::section('Preferences','fa-solid fa-gears');
         yield MenuItem::section('Preview', 'fa-solid fa-eye');
+        yield MenuItem::section('Newsletter', 'fa-solid fa-envelope');
         yield MenuItem::linkToLogout('Logout', 'fa fa-arrow-left');
 
 

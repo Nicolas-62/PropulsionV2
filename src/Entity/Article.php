@@ -29,7 +29,7 @@ class Article
     #[ORM\JoinColumn(name:"article_id", referencedColumnName:"id")]
     protected ?Article $parent;
 
-    #[ORM\OneToMany(targetEntity: self::class, mappedBy:"parent")]
+    #[ORM\OneToMany(mappedBy:"parent", targetEntity: self::class)]
     #[ORM\JoinColumn(name:"article_id", referencedColumnName:"id")]
     protected Collection $children;
 
@@ -57,9 +57,9 @@ class Article
     private ?string $illustration2 = null;
 
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\Media', mappedBy: "category",cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: "article", targetEntity: 'App\Entity\Media',cascade: ['persist'] )]
     #[ORM\JoinColumn(nullable: true)]
-    private $media;
+    private Collection $media;
 
 
     public function getContent(): ?string
@@ -126,6 +126,22 @@ class Article
     public function __toString(): string
     {
         return $this->title;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMedia(): Collection
+    {
+        return $this->media;
+    }
+
+    /**
+     * @param Collection $media
+     */
+    public function setMedia(Collection $media): void
+    {
+        $this->media = $media;
     }
 
 }

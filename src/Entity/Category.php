@@ -51,14 +51,14 @@ class Category
     #[ORM\JoinColumn(name:"category_id", referencedColumnName:"id")]
     protected ?Category $parent;
 
-    #[ORM\OneToMany(targetEntity: self::class, mappedBy:"parent")]
+    #[ORM\OneToMany( mappedBy:"parent", targetEntity: self::class)]
     #[ORM\JoinColumn(name:"category_id", referencedColumnName:"id")]
     protected Collection $children;
 
 
-    #[ORM\OneToMany(targetEntity: 'App\Entity\Media', mappedBy: "category",cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: "category",targetEntity: 'App\Entity\Media', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: true)]
-    private $media;
+    private Collection $media;
     private ?Category $grandParent = null;
 
     public function getGrandParent(): ?Category

@@ -7,8 +7,11 @@ use App\Entity\Media;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AvatarField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CodeEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
@@ -24,7 +27,12 @@ class MediaCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnIndex()->hideOnForm()->hideOnDetail(),
             TextField::new('legende',"Légende")->setColumns(6),
-            TextField::new('fichier','Fichier')->setColumns(6),
+            ImageField::new('fichier','Fichier')->setColumns(6)
+                ->setColumns(6)
+                ->setBasePath('assets/images')
+                ->setUploadDir('public/assets/images')
+                ->setUploadedFileNamePattern('[randomhash].[extension]')
+                ->setRequired(false),
             IntegerField::new('width', 'Largeur')->setColumns(6),
             IntegerField::new('height', 'Hauteur')->setColumns(6),
             DateField::new('date_creation','Créé le')->hideOnForm(),
@@ -32,7 +40,7 @@ class MediaCrudController extends AbstractCrudController
             AssociationField::new('category','Catégorie')->setColumns(6),
             AssociationField::new('article','Article')->setColumns(6),
             AssociationField::new('media_type_id','Type de média')->setColumns(6),
-
+            CodeEditorField::new('test'),
         ];
     }
 

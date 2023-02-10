@@ -44,14 +44,14 @@ class Media
      */
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Article', inversedBy: "media")]
     #[ORM\JoinColumn(nullable: true)]
-    private $article = null;
+    private ?Article $article = null;
 
     /**
      * @Assert\NotNull(groups={"category_filled"})
      */
     #[ORM\ManyToOne(targetEntity: 'App\Entity\Category', inversedBy: "media")]
     #[ORM\JoinColumn(nullable: true)]
-    private $category = null;
+    private ?Category $category = null;
 
     /**
      * @Assert\Expression(
@@ -178,4 +178,11 @@ class Media
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->legende;
+    }
+
+
 }
