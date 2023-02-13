@@ -21,6 +21,7 @@ class Category
     {
         $this->articles = new ArrayCollection();
         $this->children = new ArrayCollection();
+        $this->mediaspecs = new ArrayCollection();
     }
 
     #[ORM\Column]
@@ -59,15 +60,6 @@ class Category
     #[ORM\OneToMany(mappedBy: "category",targetEntity: 'App\Entity\Media', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: true)]
     private Collection $media;
-    private ?Category $grandParent = null;
-
-    public function getGrandParent(): ?Category
-    {
-        if($this->parent !== null){
-            $this->grandParent = $this->parent->getParent();
-        }
-        return $this->grandParent;
-    }
 
     /**
      * @var int|null
@@ -79,6 +71,9 @@ class Category
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Article::class, fetch:"EXTRA_LAZY")]
     private Collection $articles;
+
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Mediaspecs::class)]
+    private Collection $mediaspecs;
 
 
 
@@ -222,6 +217,36 @@ class Category
     public function setCategoryId(?int $category_id): self
     {
         $this->category_id = $category_id;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Mediaspecs>
+     */
+    public function getMediaspecs(): Collection
+    {
+        return $this->mediaspecs;
+    }
+
+    public function addMediaspec(Mediaspecs $mediaspec): self
+    {
+        if (!$this->mediaspecs->contains($mediaspec)) {
+            $this->mediaspecs->add($mediaspec);
+            $mediaspec->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMediaspec(Mediaspecs $mediaspec): self
+    {
+        if ($this->mediaspecs->removeElement($mediaspec)) {
+            // set the owning side to null (unless already changed)
+            if ($mediaspec->getCategory() === $this) {
+                $mediaspec->setCategory(null);
+            }
+        }
 
         return $this;
     }

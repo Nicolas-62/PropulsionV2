@@ -17,7 +17,9 @@
         .setController('App\\Controller\\Backoffice\\CategoryCrudController')
         .setAction('detail')
     %}
+
     {% for entity in entities %}
+
         {% if entity.isAccessible %}
             <tr data-id="{{ entity.primaryKeyValueAsString }}">
                 {% if has_batch_actions %}
@@ -36,6 +38,11 @@
                                 <a href="{{ url.setAction('detail').setEntityId(entity.primaryKeyValue) }}">
                                     {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
                                 </a>
+                            {% elseif articlesCount > 0 %}
+                                <a href="{{ url.setAction('detail').setEntityId(entity.primaryKeyValue) }}">
+                                    {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
+                                </a>
+
                             {% else %}
                                 {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
                             {% endif %}
@@ -141,6 +148,64 @@
             {% endblock table_body_empty %}
         {% endif %}
     {% endfor %}
+
+    {% if categoriesChildsCount < 1 %}
+        {% if catIndice %}
+            {% if articlesCount > 0 %}
+                <h4>Liste des articles</h4>
+                <tr>
+                    <td>
+                        ID
+                    </td>
+                    <td>
+                        Contenu
+                    </td>
+                    <td>
+                        Titre
+                    </td>
+                    <td>
+                        Position
+                    </td>
+                    <td>
+                        Créé le
+                    </td>
+                    <td>
+                        Modifié le
+                    </td>
+                </tr>
+                {% for article in articles %}
+                    <tr>
+                        <td>
+                            {{ article.id }}
+                        </td>
+                        <td>
+                            <a href="{{ ea_url()
+                                .setController('App\\Controller\\Backoffice\\ArticleCrudController')
+                                .setAction('detail').setAction('detail').setEntityId(article.id) }}">
+                                {{ article.content }}
+                            </a>
+                        </td>
+                        <td>
+                            {{ article.title }}
+                        </td>
+                        <td>
+                            {{ article.position }}
+                        </td>
+                        <td>
+                            {{ article.createdAt|date }}
+                        </td>
+                        <td>
+                            {{ article.updatedAt|date }}
+                        </td>
+                    </tr>
+
+
+                {% endfor %}
+            {% else %}
+                <h4>Il n'y a pas encore d'articles ou de catégories dans cette catégorie</h4>
+            {% endif %}
+        {% endif %}
+    {% endif %}
 
     {% if some_results_are_hidden %}
         <tr class="datagrid-row-empty">

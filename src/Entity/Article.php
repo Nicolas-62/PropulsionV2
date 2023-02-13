@@ -33,17 +33,6 @@ class Article
     #[ORM\JoinColumn(name:"article_id", referencedColumnName:"id")]
     protected Collection $children;
 
-
-    private ?Article $grandParent = null;
-
-    public function getGrandParent(): ?Article
-    {
-        if($this->parent !== null){
-            $this->grandParent = $this->parent->getParent();
-        }
-        return $this->grandParent;
-    }
-
     #[ORM\Column(nullable: true)]
     private ?int $article_id = null;
 
@@ -125,7 +114,11 @@ class Article
 
     public function __toString(): string
     {
-        return $this->title;
+        if($this->title) {
+            return $this->title;
+        }else{
+            return '';
+        }
     }
 
     /**

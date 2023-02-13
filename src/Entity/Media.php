@@ -27,11 +27,6 @@ class Media
     #[ORM\Column(length: 255)]
     private ?string $fichier = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $width = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $height = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_creation = null;
@@ -107,29 +102,6 @@ class Media
         return $this;
     }
 
-    public function getWidth(): ?int
-    {
-        return $this->width;
-    }
-
-    public function setWidth(?int $width): self
-    {
-        $this->width = $width;
-
-        return $this;
-    }
-
-    public function getHeight(): ?int
-    {
-        return $this->height;
-    }
-
-    public function setHeight(?int $height): self
-    {
-        $this->height = $height;
-
-        return $this;
-    }
 
     public function getDateCreation(): ?\DateTimeInterface
     {

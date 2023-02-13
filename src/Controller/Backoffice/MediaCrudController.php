@@ -33,14 +33,11 @@ class MediaCrudController extends AbstractCrudController
                 ->setUploadDir('public/assets/images')
                 ->setUploadedFileNamePattern('[randomhash].[extension]')
                 ->setRequired(false),
-            IntegerField::new('width', 'Largeur')->setColumns(6),
-            IntegerField::new('height', 'Hauteur')->setColumns(6),
             DateField::new('date_creation','Créé le')->hideOnForm(),
             DateField::new('date_modification', "Modifié le")->hideOnForm(),
             AssociationField::new('category','Catégorie')->setColumns(6),
             AssociationField::new('article','Article')->setColumns(6),
             AssociationField::new('media_type_id','Type de média')->setColumns(6),
-            CodeEditorField::new('test'),
         ];
     }
 

@@ -17,8 +17,6 @@ class Mediaspecs
     #[ORM\Column(length: 255)]
     private ?string $objet = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $filetype = null;
 
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
@@ -41,6 +39,16 @@ class Mediaspecs
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_modification = null;
 
+    #[ORM\ManyToOne]
+    private ?Article $article = null;
+
+    #[ORM\ManyToOne(inversedBy: 'mediaspecs')]
+    private ?Category $category = null;
+
+    #[ORM\ManyToOne(inversedBy: 'mediaspecs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?MediasTypes $mediaType = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -58,17 +66,6 @@ class Mediaspecs
         return $this;
     }
 
-    public function getFiletype(): ?string
-    {
-        return $this->filetype;
-    }
-
-    public function setFiletype(string $filetype): self
-    {
-        $this->filetype = $filetype;
-
-        return $this;
-    }
 
     public function getNom(): ?string
     {
@@ -150,6 +147,42 @@ class Mediaspecs
     public function setDateModification(\DateTimeInterface $date_modification): self
     {
         $this->date_modification = $date_modification;
+
+        return $this;
+    }
+
+    public function getArticle(): ?Article
+    {
+        return $this->article;
+    }
+
+    public function setArticle(?Article $article): self
+    {
+        $this->article = $article;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getMediaType(): ?MediasTypes
+    {
+        return $this->mediaType;
+    }
+
+    public function setMediaType(?MediasTypes $mediaType): self
+    {
+        $this->mediaType = $mediaType;
 
         return $this;
     }

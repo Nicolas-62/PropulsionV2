@@ -5,6 +5,7 @@
     {% set url = ea_url()
         .setController('App\\Controller\\Backoffice\\ArticleCrudController')
     %}
+
     {% for entity in entities %}
         {% if entity.isAccessible %}
             <tr data-id="{{ entity.primaryKeyValueAsString }}">
@@ -46,6 +47,11 @@
                                 {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
                             </td>
                         {% endif %}
+
+                    {% elseif field.label == 'Medias'%}
+                        <td>
+                            {{ medias|length }}
+                        </td>
                     {% else %}
 
                         <td data-label="{{ field.label|trans|e('html_attr') }}" class="{{ field.property == sort_field_name ? 'sorted' }} text-{{ field.textAlign }} {{ field.cssClass }}" dir="{{ ea.i18n.textDirection }}">

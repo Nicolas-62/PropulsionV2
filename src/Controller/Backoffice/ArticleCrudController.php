@@ -4,6 +4,7 @@ namespace App\Controller\Backoffice;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\Media;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -86,6 +87,7 @@ class ArticleCrudController extends AbstractCrudController
             AssociationField::new('children','Enfants')->hideOnForm(),
             AssociationField::new('parent','Article Parent')->hideOnDetail()->setColumns(6)->hideOnIndex(),
             AssociationField::new('category','Categorie parent')->setColumns(6),
+            IntegerField::new('medias')->hideOnForm(),
 
 //            ImageField::new('media','')
 //                ->setColumns(6)
@@ -94,12 +96,12 @@ class ArticleCrudController extends AbstractCrudController
 //                ->setUploadedFileNamePattern('[randomhash].[extension]')
 //                ->setRequired(false),
 
-            ImageField::new('illustration2')
-                ->setColumns(6)
-                ->setBasePath('assets/images')
-                ->setUploadDir('public/assets/images')
-                ->setUploadedFileNamePattern('[randomhash].[extension]')
-                ->setRequired(false),
+//            ImageField::new('illustration2')
+//                ->setColumns(6)
+//                ->setBasePath('assets/images')
+//                ->setUploadDir('public/assets/images')
+//                ->setUploadedFileNamePattern('[randomhash].[extension]')
+//                ->setRequired(false),
             // ColorField::new('parent')
 
         ];
@@ -169,7 +171,17 @@ class ArticleCrudController extends AbstractCrudController
     public function detail(AdminContext $context)
     {
         $this->entity = $context->getEntity()->getInstance();
-        return parent::index($context);
+        $id = $context->getEntity()->getPrimaryKeyValue();
+        if($this->entity) {
+            $articlesEnfants = $this->entityManager->getRepository(Article::class)->findBy(array('article_id' => $id));
+        }
+
+        //dd($articlesEnfants);
+        if($articlesEnfants == []){
+            return parent::detail($context);
+        }else{
+            return parent::index($context);
+        }
     }
 
 
@@ -182,8 +194,17 @@ class ArticleCrudController extends AbstractCrudController
     {
         return $crud
             // ...
+            ->setEntityLabelInPlural('Articles')
+            // Titre de la page et nom de la liste affichée
+            ->setPageTitle('index', function (){
+                if($this->entity != null){
+                    return 'Article : '.$this->entity->getTitle();
+                }
+            })
             // Permet de choisir son template plutôt que le template général
             ->overrideTemplate('crud/index', 'backoffice/article/articles.html.twig')
+
+            ->overrideTemplate('crud/detail', 'backoffice/article/article.html.twig')
             //showEntityActionsInlined : permet d'afficher les actions en ligne plutot que dans un menu
             ->showEntityActionsInlined()
             // Help : met une icône ? à coté du titre avec un text quand on passe la souris dessus
@@ -196,11 +217,19 @@ class ArticleCrudController extends AbstractCrudController
      */
     public function configureResponseParameters(KeyValueStore $responseParameters): KeyValueStore
     {
-
+        // On récupère tous les articles
         $articles = $this->entityManager->getRepository(Article::class)->findAll();
+        // On les envoie à la vue
         $responseParameters->set('articles',$articles);
 
-
+        // On initialise medias a un array vide
+        $medias = [];
+        // On récupère les médias liés à l'article
+        if( $this->entity ) {
+            $medias = $this->entityManager->getRepository(Media::class)->findby(array('article' => $this->entity->getId()));
+        }
+        // On envoie les médias à la vue
+        $responseParameters->set('medias',$medias);
         return parent::configureResponseParameters($responseParameters);
     }
 

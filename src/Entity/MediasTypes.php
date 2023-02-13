@@ -31,9 +31,13 @@ class MediasTypes
     #[ORM\OneToMany(mappedBy: 'media_type_id', targetEntity: Media::class)]
     private Collection $media;
 
+    #[ORM\OneToMany(mappedBy: 'mediaType', targetEntity: Mediaspecs::class)]
+    private Collection $mediaspecs;
+
     public function __construct()
     {
         $this->media = new ArrayCollection();
+        $this->mediaspecs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -122,6 +126,36 @@ class MediasTypes
     public function __toString(): string
     {
         return $this->libellé;
+    }
+
+    /**
+     * @return Collection<int, Mediaspecs>
+     */
+    public function getMediaspecs(): Collection
+    {
+        return $this->mediaspecs;
+    }
+
+    public function addMediaspec(Mediaspecs $mediaspec): self
+    {
+        if (!$this->mediaspecs->contains($mediaspec)) {
+            $this->mediaspecs->add($mediaspec);
+            $mediaspec->setMediaType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMediaspec(Mediaspecs $mediaspec): self
+    {
+        if ($this->mediaspecs->removeElement($mediaspec)) {
+            // set the owning side to null (unless already changed)
+            if ($mediaspec->getMediaType() === $this) {
+                $mediaspec->setMediaType(null);
+            }
+        }
+
+        return $this;
     }
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Controller\Backoffice;
 
+use App\Entity\Article;
 use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Entity;
@@ -75,6 +76,7 @@ class CategoryCrudController extends AbstractCrudController
     {
         return [
             // Champs de la vue liste
+            IdField::new("id"),
             IntegerField::new('position', 'position')->setColumns(6)->hideOnForm(),
             TextField::new('title', 'title')->setColumns(6),
             DateField::new('created_at', 'creation')->hideOnForm(),
@@ -228,6 +230,53 @@ class CategoryCrudController extends AbstractCrudController
         // Envoi de l'id du parent à la vue.
         $parentId = $this->entity?->getParentId();
         $responseParameters->set('parentId', $parentId);
+
+        // Récupération de l'instance Article
+        $articles = new Article();
+        // Récupération des articles ayant pour parent la catégorie
+        if($this->entity) {
+            $articles = $this->entityManager->getRepository(Article::class)->findBy(array('category' => $this->entity->getId()));
+        }
+        // Envois de ces articles à la vue
+        $responseParameters->set('articles', $articles);
+
+
+        $categoriesChilds = new Category();
+        if($this->entity) {
+            $categoriesChilds = $this->entityManager->getRepository(Category::class)->findBy(array('category_id' => $this->entity->getId()));
+            $catIndice = true;
+        } else {
+            $catIndice = false;
+        }
+        $responseParameters->set('catIndice', $catIndice);
+
+        // Envois de ces articles à la vue
+        $responseParameters->set('categoriesChilds', $categoriesChilds);
+        $categoriesChildsCount = 0;
+
+        // On compte le nombre d'article dans la catégorie
+        foreach ($categoriesChilds as $cat){
+            $categoriesChildsCount = $categoriesChildsCount + 1;
+        }
+
+
+        // Envois de ces articles à la vue
+        $responseParameters->set('categoriesChildsCount', $categoriesChildsCount);
+
+        $articlesCount = 0;
+
+        // On compte le nombre d'article dans la catégorie
+        foreach ($articles as $article){
+            $articlesCount = $articlesCount + 1;
+        }
+        // Envois de ce nombre à la vue
+        $responseParameters->set('articlesCount', $articlesCount);
+
+        //DEBUG
+//        dd($this->entity->getId());
+//        dd($articlesCount);
+//        dd($articles);
+//        dd($parentId);
 
         return parent::configureResponseParameters($responseParameters);
     }
