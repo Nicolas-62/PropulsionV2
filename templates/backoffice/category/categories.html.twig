@@ -192,10 +192,10 @@
                             {{ article.position }}
                         </td>
                         <td>
-                            {{ article.createdAt|date }}
+                            {{ article.createdAt|date|format_datetime(locale='fr') }}
                         </td>
                         <td>
-                            {{ article.updatedAt|date }}
+                            {{ article.updatedAt|date|format_datetime(locale='fr') }}
                         </td>
                     </tr>
 

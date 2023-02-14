@@ -8,6 +8,7 @@ use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityBuiltEvent;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
@@ -19,6 +20,7 @@ class Article
     public function __construct()
     {
         $this->children = new ArrayCollection();
+        $this->online = new ArrayCollection();
     }
 
 
@@ -36,7 +38,7 @@ class Article
     #[ORM\Column(nullable: true)]
     private ?int $article_id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'articles')]
+    #[ORM\ManyToOne(cascade: ['persist'],inversedBy: 'articles')]
     private ?Category $category = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -49,6 +51,9 @@ class Article
     #[ORM\OneToMany(mappedBy: "article", targetEntity: 'App\Entity\Media',cascade: ['persist'] )]
     #[ORM\JoinColumn(nullable: true)]
     private Collection $media;
+
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Online::class)]
+    private Collection $online;
 
 
     public function getContent(): ?string
@@ -136,6 +141,67 @@ class Article
     {
         $this->media = $media;
     }
+
+    /**
+     * @return Collection<int, Online>
+     */
+    public function getOnline(): Collection
+    {
+
+        return $this->online;
+    }
+
+    public function getOnlineByLangue($langue = null): false|Online
+    {
+
+        $online = $this->getOnline()->filter(function(Online $online, $langue) {
+            if($langue == null){
+                $code = 'fr';
+            }else{
+                $code = $langue->getCode();
+            }
+            //dump($code);
+
+            return $online->getLangue()->getCode() == $code;
+        })->first();
+
+        return $online;
+    }
+
+
+
+    public function addOnline(Online $online): self
+    {
+        if (!$this->online->contains($online)) {
+            $this->online->add($online);
+            $online->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOnline(Online $online): self
+    {
+        if ($this->online->removeElement($online)) {
+            // set the owning side to null (unless already changed)
+            if ($online->getArticle() === $this) {
+                $online->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isOnline($langue = null): bool
+    {
+        $online = $this->getOnlineByLangue($langue);
+        if($online &&  $online->isOnline()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 
 }
 

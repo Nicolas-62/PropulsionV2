@@ -37,7 +37,6 @@ class CategoryCrudController extends AbstractCrudController
     private AdminUrlGenerator $adminUrlGenerator;
     private EntityManagerInterface $entityManager;
     private EntityRepository $entityRepository;
-
     private ?Category $entity = null;
 
     public function __construct(AdminUrlGenerator $adminUrlGenerator, EntityRepository $entityRepository, EntityManagerInterface $entityManager)
@@ -76,7 +75,7 @@ class CategoryCrudController extends AbstractCrudController
     {
         return [
             // Champs de la vue liste
-            IdField::new("id"),
+            IdField::new("id")->hideOnForm(),
             IntegerField::new('position', 'position')->setColumns(6)->hideOnForm(),
             TextField::new('title', 'title')->setColumns(6),
             DateField::new('created_at', 'creation')->hideOnForm(),
@@ -92,7 +91,8 @@ class CategoryCrudController extends AbstractCrudController
             BooleanField::new('has_link','has_link')->hideOnIndex()->setColumns(3),
             BooleanField::new('has_theme','has_theme')->hideOnIndex()->setColumns(3),
             BooleanField::new('has_content','has_content')->hideOnIndex()->setColumns(3),
-            AssociationField::new('children','Enfants'),
+            AssociationField::new('children','Enfants')->hideOnForm(),
+            BooleanField::new('isOnline'),
             // Champs communs
 
             // CollectionField::new('grandParent','Grand Parent')->hideOnIndex()->hideOnForm(),

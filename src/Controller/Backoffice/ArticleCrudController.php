@@ -19,6 +19,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ColorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
@@ -46,6 +47,9 @@ class ArticleCrudController extends AbstractCrudController
         $this->entityRepository  = $entityRepository;
         $this->entityManager     = $entityManager;
         $this->entityId          = 0;
+
+
+
     }
 
     /**
@@ -88,6 +92,7 @@ class ArticleCrudController extends AbstractCrudController
             AssociationField::new('parent','Article Parent')->hideOnDetail()->setColumns(6)->hideOnIndex(),
             AssociationField::new('category','Categorie parent')->setColumns(6),
             IntegerField::new('medias')->hideOnForm(),
+            BooleanField::new('isOnline'),
 
 //            ImageField::new('media','')
 //                ->setColumns(6)
@@ -160,6 +165,13 @@ class ArticleCrudController extends AbstractCrudController
      */
     public function index(AdminContext $context)
     {
+        // Récupération de l'id de la categorie parent.
+        $entityId = $this->adminUrlGenerator->get('entityId');
+        // Si on doit afficher les enfants d'une catégorie
+        if($entityId != null) {
+            // Récupère la categorie pour filtrer dans la requète (voir fonction createIndexQueryBuilder)
+            $this->entity = $this->entityManager->getRepository(Article::class)->find($entityId);
+        }
         return parent::index($context);
     }
 
@@ -170,17 +182,19 @@ class ArticleCrudController extends AbstractCrudController
      */
     public function detail(AdminContext $context)
     {
-        $this->entity = $context->getEntity()->getInstance();
-        $id = $context->getEntity()->getPrimaryKeyValue();
-        if($this->entity) {
-            $articlesEnfants = $this->entityManager->getRepository(Article::class)->findBy(array('article_id' => $id));
-        }
+        $entity = $context->getEntity()->getInstance();
 
-        //dd($articlesEnfants);
-        if($articlesEnfants == []){
+        if($entity->getChildren()->isEmpty()){
             return parent::detail($context);
-        }else{
-            return parent::index($context);
+        }else {
+
+            // Génération de l'URL, ajout en paramètre de l'id de la categorie.
+            $url = $this->adminUrlGenerator->setAction(Action::INDEX)
+                ->set('entityId', $entity->getId())
+                ->generateUrl();
+
+            // Redirection
+            return $this->redirect($url);
         }
     }
 

@@ -22,6 +22,7 @@ class Category
         $this->articles = new ArrayCollection();
         $this->children = new ArrayCollection();
         $this->mediaspecs = new ArrayCollection();
+        $this->online = new ArrayCollection();
     }
 
     #[ORM\Column]
@@ -74,6 +75,10 @@ class Category
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Mediaspecs::class)]
     private Collection $mediaspecs;
+
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Online::class)]
+    private Collection $online;
+
 
 
 
@@ -210,7 +215,11 @@ class Category
 
     public function __toString(): string
     {
-        return $this->title;
+        if($this->title) {
+            return $this->title;
+        }else{
+            return 'Cat';
+        }
     }
 
 
@@ -250,4 +259,64 @@ class Category
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Online>
+     */
+    public function getOnline(): Collection
+    {
+        return $this->online;
+    }
+
+    public function addOnline(Online $online): self
+    {
+        if (!$this->online->contains($online)) {
+            $this->online->add($online);
+            $online->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOnline(Online $online): self
+    {
+        if ($this->online->removeElement($online)) {
+            // set the owning side to null (unless already changed)
+            if ($online->getCategory() === $this) {
+                $online->setCategory(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    public function getOnlineByLangue($langue = null): false|Online
+    {
+
+        $online = $this->getOnline()->filter(function(Online $online, $langue) {
+            if($langue == null){
+                $code = 'fr';
+            }else{
+                $code = $langue->getCode();
+            }
+            //dump($code);
+
+            return $online->getLangue()->getCode() == $code;
+        })->first();
+
+        return $online;
+    }
+
+    public function isOnline($langue = null): bool
+    {
+        $online = $this->getOnlineByLangue($langue);
+        if($online &&  $online->isOnline()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
 }

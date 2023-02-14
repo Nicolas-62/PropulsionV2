@@ -49,6 +49,9 @@ class Mediaspecs
     #[ORM\JoinColumn(nullable: false)]
     private ?MediasTypes $mediaType = null;
 
+    #[ORM\Column]
+    private ?int $heritage = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -183,6 +186,18 @@ class Mediaspecs
     public function setMediaType(?MediasTypes $mediaType): self
     {
         $this->mediaType = $mediaType;
+
+        return $this;
+    }
+
+    public function getHeritage(): ?int
+    {
+        return $this->heritage;
+    }
+
+    public function setHeritage(int $heritage): self
+    {
+        $this->heritage = $heritage;
 
         return $this;
     }
