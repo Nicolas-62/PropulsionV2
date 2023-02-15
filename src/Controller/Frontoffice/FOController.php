@@ -17,4 +17,13 @@ class FOController extends AbstractController
             'controller_name' => 'FOController',
         ]);
     }
+
+    #[Route('/liste', name: 'index')]
+    public function liste(): Response
+    {
+        return $this->render('frontoffice/article/articles.html.twig', [
+            'controller_name' => 'FOController',
+        ]);
+    }
+
 }

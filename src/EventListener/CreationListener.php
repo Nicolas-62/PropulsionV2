@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Langues;
 use App\Entity\Online;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityUpdatedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeCrudActionEvent;
@@ -15,9 +16,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class CreationListener implements EventSubscriberInterface
 {
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(\Doctrine\ORM\EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }

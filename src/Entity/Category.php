@@ -49,11 +49,11 @@ class Category
     #[ORM\Column]
     private ?bool $hasLink = null;
 
-    #[ORM\ManyToOne(targetEntity: self::class, inversedBy:'children')]
+    #[ORM\ManyToOne(targetEntity: self::class, cascade: ['remove'], inversedBy: 'children',)]
     #[ORM\JoinColumn(name:"category_id", referencedColumnName:"id")]
     protected ?Category $parent;
 
-    #[ORM\OneToMany( mappedBy:"parent", targetEntity: self::class)]
+    #[ORM\OneToMany( mappedBy:"parent", targetEntity: self::class,  cascade: ['remove'])]
     #[ORM\JoinColumn(name:"category_id", referencedColumnName:"id")]
     protected Collection $children;
 
@@ -70,13 +70,13 @@ class Category
     #[ORM\Column(nullable: true)]
     private ?int $category_id = null;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Article::class, fetch:"EXTRA_LAZY")]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Article::class, cascade: ['remove'], fetch: "EXTRA_LAZY")]
     private Collection $articles;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Mediaspecs::class)]
     private Collection $mediaspecs;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Online::class)]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Online::class,cascade: ['remove'],)]
     private Collection $online;
 
 

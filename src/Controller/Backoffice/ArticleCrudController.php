@@ -82,7 +82,7 @@ class ArticleCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id')->hideOnForm()->hideOnIndex()->hideOnDetail(),
+            IdField::new('id')->hideOnForm()->hideOnIndex(),
             IntegerField::new('position', 'position')->hideOnForm(),
             TextField::new('title','titre')->setColumns(6),
             TextEditorField::new('content','description')->setColumns(12),
@@ -239,9 +239,15 @@ class ArticleCrudController extends AbstractCrudController
         // On initialise medias a un array vide
         $medias = [];
         // On récupère les médias liés à l'article
-        if( $this->entity ) {
+
+        if( key_exists('entityId',$_GET) ) {
+            $medias = $this->entityManager->getRepository(Media::class)->findby(array('article' => $_GET['entityId']));
+        }
+        if( $this->entity ){
             $medias = $this->entityManager->getRepository(Media::class)->findby(array('article' => $this->entity->getId()));
         }
+
+
         // On envoie les médias à la vue
         $responseParameters->set('medias',$medias);
         return parent::configureResponseParameters($responseParameters);

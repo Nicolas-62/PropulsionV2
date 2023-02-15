@@ -29,12 +29,10 @@ class Online
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_modification = null;
 
-    #[ORM\ManyToOne(inversedBy: 'online')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(cascade: ['remove'],inversedBy: 'online')]
     private ?Article $article = null;
 
-    #[ORM\ManyToOne(inversedBy: 'online')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(cascade: ['remove'],inversedBy: 'online')]
     private ?Category $category = null;
 
     public function __construct()

@@ -27,11 +27,11 @@ class Article
     #[ORM\Column(length: 255)]
     private ?string $content = null;
 
-    #[ORM\ManyToOne(targetEntity: self::class, inversedBy:'children')]
+    #[ORM\ManyToOne(targetEntity: self::class, cascade: ['remove'], inversedBy: 'children')]
     #[ORM\JoinColumn(name:"article_id", referencedColumnName:"id")]
     protected ?Article $parent;
 
-    #[ORM\OneToMany(mappedBy:"parent", targetEntity: self::class)]
+    #[ORM\OneToMany(mappedBy:"parent", targetEntity: self::class, cascade: ['remove'])]
     #[ORM\JoinColumn(name:"article_id", referencedColumnName:"id")]
     protected Collection $children;
 
@@ -48,11 +48,11 @@ class Article
     private ?string $illustration2 = null;
 
 
-    #[ORM\OneToMany(mappedBy: "article", targetEntity: 'App\Entity\Media',cascade: ['persist'] )]
+    #[ORM\OneToMany(mappedBy: "article", targetEntity: 'App\Entity\Media',cascade: ['persist','remove'] )]
     #[ORM\JoinColumn(nullable: true)]
     private Collection $media;
 
-    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Online::class)]
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Online::class,cascade: ['remove'],)]
     private Collection $online;
 
 
