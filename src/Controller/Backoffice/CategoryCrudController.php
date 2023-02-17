@@ -241,7 +241,7 @@ class CategoryCrudController extends AbstractCrudController
         $responseParameters->set('articles', $articles);
 
 
-        $categoriesChilds = new Category();
+        $categoriesChilds = new Category($this->entityManager);
         if($this->entity) {
             $categoriesChilds = $this->entityManager->getRepository(Category::class)->findBy(array('category_id' => $this->entity->getId()));
             $catIndice = true;

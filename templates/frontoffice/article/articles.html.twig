@@ -1,1 +1,37 @@
-{% extends 'base.html.twig' %}
+{% extends 'frontoffice/home.html.twig' %}
+
+
+{% block body %}
+    <body>
+        <div class="container my-5">
+            {{ include('frontoffice/article/article.html.twig', {tree: tree}) }}
+
+
+{#            {% if categoriesCat|length == 0 %}#}
+{#                <h2>Liste des articles de la catégorie : </h2>#}
+{#                <div class="container">#}
+{#                    {% for article in articlesCat %}#}
+{#                        <h4>{{ article.title }}</h4>#}
+{#                        <p>écrit le {{ article.createdAt|date }}, modifié le {{ article.updatedAt|date }}</p>#}
+{#                        <div style="background-color: #82999f" class="my-2">#}
+{#                            {{ article.content }}#}
+{#                        </div>#}
+{#                        <div>#}
+{#                            {% if articleMedia|length > 0 %}#}
+{#                                <h4>Médias de cet article</h4>#}
+{#                                {% for media in articleMedia %}#}
+{#                                    <img src="{{ media.fichier }}" class="img-fluid">#}
+{#                                {% endfor %}#}
+{#                            {% endif %}#}
+{#                        </div>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#            {% endif %}#}
+
+
+
+
+        </div>
+    </body>
+
+{% endblock %}

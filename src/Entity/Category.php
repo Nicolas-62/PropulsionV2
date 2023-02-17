@@ -17,14 +17,17 @@ class Category
     use TimestampableTrait;
 
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->articles = new ArrayCollection();
         $this->children = new ArrayCollection();
         $this->mediaspecs = new ArrayCollection();
         $this->online = new ArrayCollection();
+        $this->entityManager  = $entityManager;
+
     }
 
+    public EntityManagerInterface $entityManager;
     #[ORM\Column]
     private ?bool $canCreate = null;
 
@@ -78,7 +81,6 @@ class Category
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Online::class,cascade: ['remove'],)]
     private Collection $online;
-
 
 
 
@@ -289,34 +291,4 @@ class Category
 
         return $this;
     }
-
-
-    public function getOnlineByLangue($langue = null): false|Online
-    {
-
-        $online = $this->getOnline()->filter(function(Online $online, $langue) {
-            if($langue == null){
-                $code = 'fr';
-            }else{
-                $code = $langue->getCode();
-            }
-            //dump($code);
-
-            return $online->getLangue()->getCode() == $code;
-        })->first();
-
-        return $online;
-    }
-
-    public function isOnline($langue = null): bool
-    {
-        $online = $this->getOnlineByLangue($langue);
-        if($online &&  $online->isOnline()){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-
 }

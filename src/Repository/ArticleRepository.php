@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Article;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -44,6 +45,7 @@ class ArticleRepository extends ServiceEntityRepository
         }
     }
 
+
     public function remove(Article $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
@@ -52,6 +54,50 @@ class ArticleRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function getCategoryChildren($category_id, $online = true)
+    {
+
+        if ($online) {
+            return $this->createQueryBuilder('a')
+                ->andWhere('a.category = :val')
+                ->setParameter('val', $category_id)
+                ->join('a.online', 'online')
+                ->andWhere('online.langue = 1')
+                ->andWhere('online.online = 1')
+                ->orderBy('a.position', 'ASC')
+                ->getQuery()
+                ->getResult();
+        } else {
+            return $this->createQueryBuilder('a')
+                ->andWhere('a.category = :val')
+                ->setParameter('val', $category_id)
+                ->orderBy('a.position', 'ASC')
+                ->getQuery()
+                ->getResult();
+        }
+    }
+
+    /**
+     * @param ArrayCollection $list
+     * @param $category_id
+     * @param bool $online
+     * @return ArrayCollection
+     */
+    public function getGenealogy(ArrayCollection $list, $article_id, bool $online = true): ArrayCollection
+    {
+        $article  = $this->findOneBy(['id'=> $article_id]);
+        $list->set('element', $article);
+        $list->set('elements', new ArrayCollection());
+
+        return $list;
+    }
+
+
+
+
+
+
 
 //    /**
 //     * @return Article[] Returns an array of Article objects

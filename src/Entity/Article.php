@@ -151,25 +151,6 @@ class Article
         return $this->online;
     }
 
-    public function getOnlineByLangue($langue = null): false|Online
-    {
-
-        $online = $this->getOnline()->filter(function(Online $online, $langue) {
-            if($langue == null){
-                $code = 'fr';
-            }else{
-                $code = $langue->getCode();
-            }
-            //dump($code);
-
-            return $online->getLangue()->getCode() == $code;
-        })->first();
-
-        return $online;
-    }
-
-
-
     public function addOnline(Online $online): self
     {
         if (!$this->online->contains($online)) {
@@ -191,18 +172,6 @@ class Article
 
         return $this;
     }
-
-    public function isOnline($langue = null): bool
-    {
-        $online = $this->getOnlineByLangue($langue);
-        if($online &&  $online->isOnline()){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-
 }
 
 

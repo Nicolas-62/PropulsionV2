@@ -3,6 +3,8 @@
 namespace App\Entity\Traits;
 
 use App\Entity\Category;
+use App\Entity\Langues;
+use App\Entity\Online;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -121,6 +123,42 @@ trait CMSTrait
     {
         $this->children = $children;
         return $this;
+    }
+
+    public function getOnlineByLangue($langue = null): false|Online
+    {
+
+        $online = $this->getOnline()->filter(function(Online $online, $langue) {
+            if($langue == null){
+                $code = 'fr';
+            }else{
+                if(  is_int($langue) )
+                {
+                    $langue = $this->entityManager->getRepository(Langues::class)->find($langue);
+                }
+                $code = $langue->getCode();
+            }
+            //dump($code);
+
+            return $online->getLangue()->getCode() == $code;
+        })->first();
+
+        return $online;
+    }
+
+    public function isOnline($langue = null): bool
+    {
+        $online = $this->getOnlineByLangue($langue);
+        if($online &&  $online->isOnline()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function getClassName(): string
+    {
+        return (new \ReflectionClass($this))->getShortName();
     }
 
 }

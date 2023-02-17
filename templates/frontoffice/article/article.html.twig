@@ -1,0 +1,12 @@
+    <li> {{ tree.element.className }} Liste des elements de  : {{ tree.element.title }}
+        {% if not tree.elements.isEmpty %}
+        <ul>
+            {% for children in tree.elements %}
+                {{ include('frontoffice/article/article.html.twig', {tree: children}) }}
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p>Aucun</p>
+        {%  endif %}
+    </li>
+
