@@ -5,7 +5,7 @@ namespace App\Controller\Backoffice;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Media;
-use App\Entity\Mediaspecs;
+use App\Entity\Mediaspec;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -65,7 +65,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Categories',  'fa-solid fa-bars', Category::class);
         yield MenuItem::linkToCrud('Articles',  'fa-solid fa-newspaper', Article::class);
         yield MenuItem::linkToCrud('Medias',  'fa-regular fa-image', Media::class);
-        yield MenuItem::linkToCrud('Mediaspecs',  'fa-regular fa-image', Mediaspecs::class);
+        yield MenuItem::linkToCrud('Mediaspec',  'fa-regular fa-image', Mediaspec::class);
         yield MenuItem::section('Administration', 'fa-solid fa-wrench');
         yield MenuItem::linkToRoute('Profils/Droits','fa-solid fa-lock','',[]);
         yield MenuItem::linkToRoute('Utilisateurs','fa-solid fa-user','',[]);

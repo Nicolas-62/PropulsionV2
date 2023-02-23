@@ -25,7 +25,7 @@ trait CMSTrait
     protected ?string $title = null;
 
     #[ORM\Column]
-    private ?int $position = null;
+    private ?int $ordre = null;
 
     public function getId(): ?int
     {
@@ -51,14 +51,14 @@ trait CMSTrait
         return $this;
     }
 
-    public function getPosition(): ?int
+    public function getOrdre(): ?int
     {
-        return $this->position;
+        return $this->ordre;
     }
 
-    public function setPosition(int $position): self
+    public function setOrdre(int $ordre): self
     {
-        $this->position = $position;
+        $this->ordre = $ordre;
 
         return $this;
     }
@@ -128,7 +128,7 @@ trait CMSTrait
     public function getOnlineByLangue($langue = null): false|Online
     {
 
-        $online = $this->getOnline()->filter(function(Online $online, $langue) {
+        $onlines = $this->getOnlines()->filter(function(Online $online, $langue) {
             if($langue == null){
                 $code = 'fr';
             }else{
@@ -143,7 +143,7 @@ trait CMSTrait
             return $online->getLangue()->getCode() == $code;
         })->first();
 
-        return $online;
+        return $onlines;
     }
 
     public function isOnline($langue = null): bool

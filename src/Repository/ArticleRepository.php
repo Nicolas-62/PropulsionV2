@@ -65,14 +65,14 @@ class ArticleRepository extends ServiceEntityRepository
                 ->join('a.online', 'online')
                 ->andWhere('online.langue = 1')
                 ->andWhere('online.online = 1')
-                ->orderBy('a.position', 'ASC')
+                ->orderBy('a.ordre', 'ASC')
                 ->getQuery()
                 ->getResult();
         } else {
             return $this->createQueryBuilder('a')
                 ->andWhere('a.category = :val')
                 ->setParameter('val', $category_id)
-                ->orderBy('a.position', 'ASC')
+                ->orderBy('a.ordre', 'ASC')
                 ->getQuery()
                 ->getResult();
         }

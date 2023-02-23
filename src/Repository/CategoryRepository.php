@@ -29,7 +29,7 @@ class CategoryRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('c')
             ->where('c.category_id IS NULL')
-            ->orderBy('c.position', 'ASC')
+            ->orderBy('c.ordre', 'ASC')
             ->getQuery();
         // returns an array of Product objects
         return $query->getResult();
@@ -69,7 +69,7 @@ class CategoryRepository extends ServiceEntityRepository
                 ->andWhere('online.online = 1');
 
         }
-        $qb->orderBy('c.position', 'ASC')
+        $qb->orderBy('c.ordre', 'ASC')
             ->setParameter('val', $category_id);
 
         $query = $qb->getQuery();
@@ -92,7 +92,7 @@ class CategoryRepository extends ServiceEntityRepository
                 ->andWhere('online.langue = 1')
                 ->andWhere('online.online = 1');
         }
-        $qb->orderBy('a.position', 'ASC')
+        $qb->orderBy('a.ordre', 'ASC')
             ->setParameter('val', $category_id);
 
         $query = $qb->getQuery();

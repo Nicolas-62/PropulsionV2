@@ -4,6 +4,7 @@ namespace App\Factory;
 
 use App\Entity\Langues;
 use App\Repository\LanguesRepository;
+use DateTimeImmutable;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
@@ -48,8 +49,6 @@ final class LanguesFactory extends ModelFactory
     {
         return [
             'code' => 'fr',
-            'date_creation' => self::faker()->dateTime(),
-            'date_modification' => self::faker()->dateTime(),
             'label' => 'Français',
             'ordre' => 1,
         ];

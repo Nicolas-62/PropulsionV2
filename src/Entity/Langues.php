@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\TimesTampableTrait;
 use App\Repository\LanguesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,6 +12,19 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: LanguesRepository::class)]
 class Langues
 {
+
+    // Champs date.
+    use TimestampableTrait;
+
+
+    public function __construct()
+    {
+        $this->online      = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTimeImmutable();
+    }
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -25,19 +39,9 @@ class Langues
     #[ORM\Column]
     private ?int $ordre = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date_creation = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date_modification = null;
-
     #[ORM\OneToMany(mappedBy: 'langue', targetEntity: Online::class)]
     private Collection $online;
 
-    public function __construct()
-    {
-        $this->online = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -76,30 +80,6 @@ class Langues
     public function setOrdre(int $ordre): self
     {
         $this->ordre = $ordre;
-
-        return $this;
-    }
-
-    public function getDateCreation(): ?\DateTimeInterface
-    {
-        return $this->date_creation;
-    }
-
-    public function setDateCreation(\DateTimeInterface $date_creation): self
-    {
-        $this->date_creation = $date_creation;
-
-        return $this;
-    }
-
-    public function getDateModification(): ?\DateTimeInterface
-    {
-        return $this->date_modification;
-    }
-
-    public function setDateModification(\DateTimeInterface $date_modification): self
-    {
-        $this->date_modification = $date_modification;
 
         return $this;
     }

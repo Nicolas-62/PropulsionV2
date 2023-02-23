@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\Mediaspecs;
+use App\Entity\Mediaspec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Mediaspecs>
+ * @extends ServiceEntityRepository<Mediaspec>
  *
- * @method Mediaspecs|null find($id, $lockMode = null, $lockVersion = null)
- * @method Mediaspecs|null findOneBy(array $criteria, array $orderBy = null)
- * @method Mediaspecs[]    findAll()
- * @method Mediaspecs[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Mediaspec|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Mediaspec|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Mediaspec[]    findAll()
+ * @method Mediaspec[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class MediaspecsRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Mediaspecs::class);
+        parent::__construct($registry, Mediaspec::class);
     }
 
-    public function save(Mediaspecs $entity, bool $flush = false): void
+    public function save(Mediaspec $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class MediaspecsRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Mediaspecs $entity, bool $flush = false): void
+    public function remove(Mediaspec $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class MediaspecsRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Mediaspecs[] Returns an array of Mediaspecs objects
+//     * @return Mediaspec[] Returns an array of Mediaspec objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class MediaspecsRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Mediaspecs
+//    public function findOneBySomeField($value): ?Mediaspec
 //    {
 //        return $this->createQueryBuilder('m')
 //            ->andWhere('m.exampleField = :val')

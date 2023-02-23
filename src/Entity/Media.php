@@ -2,62 +2,37 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\TimesTampableTrait;
 use App\Repository\MediaRepository;
-use Doctrine\DBAL\Types\Types;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
-#[CustomAssert\OneFilled]
 class Media
 {
+    // Champs date.
+    use TimestampableTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-
-    #[ORM\ManyToOne(inversedBy: 'media')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?MediasTypes $media_type_id = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $file = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $legende = null;
+    private ?string $legend = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $fichier = null;
+    #[ORM\OneToMany(mappedBy: 'media', targetEntity: MediaLink::class)]
+    private Collection $mediaLinks;
 
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date_creation = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date_modification = null;
-
-    /**
-     * @Assert\NotNull(groups={"article_filled"})
-     */
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Article', inversedBy: "media")]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Article $article = null;
-
-    /**
-     * @Assert\NotNull(groups={"category_filled"})
-     */
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\Category', inversedBy: "media")]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Category $category = null;
-
-    /**
-     * @Assert\Expression(
-     *     "this.getCategory() != null xor this.getArticle() != null",
-     *     message="Category ou Article doit être remplit, l'autre doit être null.",
-     *     groups={"category_filled", "article_filled"}
-     * )
-     */
-    public function isOneFilled()
+    public function __construct()
     {
-        return true;
+        $this->mediaLinks = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -66,95 +41,62 @@ class Media
     }
 
 
-    public function getMediaTypeId(): ?MediasTypes
+    public function getLegend(): ?string
     {
-        return $this->media_type_id;
+        return $this->legend;
     }
 
-    public function setMediaTypeId(?MediasTypes $media_type_id): self
+    public function setLegend(?string $legend): self
     {
-        $this->media_type_id = $media_type_id;
+        $this->legend = $legend;
 
         return $this;
     }
 
-    public function getLegende(): ?string
+    public function getFile(): ?string
     {
-        return $this->legende;
+        return $this->file;
     }
 
-    public function setLegende(?string $legende): self
+    public function setFile(string $file): self
     {
-        $this->legende = $legende;
-
-        return $this;
-    }
-
-    public function getFichier(): ?string
-    {
-        return $this->fichier;
-    }
-
-    public function setFichier(string $fichier): self
-    {
-        $this->fichier = $fichier;
-
-        return $this;
-    }
-
-
-    public function getDateCreation(): ?\DateTimeInterface
-    {
-        return $this->date_creation;
-    }
-
-    public function setDateCreation(\DateTimeInterface $date_creation): self
-    {
-        $this->date_creation = $date_creation;
-
-        return $this;
-    }
-
-    public function getDateModification(): ?\DateTimeInterface
-    {
-        return $this->date_modification;
-    }
-
-    public function setDateModification(\DateTimeInterface $date_modification): self
-    {
-        $this->date_modification = $date_modification;
-
-        return $this;
-    }
-
-    public function getArticle(): ?Article
-    {
-        return $this->article;
-    }
-
-    public function setArticle(?Article $article): self
-    {
-        $this->article = $article;
-
-        return $this;
-    }
-
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Category $category): self
-    {
-        $this->category = $category;
+        $this->file = $file;
 
         return $this;
     }
 
     public function __toString(): string
     {
-        return $this->legende;
+        return $this->legend;
     }
 
+    /**
+     * @return Collection<int, MediaLink>
+     */
+    public function getMediaLinks(): Collection
+    {
+        return $this->mediaLinks;
+    }
 
+    public function addMediaLink(MediaLink $mediaLink): self
+    {
+        if (!$this->mediaLinks->contains($mediaLink)) {
+            $this->mediaLinks->add($mediaLink);
+            $mediaLink->setMedia($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMediaLink(MediaLink $mediaLink): self
+    {
+        if ($this->mediaLinks->removeElement($mediaLink)) {
+            // set the owning side to null (unless already changed)
+            if ($mediaLink->getMedia() === $this) {
+                $mediaLink->setMedia(null);
+            }
+        }
+
+        return $this;
+    }
 }

@@ -48,7 +48,7 @@ final class CategoryFactory extends ModelFactory
     {
         return [
             'title' => self::faker()->sentence(1, false),
-            'position' => self::faker()->numberBetween(1,100),
+            'ordre' => self::faker()->numberBetween(1,100),
             'canCreate' => 1,
             'hasContent' => 1,
             'hasLink' => 1,
@@ -57,8 +57,6 @@ final class CategoryFactory extends ModelFactory
             'hasSubTitle' => 1,
             'hasTheme' => 1,
             'hasTitle' => 1,
-            'updated_at' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
-            'created_at' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
             #'category_id' => self::faker()->numberBetween(0,10),
             #'children' => CategoryFactory::randomOrCreate()
         ];

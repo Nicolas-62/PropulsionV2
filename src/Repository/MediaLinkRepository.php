@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\MediaType;
+use App\Entity\MediaLink;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<MediaType>
+ * @extends ServiceEntityRepository<MediaLink>
  *
- * @method MediaType|null find($id, $lockMode = null, $lockVersion = null)
- * @method MediaType|null findOneBy(array $criteria, array $orderBy = null)
- * @method MediaType[]    findAll()
- * @method MediaType[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method MediaLink|null find($id, $lockMode = null, $lockVersion = null)
+ * @method MediaLink|null findOneBy(array $criteria, array $orderBy = null)
+ * @method MediaLink[]    findAll()
+ * @method MediaLink[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MediasTypesRepository extends ServiceEntityRepository
+class MediaLinkRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, MediaType::class);
+        parent::__construct($registry, MediaLink::class);
     }
 
-    public function save(MediaType $entity, bool $flush = false): void
+    public function save(MediaLink $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class MediasTypesRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(MediaType $entity, bool $flush = false): void
+    public function remove(MediaLink $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class MediasTypesRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return MediaType[] Returns an array of MediaType objects
+//     * @return MediaLink[] Returns an array of MediaLink objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class MediasTypesRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?MediaType
+//    public function findOneBySomeField($value): ?MediaLink
 //    {
 //        return $this->createQueryBuilder('m')
 //            ->andWhere('m.exampleField = :val')

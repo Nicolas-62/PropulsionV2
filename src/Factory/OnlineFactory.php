@@ -47,8 +47,6 @@ final class OnlineFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'date_creation' => self::faker()->dateTime(),
-            'date_modification' => self::faker()->dateTime(),
             'langue' => LanguesFactory::random(),
             'online' => 1,
             'article' => null,

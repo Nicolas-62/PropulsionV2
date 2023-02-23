@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\TimesTampableTrait;
 use App\Repository\OnlinesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,6 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: OnlinesRepository::class)]
 class Online
 {
+    // Champs date.
+    use TimestampableTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -23,33 +27,25 @@ class Online
     #[ORM\Column]
     private ?bool $online = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date_creation = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date_modification = null;
-
-    #[ORM\ManyToOne(cascade: ['remove'],inversedBy: 'online')]
+    #[ORM\ManyToOne(cascade: ['remove'],inversedBy: 'onlines')]
     private ?Article $article = null;
 
-    #[ORM\ManyToOne(cascade: ['remove'],inversedBy: 'online')]
+    #[ORM\ManyToOne(cascade: ['remove'],inversedBy: 'onlines')]
     private ?Category $category = null;
 
     public function __construct()
     {
         $this->article = new Article();
         $this->category = new Category();
-        $this->date_creation = new \DateTimeImmutable();
-        $this->date_modification = new \DateTimeImmutable();
         $this->online = 0;
+        $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
     {
         return $this->id;
     }
-
-
 
     public function getLangue(): ?Langues
     {
@@ -78,30 +74,6 @@ class Online
         }else {
             $this->online = $online;
         }
-
-        return $this;
-    }
-
-    public function getDateCreation(): ?\DateTimeInterface
-    {
-        return $this->date_creation;
-    }
-
-    public function setDateCreation(\DateTimeInterface $date_creation): self
-    {
-        $this->date_creation = $date_creation;
-
-        return $this;
-    }
-
-    public function getDateModification(): ?\DateTimeInterface
-    {
-        return $this->date_modification;
-    }
-
-    public function setDateModification(\DateTimeInterface $date_modification): self
-    {
-        $this->date_modification = $date_modification;
 
         return $this;
     }

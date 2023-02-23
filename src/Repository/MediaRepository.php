@@ -39,24 +39,6 @@ class MediaRepository extends ServiceEntityRepository
         }
     }
 
-    /** getMedias permet de récupérer les médias liés à un article
-     *
-     * @param $article_id
-     * @return void
-     */
-    public function getMediasArticle($article_id)
-    {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.article = :val')
-            ->setParameter('val', $article_id)
-            //->orderBy('a.position', 'ASC')
-            ->getQuery()
-            ->getResult();
-
-
-    }
-
-
 //    /**
 //     * @return Media[] Returns an array of Media objects
 //     */

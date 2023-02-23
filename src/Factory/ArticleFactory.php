@@ -50,9 +50,7 @@ final class ArticleFactory extends ModelFactory
             'title' => self::faker()->sentence(3, false),
             'content' => self::faker()->realText(),
             'category' => CategoryFactory::randomOrCreate(),
-            'position' => self::faker()->numberBetween(1,400),
-            'created_at' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
-            'updated_at' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
+            'ordre' => self::faker()->numberBetween(1,400),
         ];
     }
 

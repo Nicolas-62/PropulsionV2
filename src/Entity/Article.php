@@ -7,6 +7,7 @@ use App\Entity\Traits\TimesTampableTrait;
 use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityBuiltEvent;
 
@@ -14,18 +15,20 @@ use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityBuiltEvent;
 class Article
 {
     use CMSTrait;
+    // Champs date.
     use TimestampableTrait;
 
 
     public function __construct()
     {
-        $this->children = new ArrayCollection();
-        $this->online = new ArrayCollection();
+        $this->children     = new ArrayCollection();
+        $this->onlines      = new ArrayCollection();
+        $this->mediaLinks   = new ArrayCollection();
+        $this->mediaspecs   = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTimeImmutable();
     }
 
-
-    #[ORM\Column(length: 255)]
-    private ?string $content = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, cascade: ['remove'], inversedBy: 'children')]
     #[ORM\JoinColumn(name:"article_id", referencedColumnName:"id")]
@@ -38,35 +41,20 @@ class Article
     #[ORM\Column(nullable: true)]
     private ?int $article_id = null;
 
-    #[ORM\ManyToOne(cascade: ['persist'],inversedBy: 'articles')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'articles')]
     private ?Category $category = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $illustration = null;
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Online::class, cascade: ['remove'])]
+    private Collection $onlines;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $illustration2 = null;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $content = null;
 
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: MediaLink::class, cascade: ['remove'])]
+    private Collection $mediaLinks;
 
-    #[ORM\OneToMany(mappedBy: "article", targetEntity: 'App\Entity\Media',cascade: ['persist','remove'] )]
-    #[ORM\JoinColumn(nullable: true)]
-    private Collection $media;
-
-    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Online::class,cascade: ['remove'],)]
-    private Collection $online;
-
-
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function setContent(string $content): self
-    {
-        $this->content = $content;
-
-        return $this;
-    }
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Mediaspec::class)]
+    private Collection $mediaspecs;
 
     public function getArticleId(): ?int
     {
@@ -92,31 +80,6 @@ class Article
         return $this;
     }
 
-    public function getIllustration(): ?string
-    {
-        return $this->illustration;
-    }
-
-    public function setIllustration(?string $illustration): self
-    {
-        $this->illustration = $illustration;
-
-        return $this;
-    }
-
-    public function getIllustration2(): ?string
-    {
-        return $this->illustration2;
-    }
-
-    public function setIllustration2(?string $illustration2): self
-    {
-        $this->illustration2 = $illustration2;
-
-        return $this;
-    }
-
-
     public function __toString(): string
     {
         if($this->title) {
@@ -127,43 +90,25 @@ class Article
     }
 
     /**
-     * @return Collection
-     */
-    public function getMedia(): Collection
-    {
-        return $this->media;
-    }
-
-    /**
-     * @param Collection $media
-     */
-    public function setMedia(Collection $media): void
-    {
-        $this->media = $media;
-    }
-
-    /**
      * @return Collection<int, Online>
      */
-    public function getOnline(): Collection
+    public function getOnlines(): Collection
     {
-
-        return $this->online;
+        return $this->onlines;
     }
 
     public function addOnline(Online $online): self
     {
-        if (!$this->online->contains($online)) {
-            $this->online->add($online);
+        if (!$this->onlines->contains($online)) {
+            $this->onlines->add($online);
             $online->setArticle($this);
         }
-
         return $this;
     }
 
     public function removeOnline(Online $online): self
     {
-        if ($this->online->removeElement($online)) {
+        if ($this->onlines->removeElement($online)) {
             // set the owning side to null (unless already changed)
             if ($online->getArticle() === $this) {
                 $online->setArticle(null);
@@ -172,6 +117,90 @@ class Article
 
         return $this;
     }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(?string $content): self
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MediaLink>
+     */
+    public function getMediaLinks(): Collection
+    {
+        return $this->mediaLinks;
+    }
+
+    public function addMediaLink(MediaLink $mediaLink): self
+    {
+        if (!$this->mediaLinks->contains($mediaLink)) {
+            $this->mediaLinks->add($mediaLink);
+            $mediaLink->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMediaLink(MediaLink $mediaLink): self
+    {
+        if ($this->mediaLinks->removeElement($mediaLink)) {
+            // set the owning side to null (unless already changed)
+            if ($mediaLink->getArticle() === $this) {
+                $mediaLink->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Mediaspec>
+     */
+    public function getMediaspecs(): Collection
+    {
+        return $this->mediaspecs;
+    }
+
+    public function addMediaspec(Mediaspec $mediaspec): self
+    {
+        if (!$this->mediaspecs->contains($mediaspec)) {
+            $this->mediaspecs->add($mediaspec);
+            $mediaspec->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMediaspec(Mediaspec $mediaspec): self
+    {
+        if ($this->mediaspecs->removeElement($mediaspec)) {
+            // set the owning side to null (unless already changed)
+            if ($mediaspec->getArticle() === $this) {
+                $mediaspec->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getMedia(Mediaspec $mediaspec_id): Media
+    {
+        $media = new Media();
+        foreach ($this->getMediaLinks() as $mediaLink){
+            if($mediaLink->getMediaspec()->getId() == $mediaspec_id){
+                $media = $mediaLink->getMedia();
+            }
+        }
+        return $media;
+    }
+
 }
 
 

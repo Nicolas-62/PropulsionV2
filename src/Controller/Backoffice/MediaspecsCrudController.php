@@ -2,7 +2,7 @@
 
 namespace App\Controller\Backoffice;
 
-use App\Entity\Mediaspecs;
+use App\Entity\Mediaspec;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -15,7 +15,7 @@ class MediaspecsCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Mediaspecs::class;
+        return Mediaspec::class;
     }
 
 

@@ -83,7 +83,7 @@ class ArticleCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm()->hideOnIndex(),
-            IntegerField::new('position', 'position')->hideOnForm(),
+            IntegerField::new('ordre', 'ordre')->hideOnForm(),
             TextField::new('title','titre')->setColumns(6),
             TextEditorField::new('content','description')->setColumns(12),
             DateField::new('created_at','créé à')->hideOnForm(),
@@ -146,7 +146,7 @@ class ArticleCrudController extends AbstractCrudController
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
         $response = $this->entityRepository->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
-        $response->orderBy('entity.position');
+        $response->orderBy('entity.ordre');
         if($this->entity != null) {
             $response->where('entity.article_id = :entity_id');
             $response->setParameter('entity_id', $this->entity->getId());

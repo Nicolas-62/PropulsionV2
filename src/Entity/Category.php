@@ -14,20 +14,20 @@ use Doctrine\ORM\Mapping as ORM;
 class Category
 {
     use CMSTrait;
+    // Champs date.
     use TimestampableTrait;
 
-
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct()
     {
-        $this->articles = new ArrayCollection();
-        $this->children = new ArrayCollection();
-        $this->mediaspecs = new ArrayCollection();
-        $this->online = new ArrayCollection();
-        $this->entityManager  = $entityManager;
-
+        $this->articles         = new ArrayCollection();
+        $this->children         = new ArrayCollection();
+        $this->mediaspecs       = new ArrayCollection();
+        $this->onlines          = new ArrayCollection();
+        $this->mediaLinks       = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTimeImmutable();
     }
 
-    public EntityManagerInterface $entityManager;
     #[ORM\Column]
     private ?bool $canCreate = null;
 
@@ -52,7 +52,7 @@ class Category
     #[ORM\Column]
     private ?bool $hasLink = null;
 
-    #[ORM\ManyToOne(targetEntity: self::class, cascade: ['remove'], inversedBy: 'children',)]
+    #[ORM\ManyToOne(targetEntity: self::class, cascade: ['remove'], inversedBy: 'children')]
     #[ORM\JoinColumn(name:"category_id", referencedColumnName:"id")]
     protected ?Category $parent;
 
@@ -61,13 +61,8 @@ class Category
     protected Collection $children;
 
 
-    #[ORM\OneToMany(mappedBy: "category",targetEntity: 'App\Entity\Media', cascade: ['persist'])]
-    #[ORM\JoinColumn(nullable: true)]
-    private Collection $media;
-
     /**
      * @var int|null
-     *
      * Identifiant du parent [Optional]
      */
     #[ORM\Column(nullable: true)]
@@ -76,11 +71,14 @@ class Category
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Article::class, cascade: ['remove'], fetch: "EXTRA_LAZY")]
     private Collection $articles;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Mediaspecs::class)]
-    private Collection $mediaspecs;
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Online::class, cascade: ['remove'])]
+    private Collection $onlines;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Online::class,cascade: ['remove'],)]
-    private Collection $online;
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: MediaLink::class, cascade: ['remove'])]
+    private Collection $mediaLinks;
+
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Mediaspec::class)]
+    private Collection $mediaspecs;
 
 
 
@@ -233,14 +231,74 @@ class Category
     }
 
     /**
-     * @return Collection<int, Mediaspecs>
+     * @return Collection<int, Online>
+     */
+    public function getOnlines(): Collection
+    {
+        return $this->onlines;
+    }
+
+    public function addOnline(Online $online): self
+    {
+        if (!$this->onlines->contains($online)) {
+            $this->onlines->add($online);
+            $online->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOnline(Online $online): self
+    {
+        if ($this->onlines->removeElement($online)) {
+            // set the owning side to null (unless already changed)
+            if ($online->getCategory() === $this) {
+                $online->setCategory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MediaLink>
+     */
+    public function getMediaLinks(): Collection
+    {
+        return $this->mediaLinks;
+    }
+
+    public function addMediaLink(MediaLink $mediaLink): self
+    {
+        if (!$this->mediaLinks->contains($mediaLink)) {
+            $this->mediaLinks->add($mediaLink);
+            $mediaLink->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMediaLink(MediaLink $mediaLink): self
+    {
+        if ($this->mediaLinks->removeElement($mediaLink)) {
+            // set the owning side to null (unless already changed)
+            if ($mediaLink->getCategory() === $this) {
+                $mediaLink->setCategory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Mediaspec>
      */
     public function getMediaspecs(): Collection
     {
         return $this->mediaspecs;
     }
 
-    public function addMediaspec(Mediaspecs $mediaspec): self
+    public function addMediaspec(Mediaspec $mediaspec): self
     {
         if (!$this->mediaspecs->contains($mediaspec)) {
             $this->mediaspecs->add($mediaspec);
@@ -250,42 +308,12 @@ class Category
         return $this;
     }
 
-    public function removeMediaspec(Mediaspecs $mediaspec): self
+    public function removeMediaspec(Mediaspec $mediaspec): self
     {
         if ($this->mediaspecs->removeElement($mediaspec)) {
             // set the owning side to null (unless already changed)
             if ($mediaspec->getCategory() === $this) {
                 $mediaspec->setCategory(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Online>
-     */
-    public function getOnline(): Collection
-    {
-        return $this->online;
-    }
-
-    public function addOnline(Online $online): self
-    {
-        if (!$this->online->contains($online)) {
-            $this->online->add($online);
-            $online->setCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOnline(Online $online): self
-    {
-        if ($this->online->removeElement($online)) {
-            // set the owning side to null (unless already changed)
-            if ($online->getCategory() === $this) {
-                $online->setCategory(null);
             }
         }
 

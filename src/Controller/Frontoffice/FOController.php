@@ -39,18 +39,13 @@ class FOController extends AbstractController
         $cat = $this->entityManager->getRepository(Category::class)->find(1);
         $list = new ArrayCollection();
         $tree = $this->entityManager->getRepository(Category::class)->getGenealogy($list, 1, false);
-        dump($tree);
-
-        $articleMedia = $this->entityManager->getRepository(Media::class)->getMediasArticle(1);
-
 
 
 
 //        dd($onlines);
         return $this->render('frontoffice/article/articles.html.twig', [
             'category' => $cat,
-            'tree' => $tree,
-            'articleMedia' => $articleMedia,
+            'tree'     => $tree,
         ]);
     }
 

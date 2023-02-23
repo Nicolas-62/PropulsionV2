@@ -76,7 +76,7 @@ class CategoryCrudController extends AbstractCrudController
         return [
             // Champs de la vue liste
             IdField::new("id")->hideOnForm(),
-            IntegerField::new('position', 'position')->setColumns(6)->hideOnForm(),
+            IntegerField::new('ordre', 'ordre')->setColumns(6)->hideOnForm(),
             TextField::new('title', 'title')->setColumns(6),
             DateField::new('created_at', 'creation')->hideOnForm(),
             DateField::new('updated_at', 'dernière édition')->hideOnForm(),
@@ -191,8 +191,8 @@ class CategoryCrudController extends AbstractCrudController
         $response = $this->entityRepository->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
         // Si pas d'ordre
         if($searchDto->getSort() == []) {
-            // Ordonne par position
-            $response->orderBy('entity.position');
+            // Ordonne par ordre
+            $response->orderBy('entity.ordre');
         }
         // Si pas de recherche
         if($searchDto->getQuery() == '') {

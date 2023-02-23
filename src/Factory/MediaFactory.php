@@ -3,8 +3,9 @@
 namespace App\Factory;
 
 use App\Entity\Media;
-use App\Entity\MediasTypes;
+use App\Entity\MediaType;
 use App\Repository\MediaRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
@@ -54,14 +55,8 @@ final class MediaFactory extends ModelFactory
     protected function getDefaults(): array
     {
 
-        $mediaType = $this->entityManager->getRepository(MediasTypes::class)->find(1);
         return [
-            'date_creation' => self::faker()->dateTime(),
-            'date_modification' => self::faker()->dateTime(),
-            'fichier' => self::faker()->imageUrl(640, 480, 'animals'),
-            //'fichier' => self::faker()->text(255),
-            'media_type_id' => MediasTypesFactory::random(),
-            'article' => ArticleFactory::randomOrCreate(),
+            'file' => self::faker()->imageUrl(640, 480, 'animals'),
         ];
     }
 
