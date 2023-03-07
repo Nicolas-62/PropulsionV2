@@ -1,8 +1,14 @@
 {% extends '@!EasyAdmin/crud/index.html.twig' %}
 
+{# surcharge des actions #}
+{% block global_actions %}
+    {%  include('backoffice/actions/global_actions.html.twig') %}
+{% endblock global_actions %}
+
 
 {% block table_body %}
     {% set url = ea_url()
+        .unsetAll()
         .setController('App\\Controller\\Backoffice\\ArticleCrudController')
     %}
 
@@ -21,7 +27,6 @@
                     {#  Titre #}
                     {% if field.property == 'title' %}
                         {% if entity.fields.getByProperty('children').formattedValue > 0 %}
-
                             <td data-label="{{ field.label|trans|e('html_attr') }}" class="{{ field.property == sort_field_name ? 'sorted' }} text-{{ field.textAlign }} {{ field.cssClass }}" dir="{{ ea.i18n.textDirection }}">
                                 <a href="{{ url.setAction('detail').setEntityId(entity.primaryKeyValue) }}">
                                     {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
@@ -29,7 +34,9 @@
                             </td>
                         {% else %}
                             <td data-label="{{ field.label|trans|e('html_attr') }}" class="{{ field.property == sort_field_name ? 'sorted' }} text-{{ field.textAlign }} {{ field.cssClass }}" dir="{{ ea.i18n.textDirection }}">
-                                {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
+                                <a href="{{ url.setAction('edit').setEntityId(entity.primaryKeyValue) }}">
+                                    {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
+                                </a>
                             </td>
                         {% endif %}
                         {# Pour property 'children'#}

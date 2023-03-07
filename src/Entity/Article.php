@@ -25,8 +25,8 @@ class Article
         $this->onlines      = new ArrayCollection();
         $this->mediaLinks   = new ArrayCollection();
         $this->mediaspecs   = new ArrayCollection();
-        $this->created_at = new \DateTimeImmutable();
-        $this->updated_at = new \DateTimeImmutable();
+        $this->created_at   = new \DateTimeImmutable();
+        $this->updated_at   = new \DateTimeImmutable();
     }
 
 
@@ -55,6 +55,9 @@ class Article
 
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Mediaspec::class)]
     private Collection $mediaspecs;
+
+
+    private Collection $medias;
 
     public function getArticleId(): ?int
     {
@@ -138,6 +141,8 @@ class Article
         return $this->mediaLinks;
     }
 
+
+
     public function addMediaLink(MediaLink $mediaLink): self
     {
         if (!$this->mediaLinks->contains($mediaLink)) {
@@ -199,6 +204,22 @@ class Article
             }
         }
         return $media;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMedias(): Collection
+    {
+        return $this->medias;
+    }
+
+    /**
+     * @param Collection $medias
+     */
+    public function setMedias(Collection $medias): void
+    {
+        $this->medias = $medias;
     }
 
 }

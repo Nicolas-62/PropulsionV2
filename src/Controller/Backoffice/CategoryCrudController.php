@@ -43,7 +43,7 @@ class CategoryCrudController extends AbstractCrudController
     {
         $this->adminUrlGenerator = $adminUrlGenerator;
         $this->entityRepository  = $entityRepository;
-        $this->entityManager  = $entityManager;
+        $this->entityManager     = $entityManager;
     }
 
     public static function getEntityFqcn(): string
@@ -61,7 +61,7 @@ class CategoryCrudController extends AbstractCrudController
         $category = new Category();
         $category->setCreatedAt(new \DateTimeImmutable());
         $category->setUpdatedAt(new \DateTimeImmutable());
-        $category->setPosition($this->entityManager->getRepository(Category::class)->count([]) + 1 );
+        $category->setOrdre($this->entityManager->getRepository(Category::class)->count([]) + 1 );
 
         return $category;
     }
@@ -80,7 +80,8 @@ class CategoryCrudController extends AbstractCrudController
             TextField::new('title', 'title')->setColumns(6),
             DateField::new('created_at', 'creation')->hideOnForm(),
             DateField::new('updated_at', 'dernière édition')->hideOnForm(),
-
+            AssociationField::new('children','Categories')->hideOnForm(),
+            AssociationField::new('articles', 'Articles')->hideOnForm(),
             // Champs du formulaire
             AssociationField::new('parent','Parent')->hideOnIndex(),
             BooleanField::new('can_create','can_create')->hideOnIndex()->setColumns(3),
@@ -91,8 +92,7 @@ class CategoryCrudController extends AbstractCrudController
             BooleanField::new('has_link','has_link')->hideOnIndex()->setColumns(3),
             BooleanField::new('has_theme','has_theme')->hideOnIndex()->setColumns(3),
             BooleanField::new('has_content','has_content')->hideOnIndex()->setColumns(3),
-            AssociationField::new('children','Enfants')->hideOnForm(),
-            BooleanField::new('isOnline'),
+            BooleanField::new('isOnline')->hideOnForm(),
             // Champs communs
 
             // CollectionField::new('grandParent','Grand Parent')->hideOnIndex()->hideOnForm(),
@@ -140,13 +140,12 @@ class CategoryCrudController extends AbstractCrudController
      */
     public function index(AdminContext $context)
     {
-
         // Récupération de l'id de la categorie parent.
-        $entityId = $this->adminUrlGenerator->get('entityId');
+        $entityId   =    $this->adminUrlGenerator->get('entityId');
         // Si on doit afficher les enfants d'une catégorie
         if($entityId != null) {
             // Récupère la categorie pour filtrer dans la requète (voir fonction createIndexQueryBuilder)
-            $this->entity = $this->entityManager->getRepository(Category::class)->find($entityId);
+            $this->entity   =   $this->entityManager->getRepository(Category::class)->find($entityId);
         }
         return parent::index($context);
     }
@@ -184,24 +183,26 @@ class CategoryCrudController extends AbstractCrudController
      */
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
-        // DEBUG
-        //dump($searchDto);
 
         // Récupération du query builder
         $response = $this->entityRepository->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
         // Si pas d'ordre
-        if($searchDto->getSort() == []) {
+        if($searchDto->getSort() == [])
+        {
             // Ordonne par ordre
             $response->orderBy('entity.ordre');
         }
         // Si pas de recherche
-        if($searchDto->getQuery() == '') {
+        if($searchDto->getQuery() == '')
+        {
             // Si une categorie a été précisée, on veut afficher uniquement ses enfants
-            if ($this->entity != null) {
+            if ($this->entity != null)
+            {
                 $response->where('entity.category_id = :entityId');
                 $response->setParameter('entityId', $this->entity->getId());
-                // Sinon on affiche que les categories qui n'ont pas de parent.
-            } else {
+            }
+            // Sinon on affiche que les categories qui n'ont pas de parent.
+            else {
                 $response->andwhere('entity.category_id IS NULL');
             }
         }
@@ -210,14 +211,13 @@ class CategoryCrudController extends AbstractCrudController
     }
 
     /**
+     * configureFilters : définis les filtres applicables (voir bouton 'Filtres' dans les actions globales)
      * @param Filters $filters
      * @return Filters
      */
     public function configureFilters(Filters $filters): Filters
     {
-        return $filters
-            ->add('category_id')
-            ;
+        return $filters->add('category_id');
     }
 
     /**
@@ -227,66 +227,20 @@ class CategoryCrudController extends AbstractCrudController
      */
     public function configureResponseParameters(KeyValueStore $responseParameters): KeyValueStore
     {
-        // Envoi de l'id du parent à la vue.
-        $parentId = $this->entity?->getParentId();
-        $responseParameters->set('parentId', $parentId);
-
-        // Récupération de l'instance Article
-        $articles = new Article();
-        // Récupération des articles ayant pour parent la catégorie
-        if($this->entity) {
-            $articles = $this->entityManager->getRepository(Article::class)->findBy(array('category' => $this->entity->getId()));
-        }
-        // Envois de ces articles à la vue
-        $responseParameters->set('articles', $articles);
-
-
-        $categoriesChilds = new Category($this->entityManager);
-        if($this->entity) {
-            $categoriesChilds = $this->entityManager->getRepository(Category::class)->findBy(array('category_id' => $this->entity->getId()));
-            $catIndice = true;
-        } else {
-            $catIndice = false;
-        }
-        $responseParameters->set('catIndice', $catIndice);
-
-        // Envois de ces articles à la vue
-        $responseParameters->set('categoriesChilds', $categoriesChilds);
-        $categoriesChildsCount = 0;
-
-        // On compte le nombre d'article dans la catégorie
-        foreach ($categoriesChilds as $cat){
-            $categoriesChildsCount = $categoriesChildsCount + 1;
-        }
-
-
-        // Envois de ces articles à la vue
-        $responseParameters->set('categoriesChildsCount', $categoriesChildsCount);
-
-        $articlesCount = 0;
-
-        // On compte le nombre d'article dans la catégorie
-        foreach ($articles as $article){
-            $articlesCount = $articlesCount + 1;
-        }
-        // Envois de ce nombre à la vue
-        $responseParameters->set('articlesCount', $articlesCount);
-
-        //DEBUG
-//        dd($this->entity->getId());
-//        dd($articlesCount);
-//        dd($articles);
-//        dd($parentId);
+        // Passage du parent des enfants de la liste affichée.
+        $responseParameters->set('parent', $this->entity);
+        // Envoi de l'id du grand-parent à la vue.
+        $grandParentId = $this->entity?->getParent()?->getId();
+        $responseParameters->set('grandParentId', $grandParentId);
+        $responseParameters->set('crudController', 'Category');
+        $responseParameters->set('keyName', 'entityId');
 
         return parent::configureResponseParameters($responseParameters);
     }
 
-
-
-    // EXEMPLE...
-
+    // FONCTION EXEMPLE, REDIRECTION APRES SAUVEGARDE
     /**
-     * getRedirectResponseAfterSave permet de gérer le comportement apres avoir éditer , ajouter ou supprimer une entity
+     * getRedirectResponseAfterSave Permet de gérer le comportement apres avoir édité, ajouté ou supprimé une entité
      * @param AdminContext $context
      * @param string $action
      * @return RedirectResponse
@@ -308,6 +262,9 @@ class CategoryCrudController extends AbstractCrudController
 
         return parent::getRedirectResponseAfterSave($context, $action);
     }
+
+
+
     /**
      * configureActions
      *
@@ -318,14 +275,15 @@ class CategoryCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         // Bouton de retour au détail du parent.
-        $returnAction = Action::new('backToParent', 'Revenir', 'fa fa-arrow-left');
-        $returnAction->setTemplatePath('backoffice/actions/back_to_parent.html.twig');
+        $returnAction = Action::new('return', 'Revenir', 'fa fa-arrow-left');
+        $returnAction->setTemplatePath('backoffice/actions/return.html.twig');
         // renders the action as a <a> HTML element
         $returnAction->displayAsLink();
+        // associé à l'action index
         $returnAction->linkToCrudAction('index');
+        // Action globale disponible en haut à droite du tableau.
         $returnAction->createAsGlobalAction();
         $returnAction->addCssClass('btn btn-primary');
-
         // Ajout des boutons à la liste des actions disponibles.
         $actions->add(Crud::PAGE_INDEX, $returnAction);
 

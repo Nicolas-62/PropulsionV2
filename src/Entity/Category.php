@@ -218,7 +218,7 @@ class Category
         if($this->title) {
             return $this->title;
         }else{
-            return 'Cat';
+            return '';
         }
     }
 

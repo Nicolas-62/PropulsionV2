@@ -3,8 +3,8 @@
 namespace App\Field;
 
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class MediaField  implements FieldInterface
 {
@@ -23,32 +23,30 @@ class MediaField  implements FieldInterface
             ->setLabel($label)
 
             // this template is used in 'index' and 'detail' pages
-            ->setTemplatePath('admin/field/map.html.twig')
+            ->setTemplatePath('backoffice/fields/media.html.twig')
 
             // this is used in 'edit' and 'new' pages to edit the field contents
             // you can use your own form types too
-            ->setFormType(TextareaType::class)
-            ->addCssClass('field-map')
-
-            // loads the CSS and JS assets associated to the given Webpack Encore entry
-            // in any CRUD page (index/detail/edit/new). It's equivalent to calling
-            // encore_entry_link_tags('...') and encore_entry_script_tags('...')
-            ->addWebpackEncoreEntries('admin-field-map')
-
-            // these methods allow to define the web assets loaded when the
-            // field is displayed in any CRUD page (index/detail/edit/new)
-            ->addCssFiles('js/admin/field-map.css')
-            ->addJsFiles('js/admin/field-map.js')
+            ->setFormType(FileType::class)
+//            ->addCssClass('field-map')
+//
+//            // loads the CSS and JS assets associated to the given Webpack Encore entry
+//            // in any CRUD page (index/detail/edit/new). It's equivalent to calling
+//            // encore_entry_link_tags('...') and encore_entry_script_tags('...')
+//            ->addWebpackEncoreEntries('admin-field-map')
+//
+//            // these methods allow to define the web assets loaded when the
+//            // field is displayed in any CRUD page (index/detail/edit/new)
+//            ->addCssFiles('js/admin/field-map.css')
+//            ->addJsFiles('js/admin/field-map.js')
+//
+//            ->setBasePath('assets/images')
+//            ->setUploadDir('public/assets/images')
+//            ->setUploadedFileNamePattern('[randomhash].[extension]')
+            ->setRequired(false)
             ;
 
 
     }
 
-    /**
-     * @return FieldDto
-     */
-    public function getAsDto(): FieldDto
-    {
-        // TODO: Implement getAsDto() method.
-    }
 }

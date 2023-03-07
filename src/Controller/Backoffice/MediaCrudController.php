@@ -35,7 +35,7 @@ class MediaCrudController extends AbstractCrudController
                 ->setRequired(false),
             DateField::new('date_creation','Créé le')->hideOnForm(),
             DateField::new('date_modification', "Modifié le")->hideOnForm(),
-            AssociationField::new('category','Catégorie')->setColumns(6),
+            AssociationField::new('media_link','Catégorie')->setColumns(6),
             AssociationField::new('article','Article')->setColumns(6),
             AssociationField::new('media_type_id','Type de média')->setColumns(6),
         ];

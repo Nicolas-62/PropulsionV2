@@ -49,7 +49,6 @@ final class ArticleFactory extends ModelFactory
         return [
             'title' => self::faker()->sentence(3, false),
             'content' => self::faker()->realText(),
-            'category' => CategoryFactory::randomOrCreate(),
             'ordre' => self::faker()->numberBetween(1,400),
         ];
     }

@@ -65,12 +65,18 @@ class CreationListener implements EventSubscriberInterface
         $action = $event->getAdminContext()->getCrud()->getCurrentAction();
         $fieldName = $event->getAdminContext()->getRequest()->get("fieldName");
         $newValue = $event->getAdminContext()->getRequest()->get("newValue");
-
         if($action == "edit"){
             if($entity instanceof  Article || $entity instanceof  Category){
-                // On récupère l'objet Online à récupérer
-                $online = $entity->getOnlineByLangue();
-                if($online && $fieldName == 'isOnline') {
+
+                if($fieldName == 'isOnline') {
+                    // On récupère l'objet Online à récupérer
+                    $online = $entity->getOnlineByCodeLangue('fr');
+                    // Si il n'existe pas.
+                    if( ! $online){
+                        $online = new Online();
+                        $online->{'set'.ucfirst($entity->getClassName())}($entity);
+                        $online->setLangue($this->entityManager->getRepository(Langues::class)->findOneByCode('fr'));
+                    }
                     // On passe la valeur que l'on souhaite mettre à jour
                     $online->setOnline($newValue);
                     // On envoie l'objet à la BDD
@@ -91,8 +97,6 @@ class CreationListener implements EventSubscriberInterface
     public function onAfterEntityPersisted(AfterEntityPersistedEvent $event)
     {
         $entity = $event->getEntityInstance();
-
-       //dd($entity);
 
         // Ajouter une ligne à la table online lié à l'article et avec online = 0 pendant la création d'un article
         if ($entity instanceof Article) {

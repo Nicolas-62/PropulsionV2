@@ -57,8 +57,6 @@ final class CategoryFactory extends ModelFactory
             'hasSubTitle' => 1,
             'hasTheme' => 1,
             'hasTitle' => 1,
-            #'category_id' => self::faker()->numberBetween(0,10),
-            #'children' => CategoryFactory::randomOrCreate()
         ];
     }
 

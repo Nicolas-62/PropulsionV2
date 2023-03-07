@@ -41,7 +41,7 @@ class BOController extends AbstractController
     #[Route('/category/{id}', name: 'category')]
     public function category(Category $category): Response
     {
-        return $this->render('backoffice/category.html.twig', [
+        return $this->render('backoffice/category/category.html.twig', [
             'category' => $category
         ]);
     }

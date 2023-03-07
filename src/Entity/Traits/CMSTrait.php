@@ -125,30 +125,19 @@ trait CMSTrait
         return $this;
     }
 
-    public function getOnlineByLangue($langue = null): false|Online
+    public function getOnlineByCodeLangue($code_langue): false|Online
     {
 
-        $onlines = $this->getOnlines()->filter(function(Online $online, $langue) {
-            if($langue == null){
-                $code = 'fr';
-            }else{
-                if(  is_int($langue) )
-                {
-                    $langue = $this->entityManager->getRepository(Langues::class)->find($langue);
-                }
-                $code = $langue->getCode();
-            }
-            //dump($code);
-
-            return $online->getLangue()->getCode() == $code;
+        $online = $this->getOnlines()->filter(function(Online $online) use ($code_langue) {
+            return $online->getLangue()->getCode() === $code_langue;
         })->first();
 
-        return $onlines;
+        return $online;
     }
 
-    public function isOnline($langue = null): bool
+    public function isOnline($code_langue = 'fr'): bool
     {
-        $online = $this->getOnlineByLangue($langue);
+        $online = $this->getOnlineByCodeLangue($code_langue);
         if($online &&  $online->isOnline()){
             return true;
         }else{

@@ -25,28 +25,36 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
+        // Ne fonctionne pas, truncater manuellement les tables
 
-        $factory = factory(Article::class);
-        $factory->truncate();
-        $factory = factory(Category::class);
-        $factory->truncate();
-        $factory = factory(MediaLink::class);
-        $factory->truncate();
-        $factory = factory(Online::class);
-        $factory->truncate();
-        $factory = factory(Mediaspec::class);
-        $factory->truncate();
-        $factory = factory(Media::class);
-        $factory->truncate();
+//        $factory = factory(Article::class);
+//        $factory->truncate();
+//        $factory = factory(Category::class);
+//        $factory->truncate();
+//        $factory = factory(MediaLink::class);
+//        $factory->truncate();
+//        $factory = factory(Online::class);
+//        $factory->truncate();
+//        $factory = factory(Mediaspec::class);
+//        $factory->truncate();
+//        $factory = factory(Media::class);
+//        $factory->truncate();
 
         MediasTypesFactory::createOne();
         LanguesFactory::createOne();
 
-        CategoryFactory::createMany(10, ['children' => CategoryFactory::new()->many(1,5)]);
-        ArticleFactory::createMany(40, ['children' => ArticleFactory::new()->many(0,2)]);
-        OnlineFactory::createMany(40);
-        MediaFactory::createMany(60);
-        MediaLinkFactory::createMany(40);
-        MediaspecFactory::createMany(40);
+        CategoryFactory::createMany(4,
+            function(){
+                return [
+                    'articles' => ArticleFactory::createMany(3, ['children' => ArticleFactory::new()->many(0,2)]),
+                    'parent'   => CategoryFactory::createOne(),
+                ];
+            }
+        );
+
+        OnlineFactory::createMany(5);
+        //MediaFactory::createMany(60);
+        //MediaLinkFactory::createMany(40);
+        //MediaspecFactory::createMany(40);
     }
 }

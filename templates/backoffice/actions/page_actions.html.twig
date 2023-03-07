@@ -1,0 +1,16 @@
+<div class="page-actions">
+    {% for action in entity.actions %}
+        {# Action globale de retour à la liste dont fait partie le parent des enfants de la liste visble.#}
+        {% if action.name == "return" %}
+            {# Passage de l'id du grand parent pour afficher la liste de ses enfant (dont fait partie le parent actuel) #}
+            {{ include(action.templatePath, {
+                action: action,
+                grandParentId: grandParentId,
+                crudController: crudController,
+                keyName: keyName
+            }, with_context = false) }}
+        {% else %}
+            {{ include(action.templatePath, { action: action}, with_context = false) }}
+        {% endif %}
+    {% endfor %}
+</div>

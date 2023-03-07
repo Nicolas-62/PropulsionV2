@@ -35,8 +35,8 @@ class Online
 
     public function __construct()
     {
-        $this->article = new Article();
-        $this->category = new Category();
+//        $this->article = new Article();
+//        $this->category = new Category();
         $this->online = 0;
         $this->created_at = new \DateTimeImmutable();
         $this->updated_at = new \DateTimeImmutable();
