@@ -4,6 +4,7 @@ namespace App\Controller\Backoffice;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\Media;
 use App\Field\MediaField;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -20,6 +21,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -78,49 +80,53 @@ class ArticleCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Contenu');
-        dump($this->entity);
-        // abandonné : Les mediaspecs sont passés en paramètre à la vue.
-        if(Crud::PAGE_EDIT === $pageName) {
-            $mediaspecs = $this->entityManager->getRepository(Article::class)->getMediaspecs($this->entity);
-            dump($mediaspecs);
-            foreach($mediaspecs as $mediaspec){
-                //yield ImageField::new('medias',$mediaspec->getName());
-            }
-        }
+        // Champs communs à plusieurs actions (liste, edition, detail, formulaire...)
         yield IdField::new('id')->hideOnForm();
         yield IntegerField::new('ordre', 'ordre')->hideOnForm();
         yield DateField::new('created_at','création')->hideOnForm();
         yield DateField::new('updated_at','dernière édition')->hideOnForm();
         yield AssociationField::new('children','Enfants')->hideOnForm();
         yield BooleanField::new('isOnline', 'En ligne')->hideOnForm();
-
         yield TextField::new('title','titre')->setColumns(6);
         yield TextEditorField::new('content','description')->setColumns(12);
-        yield AssociationField::new('parent','Article Parent')->hideOnDetail()->setColumns(6)->hideOnIndex()->setRequired(false);
-        yield AssociationField::new('category','Catégorie Parent')->hideOnDetail()->setColumns(6)->hideOnIndex()->setRequired(false);;
 
 
-        yield FormField::addTab('Medias')
-            ->setIcon('image');
+        // Champs pour l'édition d'un article.
+        if(Crud::PAGE_EDIT === $pageName) {
+            // Article parent
+            yield AssociationField::new('parent', 'Article Parent')->hideOnDetail()->setColumns(6)->hideOnIndex()->setRequired(false);
+            // Catégorie parent
+            yield AssociationField::new('category', 'Catégorie Parent')->hideOnDetail()->setColumns(6)->hideOnIndex()->setRequired(false);;
 
-        yield ImageField::new('medias','')
-            ->setColumns(6)
-            ->setBasePath('assets/images')
-            ->setUploadDir('public/assets/images')
-            ->setUploadedFileNamePattern('[name]_[randomhash].[extension]')
-            ->setRequired(false);
-
-//            ImageField::new('illustration2')
-//                ->setColumns(6)
-//                ->setBasePath('assets/images')
-//                ->setUploadDir('public/assets/images')
-//                ->setUploadedFileNamePattern('[randomhash].[extension]')
-//                ->setRequired(false);
-        // ColorField::new('parent')
-
-
-
-
+            // Médiaspecs appliquées à l'entité
+            $mediaspecs = $this->entityManager->getRepository(Article::class)->getMediaspecs($this->entity);
+            // Si ils existent.
+            if($mediaspecs != null)
+            {
+                // Ajout d'un onglet
+                yield FormField::addTab('Medias')
+                    ->setIcon('image');
+                // Pour chaque médiaspec
+                foreach ($mediaspecs as $index => $mediaspec) {
+                    // Ajout d'un champ d'upload d'un média
+                    yield ImageField::new('media' . $index + 1, ucfirst($mediaspec->getName()) . ' : téléchargez un média ou...')
+                        ->setColumns(6)
+                        ->setBasePath('assets/images')
+                        ->setUploadDir('public/assets/images')
+                        ->setUploadedFileNamePattern('[name]_[randomhash].[extension]')
+                        ->setRequired(false);
+                    // Ajout d'un champ de sélection d'un média existant.
+                    yield ChoiceField::new('media' . ($index + 11), 'choisissez un média existant.')
+                        ->setColumns(6)
+                        ->setFormTypeOptions([
+                            'multiple' => false
+                        ])
+                        ->setChoices(
+                            $this->entityManager->getRepository(Media::class)->getAllForChoices()
+                        );
+                }
+            }
+        }
     }
 //      by_reference
 //    Similarly, if you're using the CollectionType field where your underlying collection data is an object (like with Doctrine's ArrayCollection),
@@ -242,7 +248,7 @@ class ArticleCrudController extends AbstractCrudController
     {
         // Récupération de l'article
         $this->entity = $context->getEntity()->getInstance();
-        // Si ce n'est pas un sous article on récupère sa categorie parent
+        // Si ce n'est pas un sous article, on récupère sa categorie parent
         if($this->entity->getParent() == null)
         {
             $this->category = $this->entity->getCategory();

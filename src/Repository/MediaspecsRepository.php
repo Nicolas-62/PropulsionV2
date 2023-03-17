@@ -6,8 +6,6 @@ use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Mediaspec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping\Entity;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -52,6 +50,7 @@ class MediaspecsRepository extends ServiceEntityRepository
      */
     public function findByHeritage(Article|Category $entity, int $heritage): array
     {
+        // Récupération du nom du modèle
         $model_name = strtolower($entity->getClassName());
 
         return $this->createQueryBuilder('m')
@@ -80,7 +79,7 @@ class MediaspecsRepository extends ServiceEntityRepository
         $parent_mediaspecs    =   array();
         if($category->getParent() != null){
             $heritage++;
-            $parent_mediaspecs = $this->getMediaspecsFromCategories($category->getParent(), $heritage);
+            $parent_mediaspecs = $this->findByHeritage($category->getParent(), $heritage);
         }
         $mediaspecs = array_merge($current_mediaspecs, $parent_mediaspecs);
         return $mediaspecs;

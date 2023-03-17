@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Media;
 use App\Entity\Mediaspec;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -95,6 +96,17 @@ class DashboardController extends AbstractDashboardController
 //                MenuItem::section(),
 //                MenuItem::linkToLogout('Logout', 'fa fa-sign-out'),
 //            ])
+            ;
+    }
+
+    public function configureCrud(): Crud
+    {
+        return Crud::new()
+            // the first argument is the "template name", which is the same as the
+            // Twig path but without the `@EasyAdmin/` prefix
+            ->overrideTemplates([
+                'crud/field/id' => 'backoffice/field/id.html.twig'
+            ])
             ;
     }
 }

@@ -39,6 +39,16 @@ class MediaRepository extends ServiceEntityRepository
         }
     }
 
+    public function getAllForChoices(): array
+    {
+        $medias  =  $this->findAll();
+        $choices =  array();
+        foreach($medias as $media){
+            $choices[$media->getName()] = $media->getId();
+        }
+        return $choices;
+    }
+
 //    /**
 //     * @return Media[] Returns an array of Media objects
 //     */

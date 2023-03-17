@@ -5,10 +5,11 @@ namespace App\EventListener;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Langues;
+use App\Entity\Media;
+use App\Entity\MediaLink;
 use App\Entity\Online;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
-use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityUpdatedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeCrudActionEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -33,6 +34,7 @@ class CreationListener implements EventSubscriberInterface
         return [
             AfterEntityPersistedEvent::class => 'onAfterEntityPersisted',
             BeforeCrudActionEvent::class   => 'onBeforeCrudActionEvent',
+            BeforeEntityUpdatedEvent::class => 'saveMedias'
         ];
     }
 
@@ -42,12 +44,49 @@ class CreationListener implements EventSubscriberInterface
      * @param BeforeEntityUpdatedEvent $event
      * @return void
      */
-    public function onBeforeEntityUpdatedEvent(BeforeEntityUpdatedEvent $event)
+    public function saveMedias(BeforeEntityUpdatedEvent $event)
     {
+        // Récupération de l'entité
         $entity = $event->getEntityInstance();
-        dump($entity);
+        // Si c'est un article ou une catégorie.
+        if($entity instanceof  Article || $entity instanceof  Category){
+            // Récupération des médiaspecs qui s'appliquent à l'entité
+            $mediaspecs = $this->entityManager->getRepository($entity::class)->getMediaspecs($entity);
+            // Pour chaque médiaspec
+            foreach ($mediaspecs as $index => $mediaspec) {
+                // Objet média
+                $media = null;
+                // Si un média a été envoyé.
+                if($entity->{'getMedia'.$index+1}() != null){
+                    // On crée le média
+                    $media = new Media();
+                    // On ajoute le fichier au média.
+                    $media->setFile($entity->{'getMedia'.$index+1}());
+                // Si un média existant a été choisi.
+                }else if($entity->{'getMedia'.$index+11}() != null){
+                    // On récupère le média.
+                    $media = $this->entityManager->getRepository(Media::class)->findOneBy(['id' => $entity->{'getMedia'.$index+11}()]);
+                }
+                // Si un média a été renseigné
+                if($media != null){
+                    // On créer un lien entre...
+                    $mediaLink = new MediaLink();
+                    // la mediaspec...
+                    $mediaLink->setMediaspec($mediaspec);
+                    // l'entité...
+                    $entity->addMediaLink($mediaLink);
+                    // et le média.
+                    $media->addMediaLink($mediaLink);
+                    // On sauvegarde le média.
+                    $this->entityManager->getRepository(Media::class)->save($media);
+                    // On sauvegarde le lien.
+                    $this->entityManager->getRepository(MediaLink::class)->save($mediaLink);
+                    // On sauvegarde l'entité.
+                    $this->entityManager->getRepository($entity::class)->save($entity);
+                }
 
-
+            }
+        }
     }
 
 
@@ -61,15 +100,23 @@ class CreationListener implements EventSubscriberInterface
 
 
         // Code permettant le switch online / offline des articles
-        $entity = $event->getAdminContext()->getEntity()->getInstance();
-        $action = $event->getAdminContext()->getCrud()->getCurrentAction();
-        $fieldName = $event->getAdminContext()->getRequest()->get("fieldName");
-        $newValue = $event->getAdminContext()->getRequest()->get("newValue");
-        if($action == "edit"){
-            if($entity instanceof  Article || $entity instanceof  Category){
 
+        // Entité
+        $entity = $event->getAdminContext()->getEntity()->getInstance();
+        // Action en cours
+        $action = $event->getAdminContext()->getCrud()->getCurrentAction();
+        // Nom du champ en cours d'édition.
+        $fieldName = $event->getAdminContext()->getRequest()->get("fieldName");
+        // Valeur
+        $newValue = $event->getAdminContext()->getRequest()->get("newValue");
+
+        // Si on en édition
+        if($action == "edit"){
+            // Si c'est un article ou une catégorie
+            if($entity instanceof  Article || $entity instanceof  Category){
+                // Si on ajoute/enlève en ligne.
                 if($fieldName == 'isOnline') {
-                    // On récupère l'objet Online à récupérer
+                    // On récupère l'objet Online
                     $online = $entity->getOnlineByCodeLangue('fr');
                     // Si il n'existe pas.
                     if( ! $online){

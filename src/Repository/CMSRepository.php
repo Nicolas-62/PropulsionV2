@@ -22,7 +22,7 @@ Abstract class CMSRepository extends ServiceEntityRepository
     }
 
 
-    public function save(Entity $entity, bool $flush = false): void
+    public function save($entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -31,7 +31,7 @@ Abstract class CMSRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Entity $entity, bool $flush = false): void
+    public function remove($entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 

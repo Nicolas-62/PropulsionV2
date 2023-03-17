@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Traits\CMSTrait;
+use App\Entity\Traits\MediaTrait;
 use App\Entity\Traits\TimesTampableTrait;
 use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityBuiltEvent;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
@@ -17,7 +19,7 @@ class Article
     use CMSTrait;
     // Champs date.
     use TimestampableTrait;
-
+    use MediaTrait;
 
     public function __construct()
     {
@@ -55,9 +57,6 @@ class Article
 
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Mediaspec::class)]
     private Collection $mediaspecs;
-
-
-    private Collection $medias;
 
     public function getArticleId(): ?int
     {
@@ -204,22 +203,6 @@ class Article
             }
         }
         return $media;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getMedias(): Collection
-    {
-        return $this->medias;
-    }
-
-    /**
-     * @param Collection $medias
-     */
-    public function setMedias(Collection $medias): void
-    {
-        $this->medias = $medias;
     }
 
 }

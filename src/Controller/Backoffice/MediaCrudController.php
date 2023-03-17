@@ -24,21 +24,17 @@ class MediaCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        return [
-            IdField::new('id')->hideOnIndex()->hideOnForm()->hideOnDetail(),
-            TextField::new('legende',"Légende")->setColumns(6),
-            ImageField::new('fichier','Fichier')->setColumns(6)
+       // if(Crud::PAGE_EDIT === $pageName || Crud::PAGE_NEW === $pageName) {
+        yield TextField::new('getName', 'nom')->onlyOnIndex();
+        yield ImageField::new('file', 'Fichier')
                 ->setColumns(6)
                 ->setBasePath('assets/images')
                 ->setUploadDir('public/assets/images')
-                ->setUploadedFileNamePattern('[randomhash].[extension]')
-                ->setRequired(false),
-            DateField::new('date_creation','Créé le')->hideOnForm(),
-            DateField::new('date_modification', "Modifié le")->hideOnForm(),
-            AssociationField::new('media_link','Catégorie')->setColumns(6),
-            AssociationField::new('article','Article')->setColumns(6),
-            AssociationField::new('media_type_id','Type de média')->setColumns(6),
-        ];
+                ->setUploadedFileNamePattern('[name]_[randomhash].[extension]')
+                ->setRequired(false);
+        yield TextField::new('legend', 'Légende')
+                ->setColumns(6);
+
     }
 
 
@@ -51,8 +47,8 @@ class MediaCrudController extends AbstractCrudController
     public function createEntity(string $entityFqcn)
     {
         $media = new Media();
-        $media->setDateCreation(new \DateTimeImmutable());
-        $media->setDateModification(new \DateTimeImmutable());
+        $media->setCreatedAt( new \DateTimeImmutable() );
+        $media->setUpdatedAt( new \DateTimeImmutable() );
 
         return $media;
     }
