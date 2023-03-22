@@ -44,7 +44,7 @@ class MediaRepository extends ServiceEntityRepository
         $medias  =  $this->findAll();
         $choices =  array();
         foreach($medias as $media){
-            $choices[$media->getName()] = $media->getId();
+            $choices[$media->getFile()] = $media->getId();
         }
         return $choices;
     }

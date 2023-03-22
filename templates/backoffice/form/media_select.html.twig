@@ -6,7 +6,7 @@
     <select>
         {% for choice in form.vars.choices %}
             <option  value="{{ choice.value }}">
-                <img src="{{ constant('App\\Constants\\Constants::ASSETS_IMG_PATH') ~ choice.value }}" class="img-fluid">
+                <img src="{{ asset(constant('App\\Constants\\Constants::ASSETS_IMG_PATH') ~ choice.label) }}" class="img-fluid">
                 {{ choice.label }}
             </option>
         {% endfor %}
