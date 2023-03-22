@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Traits\CMSTrait;
+use App\Entity\Traits\MediaTrait;
 use App\Entity\Traits\TimesTampableTrait;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,6 +17,7 @@ class Category
     use CMSTrait;
     // Champs date.
     use TimestampableTrait;
+    use MediaTrait;
 
     public function __construct()
     {

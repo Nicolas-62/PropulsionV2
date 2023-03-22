@@ -5,7 +5,8 @@ namespace App\Controller\Backoffice;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Media;
-use App\Field\MediaField;
+use App\Field\MediaSelectField;
+use App\Field\MediaUploadField;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -25,14 +26,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
-use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+
 class ArticleCrudController extends AbstractCrudController
 {
 
@@ -106,24 +106,36 @@ class ArticleCrudController extends AbstractCrudController
                 // Ajout d'un onglet
                 yield FormField::addTab('Medias')
                     ->setIcon('image');
-                // Pour chaque médiaspec
+                // Pour chaque mediaspec
                 foreach ($mediaspecs as $index => $mediaspec) {
+                    yield FormField::addRow();
+
+
                     // Ajout d'un champ d'upload d'un média
-                    yield ImageField::new('media' . $index + 1, ucfirst($mediaspec->getName()) . ' : téléchargez un média ou...')
-                        ->setColumns(6)
-                        ->setBasePath('assets/images')
-                        ->setUploadDir('public/assets/images')
-                        ->setUploadedFileNamePattern('[name]_[randomhash].[extension]')
-                        ->setRequired(false);
-                    // Ajout d'un champ de sélection d'un média existant.
-                    yield ChoiceField::new('media' . ($index + 11), 'choisissez un média existant.')
-                        ->setColumns(6)
-                        ->setFormTypeOptions([
-                            'multiple' => false
-                        ])
-                        ->setChoices(
-                            $this->entityManager->getRepository(Media::class)->getAllForChoices()
-                        );
+                    // Ajout du champ média.
+                    yield $imageField = MediaUploadField::new('media' . ($index + 1), ucfirst($mediaspec->getName()) . ' : téléchargez un média ou...');
+                    // Récupération du média.
+                    $media = $this->entityManager->getRepository(Article::class)->getMedia($this->entity, $mediaspec);
+                    // Si l'entité possède un média pour cette mediaspec.
+                    if($media != null){
+                        $imageField->setLabel('')
+                            // On associe le média existant au champ configuré
+                            ->setValue($media)
+                            // On définit la vue dédiée à l'affichage du média
+                            ->setFormTypeOptions([
+                                'block_name' => 'media_upload',
+                            ])
+                        ;
+                    // Si pas encore de média défini.
+                    }else{
+                        // Ajout d'un champ supplémentaire de sélection d'un média existant.
+                        yield MediaSelectField::new('media' . ($index + 11))
+                            ->setChoices(
+                                $this->entityManager->getRepository(Media::class)->getAllForChoices()
+                            )
+                        ;
+                    }
+
                 }
             }
         }
@@ -222,8 +234,9 @@ class ArticleCrudController extends AbstractCrudController
     {
         // Récupération de l'article
         $entity = $context->getEntity()->getInstance();
+        dump($entity->getChildren());
         // Si il n'a pas d'enfants, on affiche le détail de l'article
-        if($entity->getChildren()->isEmpty())
+        if($entity->getChildren() == null)
         {
             return parent::detail($context);
         }
@@ -253,9 +266,10 @@ class ArticleCrudController extends AbstractCrudController
         {
             $this->category = $this->entity->getCategory();
         }
+//        $this->adminUrlGenerator->unsetAllExcept('entityId');
+        $this->adminUrlGenerator->unsetAll();
         return parent::edit($context);
     }
-
 
     /**
      * configureCrud permet de configurer le crud, champs de recherche, redirection vers un template spécial, triage ...
@@ -279,10 +293,11 @@ class ArticleCrudController extends AbstractCrudController
             ->overrideTemplate('crud/index', 'backoffice/article/articles.html.twig')
             ->overrideTemplate('crud/detail', 'backoffice/article/article.html.twig')
             ->overrideTemplate('crud/edit', 'backoffice/article/edit.html.twig')
+            ->setFormThemes(['backoffice/form/media_upload.html.twig','backoffice/form/media_select.html.twig','@EasyAdmin/crud/form_theme.html.twig'])
 
-            //showEntityActionsInlined : permet d'afficher les actions en ligne plutot que dans un menu
+            //showEntityActionsInlined : permet d'afficher les actions en ligne plutôt que dans un menu
             ->showEntityActionsInlined()
-            // Help : met une icône ? à coté du titre avec un text quand on passe la souris dessus
+            // Help : met une icône ? à côté du titre avec un text quand on passe la souris dessus
             ->setHelp('detail',"Message d'aide");
     }
 
@@ -336,21 +351,6 @@ class ArticleCrudController extends AbstractCrudController
         $responseParameters->set('grandParentId', $grandParentId);
         $responseParameters->set('keyName', $keyName);
 
-
-        // On initialise medias a un array vide
-        $medias = [];
-        // On récupère les médias liés à l'article
-
-//        if( key_exists('entityId',$_GET) ) {
-//            $medias = $this->entityManager->getRepository(Media::class)->findby(array('article' => $_GET['entityId']));
-//        }
-//        if( $this->entity ){
-//            $medias = $this->entityManager->getRepository(Media::class)->findby(array('article' => $this->entity->getId()));
-//        }
-
-
-        // On envoie les médias à la vue
-        $responseParameters->set('medias',null);
         return parent::configureResponseParameters($responseParameters);
     }
 

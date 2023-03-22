@@ -9,13 +9,14 @@ use App\Entity\Media;
 use App\Entity\MediaLink;
 use App\Entity\Online;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Event\AfterCrudActionEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeCrudActionEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 
-class CreationListener implements EventSubscriberInterface
+class MediaListener implements EventSubscriberInterface
 {
     private EntityManagerInterface $entityManager;
 
@@ -32,27 +33,29 @@ class CreationListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AfterEntityPersistedEvent::class => 'onAfterEntityPersisted',
-            BeforeCrudActionEvent::class   => 'onBeforeCrudActionEvent',
-            BeforeEntityUpdatedEvent::class => 'saveMedias'
+            BeforeCrudActionEvent::class    => 'unlinkMedia',
+            BeforeEntityUpdatedEvent::class => 'linkMedias',
         ];
     }
 
 
-    /** BeforeEntityUpdatedEvent Permet de faire des actions avant la modification d'une entité
+
+
+    /** saveMedias Permet de faire des actions avant la modification d'une entité
      *
      * @param BeforeEntityUpdatedEvent $event
      * @return void
      */
-    public function saveMedias(BeforeEntityUpdatedEvent $event)
+    public function linkMedias(BeforeEntityUpdatedEvent $event)
     {
+        dump('BeforeEntityUpdatedEvent : linkMedias');
         // Récupération de l'entité
         $entity = $event->getEntityInstance();
         // Si c'est un article ou une catégorie.
         if($entity instanceof  Article || $entity instanceof  Category){
-            // Récupération des médiaspecs qui s'appliquent à l'entité
+            // Récupération des mediaspecs qui s'appliquent à l'entité
             $mediaspecs = $this->entityManager->getRepository($entity::class)->getMediaspecs($entity);
-            // Pour chaque médiaspec
+            // Pour chaque mediaspec
             foreach ($mediaspecs as $index => $mediaspec) {
                 // Objet média
                 $media = null;
@@ -84,7 +87,6 @@ class CreationListener implements EventSubscriberInterface
                     // On sauvegarde l'entité.
                     $this->entityManager->getRepository($entity::class)->save($entity);
                 }
-
             }
         }
     }
@@ -95,11 +97,9 @@ class CreationListener implements EventSubscriberInterface
      * @param BeforeCrudActionEvent $event
      * @return void
      */
-    public function onBeforeCrudActionEvent(BeforeCrudActionEvent $event)
+    public function unlinkMedia(BeforeCrudActionEvent $event)
     {
-
-
-        // Code permettant le switch online / offline des articles
+        dump('BeforeCrudActionEvent : unlinkMedia');
 
         // Entité
         $entity = $event->getAdminContext()->getEntity()->getInstance();
@@ -114,64 +114,20 @@ class CreationListener implements EventSubscriberInterface
         if($action == "edit"){
             // Si c'est un article ou une catégorie
             if($entity instanceof  Article || $entity instanceof  Category){
-                // Si on ajoute/enlève en ligne.
-                if($fieldName == 'isOnline') {
-                    // On récupère l'objet Online
-                    $online = $entity->getOnlineByCodeLangue('fr');
-                    // Si il n'existe pas.
-                    if( ! $online){
-                        $online = new Online();
-                        $online->{'set'.ucfirst($entity->getClassName())}($entity);
-                        $online->setLangue($this->entityManager->getRepository(Langues::class)->findOneByCode('fr'));
+                // Si on supprime le lien avec le média.
+                if($fieldName == 'unlink_media'){
+                    // Récupération du lien avec le média.
+                    $media_link = $this->entityManager->getRepository(MediaLink::class)->findOneBy(['media' => $newValue]);
+                    // Si le lien existe.
+                    if($media_link != null) {
+                        $entity->removeMediaLink($media_link);
+                        $this->entityManager->getRepository(MediaLink::class)->remove($media_link);
+                        $this->entityManager->flush();
                     }
-                    // On passe la valeur que l'on souhaite mettre à jour
-                    $online->setOnline($newValue);
-                    // On envoie l'objet à la BDD
-                    $this->entityManager->persist($online);
-                    $this->entityManager->flush();
                 }
             }
         }
 
-    }
 
-
-    /** onAfterEntityPersisted écoute quand une entité est créée et permet de faire des actions
-     *
-     * @param AfterEntityPersistedEvent $event
-     * @return void
-     */
-    public function onAfterEntityPersisted(AfterEntityPersistedEvent $event)
-    {
-        $entity = $event->getEntityInstance();
-
-        // Ajouter une ligne à la table online lié à l'article et avec online = 0 pendant la création d'un article
-        if ($entity instanceof Article) {
-            $online = new Online();
-            $online->setArticle($entity);
-            $online->setCategory(null);
-            $langue = $this->entityManager->getRepository(Langues::class)->find(1);
-            $online->setLangue($langue);
-
-
-            // On passe l'objet à la BDD
-            $this->entityManager->persist($online);
-            $this->entityManager->flush();
-        }
-
-
-        // Ajouter une ligne à la table online lié à la catégorie et avec online = 0 pendant la création d'un catégorie
-        if ($entity instanceof Category) {
-            $online = new Online();
-            $online->setArticle(null);
-            $online->setCategory($entity);
-            $langue = $this->entityManager->getRepository(Langues::class)->getDefaultLangue();
-            $online->setLangue($langue);
-
-
-            // On passe l'objet à la BDD
-            $this->entityManager->persist($online);
-            $this->entityManager->flush();
-        }
     }
 }

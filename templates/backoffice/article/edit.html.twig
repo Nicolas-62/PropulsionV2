@@ -59,11 +59,6 @@
 {% block main %}
     {% block edit_form %}
         {{ form(edit_form) }}
-
-        {% for mediaspec in mediaspecs %}
-            {{ include('backoffice/fields/media.html.twig') }}
-        {%  endfor %}
-
     {% endblock edit_form %}
 
     {% block delete_form %}

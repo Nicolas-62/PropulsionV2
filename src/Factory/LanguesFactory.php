@@ -2,6 +2,7 @@
 
 namespace App\Factory;
 
+use App\Constants\Constants;
 use App\Entity\Langues;
 use App\Repository\LanguesRepository;
 use DateTimeImmutable;
@@ -48,7 +49,7 @@ final class LanguesFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'code' => 'fr',
+            'code' => Constants::LOCALE,
             'label' => 'Français',
             'ordre' => 1,
         ];

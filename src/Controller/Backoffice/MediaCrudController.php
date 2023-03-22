@@ -4,6 +4,7 @@ namespace App\Controller\Backoffice;
 
 use App\Entity\Category;
 use App\Entity\Media;
+use App\Field\MediaSelectField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -26,12 +27,7 @@ class MediaCrudController extends AbstractCrudController
     {
        // if(Crud::PAGE_EDIT === $pageName || Crud::PAGE_NEW === $pageName) {
         yield TextField::new('getName', 'nom')->onlyOnIndex();
-        yield ImageField::new('file', 'Fichier')
-                ->setColumns(6)
-                ->setBasePath('assets/images')
-                ->setUploadDir('public/assets/images')
-                ->setUploadedFileNamePattern('[name]_[randomhash].[extension]')
-                ->setRequired(false);
+        yield MediaSelectField::new('file', 'Fichier');
         yield TextField::new('legend', 'Légende')
                 ->setColumns(6);
 

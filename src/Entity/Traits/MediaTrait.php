@@ -2,6 +2,7 @@
 
 namespace App\Entity\Traits;
 
+use App\Entity\Media;
 use Doctrine\ORM\Mapping as ORM;
 
 trait MediaTrait
@@ -22,7 +23,7 @@ trait MediaTrait
     }
 
     /**
-     * @return mixed
+     * @return Media
      */
     public function getMedia1()
     {
@@ -33,7 +34,7 @@ trait MediaTrait
      * @param mixed $media1
      * @return MediaTrait
      */
-    public function setMedia1($media1)
+    public function setMedia1($media1): self
     {
         $this->media1 = $media1;
         return $this;

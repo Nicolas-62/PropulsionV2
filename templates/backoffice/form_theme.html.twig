@@ -8,15 +8,15 @@
 
     {{ parent() }}
 
-<div class="row"> {# this is closed in form_end #}
-    <input type="hidden" name="referrer" value="{{ ea.request.query.get('referrer') }}">
-    {% endblock form_start %}
+    <div class="row"> {# this is closed in form_end #}
+        <input type="hidden" name="referrer" value="{{ ea.request.query.get('referrer') }}">
+{% endblock form_start %}
 
-    {% block form_end %}
-    {% if not render_rest is defined or render_rest %}
-        {{ form_rest(form) }}
-    {% endif %}
-</div> {# this closes the '<div class="row">' of form_start #}
+{% block form_end %}
+            {% if not render_rest is defined or render_rest %}
+                {{ form_rest(form) }}
+            {% endif %}
+        </div> {# this closes the '<div class="row">' of form_start #}
     </form>
 {% endblock %}
 
@@ -96,7 +96,7 @@
                     {% if has_append_html %}
                         <span class="input-group-text">{{ ea.field.append_html|raw }}</span>
                     {% endif %}
-                    {% if has_input_groups %}</div>{% endif %}
+                {% if has_input_groups %}</div>{% endif %}
 
                 {% if ea.field.help ?? false %}
                     <small class="form-help">{{ ea.field.help|raw }}</small>
@@ -440,7 +440,7 @@
                                                 {# If the field is a nested CRUD form then only render its children #}
                                                 {{ _self.recursiveTabForm(field, ea_crud_form, tab_name) }}
                                             {% else %}
-                                                {# Render all other field #}
+                                                {# Render all other fields #}
                                                 {{ form_row(field) }}
                                             {% endif %}
                                         {% endfor %}
@@ -472,12 +472,12 @@
                     <div class="form-panel-header {{ collapsible ? 'collapsible' }} {{ panel_config.help|default(false) is not empty ? 'with-help' }}">
                         <div class="form-panel-title">
                             <a {% if not collapsible %}
-                                href="#" class="not-collapsible"
-                            {% else %}
-                                href="#content-{{ panel_name }}" data-bs-toggle="collapse"
-                                class="form-panel-collapse {{ collapsed ? 'collapsed' }}"
-                                aria-expanded="{{ collapsed ? 'false' : 'true' }}" aria-controls="content-{{ panel_name }}"
-                            {% endif %}
+                                    href="#" class="not-collapsible"
+                               {% else %}
+                                    href="#content-{{ panel_name }}" data-bs-toggle="collapse"
+                                    class="form-panel-collapse {{ collapsed ? 'collapsed' }}"
+                                    aria-expanded="{{ collapsed ? 'false' : 'true' }}" aria-controls="content-{{ panel_name }}"
+                               {% endif %}
                             >
                                 {% if collapsible %}
                                     <i class="fas fw fa-chevron-right form-panel-collapse-marker"></i>
@@ -514,7 +514,7 @@
                     {# If the field is a nested CRUD form then only render its children #}
                     {{ _self.recursivePanelForm(field) }}
                 {% else %}
-                    {# Render all other field #}
+                    {# Render all other fields #}
                     {{ form_row(field) }}
                 {% endif %}
             {% endfor %}
@@ -586,8 +586,8 @@
                 <div class="filter-heading" id="filter-heading-{{ loop.index }}">
                     <input type="checkbox" class="filter-checkbox" {% if field.vars.name in applied_filters %}checked{% endif %}>
                     <a data-bs-toggle="collapse" href="#filter-content-{{ loop.index }}" aria-expanded="{{ field.vars.name in applied_filters ? 'true' : 'false' }}" aria-controls="filter-content-{{ loop.index }}"
-                    {% for name, value in field.vars.label_attr|default([]) %}{{ name }}="{{ value|e('html_attr') }}" {% endfor %}>
-                    {{ field.vars.label|default(field.vars.name|humanize)|trans(domain = ea.i18n.translationDomain) }}
+                        {% for name, value in field.vars.label_attr|default([]) %}{{ name }}="{{ value|e('html_attr') }}" {% endfor %}>
+                        {{ field.vars.label|default(field.vars.name|humanize)|trans(domain = ea.i18n.translationDomain) }}
                     </a>
                 </div>
                 <div id="filter-content-{{ loop.index }}" class="filter-content collapse {% if field.vars.name in applied_filters %}show{% endif %}" aria-labelledby="filter-heading-{{ loop.index }}">
@@ -666,7 +666,7 @@
                                     <span title="{{ file.mTime|date }}">
                                         <i class="fa fa-file-o"></i> {{ file.filename }}
                                     </span>
-                                    {% if download_path %}</a>{% endif %}
+                                {% if download_path %}</a>{% endif %}
                             </td>
                             <td class="text-right file-size">{{ file.size|ea_filesize }}</td>
                         </tr>
@@ -726,14 +726,42 @@
             <div class="form-control fileupload-list">
                 <table class="fileupload-table">
                     <tbody>
+{#                    {% for file in currentFiles %}#}
+{#                        <tr>#}
+{#                            <td>#}
+{#                                {% if download_path %}<a href="{{ asset(download_path ~ file.filename) }}">{% endif %}#}
+{#                                    <span title="{{ file.mTime|date }}">#}
+{#                                        <i class="fa fa-file-o"></i> {{ file.filename }}#}
+{#                                    </span>#}
+{#                                    {% if download_path %}</a>{% endif %}#}
+{#                            </td>#}
+{#                            <td class="text-right file-size">{{ file.size|ea_filesize }}</td>#}
+{#                        </tr>#}
+{#                    {% endfor %}#}
+
+
                     {% for file in currentFiles %}
                         <tr>
                             <td>
-                                {% if download_path %}<a href="{{ asset(download_path ~ file.filename) }}">{% endif %}
-                                    <span title="{{ file.mTime|date }}">
-                                        <i class="fa fa-file-o"></i> {{ file.filename }}
-                                    </span>
+                                {# OVERRIDE --------> #}
+                                {% if download_path and file.extension in ["jpg", "png", "gif"] %}
+                                    {% set _lightbox_id = 'ea-lightbox-' ~ file.filename %}
+                                    <a href="#" class="ea-lightbox-thumbnail" data-featherlight="#{{ _lightbox_id }}"
+                                       data-featherlight-close-on-click="anywhere">
+                                        <img class="img-fluid" src="{{ asset(download_path ~ file.filename) }}">
+                                        {{ file.filename }}
+                                    </a>
+                                    <div id="{{ _lightbox_id }}" class="ea-lightbox">
+                                        <img alt="{{ file.filename }}" src="{{ asset(download_path ~ file.filename) }}">
+                                    </div>
+                                {% else %}
+                                    {% if download_path %}<a href="{{ asset(download_path ~ file.filename) }}">{% endif %}
+                                        <span title="{{ file.mTime|date }}">
+                                            <i class="fa fa-file-o"></i> {{ file.filename }}
+                                        </span>
                                     {% if download_path %}</a>{% endif %}
+                                {% endif %}
+                                {# OVERRIDE <-------- #}
                             </td>
                             <td class="text-right file-size">{{ file.size|ea_filesize }}</td>
                         </tr>

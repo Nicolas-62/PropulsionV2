@@ -1,0 +1,14 @@
+{% block _Article_media_upload_widget %}
+    {# ... #}
+    <a
+        class="btn btn-block btn-danger"
+        href="{{
+            ea_url().
+                set('fieldName', 'unlink_media').
+                set('newValue', ea.entity.fields.getByProperty(form.vars.name).value.id)
+        }}"
+    >
+        Supprimer
+    </a>
+    <img src="{{ asset( form.vars.download_path ~ ea.entity.fields.getByProperty(form.vars.name).value.file) }}" class="img-fluid">
+{% endblock %}

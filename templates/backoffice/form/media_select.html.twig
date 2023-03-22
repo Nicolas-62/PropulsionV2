@@ -1,0 +1,14 @@
+
+{% block _Article_media_select_widget %}
+{#    {{ dump(form.vars) }}#}
+{#    <img src="{{ asset( ea.entity.fields.getByProperty(form.vars.name).value) }}" class="img-fluid">#}
+{#    {{ ea.entity.fields.getByProperty(form.vars.name).formattedValue|trans|raw }}#}
+    <select>
+        {% for choice in form.vars.choices %}
+            <option  value="{{ choice.value }}">
+                <img src="{{ constant('App\\Constants\\Constants::ASSETS_IMG_PATH') ~ choice.value }}" class="img-fluid">
+                {{ choice.label }}
+            </option>
+        {% endfor %}
+    </select>
+{% endblock %}

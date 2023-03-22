@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Constants\Constants;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Mediaspec;
@@ -16,7 +17,8 @@ class CategoryRepository extends CMSRepository
     protected string $model_key          = 'category_id';
 
 
-    public function __construct(ManagerRegistry $registry)
+
+    public function __construct(ManagerRegistry $registry, String $locale)
     {
         parent::__construct($registry, Category::class);
     }
@@ -28,7 +30,7 @@ class CategoryRepository extends CMSRepository
      * @param bool $online
      * @return ArrayCollection
      */
-    public function getArticles($category_id, bool $online = true, $code_langue = 'fr'): ArrayCollection
+    public function getArticles($category_id, bool $online = true, $code_langue = Constants::LOCALE): ArrayCollection
     {
 
         $category = $this->findOneBy(['id'=> $category_id]);
@@ -63,7 +65,7 @@ class CategoryRepository extends CMSRepository
      * @param Category $entity
      * @return Mediaspec
      */
-    public function getMediaspecs(Category $entity): Mediaspec
+    public function getMediaspecs(Category $entity): array
     {
         $heritage  =   0;
         return $this->registry->getRepository(Mediaspec::class)->findByCategory($entity, $heritage);

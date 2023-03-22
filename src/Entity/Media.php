@@ -67,7 +67,11 @@ class Media
 
     public function __toString(): string
     {
-        return $this->legend;
+        if($this->legend) {
+            return $this->legend;
+        }else{
+            return '';
+        }
     }
 
     /**

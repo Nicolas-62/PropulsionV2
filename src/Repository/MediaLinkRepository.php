@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Article;
 use App\Entity\MediaLink;
+use App\Entity\Mediaspec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -54,13 +56,15 @@ class MediaLinkRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?MediaLink
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findOneByArticle(Article $article, Mediaspec $mediaspec): ?MediaLink
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.mediaspec = :mediaspec')
+            ->andWhere('m.article   = :article')
+            ->setParameter('mediaspec', $mediaspec)
+            ->setParameter('article', $article)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

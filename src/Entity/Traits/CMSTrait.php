@@ -2,6 +2,7 @@
 
 namespace App\Entity\Traits;
 
+use App\Constants\Constants;
 use App\Entity\Category;
 use App\Entity\Langues;
 use App\Entity\Online;
@@ -135,7 +136,7 @@ trait CMSTrait
         return $online;
     }
 
-    public function isOnline($code_langue = 'fr'): bool
+    public function isOnline($code_langue = Constants::LOCALE): bool
     {
         $online = $this->getOnlineByCodeLangue($code_langue);
         if($online &&  $online->isOnline()){

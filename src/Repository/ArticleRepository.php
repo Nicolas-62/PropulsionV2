@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Article;
+use App\Entity\Media;
+use App\Entity\MediaLink;
 use App\Entity\Mediaspec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -56,6 +58,18 @@ class ArticleRepository extends CMSRepository
 
         // retour
         return $mediaspecs;
+    }
+
+    /**
+     * getMedia
+     * Récupère un média pour une médiapsec donnée
+     * @param Article $entity
+     * @param Mediaspec $mediaspec_id
+     * @return Media|null
+     */
+    public function getMedia(Article $entity, Mediaspec $mediaspec): Media|null
+    {
+        return $this->registry->getRepository(MediaLink::class)->findOneByArticle($entity, $mediaspec)?->getMedia();
     }
 
 
