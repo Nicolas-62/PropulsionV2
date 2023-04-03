@@ -1,13 +1,12 @@
 
 {% block _Article_media_select_widget %}
-{#    {{ dump(form.vars) }}#}
 {#    <img src="{{ asset( ea.entity.fields.getByProperty(form.vars.name).value) }}" class="img-fluid">#}
 {#    {{ ea.entity.fields.getByProperty(form.vars.name).formattedValue|trans|raw }}#}
-    <select>
+    <select class="form-select custom-select" data-placeholder="{{ 'Choisissez un média..' }}" id="{{ form.vars.id }}" name="{{ form.vars.full_name }}">
+        <option></option>
         {% for choice in form.vars.choices %}
-            <option  value="{{ choice.value }}">
-                <img src="{{ asset(constant('App\\Constants\\Constants::ASSETS_IMG_PATH') ~ choice.label) }}" class="img-fluid">
-                {{ choice.label }}
+            <option  value="{{ choice.value }}" data-thumbnail-path="{{ asset(getThumbnailPath(choice.label)) }}">
+                {{ getName(choice.label) }}
             </option>
         {% endfor %}
     </select>

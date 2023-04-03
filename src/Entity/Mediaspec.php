@@ -57,6 +57,15 @@ class Mediaspec
         $this->updated_at = new \DateTimeImmutable();
     }
 
+    public function __toString(): string
+    {
+        if($this->name) {
+            return $this->name;
+        }else{
+            return '';
+        }
+    }
+
     public function getId(): ?int
     {
         return $this->id;

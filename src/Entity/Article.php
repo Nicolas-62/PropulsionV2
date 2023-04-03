@@ -193,18 +193,6 @@ class Article
 
         return $this;
     }
-
-    public function getMedia(Mediaspec $mediaspec_id): Media
-    {
-        $media = new Media();
-        foreach ($this->getMediaLinks() as $mediaLink){
-            if($mediaLink->getMediaspec()->getId() == $mediaspec_id){
-                $media = $mediaLink->getMedia();
-            }
-        }
-        return $media;
-    }
-
 }
 
 

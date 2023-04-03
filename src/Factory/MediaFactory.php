@@ -56,7 +56,7 @@ final class MediaFactory extends ModelFactory
     {
 
         return [
-            'file' => self::faker()->imageUrl(640, 480, 'animals'),
+            'media' => self::faker()->imageUrl(640, 480, 'animals'),
         ];
     }
 

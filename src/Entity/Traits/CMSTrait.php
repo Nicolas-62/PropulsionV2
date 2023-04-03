@@ -5,6 +5,8 @@ namespace App\Entity\Traits;
 use App\Constants\Constants;
 use App\Entity\Category;
 use App\Entity\Langues;
+use App\Entity\Media;
+use App\Entity\Mediaspec;
 use App\Entity\Online;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -149,6 +151,19 @@ trait CMSTrait
     public function getClassName(): string
     {
         return (new \ReflectionClass($this))->getShortName();
+    }
+
+
+
+    public function getMedia(Mediaspec $mediaspec): ?Media
+    {
+        $media = null;
+        foreach ($this->getMediaLinks() as $mediaLink){
+            if($mediaLink->getMediaspec() === $mediaspec){
+                $media = $mediaLink->getMedia();
+            }
+        }
+        return $media;
     }
 
 }

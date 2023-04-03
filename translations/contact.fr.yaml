@@ -1,0 +1,7 @@
+Firstname: Prénom
+Lastname: Nom
+Phone: Téléphone
+Email: Email
+Message: Message
+Ville:
+  minMessage: Le nom d'une ville doit faire au moins 5 caractères

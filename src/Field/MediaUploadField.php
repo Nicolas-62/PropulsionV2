@@ -6,6 +6,7 @@ use App\Constants\Constants;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class MediaUploadField  implements FieldInterface
 {
@@ -16,7 +17,7 @@ class MediaUploadField  implements FieldInterface
      * @param string|null $label
      * @return mixed
      */
-    public static function new(string $propertyName, ?string $label = null)
+    public static function new(string $propertyName, ?string $label = null): ImageField
     {
         // Configuration du champ d'upload d'un média.
         return (ImageField::new($propertyName, $label)
@@ -27,5 +28,19 @@ class MediaUploadField  implements FieldInterface
             ->setRequired(false)
         );
     }
+
+    // TEST VICHUPLOAD BUNDLE
+//    public static function new(string $propertyName, ?string $label = null)
+//    {
+//        // Configuration du champ d'upload d'un média.
+//        return (new self())
+//            ->setProperty($propertyName)
+//            ->setLabel($label)
+//            ->setColumns(6)
+//            ->setTemplatePath('backoffice/field/mediaupload.html.twig')
+//            ->setFormType(VichImageType::class)
+//            ->addCssClass('field-vich-image')
+//            ;
+//    }
 
 }

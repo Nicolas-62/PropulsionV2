@@ -2,18 +2,21 @@
  * Welcome to your app's main JavaScript file!
  *
  * We recommend including the built version of this JavaScript file
- * (and its CSS file) in your base layout (base.html.twig).
+ * (and its CSS file) in your base layout (layout.html.twig).
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import './styles/app.css';
+import './styles/frontoffice.css';
 
 // start the Stimulus application
 import './bootstrap';
 
 
 import $ from 'jquery';
+
 import 'select2';
-$('select').select2({
-    theme: 'bootstrap4',
+
+$('.custom-select').select2({
+    theme: 'bootstrap-5',
+
 });

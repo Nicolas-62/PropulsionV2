@@ -1,6 +1,7 @@
+{# Surcharge la vue de la liste des actions globales en vue liste #}
 <div class="page-actions">
     {% for action in entity.actions %}
-        {# Action globale de retour à la liste dont fait partie le parent des enfants de la liste visble.#}
+        {# Action de retour à la liste #}
         {% if action.name == "return" %}
             {# Passage de l'id du grand parent pour afficher la liste de ses enfant (dont fait partie le parent actuel) #}
             {{ include(action.templatePath, {

@@ -1,4 +1,4 @@
-{% block _Article_media_upload_widget %}
+{% block _Article_media_delete_widget %}
     {# ... #}
     <a
         class="btn btn-block btn-danger"
@@ -10,5 +10,5 @@
     >
         Supprimer
     </a>
-    <img src="{{ asset( form.vars.download_path ~ ea.entity.fields.getByProperty(form.vars.name).value.file) }}" class="img-fluid">
+    <img src="{{ asset(getThumbnailPath(ea.entity.fields.getByProperty(form.vars.name).value.media)) }}" class="img-fluid">
 {% endblock %}

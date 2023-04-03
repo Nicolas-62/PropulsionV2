@@ -1,0 +1,14 @@
+.select2-search{
+    background-color: var(--form-control-bg);
+    input{
+        background-color: var(--form-control-bg);
+    }
+}
+.select2-selection--single{
+    //background-color: var(--form-control-bg) !important;
+}
+
+.image-icon{
+    max-height: 100px;
+    max-width: 100px;
+}

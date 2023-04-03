@@ -118,12 +118,12 @@ class ArticleCrudController extends AbstractCrudController
                     $media = $this->entityManager->getRepository(Article::class)->getMedia($this->entity, $mediaspec);
                     // Si l'entité possède un média pour cette mediaspec.
                     if($media != null){
-                        $imageField->setLabel('')
+                        $imageField->setLabel(ucfirst($mediaspec->getName()))
                             // On associe le média existant au champ configuré
                             ->setValue($media)
                             // On définit la vue dédiée à l'affichage du média
                             ->setFormTypeOptions([
-                                'block_name' => 'media_upload',
+                                'block_name' => 'media_delete',
                             ])
                         ;
                     // Si pas encore de média défini.
@@ -253,7 +253,7 @@ class ArticleCrudController extends AbstractCrudController
     }
 
     /**
-     * detail renvoi vers une page détaillant un des objets mis en bdd
+     * edit renvoi vers le formulaire d'édition de l'article
      * @param AdminContext $context
      * @return KeyValueStore|RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
@@ -289,11 +289,13 @@ class ArticleCrudController extends AbstractCrudController
                     return 'Articles de la catégorie : '.$this->category->getTitle();
                 }
             })
+            ->setPaginatorPageSize(12)
+            ->setPaginatorRangeSize(4)
             // Surcharge des templates de base.
             ->overrideTemplate('crud/index', 'backoffice/article/articles.html.twig')
             ->overrideTemplate('crud/detail', 'backoffice/article/article.html.twig')
             ->overrideTemplate('crud/edit', 'backoffice/article/edit.html.twig')
-            ->setFormThemes(['backoffice/form/media_upload.html.twig','backoffice/form/media_select.html.twig','@EasyAdmin/crud/form_theme.html.twig'])
+            ->setFormThemes(['backoffice/form/media_delete.html.twig','backoffice/form/media_select.html.twig','@EasyAdmin/crud/form_theme.html.twig'])
 
             //showEntityActionsInlined : permet d'afficher les actions en ligne plutôt que dans un menu
             ->showEntityActionsInlined()
@@ -385,31 +387,6 @@ class ArticleCrudController extends AbstractCrudController
         $returnPageAction->addCssClass('btn btn-primary');
         // Ajout des boutons à la liste des actions disponibles.
         $actions->add(Crud::PAGE_EDIT, $returnPageAction);
-
-        // Bouton Revenir
-//        $returnAction = Action::new('return', 'Revenir', 'fa fa-arrow-left');
-//        // renders the action as a <a> HTML element
-//        $returnAction->displayAsLink();
-//        $actions->add(Crud::PAGE_DETAIL, $returnAction);
-
-
-
-        // Bouton Aperçu
-//        $apercu = Action::new('apercu', 'Aperçu', 'fa fa-magnifying-glass');
-//        // renders the action as a <a> HTML element
-//        $apercu->displayAsLink();
-//
-//        if($this->parentEntity != null) {
-//            $apercu->linkToRoute(Action::DETAIL, [
-//                'entityId' => $this->parentEntity->getId()
-//            ]);
-//        }else{
-//            $apercu->linkToCrudAction('index');
-//        }
-//        $apercu->createAsGlobalAction();
-//        $apercu->addCssClass('btn btn-primary');
-//        $actions->add(Crud::PAGE_EDIT, $apercu);
-
 
         return $actions;
     }

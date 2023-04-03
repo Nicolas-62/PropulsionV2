@@ -2,6 +2,7 @@
 namespace App\EventListener;
 
 
+use App\Constants\Constants;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Langues;
@@ -10,6 +11,7 @@ use App\Entity\MediaLink;
 use App\Entity\Online;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterCrudActionEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityDeletedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeCrudActionEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
@@ -35,10 +37,23 @@ class MediaListener implements EventSubscriberInterface
         return [
             BeforeCrudActionEvent::class    => 'unlinkMedia',
             BeforeEntityUpdatedEvent::class => 'linkMedias',
+            AfterEntityDeletedEvent::class  => 'removeMedia'
         ];
     }
 
-
+    public function removeMedia(AfterEntityDeletedEvent $event){
+        $entity = $event->getEntityInstance();
+        // Si l'élément supprimé n'est pas un média
+        if (!($entity instanceof Media)){
+            return;
+        }
+        // Chemin de l'image
+        $imagepath = Constants::ASSETS_IMG_PATH.$entity->getMedia();
+        // Suppression de l'image
+        if(file_exists($imagepath)) {
+            unlink($imagepath);
+        }
+    }
 
 
     /** saveMedias Permet de faire des actions avant la modification d'une entité
@@ -64,7 +79,7 @@ class MediaListener implements EventSubscriberInterface
                     // On crée le média
                     $media = new Media();
                     // On ajoute le fichier au média.
-                    $media->setFile($entity->{'getMedia'.$index+1}());
+                    $media->setMedia($entity->{'getMedia'.$index+1}());
                 // Si un média existant a été choisi.
                 }else if($entity->{'getMedia'.$index+11}() != null){
                     // On récupère le média.
@@ -99,8 +114,6 @@ class MediaListener implements EventSubscriberInterface
      */
     public function unlinkMedia(BeforeCrudActionEvent $event)
     {
-        dump('BeforeCrudActionEvent : unlinkMedia');
-
         // Entité
         $entity = $event->getAdminContext()->getEntity()->getInstance();
         // Action en cours
@@ -127,7 +140,5 @@ class MediaListener implements EventSubscriberInterface
                 }
             }
         }
-
-
     }
 }

@@ -1,12 +1,22 @@
-    <li> {{ tree.element.className }} Liste des elements de  : {{ tree.element.title }} id :{{ tree.element.id }}
-        {% if not tree.elements.isEmpty %}
-        <ul>
-            {% for children in tree.elements %}
-                {{ include('frontoffice/article/article.html.twig', {tree: children}) }}
-            {% endfor %}
-        </ul>
-        {% else %}
-            <p>Aucun</p>
-        {%  endif %}
-    </li>
+<li> {{ tree.element.id }} {{ tree.element.className }} '{{ tree.element.title }}' online : {{ tree.element.online }}
+    {% for mediaspec in tree.element.mediaspecs %}
+        <div>
+            {% set media = tree.element.getMedia(mediaspec) %}
+            {% if media %}
+                <span>{{ mediaspec.name }}</span>
+                <img src="{{ asset(getThumbnailPath(media.media)) |imagine_filter('thumb_vertical')  }}" class="img-fluid">
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    {% if not tree.elements.isEmpty %}
+    <ul>
+        {% for children in tree.elements %}
+            {{ include('frontoffice/article/article.html.twig', {tree: children}) }}
+        {% endfor %}
+    </ul>
+{#        {% else %}#}
+{#            <p>Aucun</p>#}
+    {%  endif %}
+</li>
 
