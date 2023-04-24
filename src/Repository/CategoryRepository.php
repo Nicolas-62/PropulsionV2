@@ -18,7 +18,9 @@ class CategoryRepository extends CMSRepository
 
 
 
-    public function __construct(ManagerRegistry $registry, String $locale)
+    public function __construct(
+        ManagerRegistry $registry,
+    )
     {
         parent::__construct($registry, Category::class);
     }
@@ -30,32 +32,23 @@ class CategoryRepository extends CMSRepository
      * @param bool $online
      * @return ArrayCollection
      */
-    public function getArticles($category_id, bool $online = true, $code_langue = Constants::LOCALE): ArrayCollection
+    public function getArticles($category_id, $code_langue, bool $online = true): ArrayCollection
     {
 
+        $articles = new ArrayCollection();
+
         $category = $this->findOneBy(['id'=> $category_id]);
-        $articles = $category->getArticles()->filter(function(Article $article) use ($online, $code_langue) {
+        if($category != null) {
+            $articles = $category->getArticles()->filter(function (Article $article) use ($code_langue, $online) {
 
-            if($online) {
-                return $article->isOnline($code_langue);
-            }else{
-                return true;
-            }
-        });
+                if ($online) {
+                    return $article->isOnline($code_langue);
+                } else {
+                    return true;
+                }
+            });
+        }
         return $articles;
-
-//        $qb = $this->registry->getRepository(Article::class)->createQueryBuilder('a');
-//        $qb->where('a.category = :val');
-//        if($online) {
-//            $qb->join('a.online', 'online')
-//                ->andWhere('online.langue = 1')
-//                ->andWhere('online.online = 1');
-//        }
-//        $qb->orderBy('a.ordre', 'ASC')
-//            ->setParameter('val', $category_id);
-//
-//        $query = $qb->getQuery();
-//        return new ArrayCollection($query->getResult());
     }
 
 

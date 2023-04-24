@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Traits\CMSTrait;
-use App\Entity\Traits\MediaTrait;
+use App\Entity\Traits\ExtraDataTrait;
 use App\Entity\Traits\TimesTampableTrait;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -17,7 +17,7 @@ class Category
     use CMSTrait;
     // Champs date.
     use TimestampableTrait;
-    use MediaTrait;
+    use ExtraDataTrait;
 
     public function __construct()
     {
@@ -26,8 +26,8 @@ class Category
         $this->mediaspecs       = new ArrayCollection();
         $this->onlines          = new ArrayCollection();
         $this->mediaLinks       = new ArrayCollection();
-        $this->created_at = new \DateTimeImmutable();
-        $this->updated_at = new \DateTimeImmutable();
+        $this->created_at       = new \DateTimeImmutable();
+        $this->updated_at       = new \DateTimeImmutable();
     }
 
     #[ORM\Column]

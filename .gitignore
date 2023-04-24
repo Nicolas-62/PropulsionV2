@@ -24,6 +24,7 @@
 
 public/assets/images/
 
+
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
 /public/build/
@@ -33,4 +34,5 @@ yarn-error.log
 
 ###> liip/imagine-bundle ###
 /public/media/cache/
-###< liip/imagine-bundle ###
+/assets/front/images/
+/assets/front/fonts/

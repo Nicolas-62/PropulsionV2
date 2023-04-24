@@ -37,7 +37,7 @@ trait TimesTampableTrait
 
     public function setUpdatedAt(\DateTimeImmutable $updated_at): self
     {
-        $this->updated_at = $updated_at;
+        $this->updated_at = new \DateTimeImmutable();
 
         return $this;
     }

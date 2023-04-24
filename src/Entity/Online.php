@@ -22,7 +22,7 @@ class Online
 
     #[ORM\ManyToOne(cascade: ['persist'],inversedBy: 'online')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Langues $langue = null;
+    private ?Language $langue = null;
 
     #[ORM\Column]
     private ?bool $online = null;
@@ -47,12 +47,12 @@ class Online
         return $this->id;
     }
 
-    public function getLangue(): ?Langues
+    public function getLangue(): ?Language
     {
         return $this->langue;
     }
 
-    public function setLangue(?Langues $langue): self
+    public function setLangue(?Language $langue): self
     {
         $this->langue = $langue;
 

@@ -47,7 +47,7 @@ final class OnlineFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'langue' => LanguesFactory::random(),
+            'langue' => LanguageFactory::random(),
             'online' => 1,
             'article' => null,
             'category' => CategoryFactory::random(),

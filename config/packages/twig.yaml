@@ -1,6 +1,13 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
     form_themes: [ 'bootstrap_5_layout.html.twig' ]
+    globals:
+        site: '%app.site%'
+        upload_path: '%app.upload_path%'
+        img_upload_path: '%app.img_upload_path%'
+        fo: '%app.fo%'
+        fo_path: '%app.fo_path%/'
+
 
 when@test:
     twig:

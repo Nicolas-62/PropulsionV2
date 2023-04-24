@@ -1,6 +1,10 @@
-{% extends '../layout.html.twig' %}
+{% extends 'layout.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+
+{% block title %}
+    {{ parent() }}
+     - Log in !
+{% endblock %}
 
 {% block body %}
 <form method="post">
@@ -40,3 +44,4 @@
     </button>
 </form>
 {% endblock %}
+

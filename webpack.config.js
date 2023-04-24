@@ -15,14 +15,22 @@ Encore
     //.setManifestKeyPrefix('build/')
     .enableSassLoader()
 
+
+    // website images.
+    .copyFiles({
+        from: './assets/front/images',
+        to:    'front/images/[path][name].[ext]'
+    })
     /*
      * ENTRY CONFIG
      *
-     * Each entry will result in one JavaScript file (e.g. frontoffice.js)
+     * Each entry will result in one JavaScript file (e.g. main.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('frontoffice', './assets/frontoffice.js')
-    .addEntry('backoffice', './assets/backoffice.js')
+    .addEntry('backoffice', './assets/back/js/main.js')
+
+    .addEntry('frontoffice',    './assets/front/js/main.js')
+    .addEntry('home',           './assets/front/js/home.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
@@ -72,10 +80,10 @@ Encore
     //.enableIntegrityHashes(Encore.isProduction())
 
     // uncomment if you're having problems with a jQuery plugin
-    //.autoProvidejQuery()
+    .autoProvidejQuery()
 ;
 
 module.exports = Encore.addExternals({
-    jquery: 'jQuery'
+    // jquery: 'jQuery'
 }).getWebpackConfig();
 

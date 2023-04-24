@@ -1,0 +1,38 @@
+.border-x {
+  @extend .border;
+  @extend .border-2;
+  @extend .border-white;
+  &:nth-child(n+2) {
+    border-left-width: 0 !important;
+    }
+}
+.border-y {
+  @extend .border;
+  @extend .border-2;
+  @extend .border-white;
+  &:nth-child(n+2) {
+    border-top-width: 0 !important;
+    }
+}
+.nav-link {
+    font-family: "bowlbyone";
+    color:white;
+    height:100%;
+    @extend .text-uppercase;
+    // @extend .text-center;
+    &.active{
+      background-color:$primary;
+      color:$dark !important;
+    }
+    &.secondary {
+      background-color:$secondary;
+    }
+
+}
+.offcanvas.offcanvas-start {
+  top:240px;
+  background:transparent
+}
+.hide {
+  display:none;
+}

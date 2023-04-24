@@ -3,14 +3,14 @@
 namespace App\Entity;
 
 use App\Entity\Traits\TimesTampableTrait;
-use App\Repository\LanguesRepository;
+use App\Repository\LanguageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: LanguesRepository::class)]
-class Langues
+#[ORM\Entity(repositoryClass: LanguageRepository::class)]
+class Language
 {
 
     // Champs date.

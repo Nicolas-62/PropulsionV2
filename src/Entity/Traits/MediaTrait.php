@@ -32,7 +32,7 @@ trait MediaTrait
 
     /**
      * @param mixed $media1
-     * @return MediaTrait
+     * @return ExtraDataTrait
      */
     public function setMedia1($media1): self
     {
@@ -50,7 +50,7 @@ trait MediaTrait
 
     /**
      * @param mixed $media2
-     * @return MediaTrait
+     * @return ExtraDataTrait
      */
     public function setMedia2($media2)
     {
@@ -68,7 +68,7 @@ trait MediaTrait
 
     /**
      * @param mixed $media3
-     * @return MediaTrait
+     * @return ExtraDataTrait
      */
     public function setMedia3($media3)
     {
@@ -86,7 +86,7 @@ trait MediaTrait
 
     /**
      * @param mixed $media4
-     * @return MediaTrait
+     * @return ExtraDataTrait
      */
     public function setMedia4($media4)
     {
@@ -104,7 +104,7 @@ trait MediaTrait
 
     /**
      * @param mixed $media5
-     * @return MediaTrait
+     * @return ExtraDataTrait
      */
     public function setMedia5($media5)
     {

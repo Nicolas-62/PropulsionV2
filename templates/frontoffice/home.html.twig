@@ -1,21 +1,146 @@
-{% extends 'layout.html.twig' %}
-{% block title %}Hello FOController!{% endblock %}
-{% block header %}
-    {%  include 'frontoffice/header.html.twig' %}
-{% endblock %}
+{# frontoffice/home.html.twig #}
+{% extends 'frontoffice/_components/layout.html.twig' %}
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <main role="main">
+        <div class="container g-0 d-none d-md-block">
+            <div class="billetterie-lg-bg">
+                <div class="px-5 py-5">
+                    <ul class="list-unstyled font-alt d-flex flex-wrap justify-content-start">
 
-<div class="example-wrapper">
-    <h1>{{ 'hello'|trans }}  {{ controller_name }}! ✅</h1>
+{#                        <!-- Article Vedette Tête d'affiche -->#}
+{#                        <?php foreach($articles[46] as $article){#}
+{#						if($article->vedette == 1){#}
+{#                        if($article->headline == 1){ ?>#}
+{#                        <li class="lineup1 rounded me-3 mb-3 position-relative">#}
+{#                            <a href="<?= BASE_URL ?>programmation/<?= url_compliant($article->data->titre) ?>/<?= $article->id ?>" class="link-dark text-decoration-none stretched-link">#}
+{#                                <?= $article->data->titre ?>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                        <?php }#}
+{#						}#}
+{#					}?>#}
+                        {{ include('frontoffice/article/article.html.twig', {tree : tree[46]}) }}
+                    </ul>
+                    <ul class="list-unstyled font-alt d-flex flex-wrap justify-content-start">
+                        <!-- Article Vedette non Tête d'affiche -->
+{#                        <?php foreach($articles[46] as $article){#}
+{#						if($article->vedette == 1){#}
+{#                        if($article->headline == 0){ ?>#}
+{#                        <li class="lineup2 rounded me-3 mb-3 position-relative">#}
+{#                            <a href="<?= BASE_URL ?>programmation/<?= url_compliant($article->data->titre) ?>/<?= $article->id ?>" class="link-dark text-decoration-none stretched-link">#}
+{#                                <?= $article->data->titre ?>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                        <?php }#}
+{#						}#}
+{#					}?>#}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/Users/nicolas/repos/PropulsionV2/src/Controller/FOController.php'|file_link(0) }}">src/Controller/FOController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/Users/nicolas/repos/PropulsionV2/templates/frontoffice/categories.html.twig'|file_link(0) }}">templates/fo/index.html.twig</a></code></li>
-    </ul>
-</div>
+                        <li class="lineup2 rounded me-3 mb-3 position-relative">
+                            <a href="{{ url('fo_home_programmation') }}" class="link-dark text-decoration-none stretched-link">
+                                et bien plus...
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Bouton de la billetterie -->
+                    <a href="#">
+                         <img src="{{ asset('build/front/images/billetterie-cta.svg') }}">
+                    </a>
+                </div>
+                <!-- Image avant vidéo -->
+                <img class="img-fluid" src="{{ asset('build/front/images/prevideo-lg.png') }}
+">
+            </div>
+
+            <!-- Vidéo de la Home -->
+            <div style="margin:0 0 -12px 0">
+{#                <a href="https://www.youtube.com/watch?v=Vu2I_I16cKU">#}
+{#                    <video class="video-fluid" autoplay muted loop poster="{{ asset('build/front/images/poster-lg.jpg') }}">#}
+{#                        <source src="{{ asset('build/front/images/AFTER-MOVIE-MALN-2022.webm') }}" type="video/webm">#}
+{#                        <source src="{{ asset('build/front/images/AFTER-MOVIE-MALN-2022.mp4') }}" type="video/mp4">#}
+{#                    </video>#}
+{#                </a>#}
+            </div>
+        </div>
+{#        <div class="container g-0 d-block d-md-none">#}
+{#            <div class="billetterie-bg">#}
+{#                <div class="px-5 py-5">#}
+{#                    <ul class="list-unstyled font-alt d-flex flex-wrap justify-content-start">#}
+
+{#                        <!-- Artiste Vedettes et Têtes d'affiches -->#}
+{#                        <?php foreach($articles[46] as $article){#}
+{#						if($article->vedette == 1){#}
+{#                        if($article->headline == 1){ ?>#}
+{#                        <li class="lineup1 rounded me-3 mb-3  position-relative">#}
+{#                            <a href="<?= BASE_URL ?>programmation/<?= url_compliant($article->data->titre) ?>/<?= $article->id ?>" class="link-dark text-decoration-none stretched-link">#}
+{#                                <?= $article->data->titre ?>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                        <?php }#}
+{#						}#}
+{#					}?>#}
+
+{#                        <!-- Artiste Vedettes non Têtes d'affiches -->#}
+{#                        <?php foreach($articles[46] as $article){#}
+{#						if($article->vedette == 1){#}
+{#                        if($article->headline == 0){ ?>#}
+{#                        <li class="lineup2 rounded me-3 mb-3  position-relative">#}
+{#                            <a href="<?= BASE_URL ?>programmation/<?= url_compliant($article->data->titre) ?>/<?= $article->id ?>" class="link-dark text-decoration-none stretched-link">#}
+{#                                <?= $article->data->titre ?>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                        <?php }#}
+{#						}#}
+{#					}?>#}
+{#                        <li class="lineup2 rounded me-3 mb-3 position-relative">#}
+{#                            <a href="<?= BASE_URL ?>programmation/" class="link-dark text-decoration-none stretched-link">#}
+{#                                et bien plus...#}
+{#                            </a>#}
+{#                        </li>#}
+{#                    </ul>#}
+
+{#                    <!-- Image Billetterie -->#}
+{#                    <a href="https://billetterie.lalune.net/"><img src="<?= ASSETS_URL  ?>dist/build/front/images/billetterie-cta.svg"></a>#}
+{#                </div>#}
+
+{#                <!-- Image Prévidéo -->#}
+{#                <img class="img-fluid" src="<?= ASSETS_URL  ?>dist/build/front/images/prevideo.png">#}
+{#            </div>#}
+
+{#            <!-- Vidéo de présentation MALN -->#}
+{#            <div style="margin:0 0 -12px 0">#}
+{#                <a href="https://www.youtube.com/watch?v=Vu2I_I16cKU">#}
+{#                    <video class="video-fluid" autoplay muted loop playsinline poster="<?= ASSETS_URL  ?>dist/build/front/images/poster.jpg">#}
+{#                        <source src="<?= ASSETS_URL  ?>dist/build/front/images/AFTER-MOVIE-MALN-2022.webm" type="video/webm">#}
+{#                        <source src="<?= ASSETS_URL  ?>dist/build/front/images/AFTER-MOVIE-MALN-2022.mp4" type="video/mp4">#}
+{#                    </video>#}
+{#                </a>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class ="container g-0 bg-green">#}
+{#            <div class="row g-0">#}
+{#                <div class="col d-flex">#}
+{#                    <p class="d-none d-md-block align-self-center m-0 ps-5 text-white font2 fs-4">Minuit avant la Nuit revient pour 4 jours de concerts entre herbe et eau les 8, 9, 10, et 11 juin 2023 aux Hortillonnages et au Parc St-Pierre d’Amiens !</p>#}
+{#                    <p class="d-block d-md-none align-self-center m-0 p-5 text-white font2 fs-5">Minuit avant la Nuit revient pour 4 jours de concerts entre herbe et eau les 8, 9, 10, et 11 juin 2023 aux Hortillonnages et au Parc St-Pierre d’Amiens !</p>#}
+{#                </div>#}
+{#                <div class="col d-none d-md-block">#}
+{#                    <img class="img-fluid" src="<?= ASSETS_URL  ?>dist/build/front/images/barque.png">#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class = "container g-0 bandeau-bg">#}
+{#            <div class="d-none d-md-block">#}
+{#                <img class="img-fluid" src="<?= ASSETS_URL  ?>dist/build/front/images/bandeau-images-lg.jpg">#}
+{#            </div>#}
+{#            <div class="d-block d-md-none">#}
+{#                <img class="img-fluid" src="<?= ASSETS_URL  ?>dist/build/front/images/bandeau-images.jpg" style="width:100%;">#}
+{#            </div>#}
+{#            <div class="mx-3 mx-lg-7 mx-xl-9 p-5 bg-dark bottom-rounded">#}
+{#                <p class="d-none d-md-block m-0 font1 text-white text-center fs-4">TOUT CE QU’IL FAUT POUR SE RESSOURCER DURANT 4 JOURS !</p>#}
+{#                <p class="d-block d-md-none m-0 font1 text-white text-center">TOUT CE QU’IL FAUT POUR SE RESSOURCER DURANT 4 JOURS !</p>#}
+{#            </div>#}
+{#        </div>#}
+    </main>
 {% endblock %}
+
+

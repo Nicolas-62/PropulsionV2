@@ -2,6 +2,7 @@
 
 namespace App\Controller\Frontoffice;
 
+use App\Constants\Constants;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Contact;
@@ -16,41 +17,52 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-
 #[Route('/', name: 'fo_')]
 class FOController extends AbstractController
 {
+    // Datas passées à la vue.
+    private array $data;
 
-
-    public EntityManagerInterface $entityManager;
-
-
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+    )
     {
-        $this->entityManager  = $entityManager;
+        // Code langue.
+        $this->entityManager              =     $entityManager;
+        // Datas passées à la vue.
+        $this->data                       =     array();
+        $this->data['styles']             = 	array(); 		// Array des feuilles de styles supplémentaires passées au layout
+        $this->data['scripts']            = 	array(); 		// Array des fichiers javascript passés au layout ; chemin relatif depuis le dossier assets sans extension
+        $this->list_partial               =     '';
+        $this->detail_partial             =     '';
+        $this->data['header_partial']     = 	'_components/header.html.twig';
+        $this->data['footer_partial']     = 	'_components/footer.html.twig';
     }
 
     #[Route('/', name: 'index')]
     public function index(): Response
     {
-        return $this->redirect('liste');
+        return $this->redirect('home');
+    }
+
+    public function lister($champ = "ordre", $tri = "ASC", $limit = 0, $start = 0)
+    {
+        $this->data['tree'] = array();
+        foreach($this->category_ids as $category_id){
+            $this->data['tree'][$category_id] = $this->entityManager->getRepository(Category::class)->getGenealogy($category_id, $this->getParameter('locale'));
+        }
+
+        return $this->render($this->getParameter('app.fo_path'). $this->list_partial, $this->data);
     }
 
     #[Route('/liste', name: 'liste')]
     public function liste(): Response
     {
         // On récupère la catégorie qui nous intéresse
-        $cat = $this->entityManager->getRepository(Category::class)->find(1);
-        $list = new ArrayCollection();
-        $tree = $this->entityManager->getRepository(Category::class)->getGenealogy($list, 1, false);
+        $this->data['category'] = $this->entityManager->getRepository(Category::class)->find(1);
+        $this->data['tree'] = $this->entityManager->getRepository(Category::class)->getGenealogy(1, $this->getParameter('locale'));
 
-
-
-//        dd($onlines);
-        return $this->render('frontoffice/article/articles.html.twig', [
-            'category' => $cat,
-            'tree'     => $tree,
-        ]);
+        return $this->render('frontoffice/article/articles.html.twig', $this->data);
     }
 
     #[Route('/contact', name: 'contact')]

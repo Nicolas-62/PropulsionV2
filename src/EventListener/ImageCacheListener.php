@@ -8,17 +8,19 @@ use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
-// Ecouteur sur l'entité Média
+// Ecouteur sur l'entité Média, gestion des images en cache gérées par le bundle Imagine.
 // https://symfony.com/doc/current/doctrine/events.html#doctrine-entity-listeners
 #[AsEntityListener(event: Events::preRemove, method: 'preRemove', entity: Media::class)]
 class ImageCacheListener {
-    // Gestionnaire du cache
-    private CacheManager $cacheManager;
 
-    public function __construct(CacheManager $cacheManager, UploaderHelper $helper){
-        $this->cacheManager = $cacheManager;
+    public function __construct(
+        // Gestionnaire du cache
+        private CacheManager $cacheManager,
+        // Chemin des images en cache.
+        private string $asset_img_path
+    )
+    {
     }
 
     /**
@@ -31,6 +33,6 @@ class ImageCacheListener {
     public function preRemove(Media $media, LifecycleEventArgs $event): void
     {
         // Suppression des vignettes du cache.
-        $this->cacheManager->remove(Constants::ASSETS_IMG_PATH.$media->getMedia());
+        $this->cacheManager->remove($this->asset_img_path.$media->getMedia());
     }
 }

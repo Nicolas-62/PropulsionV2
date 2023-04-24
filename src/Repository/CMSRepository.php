@@ -14,7 +14,8 @@ Abstract class CMSRepository extends ServiceEntityRepository
 
     protected ManagerRegistry $registry;
 
-    public function __construct(ManagerRegistry $registry, $class)
+    public function __construct(
+        ManagerRegistry $registry, $class)
     {
         // Récupération du manager pour appel méthodes d'autres repositories.
         $this->registry = $registry;
@@ -66,7 +67,7 @@ Abstract class CMSRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder($this->model_alias);
         $qb->where("$this->model_alias.$this->model_key = :val");
         if($online) {
-            $qb->join("$this->model_alias.online", 'online')
+            $qb->join("$this->model_alias.onlines", 'online')
                 ->andWhere('online.langue = 1')
                 ->andWhere('online.online = 1');
 
@@ -85,34 +86,36 @@ Abstract class CMSRepository extends ServiceEntityRepository
      * @param bool $online
      * @return ArrayCollection
      */
-    public function getGenealogy(ArrayCollection $list, $element_id, bool $online = true): ArrayCollection
+    public function getGenealogy(int $element_id, $code_langue, bool $online = true, ArrayCollection $parent_list = null): ArrayCollection
     {
+        if($parent_list == null){
+            $parent_list = new ArrayCollection();
+        }
         // Element parent
         $element = $this->findOneBy(['id'=> $element_id]);
-        $list->set('element', $element);
+        $parent_list->set('element', $element);
         // Enfants
-        $sublist = new ArrayCollection();
+        $child_list = new ArrayCollection();
         // Récup des catégories enfant
         $children = $this->getChildren($element_id, $online);
-        // Si pas de categories enfant.
+        // Si pas d'enfants
         if($children->isEmpty()) {
             // Si on traite des categories
             if($this->model_label == 'category') {
                 // On récupère les articles enfant
-                $articles = $this->getArticles($element_id, $online);
+                $articles = $this->getArticles($element_id, $code_langue, $online);
                 foreach ($articles as $article) {
-                    $childList = new ArrayCollection();
-                    $sublist->add($this->registry->getRepository(Article::class)->getGenealogy($childList, $article->getId(), $online));
+                    $child_list->add($this->registry->getRepository(Article::class)->getGenealogy($article->getId(), $code_langue, $online));
                 }
             }
         }else{
-            // Categories enfant
+            // Récupération des enfants
             foreach ($children as $child) {
-                $childList = new ArrayCollection();
-                $sublist->add($this->getGenealogy($childList, $child->getId(), $online));
+                $child_list->add($this->getGenealogy($child->getId(), $code_langue, $online));
             }
         }
-        $list->set('elements', $sublist);
-        return $list;
+        // Ajout des enfants.
+        $parent_list->set('elements', $child_list);
+        return $parent_list;
     }
 }

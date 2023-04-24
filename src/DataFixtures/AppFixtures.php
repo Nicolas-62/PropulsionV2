@@ -10,7 +10,7 @@ use App\Entity\Mediaspec;
 use App\Entity\Online;
 use App\Factory\ArticleFactory;
 use App\Factory\CategoryFactory;
-use App\Factory\LanguesFactory;
+use App\Factory\LanguageFactory;
 use App\Factory\MediaFactory;
 use App\Factory\MediaLinkFactory;
 use App\Factory\MediaspecFactory;
@@ -41,7 +41,7 @@ class AppFixtures extends Fixture
 //        $factory->truncate();
 
         MediasTypesFactory::createOne();
-        LanguesFactory::createOne();
+        LanguageFactory::createOne();
 
         CategoryFactory::createMany(4,
             function(){

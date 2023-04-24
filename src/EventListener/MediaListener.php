@@ -5,7 +5,7 @@ namespace App\EventListener;
 use App\Constants\Constants;
 use App\Entity\Article;
 use App\Entity\Category;
-use App\Entity\Langues;
+use App\Entity\Language;
 use App\Entity\Media;
 use App\Entity\MediaLink;
 use App\Entity\Online;

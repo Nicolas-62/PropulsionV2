@@ -1,0 +1,30 @@
+.font-alt {
+  font-family: "bowlbyone";
+}
+
+.page {
+  &.h2, &.h1 {
+    @extend .btn;
+    @extend .rounded-pill;
+    @extend .text-uppercase;
+    font-family: "bowlbyone";
+    cursor:default;
+    &:hover {
+      color: var(--bs-btn-color);
+      background-color: var(--bs-btn-bg);
+      border-color: var(--bs-btn-border-color);
+    }
+  }
+  &.h1 {
+    @extend .btn-outline-dark;
+    @extend .btn-lg;
+  }
+}
+.generic {
+  h2{
+    @extend .h4;
+  }
+  a {
+    @extend .link-dark;
+  }
+}

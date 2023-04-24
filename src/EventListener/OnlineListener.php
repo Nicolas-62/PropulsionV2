@@ -1,30 +1,26 @@
 <?php
 namespace App\EventListener;
 
-
-use App\Constants\Constants;
 use App\Entity\Article;
 use App\Entity\Category;
-use App\Entity\Langues;
-use App\Entity\Media;
-use App\Entity\MediaLink;
+use App\Entity\Language;
 use App\Entity\Online;
 use Doctrine\ORM\EntityManagerInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Event\AfterCrudActionEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeCrudActionEvent;
-use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 
 class OnlineListener implements EventSubscriberInterface
 {
-    // Gestionnaire d'entité
-    private EntityManagerInterface $entityManager;
-    
-    public function __construct(EntityManagerInterface $entityManager)
+
+    public function __construct(
+        // Gestionnaire d'entité
+        private EntityManagerInterface $entityManager,
+        // Code Langue
+        private string $locale
+    )
     {
-        $this->entityManager = $entityManager;
     }
 
 
@@ -62,12 +58,12 @@ class OnlineListener implements EventSubscriberInterface
                 // Si on ajoute/enlève en ligne.
                 if($fieldName == 'isOnline') {
                     // On récupère l'objet Online de la langue courante.
-                    $online = $entity->getOnlineByCodeLangue(Constants::LOCALE);
+                    $online = $entity->getOnlineByCodeLangue($this->locale);
                     // Si il n'existe pas.
                     if( ! $online){
                         $online = new Online();
                         $online->{'set'.ucfirst($entity->getClassName())}($entity);
-                        $online->setLangue($this->entityManager->getRepository(Langues::class)->findOneBy(['code' => Constants::LOCALE]));
+                        $online->setLangue($this->entityManager->getRepository(Language::class)->findOneBy(['code' => $this->locale]));
                     }
                     // On passe la valeur que l'on souhaite mettre à jour
                     $online->setOnline($newValue);
@@ -96,7 +92,7 @@ class OnlineListener implements EventSubscriberInterface
             $online = new Online();
             $online->setArticle($entity);
             $online->setCategory(null);
-            $langue = $this->entityManager->getRepository(Langues::class)->find(1);
+            $langue = $this->entityManager->getRepository(Language::class)->find(1);
             $online->setLangue($langue);
 
 
@@ -106,12 +102,12 @@ class OnlineListener implements EventSubscriberInterface
         }
 
 
-        // Ajouter une ligne à la table online lié à la catégorie et avec online = 0 pendant la création d'un catégorie
+        // Ajouter une ligne à la table online lié à la catégorie et avec online = 0 pendant la création d'une catégorie
         if ($entity instanceof Category) {
             $online = new Online();
             $online->setArticle(null);
             $online->setCategory($entity);
-            $langue = $this->entityManager->getRepository(Langues::class)->getDefaultLangue();
+            $langue = $this->entityManager->getRepository(Language::class)->getDefaultLangue();
             $online->setLangue($langue);
 
 

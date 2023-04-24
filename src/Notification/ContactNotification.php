@@ -14,8 +14,10 @@ class ContactNotification {
      */
     private MailerInterface $mailer;
 
-    public function __construct(MailerInterface $mailer){
+    public function __construct(MailerInterface $mailer, $locale){
         $this->mailer = $mailer;
+        // TEST passage de variable à un service, voir : fichier services.yaml
+        dump($locale);
     }
 
     public function notify(Contact $contact): void

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Traits\CMSTrait;
+use App\Entity\Traits\ExtraDataTrait;
 use App\Entity\Traits\MediaTrait;
 use App\Entity\Traits\TimesTampableTrait;
 use App\Repository\ArticleRepository;
@@ -19,7 +20,19 @@ class Article
     use CMSTrait;
     // Champs date.
     use TimestampableTrait;
+    use ExtraDataTrait;
     use MediaTrait;
+
+    // Champs supplémantaires
+    private bool  $headline = FALSE;
+
+    // Liste des champs supplémentaires spécifiques.
+    private array $extraFields = [
+        ['name' => 'headline', 'label' => "Tête d'affiche", 'ea_type' => 'booleanField']
+    ];
+
+
+
 
     public function __construct()
     {
@@ -29,6 +42,8 @@ class Article
         $this->mediaspecs   = new ArrayCollection();
         $this->created_at   = new \DateTimeImmutable();
         $this->updated_at   = new \DateTimeImmutable();
+        $this->articleData = new ArrayCollection();
+        $this->data = new ArrayCollection();
     }
 
 
@@ -57,6 +72,9 @@ class Article
 
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Mediaspec::class)]
     private Collection $mediaspecs;
+
+    #[ORM\OneToMany(mappedBy: 'object', targetEntity: ArticleData::class, orphanRemoval: true)]
+    private Collection $data;
 
     public function getArticleId(): ?int
     {
@@ -192,6 +210,84 @@ class Article
         }
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getExtraFields(): array
+    {
+        return $this->extraFields;
+    }
+
+    /**
+     * @param array $extraFields
+     */
+    public function setExtraFields(array $extraFields): self
+    {
+        $this->extraFields = $extraFields;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ArticleData>
+     */
+    public function getData(): Collection
+    {
+        return $this->data;
+    }
+
+
+    /**
+     * @param $code_langue
+     * @return void
+     */
+    public function getDatas($code_langue): void
+    {
+        $datas = $this->data->filter(function(ArticleData $data) use ($code_langue) {
+            return $data->getLanguage()->getCode() === $code_langue;
+        })->first();
+        foreach($datas as $data){
+            $this->{'set' . $data->getFieldKey()}($data->getFieldValue());
+        }
+    }
+
+    public function addData(ArticleData $data): self
+    {
+        if (!$this->data->contains($data)) {
+            $this->data->add($data);
+            $data->setObject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeData(ArticleData $data): self
+    {
+        if ($this->data->removeElement($data)) {
+            // set the owning side to null (unless already changed)
+            if ($data->getObject() === $this) {
+                $data->setObject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getHeadline(): bool
+    {
+        return $this->headline;
+    }
+
+    /**
+     * @param bool $headline
+     */
+    public function setHeadline(bool $headline): void
+    {
+        $this->headline = $headline;
     }
 }
 

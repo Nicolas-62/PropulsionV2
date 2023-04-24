@@ -4,7 +4,7 @@ namespace App\Entity\Traits;
 
 use App\Constants\Constants;
 use App\Entity\Category;
-use App\Entity\Langues;
+use App\Entity\Language;
 use App\Entity\Media;
 use App\Entity\Mediaspec;
 use App\Entity\Online;
@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Intl\Locale;
 
 #[UniqueEntity("title")]
 trait CMSTrait
@@ -130,7 +131,12 @@ trait CMSTrait
 
     public function getOnlineByCodeLangue($code_langue): false|Online
     {
-
+        // Si pas de langue précisé.
+        if($code_langue == null){
+            // On récupère la langue du site par défaut.
+            $code_langue = $_ENV['LOCALE'];
+        }
+        // On filtre les articles en ligne par leur code langue.
         $online = $this->getOnlines()->filter(function(Online $online) use ($code_langue) {
             return $online->getLangue()->getCode() === $code_langue;
         })->first();
@@ -138,8 +144,9 @@ trait CMSTrait
         return $online;
     }
 
-    public function isOnline($code_langue = Constants::LOCALE): bool
+    public function isOnline($code_langue = null): bool
     {
+
         $online = $this->getOnlineByCodeLangue($code_langue);
         if($online &&  $online->isOnline()){
             return true;

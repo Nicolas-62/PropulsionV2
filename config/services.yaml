@@ -4,18 +4,30 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    locale: 'fr'
+    locale: '%env(LOCALE)%'
     # This parameter defines the codes of the locales (languages) enabled in the application
     app_locales: fr|en
+    app.site: '%env(SITE)%'
+    app.fo: '%env(FO)%'
+    app.fo_path: '%app.fo%/'
+    app.asset_img_path: '%env(ASSETS_IMG_PATH)%'
+    app.upload_path: '%env(UPLOAD_PATH)%'
+    app.img_upload_path: '%env(UPLOAD_PATH)%.%env(ASSETS_IMG_PATH)%'
+
+
 
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-
+        # Variable accessible dans le constructeur de tous les services déclarés.
         bind:
             $locale: '%locale%'
+            # utilisée par le cache manager, il créer ses vignette dans les même sous dossiers que le chemin des images téléchargées.
+            # public/assets/images -> public/media/cache/<nom_format_vignette>/assets/images
+            $asset_img_path: '%app.asset_img_path%'
+
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

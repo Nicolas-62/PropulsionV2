@@ -1,0 +1,23 @@
+.btn-success {
+    @extend .text-uppercase;
+    font-family: "bowlbyone";
+}
+.anchor {
+  @extend .btn;
+  @extend .btn-outline-dark;
+  @extend .rounded-pill;
+  @extend .text-uppercase;
+  font-family: "bowlbyone";
+  &.active {
+    @extend .btn-warning;
+  }
+}
+.flink {
+  color:$dark;
+  text-decoration: none
+  // @extend .btn;
+  // @extend .btn-outline-dark;
+  // @extend .rounded-0;
+  // @extend .text-uppercase;
+  // font-family: "bowlbyone";
+}

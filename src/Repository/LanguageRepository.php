@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\Langues;
+use App\Entity\Language;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Langues>
+ * @extends ServiceEntityRepository<Language>
  *
- * @method Langues|null find($id, $lockMode = null, $lockVersion = null)
- * @method Langues|null findOneBy(array $criteria, array $orderBy = null)
- * @method Langues[]    findAll()
- * @method Langues[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Language|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Language|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Language[]    findAll()
+ * @method Language[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class LanguesRepository extends ServiceEntityRepository
+class LanguageRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Langues::class);
+        parent::__construct($registry, Language::class);
     }
 
-    public function save(Langues $entity, bool $flush = false): void
+    public function save(Language $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class LanguesRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Langues $entity, bool $flush = false): void
+    public function remove(Language $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class LanguesRepository extends ServiceEntityRepository
     }
 
 
-    public function getDefaultLangue(): Langues
+    public function getDefaultLangue(): Language
     {
         $langue = $this->findOneBy(['ordre' => 1]);
         return $langue;
@@ -49,7 +49,7 @@ class LanguesRepository extends ServiceEntityRepository
 
 
 //    /**
-//     * @return Langues[] Returns an array of Langues objects
+//     * @return Language[] Returns an array of Language objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -63,7 +63,7 @@ class LanguesRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Langues
+//    public function findOneBySomeField($value): ?Language
 //    {
 //        return $this->createQueryBuilder('l')
 //            ->andWhere('l.exampleField = :val')
