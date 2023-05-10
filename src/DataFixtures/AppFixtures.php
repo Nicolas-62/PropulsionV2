@@ -43,16 +43,16 @@ class AppFixtures extends Fixture
         MediasTypesFactory::createOne();
         LanguageFactory::createOne();
 
-        CategoryFactory::createMany(4,
-            function(){
-                return [
-                    'articles' => ArticleFactory::createMany(3, ['children' => ArticleFactory::new()->many(0,2)]),
-                    'parent'   => CategoryFactory::createOne(),
-                ];
-            }
-        );
+//        CategoryFactory::createMany(4,
+//            function(){
+//                return [
+//                    'articles' => ArticleFactory::createMany(3, ['children' => ArticleFactory::new()->many(0,2)]),
+//                    'parent'   => CategoryFactory::createOne(),
+//                ];
+//            }
+//        );
 
-        OnlineFactory::createMany(5);
+//        OnlineFactory::createMany(5);
         //MediaFactory::createMany(60);
         //MediaLinkFactory::createMany(40);
         //MediaspecFactory::createMany(40);

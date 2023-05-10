@@ -25,10 +25,12 @@ class Article
 
     // Champs supplémantaires
     private bool  $headline = FALSE;
+    private bool  $vedette  = FALSE;
 
     // Liste des champs supplémentaires spécifiques.
     private array $extraFields = [
-        ['name' => 'headline', 'label' => "Tête d'affiche", 'ea_type' => 'booleanField']
+        ['name' => 'headline', 'label' => "Tête d'affiche", 'ea_type' => 'booleanField'],
+        ['name' => 'vedette', 'label' => "Vedette", 'ea_type' => 'booleanField']
     ];
 
 
@@ -42,8 +44,8 @@ class Article
         $this->mediaspecs   = new ArrayCollection();
         $this->created_at   = new \DateTimeImmutable();
         $this->updated_at   = new \DateTimeImmutable();
-        $this->articleData = new ArrayCollection();
-        $this->data = new ArrayCollection();
+        $this->articleData  = new ArrayCollection();
+        $this->data         = new ArrayCollection();
     }
 
 
@@ -213,23 +215,6 @@ class Article
     }
 
     /**
-     * @return array
-     */
-    public function getExtraFields(): array
-    {
-        return $this->extraFields;
-    }
-
-    /**
-     * @param array $extraFields
-     */
-    public function setExtraFields(array $extraFields): self
-    {
-        $this->extraFields = $extraFields;
-        return $this;
-    }
-
-    /**
      * @return Collection<int, ArticleData>
      */
     public function getData(): Collection
@@ -246,7 +231,7 @@ class Article
     {
         $datas = $this->data->filter(function(ArticleData $data) use ($code_langue) {
             return $data->getLanguage()->getCode() === $code_langue;
-        })->first();
+        });
         foreach($datas as $data){
             $this->{'set' . $data->getFieldKey()}($data->getFieldValue());
         }
@@ -274,21 +259,33 @@ class Article
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function getHeadline(): bool
+
+    public function getHeadline()
     {
         return $this->headline;
     }
 
-    /**
-     * @param bool $headline
-     */
-    public function setHeadline(bool $headline): void
+    public function setHeadline($headline): void
     {
         $this->headline = $headline;
     }
+
+    /**
+     * @return bool
+     */
+    public function getVedette(): bool
+    {
+        return $this->vedette;
+    }
+
+    /**
+     * @param bool $vedette
+     */
+    public function setVedette(bool $vedette): void
+    {
+        $this->vedette = $vedette;
+    }
 }
+
 
 

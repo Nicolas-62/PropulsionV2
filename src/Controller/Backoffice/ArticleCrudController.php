@@ -3,6 +3,7 @@
 namespace App\Controller\Backoffice;
 
 use App\Entity\Article;
+use App\Entity\ArticleData;
 use App\Entity\Category;
 use App\Entity\Media;
 use App\Entity\Traits\ExtraDataTrait;
@@ -272,13 +273,16 @@ class ArticleCrudController extends AbstractCrudController
     {
         // Récupération de l'article
         $this->entity = $context->getEntity()->getInstance();
+        // Récupération des datas de l'article
+        $this->entity->getDatas($this->locale);
+
         // Si ce n'est pas un sous article, on récupère sa categorie parent
         if($this->entity->getParent() == null)
         {
             $this->category = $this->entity->getCategory();
         }
 //        $this->adminUrlGenerator->unsetAllExcept('entityId');
-        $this->adminUrlGenerator->unsetAll();
+//        $this->adminUrlGenerator->unsetAll();
         return parent::edit($context);
     }
 
@@ -323,11 +327,12 @@ class ArticleCrudController extends AbstractCrudController
      */
     public function configureResponseParameters(KeyValueStore $responseParameters): KeyValueStore
     {
-        $this->entity->getDatas($this->locale);
-        dump($this->entity);
         $parent             =   null;
         $grandParentId      =   null;
+        // Variables passées pour la navigation dans la vue.
+        // Nom du controleur parent dans l'arboresence.
         $crudController     =   'Category';
+        // nom du champ du modèle parent sur lequel filtrer.
         $keyName            =   'entityId';
         // Si on affiche une liste d'article
         if (Crud::PAGE_INDEX === $responseParameters->get('pageName')) {

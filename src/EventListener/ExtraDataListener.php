@@ -159,8 +159,8 @@ class ExtraDataListener implements EventSubscriberInterface
 
         dump('edit, datas : ');
         dump($datas);
-        dump($entity->getHeadline());
-        dump($datas['headline']->getFieldValue());
+//        dump($entity->getHeadline());
+//        dump($datas['headline']->getFieldValue());
 
         // Récupération des noms.
         $dataNames = array_keys($datas);

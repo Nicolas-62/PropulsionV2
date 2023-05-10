@@ -24,7 +24,7 @@ class ArticleData
     #[ORM\Column(length: 255)]
     private ?string $field_key = null;
 
-    #[ORM\Column(type: Types::BLOB)]
+    #[ORM\Column(type: Types::TEXT)]
     private $field_value = null;
 
     #[ORM\ManyToOne]
@@ -57,7 +57,7 @@ class ArticleData
         return $this;
     }
 
-    public function getFieldValue()
+    public function getFieldValue(): ?string
     {
         return $this->field_value;
     }
