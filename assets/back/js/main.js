@@ -9,7 +9,7 @@
 import '../styles/backoffice.scss';
 
 // start the Stimulus application
-import '../../bootstrap';
+//import '../../bootstrap';
 
 import $ from 'jquery';
 import 'select2';

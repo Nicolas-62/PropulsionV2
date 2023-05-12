@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[Route('/backoffice', name: 'bo_'),  IsGranted('ROLE_ADMIN')]
 class DashboardController extends AbstractDashboardController
 {
-    #[Route('/', name: 'home')]
+    #[Route('', name: 'home')]
     public function index(): Response
     {
 //        return parent::index();
@@ -53,31 +53,51 @@ class DashboardController extends AbstractDashboardController
             ->setLocales([
                 'en' => '🇬🇧 English', // locale without custom options
                 'fr' => '🇫🇷 Français',
-                'nl' => '🇳🇱 Nederland',
-                'es' => '🇪🇸 Spanish',
-                'de' => '🇩🇪 German'
-
             ]);
     }
 
-    public function configureAssets(): Assets
-    {
-        return parent::configureAssets()
-            ->addWebpackEncoreEntry('backoffice')
-            ;
-    }
+//    public function configureAssets(): Assets
+//    {
+//        return parent::configureAssets()
+//            ->addWebpackEncoreEntry('backoffice')
+//            ;
+//    }
 
     public function configureMenuItems(): iterable
     {
+        yield MenuItem::linkToRoute('Aller sur le site', 'fas fa-undo', 'fo_home_index');
         // yield MenuItem::linkToDashboard('dashboard', 'fa fa-home');
         yield MenuItem::section('Contenu','fa-solid fa-folder');
-        yield MenuItem::linkToCrud('Categories',  'fa-solid fa-bars', Category::class);
-        yield MenuItem::linkToCrud('Articles',  'fa-solid fa-newspaper', Article::class);
-        yield MenuItem::linkToCrud('Medias',  'fa-regular fa-image', Media::class);
-        yield MenuItem::linkToCrud('Mediaspec',  'fa-regular fa-image', Mediaspec::class);
+
+        yield MenuItem::subMenu('Categories', 'fas fa-bars')->setSubItems([
+            MenuItem::linkToCrud('Toutes les categories',  'fa-solid fa-bars', Category::class),
+            MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Category::class)->setAction(Crud::PAGE_NEW),
+        ]);
+
+        yield MenuItem::subMenu('Articles', 'fas fa-newspaper')->setSubItems([
+            MenuItem::linkToCrud('Tous les articles', 'fas fa-newspaper', Article::class),
+            MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Article::class)->setAction(Crud::PAGE_NEW),
+        ]);
+
+        yield MenuItem::subMenu('Medias', 'fas fa-image')->setSubItems([
+            MenuItem::linkToCrud('Tous les medias',  'fa-regular fa-image', Media::class),
+            MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Media::class)->setAction(Crud::PAGE_NEW),
+        ]);
+
+        yield MenuItem::subMenu('Mediaspecs', 'fas fa-image')->setSubItems([
+            MenuItem::linkToCrud('Toutes les médiaspecs',  'fa-regular fa-image', Mediaspec::class),
+            MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Mediaspec::class)->setAction(Crud::PAGE_NEW),
+        ]);
+
         yield MenuItem::section('Administration', 'fa-solid fa-wrench');
         yield MenuItem::linkToRoute('Profils/Droits','fa-solid fa-lock','',[]);
-        yield MenuItem::linkToRoute('Utilisateurs','fa-solid fa-user','',[]);
+
+
+        yield MenuItem::subMenu('Utilisateurs', 'fas fa-user')->setSubItems([
+            MenuItem::linkToRoute('Tous les tilisateurs','fa-solid fa-user','',[]),
+            MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Mediaspec::class)->setAction(Crud::PAGE_NEW),
+        ]);
+
         yield MenuItem::linkToRoute('Préférences','fa-solid fa-gears','',[]);
         yield MenuItem::linkToRoute('Vider le Cache','fa-solid fa-trash','',[]);
         yield MenuItem::section('Galerie','fa-solid fa-photo-film');
@@ -100,10 +120,10 @@ class DashboardController extends AbstractDashboardController
             // use the given $user object to get the user name
             ->setName($user->getEmail())
             // you can use any type of menu item, except submenus
-//            ->addMenuItems([
-//                MenuItem::section(),
-//                MenuItem::linkToLogout('Logout', 'fa fa-sign-out'),
-//            ])
+            ->addMenuItems([
+                MenuItem::section(),
+                MenuItem::linkToLogout('Logout', 'fa fa-sign-out'),
+            ])
             ;
     }
 

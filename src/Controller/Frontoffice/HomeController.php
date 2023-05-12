@@ -13,7 +13,7 @@ class HomeController extends FOController
 {
 
     public function __construct(EntityManagerInterface $entityManager) {
-
+        dump('HomeController');
         // ! Configuration du controller :
 
 
@@ -26,9 +26,11 @@ class HomeController extends FOController
         // Appel du constructeur du controller parent
         parent::__construct($entityManager);
         // Pas de header
-        $this->data['header_partial'] = 'home/header.html.twig';
+        //$this->data['header_partial'] = 'home/header.html.twig';
+        $this->data['header_partial'] = '';
         $this->data['footer_partial'] = '';
         $this->list_partial     =       'home.html.twig';
+        $this->datas['test'] = 'HomeController';
 
     }
 

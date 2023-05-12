@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class FOController extends AbstractController
 {
     // Datas passées à la vue.
-    private array $data;
+    protected array $data;
 
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -35,8 +35,8 @@ class FOController extends AbstractController
         $this->data['scripts']            = 	array(); 		// Array des fichiers javascript passés au layout ; chemin relatif depuis le dossier assets sans extension
         $this->list_partial               =     '';
         $this->detail_partial             =     '';
-        $this->data['header_partial']     = 	'_components/header.html.twig';
-        $this->data['footer_partial']     = 	'_components/footer.html.twig';
+        $this->data['header_partial'] = '_components/header.html.twig';
+        $this->data['footer_partial'] = '_components/footer.html.twig';
     }
 
     #[Route('/', name: 'index')]

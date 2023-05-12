@@ -404,7 +404,7 @@ class ArticleCrudController extends AbstractCrudController
         // renders the action as a <a> HTML element
         $returnPageAction->displayAsLink();
         // associé à l'action index
-        $returnPageAction->linkToCrudAction('edit');
+        $returnPageAction->linkToCrudAction('index');
         $returnPageAction->addCssClass('btn btn-primary');
         // Ajout des boutons à la liste des actions disponibles.
         $actions->add(Crud::PAGE_EDIT, $returnPageAction);

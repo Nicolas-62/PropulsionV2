@@ -105,7 +105,7 @@ class MediaCrudController extends AbstractCrudController
             // Personnalisation du formulaire
             ->setFormThemes(['backoffice/form/media_show.html.twig', '@EasyAdmin/crud/form_theme.html.twig'])
             // Actions sur la liste visible (par défaut cachées dans un dropdown)
-            ->showEntityActionsInlined()
+            //->showEntityActionsInlined()
             ;
     }
 

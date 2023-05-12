@@ -4,12 +4,11 @@
 {# @var action \EasyCorp\Bundle\EasyAdminBundle\Dto\ActionDto #}
 {# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
 {# @var parentId  #}
-
 {# Définition de l'URL d'accès au détail du parent de l'entité affichée. #}
 {% set url = ea_url()
     .unsetAll()
     .setController('App\\Controller\\Backoffice\\' ~ crudController ~ 'CrudController')
-    .setAction('index').set(keyName, grandParentId)
+    .setAction(action.crudActionName).set(keyName, grandParentId)
 %}
 
 {% if 'a' == action.htmlElement %}
