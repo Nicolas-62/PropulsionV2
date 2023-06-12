@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Media;
+use App\Entity\MediaLink;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -21,6 +22,13 @@ class MediaRepository extends ServiceEntityRepository
         parent::__construct($registry, Media::class);
     }
 
+    /**
+     * Sauvegarde un média
+     *
+     * @param Media $entity
+     * @param bool $flush
+     * @return void
+     */
     public function save(Media $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -30,6 +38,13 @@ class MediaRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Supprime un média
+     *
+     * @param Media $entity
+     * @param bool $flush
+     * @return void
+     */
     public function remove(Media $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
@@ -39,6 +54,31 @@ class MediaRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Retourne par type d'netité la liste des entitées liées au média
+     *
+     * @param Media $media
+     * @return array|array[]
+     */
+    public function getRelatedEntities(Media $media){
+        $media_links = $this->getEntityManager()->getRepository(MediaLink::class)->findBy(['media'=> $media]);
+        $relatedEntities = array();
+        foreach($media_links as $media_link){
+            if($media_link->getArticle() != null){
+                $relatedEntities['articles'][$media_link->getArticle()->getId()] = $media_link->getArticle()->getTitle();
+            }
+            if($media_link->getCategory() != null){
+                $relatedEntities['categories'][$media_link->getCategory()->getId()] = $media_link->getCategory()->getTitle();
+            }
+        }
+        return $relatedEntities;
+    }
+
+    /**
+     * Retourne la liste des médias que l'on peut associer à une entité (article/catégorie)
+     *
+     * @return array
+     */
     public function getAllForChoices(): array
     {
         $medias  =  $this->findAll();

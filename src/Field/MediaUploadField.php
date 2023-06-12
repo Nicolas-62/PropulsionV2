@@ -27,6 +27,7 @@ class MediaUploadField  implements FieldInterface
         return (ImageField::new($propertyName, $label)
             ->setColumns(6)
             ->setBasePath(Constants::ASSETS_IMG_PATH)
+            // ToDo récupérer ces variables autrement
             ->setUploadDir($_ENV['UPLOAD_PATH'] . $_ENV['ASSETS_IMG_PATH'])
             ->setUploadedFileNamePattern('[name]_[randomhash].[extension]')
             ->setRequired(false)

@@ -40,23 +40,31 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ArticleCrudController extends AbstractCrudController
 {
+    // Variables
 
-    private AdminUrlGenerator $adminUrlGenerator;
-    private EntityManagerInterface $entityManager;
-    private EntityRepository $entityRepository;
-    private ?Article $parentEntity = null;
+    // Article courant
     private ?Article $entity = null;
+    // Categorie parent.
     private ?Category $category = null;
+    // Code langue courant.
     private string $locale = '';
 
-    public function __construct(AdminUrlGenerator $adminUrlGenerator, EntityRepository $entityRepository, EntityManagerInterface $entityManager)
+    public function __construct(
+        // Services
+
+        // Générateur de routes
+        private AdminUrlGenerator $adminUrlGenerator,
+        // Gestionnaire d'entité Symfony
+        private EntityManagerInterface $entityManager,
+        // Repository EasyAdmin
+        private EntityRepository $entityRepository
+    )
     {
-        $this->adminUrlGenerator = $adminUrlGenerator;
-        $this->entityRepository  = $entityRepository;
-        $this->entityManager     = $entityManager;
     }
 
     /**
+     * Retourne le nom de l'entité gérée par ce controleur.
+     *
      * @return string
      */
     public static function getEntityFqcn(): string
@@ -65,6 +73,8 @@ class ArticleCrudController extends AbstractCrudController
     }
 
     /**
+     * Configure les filtres disponibles.
+     *
      * @param Filters $filters
      * @return Filters
      */
@@ -77,13 +87,14 @@ class ArticleCrudController extends AbstractCrudController
     }
 
     /**
-     * configureFields permet la configuration des différents champs que l'on va retrouver sur les pages du crud
+     * Permet la configuration des différents champs que l'on va retrouver sur les pages du crud
+     *
      * @param string $pageName
      * @return iterable
      */
     public function configureFields(string $pageName): iterable
     {
-
+        // Onglet
         yield FormField::addTab('Contenu');
         // Champs communs à plusieurs actions (liste, edition, detail, formulaire...)
         yield IdField::new('id')->hideOnForm();
@@ -94,6 +105,7 @@ class ArticleCrudController extends AbstractCrudController
         yield BooleanField::new('isOnline', 'En ligne')->hideOnForm();
         yield TextField::new('title','titre')->setColumns(6);
         yield TextEditorField::new('content','description')->setColumns(12);
+        
         $article = new Article();
         // Ajout des champs spécifiques à l'instance définis dans l'entité.
         foreach($article->getExtraFields() as $extraField){
@@ -125,7 +137,7 @@ class ArticleCrudController extends AbstractCrudController
                         yield FormField::addRow();
 
                         // Ajout d'un champ d'upload d'un média
-                        // Ajout du champ média.
+                        // Ajout du personnalisé  champ média.
                         yield $imageField = MediaUploadField::new('media' . ($index + 1), ucfirst($mediaspec->getName()) . ' : téléchargez un média ou...');
                         // Récupération du média.
                         $media = $this->entityManager->getRepository(Article::class)->getMedia($this->entity, $mediaspec);
@@ -138,15 +150,15 @@ class ArticleCrudController extends AbstractCrudController
                                 ->setFormTypeOptions([
                                     'block_name' => 'media_delete',
                                 ]);
-                            // Si pas encore de média défini.
-                        } else {
+                        }
+                        // Si pas encore de média défini.
+                        else {
                             // Ajout d'un champ supplémentaire de sélection d'un média existant.
                             yield ExtraField::new('media' . ($index + 11))
                                 ->setChoices(
                                     $this->entityManager->getRepository(Media::class)->getAllForChoices()
                                 );
                         }
-
                     }
                 }
             }
@@ -159,7 +171,8 @@ class ArticleCrudController extends AbstractCrudController
 
 
     /**
-     * createEntity permet de definir les valeurs par défaut de l'entité
+     * Permet de definir les valeurs par défaut de l'entité
+     * 
      * @param string $entityFqcn
      * @return Article
      */
@@ -178,7 +191,8 @@ class ArticleCrudController extends AbstractCrudController
     }
 
     /**
-     * createIndexQueryBuilder Requêtage des entités à afficher.
+     * Requêtage des entités à afficher.
+     * 
      * @param SearchDto $searchDto
      * @param EntityDto $entityDto
      * @param FieldCollection $fields
@@ -214,7 +228,7 @@ class ArticleCrudController extends AbstractCrudController
 
 
     /**
-     * index Affiche la liste des enfants ou la liste des parents.
+     * Affiche la liste des enfants ou la liste des parents.
      * @param AdminContext $context
      * @return KeyValueStore|RedirectResponse|Response
      */
@@ -238,7 +252,7 @@ class ArticleCrudController extends AbstractCrudController
     }
 
     /**
-     * detail renvoi vers une page détaillant un des objets mis en bdd
+     * Renvoi vers une page détaillant un des objets mis en bdd
      * @param AdminContext $context
      * @return KeyValueStore|RedirectResponse|Response
      */
@@ -265,7 +279,8 @@ class ArticleCrudController extends AbstractCrudController
     }
 
     /**
-     * edit renvoi vers le formulaire d'édition de l'article
+     * Renvoi vers le formulaire d'édition de l'article
+     *
      * @param AdminContext $context
      * @return KeyValueStore|RedirectResponse|Response
      */
@@ -282,12 +297,13 @@ class ArticleCrudController extends AbstractCrudController
             $this->category = $this->entity->getCategory();
         }
 //        $this->adminUrlGenerator->unsetAllExcept('entityId');
-//        $this->adminUrlGenerator->unsetAll();
+        $this->adminUrlGenerator->unsetAll();
         return parent::edit($context);
     }
 
     /**
-     * configureCrud permet de configurer le crud, champs de recherche, redirection vers un template spécial, triage ...
+     * Permet de configurer le crud, champs de recherche, redirection vers un template spécial, triage ...
+     *
      * @param Crud $crud
      * @return Crud
      */
@@ -322,62 +338,74 @@ class ArticleCrudController extends AbstractCrudController
     }
 
     /**
+     * Fourni à la vue les variables dont elle a besoin pour fonctionner.
+     *
      * @param KeyValueStore $responseParameters
      * @return KeyValueStore
      */
     public function configureResponseParameters(KeyValueStore $responseParameters): KeyValueStore
     {
-        $parent             =   null;
-        $grandParentId      =   null;
+        // Identifiant du parent (catégorie ou article)
+        $parentId               =   null;
+        // Identifiant du parent depuis lequel on affichera la liste de ses enfants en cas d'action retour.
+        // Ex : depuis la liste d'articles d'une catégorie, le retour se fera sur la liste des catégories du parent de celle ci (soit le grand parent de l'article).
+        // Ex : depuis le détail d'un article, le retour se fera sur la liste des articles de son parent (catégorie ou article).
+        $ancestorId             =   null;
         // Variables passées pour la navigation dans la vue.
+
         // Nom du controleur parent dans l'arboresence.
-        $crudController     =   'Category';
+        $crudControllerName     =   'Category';
         // nom du champ du modèle parent sur lequel filtrer.
-        $keyName            =   'entityId';
+        $keyName                =   'entityId';
+
         // Si on affiche une liste d'article
         if (Crud::PAGE_INDEX === $responseParameters->get('pageName')) {
-
             // Si on est sur la liste des articles d'une catégorie.
             if ($this->category != null) {
-                $parent         =   $this->category;
+                $parentId         =   $this->category->getId();
                 // Envoi de l'id du grand-parent à la vue.
-                $grandParentId  =   $this->category->getParent()?->getId();
+                $ancestorId  =   $this->category->getParent()?->getId();
             }
             // Si on est sur la liste des sous articles d'un article.
             else if ($this->entity != null) {
-                $parent         =   $this->entity;
+                $parentId         =   $this->entity->getId();
                 // Envoi de l'id du grand-parent à la vue.
-                $grandParentId  =   $this->entity?->getCategory()?->getId();
-                $crudController =   'Article';
+                $ancestorId  =   $this->entity->getCategory()?->getId();
+                $crudControllerName =   'Article';
                 $keyName        =   'categoryId';
             }
         }
+        // Si on affiche le détail d'un article
         else if (Crud::PAGE_EDIT === $responseParameters->get('pageName')) {
-            $crudController     =   'Article';
+            $crudControllerName     =   'Article';
             // Si on est sur la liste des articles d'une catégorie.
-            if ($this->category != null) {
-                // Envoi de l'id du grand-parent à la vue.
-                $grandParentId  =   $this->category->getId();
+            if ($this->category != null)
+            {
+                // Envoi de l'id du parent à la vue.
+                $ancestorId  =   $this->category->getId();
                 $keyName        =   'categoryId';
             } // Si on est sur la liste des sous articles d'un article.
-            else if ($this->entity != null) {
-                // Envoi de l'id du grand-parent à la vue.
-                $grandParentId  =   $this->entity->getParent()?->getId();
+            else if ($this->entity != null)
+            {
+                // Envoi de l'id du parent à la vue.
+                $ancestorId  =   $this->entity->getParent()?->getId();
             }
             // Envoi des mediaspecs à la vue
             $responseParameters->set('mediaspecs', $this->entityManager->getRepository(Article::class)->getMediaspecs($this->entity));
 
         }
         // Passage des variables dans la vue
-        $responseParameters->set('parent', $parent);
-        $responseParameters->set('crudController', $crudController);
-        $responseParameters->set('grandParentId', $grandParentId);
+        $responseParameters->set('parentId', $parentId);
+        $responseParameters->set('crudControllerName', $crudControllerName);
+        $responseParameters->set('ancestorId', $ancestorId);
         $responseParameters->set('keyName', $keyName);
 
         return parent::configureResponseParameters($responseParameters);
     }
 
     /**
+     * Défini les actions suppélemnetaires disponibles dans la vue
+     *
      * @param Actions $actions
      * @return Actions
      */

@@ -34,17 +34,24 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 
 class CategoryCrudController extends AbstractCrudController
 {
-    private AdminUrlGenerator $adminUrlGenerator;
-    private EntityManagerInterface $entityManager;
-    private EntityRepository $entityRepository;
+    // Variables.
+
+
     private ?Category $entity = null;
 
-    public function __construct(AdminUrlGenerator $adminUrlGenerator, EntityRepository $entityRepository, EntityManagerInterface $entityManager)
+    public function __construct(
+        // Services
+
+        // Générateur de routes
+        private AdminUrlGenerator $adminUrlGenerator,
+        // Gestionnaire d'entité Symfony
+        private EntityManagerInterface $entityManager,
+        // Repository EasyAdmin
+        private EntityRepository $entityRepository
+    )
     {
-        $this->adminUrlGenerator = $adminUrlGenerator;
-        $this->entityRepository  = $entityRepository;
-        $this->entityManager     = $entityManager;
     }
+
 
     public static function getEntityFqcn(): string
     {
@@ -228,11 +235,11 @@ class CategoryCrudController extends AbstractCrudController
     public function configureResponseParameters(KeyValueStore $responseParameters): KeyValueStore
     {
         // Passage du parent des enfants de la liste affichée.
-        $responseParameters->set('parent', $this->entity);
+        $responseParameters->set('parentId', $this->entity?->getId());
         // Envoi de l'id du grand-parent à la vue.
-        $grandParentId = $this->entity?->getParent()?->getId();
-        $responseParameters->set('grandParentId', $grandParentId);
-        $responseParameters->set('crudController', 'Category');
+        $ancestorId = $this->entity?->getParent()?->getId();
+        $responseParameters->set('ancestorId', $ancestorId);
+        $responseParameters->set('crudControllerName', 'Category');
         $responseParameters->set('keyName', 'entityId');
 
         return parent::configureResponseParameters($responseParameters);

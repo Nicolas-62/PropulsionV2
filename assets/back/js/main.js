@@ -14,4 +14,5 @@ import '../styles/backoffice.scss';
 import $ from 'jquery';
 import 'select2';
 
-import './select'
+import './select';
+import './medias';

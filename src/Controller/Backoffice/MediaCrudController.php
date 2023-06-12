@@ -6,29 +6,51 @@ use App\Entity\Category;
 use App\Entity\Media;
 use App\Field\MediaUploadField;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class MediaCrudController extends AbstractCrudController
 {
-    private ?Media $entity = null;
 
+
+    public function __construct(
+        // Services
+
+        // Gestionnaire d'entité Symfony
+        private EntityManagerInterface $entityManager
+    )
+    {
+    }
     public static function getEntityFqcn(): string
     {
         return Media::class;
     }
 
+    /**
+     * Configure les champs à afficher dans les interfaces.
+     *
+     * @param string $pageName
+     * @return iterable
+     */
     public function configureFields(string $pageName): iterable
     {
         // LISTE
         // Nom du média.
         yield TextField::new('getName', 'nom')->onlyOnIndex();
+
+
+        yield TextField::new('legend', 'description');
 // TEST VICHUPLOAD BUNDLE
 //        yield ImageField::new('media', 'Image')
 //            ->onlyOnIndex()
@@ -42,8 +64,9 @@ class MediaCrudController extends AbstractCrudController
 
         // FORMULAIRE
 
-        // Si l'entité existe déjà
+        // Champ personnalisé d'upload du média
         $mediaField = MediaUploadField::new('media', 'Image')->onlyOnForms()->setRequired(true);
+
         // Champs pour l'édition d'un média
         if(Crud::PAGE_EDIT === $pageName) {
             // On personnalise la vue, on affiche l'image.
@@ -52,15 +75,13 @@ class MediaCrudController extends AbstractCrudController
             ]);
         }
         yield $mediaField;
-        // Légende
-        yield TextField::new('legend', 'Légende')
-                ->setColumns(6);
 
     }
 
 
     /**
-     * edit renvoi vers le formulaire d'édition du media
+     * Renvoi vers le formulaire d'édition du media
+     *
      * @param AdminContext $context
      * @return KeyValueStore|RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
@@ -70,8 +91,10 @@ class MediaCrudController extends AbstractCrudController
         $this->entity = $context->getEntity()->getInstance();
         return parent::edit($context);
     }
+
     /**
-     * createEntity permet de donner des valeurs par défaut aux différents champs de notre entité
+     * Permet de donner des valeurs par défaut aux différents champs de notre entité
+     *
      * @param string $entityFqcn
      * @return Media
      */
@@ -84,9 +107,27 @@ class MediaCrudController extends AbstractCrudController
         return $media;
     }
 
+    /**
+     * Retourne la liste des entités liées au média passé en paramètre.
+     *
+     * @param EntityManagerInterface $entityManager
+     * @param AdminContext $context
+     * @return JsonResponse
+     */
+    public function getRelatedEntities(EntityManagerInterface $entityManager, AdminContext $context): JsonResponse
+    {
+
+        // Récupération du média passé en paremètre.
+        $this->entity = $context->getEntity()->getInstance();
+        // Récupération des entités liées.
+        $entities = $entityManager->getRepository(Media::class)->getRelatedEntities($this->entity);
+
+        // Retour
+        return new JsonResponse(["entities" => $entities]);
+    }
 
     /**
-     * configureCrud permet de configurer le crud, champs de recherche, redirection vers un template spécial, triage ...
+     * Permet de configurer le crud, champs de recherche, redirection vers un template spécial, triage ...
      * @param Crud $crud
      * @return Crud
      */
@@ -99,13 +140,14 @@ class MediaCrudController extends AbstractCrudController
             ->setHelp('index', 'Liste des médias')
             // Template personnalisé
             ->overrideTemplate('crud/index', 'backoffice/media/medias.html.twig')
+
             // Pagination
             ->setPaginatorPageSize(12)
             ->setPaginatorRangeSize(4)
             // Personnalisation du formulaire
             ->setFormThemes(['backoffice/form/media_show.html.twig', '@EasyAdmin/crud/form_theme.html.twig'])
             // Actions sur la liste visible (par défaut cachées dans un dropdown)
-            //->showEntityActionsInlined()
+            ->showEntityActionsInlined()
             ;
     }
 
@@ -113,6 +155,22 @@ class MediaCrudController extends AbstractCrudController
     {
 
         parent::deleteEntity($entityManager, $entityInstance); // TODO: Change the autogenerated stub
+    }
+
+    /**
+     * Défini les actions suppélemnetaires disponibles dans la vue
+     *
+     * @param Actions $actions
+     * @return Actions
+     */
+    public function configureActions(Actions $actions): Actions
+    {
+        // Surcharge du bouton de suppression du média, vérification si il est lié à des articles/catégories
+        $actions->update(Crud::PAGE_INDEX,'delete', function(Action $action){
+            return $action->setTemplatePath('backoffice/media/delete_action.html.twig');
+        });
+
+        return $actions;
     }
 
 

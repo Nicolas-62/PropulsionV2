@@ -34,6 +34,10 @@ security:
         - { path: ^/backoffice, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
+    role_hierarchy:
+        ROLE_DEV: ROLE_ADMIN
+        ROLE_ADMIN: [ ROLE_USER, ROLE_AUTHOR ]
+
 when@test:
     security:
         password_hashers:

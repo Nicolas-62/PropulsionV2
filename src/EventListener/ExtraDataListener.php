@@ -151,24 +151,24 @@ class ExtraDataListener implements EventSubscriberInterface
 
         // Récupération de l'entité.
         $entity = $event->getEntityInstance();
-
-        // Récupération des datas de l'entité.
-        $datas = $this->entityManager->getRepository(ArticleData::class)->getDatas($entity, $this->locale);
-
-        // Formatage des données.
-
-        dump('edit, datas : ');
-        dump($datas);
-//        dump($entity->getHeadline());
-//        dump($datas['headline']->getFieldValue());
-
-        // Récupération des noms.
-        $dataNames = array_keys($datas);
-        // Récupération de la langue.
-        $language = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $this->locale]);
-
         // Si on est en édition d'un article.
         if ($entity instanceof Article) {
+            // Récupération des datas de l'entité.
+            $datas = $this->entityManager->getRepository(ArticleData::class)->getDatas($entity, $this->locale);
+
+            // Formatage des données.
+
+            dump('edit, datas : ');
+            dump($datas);
+    //        dump($entity->getHeadline());
+    //        dump($datas['headline']->getFieldValue());
+
+            // Récupération des noms.
+            $dataNames = array_keys($datas);
+            // Récupération de la langue.
+            $language = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $this->locale]);
+
+
             // Pour chaque champ.
             foreach($entity->getExtraFields() as $field){
                 // Si l'entrée existe déjà.

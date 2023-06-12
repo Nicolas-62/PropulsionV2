@@ -36,6 +36,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
+    #[ORM\Column(length: 255)]
+    private ?string $firstname = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $lastname = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $lastLogAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,10 +99,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(?string $password): self
     {
-        $this->password = $password;
-
+        if($password != null && trim($password) != '') {
+            $this->password = $password;
+        }
         return $this;
     }
 
@@ -116,5 +126,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->isVerified = $isVerified;
 
         return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): self
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(string $lastname): self
+    {
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getLastLogAt(): ?\DateTimeImmutable
+    {
+        return $this->lastLogAt;
+    }
+
+    public function setLastLogAt(?\DateTimeImmutable $lastLogAt): self
+    {
+        $this->lastLogAt = $lastLogAt;
+
+        return $this;
+    }
+
+
+    public function __toString(): string
+    {
+        return $this->firstname.' '.$this->lastname;
     }
 }

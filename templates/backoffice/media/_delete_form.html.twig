@@ -1,0 +1,27 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+<form class="d-none" method="post" id="delete-form">
+    <input type="hidden" name="token" value="{{ ea_csrf_token('ea-delete') }}" />
+</form>
+
+<div id="modal-delete" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h4>{{ 'delete_modal.title'|trans([], 'EasyAdminBundle') }}</h4>
+                <p>{{ 'delete_modal.content'|trans([], 'EasyAdminBundle') }}</p>
+                <p class="text-danger" style="display: none">Attention ce média est lié aux publications suivantes, le supprimer les privera de média !</p>
+                {# Liste des éléments liés au média #}
+                <div class="media-entity-list" style="display: none"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-bs-dismiss="modal" class="btn btn-secondary">
+                    <span class="btn-label">{{ 'action.cancel'|trans([], 'EasyAdminBundle') }}</span>
+                </button>
+
+                <button type="button" data-bs-dismiss="modal" class="btn btn-danger" id="modal-delete-button" form="delete-form">
+                    <span class="btn-label">{{ 'action.delete'|trans([], 'EasyAdminBundle') }}</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
