@@ -8,11 +8,12 @@
 // any CSS you import will output into a single css file (app.css in this case)
 import '../styles/backoffice.scss';
 
-// start the Stimulus application
-//import '../../bootstrap';
 
-import $ from 'jquery';
+import 'bootstrap'; // adds bootstrap functions to jQuery
+
 import 'select2';
 
 import './select';
-import './medias';
+
+// DEBUG
+console.log('bootstrap version : ',bootstrap.Tooltip.VERSION);

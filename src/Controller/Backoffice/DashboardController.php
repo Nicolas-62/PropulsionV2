@@ -42,7 +42,8 @@ class DashboardController extends AbstractDashboardController
             ->setLocales([
                 'en' => '🇬🇧 English', // locale without custom options
                 'fr' => '🇫🇷 Français',
-            ]);
+            ])
+            ;
     }
 
     public function configureAssets(): Assets
@@ -143,7 +144,8 @@ class DashboardController extends AbstractDashboardController
             // the first argument is the "template name", which is the same as the
             // Twig path but without the `@EasyAdmin/` prefix
             ->overrideTemplates([
-                'crud/field/id' => 'backoffice/field/id.html.twig'
+                'crud/field/id' => 'backoffice/field/id.html.twig',
+                'layout'        => 'backoffice/layout.html.twig'
             ])
             ;
     }

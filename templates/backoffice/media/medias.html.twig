@@ -2,7 +2,7 @@
 {% extends '@!EasyAdmin/crud/index.html.twig' %}
 
 {% block table_body %}
-    {# CUSTOM Définition de l'URL d'accès au détail d'une entité #}
+    {# CUSTOM : Définition de l'URL d'accès au détail d'une entité #}
     {% set url = ea_url()
         .setController('App\\Controller\\Backoffice\\MediaCrudController')
         .setAction('detail')

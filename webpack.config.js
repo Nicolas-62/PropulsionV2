@@ -28,6 +28,8 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('backoffice', './assets/back/js/main.js')
+    .addEntry('bo_medias', './assets/back/js/medias.js')
+
 
     .addEntry('frontoffice',    './assets/front/js/main.js')
     .addEntry('home',           './assets/front/js/home.js')

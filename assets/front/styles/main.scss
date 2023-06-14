@@ -38,6 +38,7 @@ $link-color: $secondary;
 
 // 3. Include remainder of required Bootstrap stylesheets:
 @import "~bootstrap/scss/variables"; // required
+@import "~bootstrap/scss/variables-dark"; // required
 @import "~bootstrap/scss/maps"; // required
 @import "~bootstrap/scss/mixins"; // required
 @import "~bootstrap/scss/utilities"; // required

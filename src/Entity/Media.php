@@ -30,7 +30,7 @@ class Media
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $legend = null;
 
-    #[ORM\OneToMany(mappedBy: 'media', targetEntity: MediaLink::class)]
+    #[ORM\OneToMany(mappedBy: 'media', targetEntity: MediaLink::class, cascade: ['remove'])]
     private Collection $mediaLinks;
 
 // TEST VICHUPLOAD BUNDLE

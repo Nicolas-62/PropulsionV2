@@ -8,6 +8,7 @@ use App\Field\MediaUploadField;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
@@ -172,6 +173,13 @@ class MediaCrudController extends AbstractCrudController
 
         return $actions;
     }
+
+    public function configureAssets(Assets $assets): Assets
+    {
+        return $assets
+            ->addWebpackEncoreEntry('bo_medias');
+    }
+
 
 
 }

@@ -20,7 +20,7 @@ window.jQuery = $;
 // this "modifies" the jquery module: adding behavior to it
 // the bootstrap module doesn't export/return anything
 
-require('bootstrap');
+import 'bootstrap'; // adds functions to jQuery
 //import * as bootstrap from 'bootstrap';
 //import { Dropdown } from 'bootstrap';
 

@@ -1,35 +1,25 @@
 // assets/back/medias.js
-
 (function(){ 'use strict';
-
+    console.log('welcome to medias.js');
     // Variables.
 
-    // // Sélecteur principal de la vue.
+    // Sélecteur principal de la vue.
     let $main               =   $('body');
     // // Modale de suppression d'un média.
-    // let $modale_delete      =   $main.find('#modal-delete');
+    let $modale_delete      =   $main.find('#modal-delete');
     // // Liste des liens avec le media.
-    // let $list_media_links   =   $modale_delete.find('.media-entity-list');
+    let $list_media_links   =   $modale_delete.find('.media-entity-list');
 
-    // let myModalEl = document.getElementById('modal-delete');
-    // myModalEl.addEventListener('show.bs.modal', function (event) {
-    //     // do something...
-    //     console.log('test')
-    //     console.log(event)
-    // })
 
     // Events
 
-    console.log($('#modal-delete'))
-
     // A l'affichage de la modale de suppression
-    $('#modal-delete').on('show.bs.modal', function(event){
-        console.log('show')
+    $modale_delete.on('shown.bs.modal', function(event){
 
-        // Récupération du champ sélectionné.
-        let $link = $(event.currentTarget);
+        // Récupération du bouton délcancheur de l'ouverture de la modale.
+        let $link = $(event.relatedTarget);
 
-        // Appel changement du mode de recherche.
+        // Appel, liste des publications liées au médià
         $.ajax(
             {
                 // URL.
@@ -41,7 +31,7 @@
                 // Fonction exécuté en cas de succès.
                 success: function(datas){
                     // DEBUG
-                    console.log(datas);
+                    // console.log(datas);
 
                     // Capteur méida associé à des publications
                     let has_link = false;
@@ -73,14 +63,13 @@
     });
 
     // // A la fermeture de la modale de suppression
-    // $modale_delete.on('hide.bs.modal', function(event){
-    //     console.log('hide')
-    //     // On cache les messages d'erreur.
-    //     $list_media_links.hide();
-    //     $list_media_links.prev().hide();
-    //     // On vide la liste des liens avec le média sélectionné.
-    //     $list_media_links.html('');
-    // });
+    $modale_delete.on('hide.bs.modal', function(event){
+        // On cache les messages d'erreur.
+        $list_media_links.hide();
+        $list_media_links.prev().hide();
+        // On vide la liste des liens avec le média sélectionné.
+        $list_media_links.html('');
+    });
 
 
 })(); // EOF.

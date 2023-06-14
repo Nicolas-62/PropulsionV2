@@ -30,7 +30,6 @@
         "datatables.net-responsive-bs5": "^2.4.0",
         "hamburgers": "^1.2.1",
         "imagesloaded": "^5.0.0",
-        "jquery": "^3.7.0",
         "masonry-layout": "^4.2.2",
         "select2": "^4.1.0-rc.0",
         "verge": "^1.10.2"

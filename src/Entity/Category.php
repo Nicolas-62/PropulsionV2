@@ -58,7 +58,8 @@ class Category
     #[ORM\JoinColumn(name:"category_id", referencedColumnName:"id")]
     protected ?Category $parent;
 
-    #[ORM\OneToMany( mappedBy:"parent", targetEntity: self::class,  cascade: ['remove'])]
+
+    #[ORM\OneToMany( mappedBy: "parent", targetEntity: self::class, cascade: ['remove'])]
     #[ORM\JoinColumn(name:"category_id", referencedColumnName:"id")]
     protected Collection $children;
 
