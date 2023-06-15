@@ -21,6 +21,11 @@ Encore
         from: './assets/front/images',
         to:    'front/images/[path][name].[ext]'
     })
+    // website images.
+    .copyFiles({
+        from: './assets/front/fonts',
+        to:    'front/fonts/[path][name].[ext]'
+    })
     /*
      * ENTRY CONFIG
      *
