@@ -14,8 +14,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Event\AfterCrudActionEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityDeletedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeCrudActionEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 
 class MediaListener implements EventSubscriberInterface
@@ -37,7 +39,7 @@ class MediaListener implements EventSubscriberInterface
         return [
             BeforeCrudActionEvent::class    => 'unlinkMedia',
             BeforeEntityUpdatedEvent::class => 'linkMedias',
-            AfterEntityDeletedEvent::class  => 'removeMedia'
+            AfterEntityDeletedEvent::class  => 'removeMedia',
         ];
     }
 
@@ -47,13 +49,18 @@ class MediaListener implements EventSubscriberInterface
         if (!($entity instanceof Media)){
             return;
         }
+        // Chargement composant Filesystem
+        $filesystem = new Filesystem();
+
         // Chemin de l'image
         $imagepath = Constants::ASSETS_IMG_PATH.$entity->getMedia();
         // Suppression de l'image
-        if(file_exists($imagepath)) {
-            unlink($imagepath);
+        if($filesystem->exists($imagepath)) {
+            $filesystem->remove($imagepath);
         }
     }
+
+
 
 
     /** saveMedias Permet de faire des actions avant la modification d'une entité

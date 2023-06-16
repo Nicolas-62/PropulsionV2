@@ -27,7 +27,7 @@ services:
             # utilisée par le cache manager, il créer ses vignette dans les même sous dossiers que le chemin des images téléchargées.
             # public/assets/images -> public/media/cache/<nom_format_vignette>/assets/images
             $asset_img_path: '%app.asset_img_path%'
-
+            $config_dir: '%kernel.project_dir%/config'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

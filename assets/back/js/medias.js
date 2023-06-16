@@ -1,4 +1,7 @@
 // assets/back/medias.js
+
+import './media';
+
 (function(){ 'use strict';
     console.log('welcome to medias.js');
     // Variables.

@@ -1,0 +1,22 @@
+{% block _Media_media_edit_widget %}
+    {% set upload_url = ea_url()
+        .unsetAll()
+        .setController('App\\Controller\\Backoffice\\MediaCrudController')
+        .setAction('upload')
+    %}
+
+    {% if ea.crud.currentAction == 'edit' %}
+        <img src="{{ asset(getThumbnailPath(ea.entity.fields.getByProperty(form.vars.name).value)) }}" class="img-fluid">
+    {% else %}
+        <div class="form-group mb-3">
+            <div
+                class="my-dropzone text-center dropzone"
+                data-upload-url="{{ upload_url }}"
+                data-upload-message="{{ 'upload.upload-message'|trans }}"
+            >
+            </div>
+        </div>
+    {% endif %}
+    <input type="hidden" name="folderId" id="folderId" />
+    <input type="hidden" name="filename" id="filename" />
+{% endblock %}

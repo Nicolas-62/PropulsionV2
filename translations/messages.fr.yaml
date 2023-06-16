@@ -67,3 +67,6 @@ security:
   register: S'inscrire
   accept: J'accepte toutes 
   terms: les conditions d'utilisation
+
+upload:
+  upload-message: 'Glisser / déposer votre fichier ICI : Type de fichiers  .jpg'

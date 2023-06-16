@@ -2,9 +2,12 @@
 
 namespace App\Controller\Backoffice;
 
+use App\Constants\Constants;
 use App\Entity\Category;
 use App\Entity\Media;
 use App\Field\MediaUploadField;
+use App\Service\Secure;
+use App\Service\Toolbox;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -17,10 +20,17 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
+/**
+ * @method UploadedFile move()
+ */
 class MediaCrudController extends AbstractCrudController
 {
 
@@ -29,7 +39,9 @@ class MediaCrudController extends AbstractCrudController
         // Services
 
         // Gestionnaire d'entité Symfony
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private Secure                 $secureService,
+        private Toolbox                $toolbox
     )
     {
     }
@@ -66,15 +78,22 @@ class MediaCrudController extends AbstractCrudController
         // FORMULAIRE
 
         // Champ personnalisé d'upload du média
-        $mediaField = MediaUploadField::new('media', 'Image')->onlyOnForms()->setRequired(true);
+        $mediaField = MediaUploadField::new('media', 'Image')
+            ->onlyOnForms()
+            ->setRequired(true)
+            ->setFormTypeOptions([
+                'block_name' => 'media_edit',
+            ])
+        ;
 
-        // Champs pour l'édition d'un média
-        if(Crud::PAGE_EDIT === $pageName) {
-            // On personnalise la vue, on affiche l'image.
-            $mediaField->setFormTypeOptions([
-                'block_name' => 'media_show',
-            ]);
-        }
+//        // Si le média existe déjà.
+//        if(Crud::PAGE_EDIT === $pageName) {
+//            // On personnalise la vue, on affiche l'image.
+//            $mediaField->setFormTypeOptions([
+//                'block_name' => 'media_edit',
+//            ]);
+//        }
+
         yield $mediaField;
 
     }
@@ -146,7 +165,7 @@ class MediaCrudController extends AbstractCrudController
             ->setPaginatorPageSize(12)
             ->setPaginatorRangeSize(4)
             // Personnalisation du formulaire
-            ->setFormThemes(['backoffice/form/media_show.html.twig', '@EasyAdmin/crud/form_theme.html.twig'])
+            ->setFormThemes(['backoffice/form/media_edit.html.twig', '@EasyAdmin/crud/form_theme.html.twig'])
             // Actions sur la liste visible (par défaut cachées dans un dropdown)
             ->showEntityActionsInlined()
             ;
@@ -173,6 +192,80 @@ class MediaCrudController extends AbstractCrudController
 
         return $actions;
     }
+
+
+    /**
+     * Enregistre sur le serveur le fichier déposé par l'utilisateur
+     *
+     * @param EntityManagerInterface $entityManager
+     * @param AdminContext $context
+     * @return JsonResponse
+     */
+    public function upload(EntityManagerInterface $entityManager, AdminContext $context): JsonResponse
+    {
+        // Objet réponse.
+        $response = array('error' => null, 'folderId' => null, 'filename' => null);
+
+        // Récupération de l'image
+        // DEBUG
+        dump($context->getRequest()->files->get('file'));
+        $file = $context->getRequest()->files->get('file');
+
+        // Si l'image a été récupérée.
+        if(isset($file) && $file->isValid()) {
+            // Dossier temporaire de l'image = chaine alphanumérique de 10 caractères.
+            $folderId = $this->secureService->random_hash(5);
+            // Chemin temporaire de l'image
+            $imageBasePath = Constants::ASSETS_UPLOAD_PATH . $folderId . '/';
+            // Déplacement de l'image dans le dossier temporaire
+            if($file->move($imageBasePath, $file->getClientOriginalName())){
+                $response["folderId"] = $folderId;
+                $response["filename"] = $file->getClientOriginalName();
+            }
+        }else{
+            $response["error"] = "Impossible de récupérer le fichier";
+        }
+        // Retour
+        return new JsonResponse($response);
+    }
+
+
+   public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
+   {
+       // Récupération de l'id du dossier temporaire
+       $folderId = $this->getContext()->getRequest()->get('folderId');
+       // Récupération du nom du fichier
+       $filename = $this->getContext()->getRequest()->get('filename');
+       // Si un fichier a été déposé
+       if($folderId != null){
+           $tmpPath = Constants::ASSETS_UPLOAD_PATH . $folderId . '/';
+            // Chemin du fichier temporaire.
+           $imageTmpPath = $tmpPath. '/'.$filename;
+
+           // Si le fichier existe.
+           $filesystem = new Filesystem();
+           if($filesystem->exists($imageTmpPath)){
+                // Infos de l'image
+               $file = new File($imageTmpPath);
+               // On néttoie le nom de l'image.
+               $new_filename = $this->toolbox->url_compliant($file->getBasename('.' . $file->getExtension())).'-'.time().'.'.$file->guessExtension();
+               // Chemin de destination
+               $imagePath = Constants::ASSETS_IMG_PATH .$new_filename;
+               // Si on arrive à le déplacer dans la mediatheque.
+               try{
+                   $filesystem->rename($imageTmpPath, $imagePath);
+               }catch (IOException $e){
+                   $this->addFlash('error', "Impossible de sauvegarder l'image dans la médiatheque");
+               } finally {
+                   $filesystem->remove($tmpPath);
+               }
+               $entityInstance->setMedia($new_filename);
+           }
+       }
+
+       parent::persistEntity($entityManager, $entityInstance); // TODO: Change the autogenerated stub
+   }
+
 
     public function configureAssets(Assets $assets): Assets
     {
