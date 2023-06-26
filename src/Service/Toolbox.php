@@ -11,7 +11,6 @@ class Toolbox{
 
     public function convert_accented_characters($str){
         // ToDo a tester sur le serveur
-        dump($this->config_dir);
         if (is_file($this->config_dir.'foreign_chars.php'))
         {
             include($this->config_dir.'foreign_chars.php');

@@ -2,12 +2,14 @@
 
 namespace App\Controller\Backoffice;
 
+use App\Constants\Constants;
 use App\Entity\Article;
 use App\Entity\ArticleData;
 use App\Entity\Category;
 use App\Entity\Media;
 use App\Entity\Traits\ExtraDataTrait;
 use App\Field\ExtraField;
+use App\Field\MediaSelectField;
 use App\Field\MediaUploadField;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,6 +18,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
@@ -35,10 +38,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 
-class ArticleCrudController extends AbstractCrudController
+class ArticleCrudController extends BoController
 {
     // Variables
 
@@ -57,9 +62,11 @@ class ArticleCrudController extends AbstractCrudController
         // Gestionnaire d'entité Symfony
         private EntityManagerInterface $entityManager,
         // Repository EasyAdmin
-        private EntityRepository $entityRepository
+        private EntityRepository $entityRepository,
     )
     {
+        // Appel du constructeur du controller parent
+        parent::__construct();
     }
 
     /**
@@ -104,7 +111,7 @@ class ArticleCrudController extends AbstractCrudController
         yield AssociationField::new('children','Enfants')->hideOnForm();
         yield BooleanField::new('isOnline', 'En ligne')->hideOnForm();
         yield TextField::new('title','titre')->setColumns(6);
-        yield TextEditorField::new('content','description')->setColumns(12);
+        yield TextEditorField::new('content','contenu')->setColumns(12);
         
         $article = new Article();
         // Ajout des champs spécifiques à l'instance définis dans l'entité.
@@ -153,8 +160,12 @@ class ArticleCrudController extends AbstractCrudController
                         }
                         // Si pas encore de média défini.
                         else {
+                            // Ajout d'une zone d'upload de fichier
+                            $imageField->setFormTypeOptions([
+                                'block_name' => 'media_edit',
+                            ]);
                             // Ajout d'un champ supplémentaire de sélection d'un média existant.
-                            yield ExtraField::new('media' . ($index + 11))
+                            yield MediaSelectField::new('media' . ($index + 11))
                                 ->setChoices(
                                     $this->entityManager->getRepository(Media::class)->getAllForChoices()
                                 );
@@ -188,6 +199,20 @@ class ArticleCrudController extends AbstractCrudController
 //        }
 //
         return $article;
+    }
+
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+
+    {
+        // Médiaspecs appliquées à l'entité
+        $mediaspecs = $this->entityManager->getRepository(Article::class)->getMediaspecs($this->entity);
+        // Si ils existent.
+        if ($mediaspecs != null) {
+            // Pour chaque mediaspec
+            foreach ($mediaspecs as $index => $mediaspec) {
+
+            }
+        }
     }
 
     /**
@@ -329,7 +354,8 @@ class ArticleCrudController extends AbstractCrudController
             ->overrideTemplate('crud/index', 'backoffice/article/articles.html.twig')
             ->overrideTemplate('crud/detail', 'backoffice/article/article.html.twig')
             ->overrideTemplate('crud/edit', 'backoffice/article/edit.html.twig')
-            ->setFormThemes(['backoffice/form/media_delete.html.twig','backoffice/form/media_select.html.twig','@EasyAdmin/crud/form_theme.html.twig'])
+            // Personnalisation du formulaire
+            ->setFormThemes(['backoffice/article/media_edit.html.twig', 'backoffice/article/media_delete.html.twig','backoffice/article/media_select.html.twig','@EasyAdmin/crud/form_theme.html.twig'])
 
             //showEntityActionsInlined : permet d'afficher les actions en ligne plutôt que dans un menu
             ->showEntityActionsInlined()
@@ -438,6 +464,17 @@ class ArticleCrudController extends AbstractCrudController
         $actions->add(Crud::PAGE_EDIT, $returnPageAction);
 
         return $actions;
+    }
+
+    /**
+     * Définie les assets nécessaires pour le controleur de médias.
+     * @param Assets $assets
+     * @return Assets
+     */
+    public function configureAssets(Assets $assets): Assets
+    {
+        return $assets
+            ->addWebpackEncoreEntry('bo_articles');
     }
 
 }

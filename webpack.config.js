@@ -32,12 +32,13 @@ Encore
      * Each entry will result in one JavaScript file (e.g. main.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('backoffice', './assets/back/js/main.js')
-    .addEntry('bo_medias', './assets/back/js/medias.js')
-
+    .addEntry('backoffice', './assets/bo/js/main.js')
+    .addEntry('bo_medias', './assets/bo/js/medias.js')
+    .addEntry('bo_articles', './assets/bo/js/articles.js')
 
     .addEntry('frontoffice',    './assets/front/js/main.js')
     .addEntry('home',           './assets/front/js/home.js')
+
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     //.enableStimulusBridge('./assets/controllers.json')

@@ -1,9 +1,9 @@
-// assets/back/medias.js
+// assets/bo/medias.js
 
 import './media';
 
 (function(){ 'use strict';
-    console.log('welcome to medias.js');
+    console.info('welcome to medias.js');
     // Variables.
 
     // Sélecteur principal de la vue.

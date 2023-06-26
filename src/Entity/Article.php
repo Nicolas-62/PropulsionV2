@@ -164,11 +164,13 @@ class Article
 
     public function addMediaLink(MediaLink $mediaLink): self
     {
-        if (!$this->mediaLinks->contains($mediaLink)) {
-            $this->mediaLinks->add($mediaLink);
-            $mediaLink->setArticle($this);
+        foreach($this->getMediaLinks() as $mediaLinked){
+            if($mediaLinked->getMediaspec()->getId() == $mediaLink ->getMediaspec()->getId()){
+               $this->removeMediaLink($mediaLinked);
+            }
         }
-
+        $this->mediaLinks->add($mediaLink);
+        $mediaLink->setArticle($this);
         return $this;
     }
 

@@ -8,6 +8,7 @@
     {% if ea.crud.currentAction == 'edit' %}
         <img src="{{ asset(getThumbnailPath(ea.entity.fields.getByProperty(form.vars.name).value)) }}" class="img-fluid">
     {% else %}
+        {# Zone d'upload du nouveau média #}
         <div class="form-group mb-3">
             <div
                 class="my-dropzone text-center dropzone"

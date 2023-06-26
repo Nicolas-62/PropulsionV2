@@ -23,7 +23,7 @@ class MediaSelectField  implements FieldInterface
             ->setColumns(6)
             ->setFormTypeOptions([
                 'multiple' => false,
-                'block_name' => 'media_select',
+//                'block_name' => 'media_select',
 
             ])
         );

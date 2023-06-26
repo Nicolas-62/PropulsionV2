@@ -9,8 +9,6 @@
 import '../styles/backoffice.scss';
 import 'bootstrap'; // adds bootstrap functions to jQuery
 
-import 'select2';
-import './select';
 
 // DEBUG
-console.log('bootstrap version : ',bootstrap.Tooltip.VERSION);
+console.info('bootstrap version : ',bootstrap.Tooltip.VERSION);

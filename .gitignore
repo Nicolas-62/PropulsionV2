@@ -23,6 +23,7 @@
 /.idea/
 
 public/assets/images/
+public/assets/upload/
 
 
 ###> symfony/webpack-encore-bundle ###
@@ -34,3 +35,4 @@ yarn-error.log
 
 ###> liip/imagine-bundle ###
 /public/media/cache/
+/public/assets/

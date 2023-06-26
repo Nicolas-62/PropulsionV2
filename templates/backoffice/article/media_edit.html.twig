@@ -1,0 +1,29 @@
+{% block _Article_media_edit_widget %}
+    {# Url d'upload #}
+    {% set upload_url = ea_url()
+        .unsetAll()
+        .setController('App\\Controller\\Backoffice\\ArticleCrudController')
+        .setAction('upload')
+    %}
+    <div class="article-detail-media-upload">
+        {# Zone d'upload du nouveau média #}
+        <div class="form-group mb-3">
+            <div
+                class="my-dropzone text-center dropzone"
+                data-upload-url="{{ upload_url }}"
+                data-upload-message="{{ 'upload.upload-message'|trans }}"
+            >
+            </div>
+        </div>
+        <div class="field-text form-group">
+            <label for="Media_legend" class="form-control-label">
+                description
+            </label>
+            <div class="form-widget">
+                <input type="text" name="" class="form-control">
+            </div>
+        </div>
+        <input type="hidden" name="folderId" id="folderId" />
+        <input type="hidden" name="filename" id="filename" />
+    </div>
+{% endblock %}

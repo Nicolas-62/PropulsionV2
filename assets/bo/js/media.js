@@ -1,4 +1,4 @@
-// assets/back/media.js
+// assets/bo/media.js
 import "../../lib/js/dropzone.js";
 
 import { Dropzone } from "dropzone";
@@ -6,7 +6,7 @@ import { Dropzone } from "dropzone";
 import Cropper from 'cropperjs';
 
 (function() {'use strict';
-    console.log('welcome to media.js');
+    console.info('welcome to media.js');
 
     // ! Variables
 

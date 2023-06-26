@@ -268,7 +268,7 @@
 		// For error messages, which theme does the box use?
 		pageLoadErrorMessageTheme: "a",
 
-		// replace calls to window.history.back with phonegaps navigation helper
+		// replace calls to window.history.bo with phonegaps navigation helper
 		// where it is provided on the window object
 		phonegapNavigationEnabled: false,
 

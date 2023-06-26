@@ -6,14 +6,11 @@ use App\Constants\Constants;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
-use Vich\UploaderBundle\Form\Type\VichImageType;
+use Symfony\Component\Filesystem\Filesystem;
 
 class MediaUploadField  implements FieldInterface
 {
     use FieldTrait;
-    
-    
 
     /**
      * @param string $propertyName
@@ -22,13 +19,17 @@ class MediaUploadField  implements FieldInterface
      */
     public static function new(string $propertyName, ?string $label = null): ImageField
     {
+        // ToDo récupérer ces variables autrement
+        // Chemin d'accès des images depuis le dossier 'public' de l'application
+        $base_path  = Constants::ASSETS_IMG_PATH;
+        // Chémin d'upload des images.
+        $upload_dir = Constants::UPLOAD_PATH . Constants::ASSETS_IMG_PATH;
 
         // Configuration du champ d'upload d'un média.
         return (ImageField::new($propertyName, $label)
             ->setColumns(6)
-            ->setBasePath(Constants::ASSETS_IMG_PATH)
-            // ToDo récupérer ces variables autrement
-            ->setUploadDir($_ENV['UPLOAD_PATH'] . $_ENV['ASSETS_IMG_PATH'])
+            ->setBasePath($base_path)
+            ->setUploadDir($upload_dir)
             ->setUploadedFileNamePattern('[name]_[randomhash].[extension]')
             ->setRequired(false)
         );

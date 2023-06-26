@@ -73,4 +73,15 @@ class ArticleRepository extends CMSRepository
     }
 
 
+    public function linkMedia(Article $entity, Mediaspec $mediaspec, Media $media){
+        // Todo créer le média
+        // Todo lier l'article au média
+        $mediaLink = new MediaLink();
+        $mediaLink->setArticle($entity);
+        $mediaLink->setMediaspec($mediaspec);
+        $mediaLink->setMedia($media);
+
+    }
+
+
 }

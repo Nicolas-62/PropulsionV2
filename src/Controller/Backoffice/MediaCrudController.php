@@ -2,12 +2,11 @@
 
 namespace App\Controller\Backoffice;
 
-use App\Constants\Constants;
-use App\Entity\Category;
-use App\Entity\Media;
+
 use App\Field\MediaUploadField;
-use App\Service\Secure;
-use App\Service\Toolbox;
+
+use App\Service\MediaService;
+use App\Entity\Media;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -27,11 +26,12 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use function PHPUnit\Framework\throwException;
 
 /**
  * @method UploadedFile move()
  */
-class MediaCrudController extends AbstractCrudController
+class MediaCrudController extends BoController
 {
 
 
@@ -39,11 +39,11 @@ class MediaCrudController extends AbstractCrudController
         // Services
 
         // Gestionnaire d'entité Symfony
-        private EntityManagerInterface $entityManager,
-        private Secure                 $secureService,
-        private Toolbox                $toolbox
+        private MediaService $mediaService
     )
     {
+        // Appel du constructeur du controller parent
+        parent::__construct();
     }
     public static function getEntityFqcn(): string
     {
@@ -165,7 +165,7 @@ class MediaCrudController extends AbstractCrudController
             ->setPaginatorPageSize(12)
             ->setPaginatorRangeSize(4)
             // Personnalisation du formulaire
-            ->setFormThemes(['backoffice/form/media_edit.html.twig', '@EasyAdmin/crud/form_theme.html.twig'])
+            ->setFormThemes(['backoffice/media/media_edit.html.twig', '@EasyAdmin/crud/form_theme.html.twig'])
             // Actions sur la liste visible (par défaut cachées dans un dropdown)
             ->showEntityActionsInlined()
             ;
@@ -185,7 +185,7 @@ class MediaCrudController extends AbstractCrudController
      */
     public function configureActions(Actions $actions): Actions
     {
-        // Surcharge du bouton de suppression du média, vérification si il est lié à des articles/catégories
+        // Surcharge du bouton de suppression du média, vérification si il est lié à des publications
         $actions->update(Crud::PAGE_INDEX,'delete', function(Action $action){
             return $action->setTemplatePath('backoffice/media/delete_action.html.twig');
         });
@@ -194,85 +194,30 @@ class MediaCrudController extends AbstractCrudController
     }
 
 
-    /**
-     * Enregistre sur le serveur le fichier déposé par l'utilisateur
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param AdminContext $context
-     * @return JsonResponse
-     */
-    public function upload(EntityManagerInterface $entityManager, AdminContext $context): JsonResponse
-    {
-        // Objet réponse.
-        $response = array('error' => null, 'folderId' => null, 'filename' => null);
-
-        // Récupération de l'image
-        // DEBUG
-        dump($context->getRequest()->files->get('file'));
-        $file = $context->getRequest()->files->get('file');
-
-        // Si l'image a été récupérée.
-        if(isset($file) && $file->isValid()) {
-            // Dossier temporaire de l'image = chaine alphanumérique de 10 caractères.
-            $folderId = $this->secureService->random_hash(5);
-            // Chemin temporaire de l'image
-            $imageBasePath = Constants::ASSETS_UPLOAD_PATH . $folderId . '/';
-            // Déplacement de l'image dans le dossier temporaire
-            if($file->move($imageBasePath, $file->getClientOriginalName())){
-                $response["folderId"] = $folderId;
-                $response["filename"] = $file->getClientOriginalName();
-            }
-        }else{
-            $response["error"] = "Impossible de récupérer le fichier";
-        }
-        // Retour
-        return new JsonResponse($response);
-    }
-
-
    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
    {
-       // Récupération de l'id du dossier temporaire
-       $folderId = $this->getContext()->getRequest()->get('folderId');
-       // Récupération du nom du fichier
-       $filename = $this->getContext()->getRequest()->get('filename');
+
+       $new_filename = $this->mediaService->upload(
+           $this->getContext()->getRequest()->get('folderId'),
+           $this->getContext()->getRequest()->get('filename')
+       );
        // Si un fichier a été déposé
-       if($folderId != null){
-           $tmpPath = Constants::ASSETS_UPLOAD_PATH . $folderId . '/';
-            // Chemin du fichier temporaire.
-           $imageTmpPath = $tmpPath. '/'.$filename;
-
-           // Si le fichier existe.
-           $filesystem = new Filesystem();
-           if($filesystem->exists($imageTmpPath)){
-                // Infos de l'image
-               $file = new File($imageTmpPath);
-               // On néttoie le nom de l'image.
-               $new_filename = $this->toolbox->url_compliant($file->getBasename('.' . $file->getExtension())).'-'.time().'.'.$file->guessExtension();
-               // Chemin de destination
-               $imagePath = Constants::ASSETS_IMG_PATH .$new_filename;
-               // Si on arrive à le déplacer dans la mediatheque.
-               try{
-                   $filesystem->rename($imageTmpPath, $imagePath);
-               }catch (IOException $e){
-                   $this->addFlash('error', "Impossible de sauvegarder l'image dans la médiatheque");
-               } finally {
-                   $filesystem->remove($tmpPath);
-               }
-               $entityInstance->setMedia($new_filename);
-           }
+       if($new_filename !== false){
+           // On associe l'image téléchargée à l'objet média en cours de création.
+           $entityInstance->setMedia($new_filename);
        }
-
+        // Sauvegarde du nouvel objet média.
        parent::persistEntity($entityManager, $entityInstance); // TODO: Change the autogenerated stub
    }
 
-
+    /**
+     * Définie les assets nécessaires pour le controleur de médias.
+     * @param Assets $assets
+     * @return Assets
+     */
     public function configureAssets(Assets $assets): Assets
     {
         return $assets
             ->addWebpackEncoreEntry('bo_medias');
     }
-
-
-
 }

@@ -6,7 +6,7 @@ import { Dropzone } from "dropzone";
 import Cropper from 'cropperjs';
 
 (function() {'use strict';
-    console.log('welcome to dropzone.js');
+    console.info('welcome to dropzone.js');
 
     // ! Variables
     let dropzone                =  null;
@@ -18,40 +18,43 @@ import Cropper from 'cropperjs';
 
     // When DOM is ready.
     $(document).ready(function() {
-
-        // ! Events.
+        // Si des dropzones sont présentes.
         if($dropzone.length > 0) {
+            // Pour chaque dropzone
+            $dropzone.each(function(index, dropzoneElement){
+                // Wrap de l'element html dans un Objet JQuery
+                let $dropzoneElement = $(dropzoneElement);
+                // Init
 
-            // Init
-
-            // Options de la dropzone
-            let options = {
-                url: $dropzone.attr("data-upload-url"),
-                dictRemoveFile: 'x',
-                addRemoveLinks: true,
-                maxFiles: 1,
-                dictDefaultMessage: $dropzone.attr("data-upload-message"),
-                thumbnailWidth: null,
-                thumbnailHeight: 200,
-                thumbnailMethod: "contain"
-            }
-
-            // On instancie la zone de dropzone.
-            const dropzone = new Dropzone(dropzoneSelector, options);
-
-            // Si un fichier est correctement uploadé.
-            dropzone.on('success', function (file) {
-                // On récupère la réponse envoyée
-                let response = JSON.parse(file.xhr.responseText);
-                // Si pas d'erreurs.
-                if (response.error == null) {
-                    // On récupère le nom du dossier temporaire et on l'ajoute au formulaire
-                    $main.find("#folderId").val(response.folderId);
-                    // On ajoute le nom du fichier
-                    $main.find("#filename").val(response.filename);
-                } else {
-                    alert(response.error);
+                // Options de la dropzone
+                let options = {
+                    url: $dropzoneElement.attr("data-upload-url"),
+                    dictRemoveFile: 'x',
+                    addRemoveLinks: true,
+                    maxFiles: 1,
+                    dictDefaultMessage: $dropzoneElement.attr("data-upload-message"),
+                    thumbnailWidth: null,
+                    thumbnailHeight: 200,
+                    thumbnailMethod: "contain"
                 }
+
+                // On instancie la zone de dropzone.
+                const dropzone = new Dropzone(dropzoneElement, options);
+
+                // Si un fichier est correctement uploadé.
+                dropzone.on('success', function (file) {
+                    // On récupère la réponse envoyée
+                    let response = JSON.parse(file.xhr.responseText);
+                    // Si pas d'erreurs.
+                    if (response.error == null) {
+                        // On récupère le nom du dossier temporaire et on l'ajoute au formulaire
+                        $main.find("#folderId").val(response.folderId);
+                        // On ajoute le nom du fichier
+                        $main.find("#filename").val(response.filename);
+                    } else {
+                        alert(response.error);
+                    }
+                });
             });
         }
 
