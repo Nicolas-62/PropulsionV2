@@ -11,7 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class MediaspecsCrudController extends AbstractCrudController
+class MediaspecCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {

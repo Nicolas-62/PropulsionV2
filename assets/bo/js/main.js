@@ -6,7 +6,7 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import '../styles/backoffice.scss';
+import '../styles/main.scss';
 import 'bootstrap'; // adds bootstrap functions to jQuery
 
 

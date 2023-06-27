@@ -10,5 +10,24 @@
     >
         Supprimer
     </a>
-    <img src="{{ asset(getThumbnailPath(ea.entity.fields.getByProperty(form.vars.name).value.media)) }}" class="img-fluid">
+    <a
+            id="crop-button"
+            class="btn btn-block btn-secondary"
+    >
+        Cropper
+    </a>
+
+    <div class="form-group">
+        <img id="image" src="{{ asset(getThumbnailPath(ea.entity.fields.getByProperty(form.vars.name).value.media)) }}" alt="image" style="max-width: 100%;">
+        <input type="hidden" id="image-data" name="image_data" value="{{ ea.entity.fields.getByProperty(form.vars.name).value.media }}">
+    </div>
+    <h3>Image croppée</h3>
+
+    <div id="cropped-image-preview"></div>
+    <div>{{ ea.entity.fields.getByProperty('mediaspecs') }}</div>
+    <div>{{ form.vars.name }}</div>
+    <div>{{ dump(ea) }}</div>
+
+
+
 {% endblock %}

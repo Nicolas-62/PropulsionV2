@@ -92,7 +92,8 @@ class OnlineListener implements EventSubscriberInterface
             $online = new Online();
             $online->setArticle($entity);
             $online->setCategory(null);
-            $langue = $this->entityManager->getRepository(Language::class)->find(1);
+
+            $langue = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $this->locale]);
             $online->setLangue($langue);
 
 

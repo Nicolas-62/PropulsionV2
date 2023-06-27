@@ -55,16 +55,6 @@ class FOController extends AbstractController
         return $this->render($this->getParameter('app.fo_path'). $this->list_partial, $this->data);
     }
 
-    #[Route('/liste', name: 'liste')]
-    public function liste(): Response
-    {
-        // On récupère la catégorie qui nous intéresse
-        $this->data['category'] = $this->entityManager->getRepository(Category::class)->find(1);
-        $this->data['tree'] = $this->entityManager->getRepository(Category::class)->getGenealogy(1, $this->getParameter('locale'));
-
-        return $this->render('frontoffice/article/articles.html.twig', $this->data);
-    }
-
     #[Route('/contact', name: 'contact')]
     public function contact(Request $request, ContactNotification $notification): Response
     {

@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Media;
 use App\Entity\Mediaspec;
+use App\Entity\Themes;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -17,7 +18,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-
+use App\Controller\Admin\CategoryCrudController;
 #[Route('/backoffice', name: 'bo_'),  IsGranted('ROLE_ADMIN')]
 class DashboardController extends AbstractDashboardController
 {
@@ -82,6 +83,11 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::subMenu('Medias', 'fas fa-image')->setSubItems([
             MenuItem::linkToCrud('Tous les medias',  'fa-regular fa-image', Media::class),
             MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Media::class)->setAction(Crud::PAGE_NEW),
+        ]);
+        // Liste des thèmes.
+        yield MenuItem::subMenu('Themes', 'fas fa-palette')->setSubItems([
+            MenuItem::linkToCrud('Tous les themes',  'fa-regular fa-image', Themes::class),
+            MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Themes::class)->setAction(Crud::PAGE_NEW),
         ]);
         if ($this->isGranted('ROLE_ADMIN'))
         {

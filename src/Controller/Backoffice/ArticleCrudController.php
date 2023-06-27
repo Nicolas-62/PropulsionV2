@@ -42,7 +42,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
-
+use Symfony\Component\Routing\Annotation\Route;
 class ArticleCrudController extends BoController
 {
     // Variables
@@ -109,6 +109,7 @@ class ArticleCrudController extends BoController
         yield DateField::new('created_at','création')->hideOnForm();
         yield DateField::new('updated_at','dernière édition')->hideOnForm();
         yield AssociationField::new('children','Enfants')->hideOnForm();
+        yield AssociationField::new('theme','Themes');
         yield BooleanField::new('isOnline', 'En ligne')->hideOnForm();
         yield TextField::new('title','titre')->setColumns(6);
         yield TextEditorField::new('content','contenu')->setColumns(12);
@@ -200,6 +201,10 @@ class ArticleCrudController extends BoController
 //
         return $article;
     }
+
+
+
+
 
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
 

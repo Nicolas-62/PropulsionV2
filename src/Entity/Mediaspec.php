@@ -36,7 +36,7 @@ class Mediaspec
     private ?bool $haslegend = null;
 
     #[ORM\Column]
-    private ?int $heritage = null;
+    private ?int $heritage = 0;
 
     #[ORM\OneToMany(mappedBy: 'mediaspec', targetEntity: MediaLink::class)]
     private Collection $mediaLinks;
