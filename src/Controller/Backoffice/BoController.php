@@ -28,10 +28,10 @@ abstract class BoController extends AbstractCrudController
         $response = array('error' => null, 'folderId' => null, 'filename' => null);
 
         // Récupération de l'image
-        // DEBUG
-
         $file = $context->getRequest()->files->get('file');
-        dump($file->isValid());
+
+        // DEBUG
+        //dump($file->isValid());
 
         // Si l'image a été récupérée.
         if(isset($file) && $file->isValid()) {

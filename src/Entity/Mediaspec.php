@@ -38,7 +38,7 @@ class Mediaspec
     #[ORM\Column]
     private ?int $heritage = 0;
 
-    #[ORM\OneToMany(mappedBy: 'mediaspec', targetEntity: MediaLink::class)]
+    #[ORM\OneToMany(mappedBy: 'mediaspec', targetEntity: MediaLink::class, cascade: ['remove'])]
     private Collection $mediaLinks;
 
     #[ORM\ManyToOne(inversedBy: 'mediaspecs')]

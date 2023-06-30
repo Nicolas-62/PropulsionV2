@@ -14,6 +14,7 @@ trait MediaTrait
     private $media4;
     private $media5;
 
+
     private $media11;
     private $media12;
 
@@ -23,7 +24,7 @@ trait MediaTrait
     }
 
     /**
-     * @return Media
+     * @return mixed
      */
     public function getMedia1()
     {

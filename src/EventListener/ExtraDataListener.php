@@ -84,7 +84,6 @@ class ExtraDataListener implements EventSubscriberInterface
 
         // Récupération de l'entité.
         $entity = $eventArgs->getObject();
-        dump($entity);
         // Si c'est un article
         if ($entity instanceof Article) {
 
@@ -93,10 +92,10 @@ class ExtraDataListener implements EventSubscriberInterface
 
             // Formatage des données.
 
-            dump('edit, datas : ');
-            dump($datas);
-            dump($entity->getHeadline());
-            dump($datas['headline']->getFieldValue());
+//            dump('edit, datas : ');
+//            dump($datas);
+//            dump($entity->getHeadline());
+//            dump($datas['headline']->getFieldValue());
 
             // Récupération des noms.
             $dataNames = array_keys($datas);
@@ -107,10 +106,10 @@ class ExtraDataListener implements EventSubscriberInterface
             foreach($entity->getExtraFields() as $field){
                 // Si l'entrée existe déjà.
                 if(in_array($field['name'], $dataNames)){
-                    dump('test');
+//                    dump('test');
                     // Si la valeur a été modifiée.
                     if($entity->{'get'.ucfirst($field['name'])}() != $datas[$field['name']]->getFieldValue()){
-                        dump('ok');
+//                        dump('ok');
                         // Mise à jour de la valeur.
                         // CASTING en string pour formatage des booleens.
                         $datas[$field['name']]->setFieldValue( (string) $entity->{'get'.ucfirst($field['name'])}());
