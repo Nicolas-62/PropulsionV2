@@ -4,6 +4,7 @@ namespace App\Controller\Backoffice;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\Config;
 use App\Entity\Media;
 use App\Entity\Mediaspec;
 use App\Entity\Theme;
@@ -42,6 +43,34 @@ class DashboardController extends AbstractDashboardController
          $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
          return $this->redirect($adminUrlGenerator->setController(CategoryCrudController::class)->generateUrl());
     }
+
+
+  public function clearDir($dossier, $rmdir	=	false)
+  {
+    // Ouverture du dossier.
+    $ouverture = @opendir($dossier);
+    // Si l'ouverture à échouée, on sort de la fonction.
+    if (!$ouverture) return;
+    // On parcours tout les éléments du dossier.
+    while ($fichier = readdir($ouverture)) {
+      // Si c'est un fichier système, on le passe.
+      if ($fichier == '.' || $fichier == '..') continue;
+      // Si c'est un sous-dossier.
+      if (is_dir($dossier . "/" . $fichier)) {
+        // On le supprime de manière récursive.
+        $r = clearDir($dossier . "/" . $fichier);
+        // Si la suppréssion à échoué on retourne false.
+        if (!$r) return false;
+      } else {  // Sinon si c'est un fichier.
+        // On le supprime.
+        $r = @unlink($dossier . "/" . $fichier);
+        // Si la suppréssion à échoué on retourne false.
+        if (!$r) return false;
+      }
+    }
+  }
+
+
 
 
   /**
@@ -117,10 +146,13 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Media::class)->setAction(Crud::PAGE_NEW),
         ]);
         // Liste des thèmes.
-        yield MenuItem::subMenu('Thèmes', 'fas fa-image')->setSubItems([
+        yield MenuItem::subMenu('Thèmes', 'fas fa-volcano')->setSubItems([
           MenuItem::linkToCrud('Tous les thèmes',  'fa-regular fa-image', Theme::class),
           MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Theme::class)->setAction(Crud::PAGE_NEW),
         ]);
+        // Config.
+        yield
+        MenuItem::linkToCrud('Configuration', 'fas fa-gear', Config::class)->setAction(Crud::PAGE_EDIT)->setEntityId(1);
         if ($this->isGranted('ROLE_ADMIN'))
         {
 
