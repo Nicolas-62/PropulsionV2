@@ -8,6 +8,7 @@ use App\Entity\Category;
 use App\Entity\Mediaspec;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 
 class CategoryRepository extends CMSRepository
@@ -20,9 +21,10 @@ class CategoryRepository extends CMSRepository
 
     public function __construct(
         ManagerRegistry $registry,
+        RequestStack $requestStack,
     )
     {
-        parent::__construct($registry, Category::class);
+        parent::__construct($registry, Category::class, $requestStack);
     }
 
     /**
@@ -40,12 +42,15 @@ class CategoryRepository extends CMSRepository
         $category = $this->findOneBy(['id'=> $category_id]);
         if($category != null) {
             $articles = $category->getArticles()->filter(function (Article $article) use ($code_langue, $online) {
+              $preview = $this->session->get('preview');
 
-                if ($online) {
-                    return $article->isOnline($code_langue);
-                } else {
-                    return true;
-                }
+              if ($online && $preview == null){
+                return $article->isOnline($code_langue);
+              }
+              else{
+                return true;
+              }
+
             });
         }
         return $articles;

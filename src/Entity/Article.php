@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Traits\CMSTrait;
 use App\Entity\Traits\ExtraDataTrait;
 use App\Entity\Traits\MediaTrait;
+use App\Entity\Traits\PreviewTrait;
 use App\Entity\Traits\TimesTampableTrait;
 use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -23,7 +24,7 @@ class Article
     use ExtraDataTrait;
     use MediaTrait;
 
-    // Champs supplémantaires
+    // Champs supplémentaires
     private bool  $headline = FALSE;
     private bool  $vedette  = FALSE;
 
@@ -46,6 +47,7 @@ class Article
         $this->updated_at   = new \DateTimeImmutable();
         $this->articleData  = new ArrayCollection();
         $this->data         = new ArrayCollection();
+        $this->themes       = new ArrayCollection();
     }
 
 
@@ -77,6 +79,10 @@ class Article
 
     #[ORM\OneToMany(mappedBy: 'object', targetEntity: ArticleData::class, orphanRemoval: true)]
     private Collection $data;
+
+    #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'articles')]
+    private Collection $themes;
+
 
     public function getArticleId(): ?int
     {
@@ -287,6 +293,32 @@ class Article
     {
         $this->vedette = $vedette;
     }
+
+    /**
+     * @return Collection<int, Theme>
+     */
+    public function getThemes(): Collection
+    {
+        return $this->themes;
+    }
+
+    public function addTheme(Theme $theme): self
+    {
+        if (!$this->themes->contains($theme)) {
+            $this->themes->add($theme);
+        }
+
+        return $this;
+    }
+
+    public function removeTheme(Theme $theme): self
+    {
+        $this->themes->removeElement($theme);
+
+        return $this;
+    }
+
+
 }
 
 

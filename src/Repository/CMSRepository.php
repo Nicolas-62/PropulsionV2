@@ -8,20 +8,25 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 Abstract class CMSRepository extends ServiceEntityRepository
 {
-
+    protected $session;
     protected ManagerRegistry $registry;
-
     public function __construct(
-        ManagerRegistry $registry, $class)
-    {
-        // Récupération du manager pour appel méthodes d'autres repositories.
-        $this->registry = $registry;
-        parent::__construct($registry, $class);
-    }
+        ManagerRegistry $registry,
+        $class,
+        RequestStack $requestStack,
 
+    )
+    {
+        $this->registry = $registry;
+        // Récupération du manager pour appel méthodes d'autres repositories.
+        $this->session = $requestStack->getSession();
+        parent::__construct($registry, $class);
+
+    }
 
     public function save($entity, bool $flush = false): void
     {
@@ -66,8 +71,13 @@ Abstract class CMSRepository extends ServiceEntityRepository
 
         $qb = $this->createQueryBuilder($this->model_alias);
         $qb->where("$this->model_alias.$this->model_key = :val");
-        if($online) {
-            $qb->join("$this->model_alias.onlines", 'online')
+
+
+        $preview = $this->session->get('preview');
+
+        if($online && $preview == null)
+        {
+          $qb->join("$this->model_alias.onlines", 'online')
                 ->andWhere('online.langue = 1')
                 ->andWhere('online.online = 1');
 
@@ -88,6 +98,10 @@ Abstract class CMSRepository extends ServiceEntityRepository
      */
     public function getGenealogy(int $element_id, $code_langue, bool $online = true, ArrayCollection $parent_list = null): ArrayCollection
     {
+
+
+
+        // Si pas de liste parente, on en crée une.
         if($parent_list == null){
             $parent_list = new ArrayCollection();
         }

@@ -30,6 +30,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 
 class CategoryCrudController extends AbstractCrudController
@@ -47,7 +48,10 @@ class CategoryCrudController extends AbstractCrudController
         // Gestionnaire d'entité Symfony
         private EntityManagerInterface $entityManager,
         // Repository EasyAdmin
-        private EntityRepository $entityRepository
+        private EntityRepository $entityRepository,
+
+        private RequestStack $requestStack
+
     )
     {
     }
@@ -147,7 +151,9 @@ class CategoryCrudController extends AbstractCrudController
      */
     public function index(AdminContext $context)
     {
-        // Récupération de l'id de la categorie parent.
+      dump($this->requestStack->getSession()->get('preview'));
+
+      // Récupération de l'id de la categorie parent.
         $entityId   =    $this->adminUrlGenerator->get('entityId');
         // Si on doit afficher les enfants d'une catégorie
         if($entityId != null) {

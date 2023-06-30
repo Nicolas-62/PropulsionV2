@@ -50,4 +50,6 @@ abstract class BoController extends AbstractCrudController
         // Retour
         return new JsonResponse($response);
     }
+
+
 }

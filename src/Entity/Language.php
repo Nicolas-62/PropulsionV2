@@ -22,6 +22,7 @@ class Language
         $this->online      = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable();
         $this->updated_at = new \DateTimeImmutable();
+        $this->themes = new ArrayCollection();
     }
 
 
@@ -41,6 +42,10 @@ class Language
 
     #[ORM\OneToMany(mappedBy: 'langue', targetEntity: Online::class)]
     private Collection $online;
+
+    #[ORM\OneToMany(mappedBy: 'language', targetEntity: Theme::class)]
+    private Collection $themes;
+
 
 
     public function getId(): ?int
@@ -124,6 +129,36 @@ class Language
         }else{
             return 'Français';
         }
+    }
+
+    /**
+     * @return Collection<int, Theme>
+     */
+    public function getThemes(): Collection
+    {
+        return $this->themes;
+    }
+
+    public function addTheme(Theme $theme): self
+    {
+        if (!$this->themes->contains($theme)) {
+            $this->themes->add($theme);
+            $theme->setLanguage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTheme(Theme $theme): self
+    {
+        if ($this->themes->removeElement($theme)) {
+            // set the owning side to null (unless already changed)
+            if ($theme->getLanguage() === $this) {
+                $theme->setLanguage(null);
+            }
+        }
+
+        return $this;
     }
 
 

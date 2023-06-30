@@ -1,12 +1,19 @@
 {%  if tree.element is not null %}
     <li> {{ tree.element.id }} {{ tree.element.className }} '{{ tree.element.title }}' online : {{ tree.element.online }}
+
+        <h1>{{ tree.element.title }}</h1>
         {% for mediaspec in tree.element.mediaspecs %}
             <div>
+
+
+
                 {% set media = tree.element.getMedia(mediaspec) %}
                 {% if media %}
                     <span>{{ mediaspec.name }}</span>
                     <img src="{{ asset(getThumbnailPath(media.media)) |imagine_filter('thumb_vertical')  }}" class="img-fluid">
+                    TEST IF
                 {% endif %}
+
             </div>
         {% endfor %}
 
@@ -20,5 +27,13 @@
     {#            <p>Aucun</p>#}
         {%  endif %}
     </li>
+{#
+    {% for theme in themes %}
+        <h1>{{ theme.name }}</h1>
+        {% for article in theme.articles %}
+            <h1>{{ article.title }}</h1>
+            content : {{ article.content }}
+        {% endfor %}
+    {% endfor %}
+#}
 {% endif %}
-

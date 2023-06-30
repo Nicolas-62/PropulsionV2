@@ -9,6 +9,7 @@ use App\Entity\Mediaspec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 
 class ArticleRepository extends CMSRepository
@@ -18,9 +19,9 @@ class ArticleRepository extends CMSRepository
     protected string $model_key          = 'article_id';
 
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, RequestStack $requestStack)
     {
-        parent::__construct($registry, Article::class);
+        parent::__construct($registry, Article::class,$requestStack);
     }
 
     /**

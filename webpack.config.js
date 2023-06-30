@@ -35,6 +35,8 @@ Encore
     .addEntry('backoffice', './assets/bo/js/main.js')
     .addEntry('bo_medias', './assets/bo/js/medias.js')
     .addEntry('bo_articles', './assets/bo/js/articles.js')
+    .addEntry('bo_article', './assets/bo/js/article.js')
+
 
     .addEntry('frontoffice',    './assets/front/js/main.js')
     .addEntry('home',           './assets/front/js/home.js')

@@ -7,6 +7,7 @@ use App\Entity\Article;
 use App\Entity\ArticleData;
 use App\Entity\Category;
 use App\Entity\Media;
+use App\Entity\Theme;
 use App\Entity\Traits\ExtraDataTrait;
 use App\Field\ExtraField;
 use App\Field\MediaSelectField;
@@ -18,6 +19,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
@@ -29,6 +31,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField as BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
@@ -109,7 +112,7 @@ class ArticleCrudController extends BoController
         yield DateField::new('created_at','création')->hideOnForm();
         yield DateField::new('updated_at','dernière édition')->hideOnForm();
         yield AssociationField::new('children','Enfants')->hideOnForm();
-        yield AssociationField::new('theme','Themes');
+        yield AssociationField::new('themes','Themes')->setFormTypeOption('by_reference', false);;
         yield BooleanField::new('isOnline', 'En ligne')->hideOnForm();
         yield TextField::new('title','titre')->setColumns(6);
         yield TextEditorField::new('content','contenu')->setColumns(12);
@@ -478,8 +481,10 @@ class ArticleCrudController extends BoController
      */
     public function configureAssets(Assets $assets): Assets
     {
-        return $assets
-            ->addWebpackEncoreEntry('bo_articles');
+      return $assets
+          ->addWebpackEncoreEntry(Asset::new('bo_article')->ignoreOnIndex())
+          ->addWebpackEncoreEntry(Asset::new('bo_articles')->onlyOnIndex());
+
     }
 
 }

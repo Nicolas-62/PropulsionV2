@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<title>Theme index</title>
+
+{% block body %}
+    <h1>Theme index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Ordre</th>
+                <th>Created_at</th>
+                <th>Updated_at</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for theme in themes %}
+            <tr>
+                <td>{{ theme.id }}</td>
+                <td>{{ theme.name }}</td>
+                <td>{{ theme.ordre }}</td>
+                <td>{{ theme.createdAt ? theme.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ theme.updatedAt ? theme.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_theme_show', {'id': theme.id}) }}">show</a>
+                    <a href="{{ path('app_theme_edit', {'id': theme.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_theme_new') }}">Create new</a>
+{% endblock %}

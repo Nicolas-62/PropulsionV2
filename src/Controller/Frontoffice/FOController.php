@@ -47,9 +47,12 @@ class FOController extends AbstractController
 
     public function lister($champ = "ordre", $tri = "ASC", $limit = 0, $start = 0)
     {
+
+
+        // Récupération des enfants des catégories concernées.
         $this->data['tree'] = array();
         foreach($this->category_ids as $category_id){
-            $this->data['tree'][$category_id] = $this->entityManager->getRepository(Category::class)->getGenealogy($category_id, $this->getParameter('locale'));
+            $this->data['tree'][$category_id] = $this->entityManager->getRepository(Category::class)->getGenealogy($category_id, $this->getParameter('locale'), );
         }
 
         return $this->render($this->getParameter('app.fo_path'). $this->list_partial, $this->data);

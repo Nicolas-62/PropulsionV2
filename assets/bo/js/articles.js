@@ -1,6 +1,4 @@
 // assets/bo/articles.js
-import './article';
-
 
 (function() {'use strict';
     console.info('welcome to articles.js');
