@@ -7,10 +7,12 @@ use App\Entity\Article;
 use App\Entity\ArticleData;
 use App\Entity\Category;
 use App\Entity\Media;
+use App\Entity\MediaLink;
 use App\Entity\Traits\ExtraDataTrait;
 use App\Field\ExtraField;
 use App\Field\MediaSelectField;
 use App\Field\MediaUploadField;
+use App\Service\MediaService;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -23,12 +25,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField as BooleanField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
@@ -145,7 +145,8 @@ class ArticleCrudController extends BoController
 
                         // Ajout d'un champ d'upload d'un média
                         // Ajout du personnalisé  champ média.
-                        yield $imageField = MediaUploadField::new('media' . ($index + 1), ucfirst($mediaspec->getName()) . ' : téléchargez un média ou...');
+                        yield $imageField = Field::new('media' . ($index + 1), ucfirst($mediaspec->getName()) . ' : téléchargez un média ou...');
+                        $imageField->setColumns(6);
                         // Récupération du média.
                         $media = $this->entityManager->getRepository(Article::class)->getMedia($this->entity, $mediaspec);
                         // Si l'entité possède un média pour cette mediaspec.
@@ -156,19 +157,24 @@ class ArticleCrudController extends BoController
                                 // On définit la vue dédiée à l'affichage du média
                                 ->setFormTypeOptions([
                                     'block_name' => 'media_delete',
-                                ]);
+                                ])
+                            ;
                         }
                         // Si pas encore de média défini.
                         else {
                             // Ajout d'une zone d'upload de fichier
-                            $imageField->setFormTypeOptions([
+                            $imageField
+                                ->setFormTypeOptions([
                                 'block_name' => 'media_edit',
-                            ]);
+                            ])
+                            ;
                             // Ajout d'un champ supplémentaire de sélection d'un média existant.
                             yield MediaSelectField::new('media' . ($index + 11))
                                 ->setChoices(
                                     $this->entityManager->getRepository(Media::class)->getAllForChoices()
-                                );
+                                )
+                            ;
+
                         }
                     }
                 }
@@ -199,20 +205,6 @@ class ArticleCrudController extends BoController
 //        }
 //
         return $article;
-    }
-
-    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
-
-    {
-        // Médiaspecs appliquées à l'entité
-        $mediaspecs = $this->entityManager->getRepository(Article::class)->getMediaspecs($this->entity);
-        // Si ils existent.
-        if ($mediaspecs != null) {
-            // Pour chaque mediaspec
-            foreach ($mediaspecs as $index => $mediaspec) {
-
-            }
-        }
     }
 
     /**
@@ -285,7 +277,6 @@ class ArticleCrudController extends BoController
     {
         // Récupération de l'article
         $entity = $context->getEntity()->getInstance();
-        dump($entity->getChildren());
         // Si il n'a pas d'enfants, on affiche le détail de l'article
         if($entity->getChildren() == null)
         {
@@ -321,9 +312,24 @@ class ArticleCrudController extends BoController
         {
             $this->category = $this->entity->getCategory();
         }
-//        $this->adminUrlGenerator->unsetAllExcept('entityId');
-        $this->adminUrlGenerator->unsetAll();
         return parent::edit($context);
+    }
+
+    /**
+     * supprime l'identifiant de la publication dans l'url pour rediriger vers une liste d'articles.
+     *
+     * @param AdminContext $context
+     * @param string $action
+     * @return RedirectResponse
+     */
+    public function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
+    {
+        // Génération de l'URL
+        $url = $this->adminUrlGenerator->setAction(Action::INDEX)
+            ->unset('entityId')
+            ->generateUrl();
+        // Redirection
+        return $this->redirect($url);
     }
 
     /**

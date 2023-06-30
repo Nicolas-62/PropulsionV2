@@ -9,24 +9,30 @@ use App\Entity\Language;
 use App\Entity\Media;
 use App\Entity\MediaLink;
 use App\Entity\Online;
+use App\Service\MediaService;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterCrudActionEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityDeletedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityUpdatedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeCrudActionEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 
 class MediaListener implements EventSubscriberInterface
 {
-    private EntityManagerInterface $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private RequestStack $requestStack,
+                // Gestionnaire d'entité Symfony
+        private MediaService $mediaService
+    )
     {
-        $this->entityManager = $entityManager;
     }
 
 
@@ -38,7 +44,7 @@ class MediaListener implements EventSubscriberInterface
     {
         return [
             BeforeCrudActionEvent::class    => 'unlinkMedia',
-            BeforeEntityUpdatedEvent::class => 'linkMedias',
+            AfterEntityUpdatedEvent::class => 'linkMedias',
             AfterEntityDeletedEvent::class  => 'removeMedia',
         ];
     }
@@ -63,58 +69,62 @@ class MediaListener implements EventSubscriberInterface
 
 
 
-    /** saveMedias Permet de faire des actions avant la modification d'une entité
+    /**
+     * Permet de faire des actions avant la modification d'une entité
      *
-     * @param BeforeEntityUpdatedEvent $event
+     * @param AfterEntityUpdatedEvent $event
      * @return void
      */
-    public function linkMedias(BeforeEntityUpdatedEvent $event)
+    public function linkMedias(AfterEntityUpdatedEvent $event)
     {
-        dump('BeforeEntityUpdatedEvent : linkMedias');
+        dump('AfterEntityUpdatedEvent : linkMedias');
         // Récupération de l'entité
         $entity = $event->getEntityInstance();
+
         // Si c'est un article ou une catégorie.
         if($entity instanceof  Article || $entity instanceof  Category){
+
             // Récupération des mediaspecs qui s'appliquent à l'entité
             $mediaspecs = $this->entityManager->getRepository($entity::class)->getMediaspecs($entity);
             // Pour chaque mediaspec
             foreach ($mediaspecs as $index => $mediaspec) {
-                // Objet média
+                $new_filename = $this->mediaService->getFile(
+                    $this->requestStack->getCurrentRequest()->get('folderId-media'.$index+1),
+                    $this->requestStack->getCurrentRequest()->get('filename-media'.$index+1),
+                );
+                // Variable qui va récupérer le média.
                 $media = null;
-                // Si un média a été envoyé.
-                if($entity->{'getMedia'.$index+1}() != null){
-                    // On crée le média
+                // Si un fichier a été déposé a été retrouvé sur le serveur
+                if($new_filename != false){
                     $media = new Media();
-                    // On ajoute le fichier au média.
-                    $media->setMedia($entity->{'getMedia'.$index+1}());
-                // Si un média existant a été choisi.
-                }else if($entity->{'getMedia'.$index+11}() != null){
-                    // On récupère le média.
-                    $media = $this->entityManager->getRepository(Media::class)->findOneBy(['id' => $entity->{'getMedia'.$index+11}()]);
+                    // On associe l'image téléchargée à l'objet média en cours de création.
+                    $media->setMedia($new_filename);
+                    // Todo controler la saisie de la description de l'image
+                    $media->setLegend($this->requestStack->getCurrentRequest()->get('legend-media'.$index+1));
+                    $this->entityManager->persist($media);
+                }else {
+                    // Si pas de fichier déposé mais un média existant sélectionné.
+                    if ($entity->{'getMedia' . $index + 11}() != null) {
+                        // On récupère le média.
+                        $media = $this->entityManager->getRepository(Media::class)->findOneBy(['id' => $entity->{'getMedia' . $index + 11}()]);
+
+                    }
                 }
                 // Si un média a été renseigné
-                if($media != null){
-                    // On créer un lien entre...
+                if ($media != null) {
+                    // On créer un lien entre la mediaspec le media et la publication
                     $mediaLink = new MediaLink();
-                    // la mediaspec...
-                    $mediaLink->setMediaspec($mediaspec);
-                    // l'entité...
-                    $entity->addMediaLink($mediaLink);
-                    // et le média.
-                    $media->addMediaLink($mediaLink);
-                    // On sauvegarde le média.
-                    $this->entityManager->getRepository(Media::class)->save($media);
-                    // On sauvegarde le lien.
-                    $this->entityManager->getRepository(MediaLink::class)->save($mediaLink);
-                    // On sauvegarde l'entité.
-                    $this->entityManager->getRepository($entity::class)->save($entity);
+                    $mediaLink->setMediaspec($mediaspec)->setMedia($media)->setArticle($entity);
+                    // On sauvegarde
+                    $this->entityManager->getRepository(MediaLink::class)->save($mediaLink, true);
                 }
             }
         }
     }
 
 
-    /** onBeforeCrudActionEvent Permet de faire des actions avant qu'une action crud agisse
+    /**
+     * Permet de faire des actions avant qu'une action crud agisse
      *
      * @param BeforeCrudActionEvent $event
      * @return void

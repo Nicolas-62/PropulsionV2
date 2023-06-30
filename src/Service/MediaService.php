@@ -28,10 +28,12 @@ class MediaService{
 
 
     /**
+     *
+     *
      * @param Toolbox $toolbox
      * @return string
      */
-    public function upload($folderId, $filename): string
+    public function getFile($folderId, $filename): string
     {
         $new_filename = false;
         // Si un fichier a été déposé

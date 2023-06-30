@@ -1,3 +1,5 @@
+
+
 {% block _Article_media_edit_widget %}
     {# Url d'upload #}
     {% set upload_url = ea_url()
@@ -5,9 +7,9 @@
         .setController('App\\Controller\\Backoffice\\ArticleCrudController')
         .setAction('upload')
     %}
-    <div class="article-detail-media-upload">
+    <div class="article-detail-media-card mb-3">
         {# Zone d'upload du nouveau média #}
-        <div class="form-group mb-3">
+        <div class="form-group">
             <div
                 class="my-dropzone text-center dropzone"
                 data-upload-url="{{ upload_url }}"
@@ -20,10 +22,10 @@
                 description
             </label>
             <div class="form-widget">
-                <input type="text" name="" class="form-control">
+                <input type="text" name="legend-{{ form.vars.name }}" class="form-control">
             </div>
         </div>
-        <input type="hidden" name="folderId" id="folderId" />
-        <input type="hidden" name="filename" id="filename" />
+        <input type="hidden" name="folderId-{{ form.vars.name }}" id="folderId" />
+        <input type="hidden" name="filename-{{ form.vars.name }}" id="filename" />
     </div>
 {% endblock %}
