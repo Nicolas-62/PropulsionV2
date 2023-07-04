@@ -23,6 +23,7 @@ class Language
         $this->created_at = new \DateTimeImmutable();
         $this->updated_at = new \DateTimeImmutable();
         $this->themes = new ArrayCollection();
+        $this->seos = new ArrayCollection();
     }
 
 
@@ -45,6 +46,9 @@ class Language
 
     #[ORM\OneToMany(mappedBy: 'language', targetEntity: Theme::class)]
     private Collection $themes;
+
+    #[ORM\OneToMany(mappedBy: 'langue', targetEntity: Seo::class)]
+    private Collection $seos;
 
 
 
@@ -155,6 +159,36 @@ class Language
             // set the owning side to null (unless already changed)
             if ($theme->getLanguage() === $this) {
                 $theme->setLanguage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Seo>
+     */
+    public function getSeos(): Collection
+    {
+        return $this->seos;
+    }
+
+    public function addSeo(Seo $seo): self
+    {
+        if (!$this->seos->contains($seo)) {
+            $this->seos->add($seo);
+            $seo->setLangue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeo(Seo $seo): self
+    {
+        if ($this->seos->removeElement($seo)) {
+            // set the owning side to null (unless already changed)
+            if ($seo->getLangue() === $this) {
+                $seo->setLangue(null);
             }
         }
 

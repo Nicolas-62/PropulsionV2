@@ -4,6 +4,7 @@ namespace App\Controller\Backoffice;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Form\SeoType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\QueryBuilder;
@@ -21,13 +22,16 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -84,31 +88,41 @@ class CategoryCrudController extends AbstractCrudController
      */
     public function configureFields(string $pageName): iterable
     {
-        return [
+
+        // Contenu de la catégorie
+        yield FormField::addTab('Contenu');
             // Champs de la vue liste
-            IdField::new("id")->hideOnForm(),
-            IntegerField::new('ordre', 'ordre')->setColumns(6)->hideOnForm(),
-            TextField::new('title', 'title')->setColumns(6),
-            DateField::new('created_at', 'creation')->hideOnForm(),
-            DateField::new('updated_at', 'dernière édition')->hideOnForm(),
-            AssociationField::new('children','Categories')->hideOnForm(),
-            AssociationField::new('articles', 'Articles')->hideOnForm(),
-            // Champs du formulaire
-            AssociationField::new('parent','Parent')->hideOnIndex(),
-            BooleanField::new('can_create','can_create')->hideOnIndex()->setColumns(3),
-            BooleanField::new('has_multi','has_multi')->hideOnIndex()->setColumns(3),
-            BooleanField::new('has_title','has_title')->hideOnIndex()->setColumns(3),
-            BooleanField::new('has_sub_title','has_sub_title')->hideOnIndex()->setColumns(3),
-            BooleanField::new('has_seo','has_seo')->hideOnIndex()->setColumns(3),
-            BooleanField::new('has_link','has_link')->hideOnIndex()->setColumns(3),
-            BooleanField::new('has_theme','has_theme')->hideOnIndex()->setColumns(3),
-            BooleanField::new('has_content','has_content')->hideOnIndex()->setColumns(3),
-            BooleanField::new('isOnline')->hideOnForm(),
-            // Champs communs
+        yield IdField::new("id")->hideOnForm();
+        yield IntegerField::new('ordre', 'ordre')->setColumns(6)->hideOnForm();
+        yield TextField::new('title', 'title')->setColumns(6);
+        yield DateField::new('created_at', 'creation')->hideOnForm();
+        yield DateField::new('updated_at', 'dernière édition')->hideOnForm();
+        yield AssociationField::new('children','Categories')->hideOnForm();
+        yield AssociationField::new('articles', 'Articles')->hideOnForm();
+              // Champs du formulaire
+        yield AssociationField::new('parent','Parent')->hideOnIndex();
+        yield BooleanField::new('can_create','can_create')->hideOnIndex()->setColumns(3);
+        yield BooleanField::new('has_multi','has_multi')->hideOnIndex()->setColumns(3);
+        yield BooleanField::new('has_title','has_title')->hideOnIndex()->setColumns(3);
+        yield BooleanField::new('has_sub_title','has_sub_title')->hideOnIndex()->setColumns(3);
+        yield BooleanField::new('has_seo','has_seo')->hideOnIndex()->setColumns(3);
+        yield BooleanField::new('has_link','has_link')->hideOnIndex()->setColumns(3);
+        yield BooleanField::new('has_theme','has_theme')->hideOnIndex()->setColumns(3);
+        yield BooleanField::new('has_content','has_content')->hideOnIndex()->setColumns(3);
+        yield BooleanField::new('isOnline')->hideOnForm();
+        // Champs communs
 
-            // CollectionField::new('grandParent','Grand Parent')->hideOnIndex()->hideOnForm(),
+        // CollectionField::new('grandParent','Grand Parent')->hideOnIndex()->hideOnForm(),
 
-        ];
+        // SEO
+
+
+      if($pageName === Crud::PAGE_EDIT) {
+        yield FormField::addTab('Seo');
+        yield CollectionField::new('seo', 'seo')->hideOnIndex()->setColumns(12)->setEntryType(SeoType::class);
+      }
+
+
     }
 
     /**

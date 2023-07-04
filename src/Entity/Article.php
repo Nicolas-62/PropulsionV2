@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Traits\CMSTrait;
 use App\Entity\Traits\ExtraDataTrait;
+use App\Entity\Traits\LanguageTrait;
 use App\Entity\Traits\MediaTrait;
 use App\Entity\Traits\PreviewTrait;
 use App\Entity\Traits\TimesTampableTrait;
@@ -13,6 +14,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityBuiltEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
@@ -23,15 +25,22 @@ class Article
     use TimestampableTrait;
     use ExtraDataTrait;
     use MediaTrait;
+    use LanguageTrait;
 
     // Champs supplémentaires
     private bool  $headline = FALSE;
     private bool  $vedette  = FALSE;
+    private ?string $content  = '';
+    private ?string $titleByLanguage  = '';
+
+
 
     // Liste des champs supplémentaires spécifiques.
     private array $extraFields = [
+        ['name' => 'titleByLanguage', 'label' => "Titre", 'ea_type' => 'TextField'],
+        ['name' => 'content', 'label' => "Contenu", 'ea_type' => 'TextEditorField'],
         ['name' => 'headline', 'label' => "Tête d'affiche", 'ea_type' => 'booleanField'],
-        ['name' => 'vedette', 'label' => "Vedette", 'ea_type' => 'booleanField']
+        ['name' => 'vedette', 'label' => "Vedette", 'ea_type' => 'booleanField'],
     ];
 
 
@@ -48,6 +57,7 @@ class Article
         $this->articleData  = new ArrayCollection();
         $this->data         = new ArrayCollection();
         $this->themes       = new ArrayCollection();
+        $this->seo          = new ArrayCollection();
     }
 
 
@@ -68,9 +78,6 @@ class Article
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Online::class, cascade: ['remove'])]
     private Collection $onlines;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $content = null;
-
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: MediaLink::class, cascade: ['remove'])]
     private Collection $mediaLinks;
 
@@ -82,6 +89,12 @@ class Article
 
     #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'articles')]
     private Collection $themes;
+
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Seo::class)]
+    private Collection $seo;
+
+    #[ORM\Column]
+    private ?bool $hasSeo = null;
 
 
     public function getArticleId(): ?int
@@ -318,6 +331,63 @@ class Article
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getTitleByLanguage(): ?string
+    {
+      return $this->titleByLanguage;
+    }
+
+    /**
+     * @param string|null $titleByLanguage
+     */
+    public function setTitleByLanguage(?string $titleByLanguage): void
+    {
+      $this->titleByLanguage = $titleByLanguage;
+    }
+
+    /**
+     * @return Collection<int, Seo>
+     */
+    public function getSeo(): Collection
+    {
+        return $this->seo;
+    }
+
+    public function addSeo(Seo $seo): self
+    {
+        if (!$this->seo->contains($seo)) {
+            $this->seo->add($seo);
+            $seo->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeo(Seo $seo): self
+    {
+        if ($this->seo->removeElement($seo)) {
+            // set the owning side to null (unless already changed)
+            if ($seo->getArticle() === $this) {
+                $seo->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function hasSeo(): ?bool
+    {
+        return $this->hasSeo;
+    }
+
+    public function setHasSeo(bool $hasSeo): self
+    {
+        $this->hasSeo = $hasSeo;
+
+        return $this;
+    }
 
 }
 

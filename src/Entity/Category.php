@@ -28,6 +28,7 @@ class Category
         $this->mediaLinks       = new ArrayCollection();
         $this->created_at       = new \DateTimeImmutable();
         $this->updated_at       = new \DateTimeImmutable();
+        $this->Seo = new ArrayCollection();
     }
 
     #[ORM\Column]
@@ -82,6 +83,9 @@ class Category
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Mediaspec::class)]
     private Collection $mediaspecs;
+
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Seo::class)]
+    private Collection $Seo;
 
 
 
@@ -322,4 +326,35 @@ class Category
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Seo>
+     */
+    public function getSeo(): Collection
+    {
+        return $this->Seo;
+    }
+
+    public function addSeo(Seo $seo): self
+    {
+        if (!$this->Seo->contains($seo)) {
+            $this->Seo->add($seo);
+            $seo->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeo(Seo $seo): self
+    {
+        if ($this->Seo->removeElement($seo)) {
+            // set the owning side to null (unless already changed)
+            if ($seo->getCategory() === $this) {
+                $seo->setCategory(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

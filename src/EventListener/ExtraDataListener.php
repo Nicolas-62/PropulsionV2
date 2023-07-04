@@ -150,13 +150,22 @@ class ExtraDataListener implements EventSubscriberInterface
 
         // Récupération de l'entité.
         $entity = $event->getEntityInstance();
+
+        // Récupération du code langue par défaut.
+        $code_langue = $this->locle;
+        if(isset($entity->langue) && trim($entity->getLanguage()) != ''){
+            // Récupération du code langue.
+            $code_langue = $entity->getLanguage();
+        }
+        // Récupération de la langue.
+        $language = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $code_langue]);
+
         // Si on est en édition d'un article.
         if ($entity instanceof Article) {
             // Récupération des datas de l'entité.
-            $datas = $this->entityManager->getRepository(ArticleData::class)->getDatas($entity, $this->locale);
+            $datas = $this->entityManager->getRepository(ArticleData::class)->getDatas($entity, $language->getCode());
 
             // Formatage des données.
-
             dump('edit, datas : ');
             dump($datas);
     //        dump($entity->getHeadline());
@@ -164,18 +173,18 @@ class ExtraDataListener implements EventSubscriberInterface
 
             // Récupération des noms.
             $dataNames = array_keys($datas);
-            // Récupération de la langue.
-            $language = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $this->locale]);
+
 
 
             // Pour chaque champ.
             foreach($entity->getExtraFields() as $field){
                 // Si l'entrée existe déjà.
                 if(in_array($field['name'], $dataNames)){
-                    dump('test');
+                    // DEBUG
+                    // dump('test');
                     // Si la valeur a été modifiée.
                     if($entity->{'get'.ucfirst($field['name'])}() != $datas[$field['name']]->getFieldValue()){
-                        dump('ok');
+                        // DEBUG
                         // Mise à jour de la valeur.
                         // CASTING en string pour formatage des booleens.
                         $datas[$field['name']]->setFieldValue( (string) $entity->{'get'.ucfirst($field['name'])}());

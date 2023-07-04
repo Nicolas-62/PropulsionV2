@@ -6,12 +6,15 @@ use App\Constants\Constants;
 use App\Entity\Article;
 use App\Entity\ArticleData;
 use App\Entity\Category;
+use App\Entity\Language;
 use App\Entity\Media;
 use App\Entity\MediaLink;
 use App\Entity\Traits\ExtraDataTrait;
 use App\Field\ExtraField;
+use App\Field\LanguageSelectField;
 use App\Field\MediaSelectField;
 use App\Field\MediaUploadField;
+use App\Form\SeoType;
 use App\Service\MediaService;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,6 +32,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField as BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
@@ -102,7 +106,7 @@ class ArticleCrudController extends BoController
     public function configureFields(string $pageName): iterable
     {
         // Onglet
-        yield FormField::addTab('Contenu');
+        yield FormField::addTab('Paramètres');
         // Champs communs à plusieurs actions (liste, edition, detail, formulaire...)
         yield IdField::new('id')->hideOnForm();
         yield IntegerField::new('ordre', 'ordre')->hideOnForm();
@@ -111,19 +115,12 @@ class ArticleCrudController extends BoController
         yield AssociationField::new('children','Enfants')->hideOnForm();
         yield BooleanField::new('isOnline', 'En ligne')->hideOnForm();
         yield TextField::new('title','titre')->setColumns(6);
-        yield TextEditorField::new('content','contenu')->setColumns(12);
+        yield BooleanField::new('hasSeo', 'Possède une SEO')->hideOnIndex();
+
+
+
         
         $article = new Article();
-        // Ajout des champs spécifiques à l'instance définis dans l'entité.
-        foreach($article->getExtraFields() as $extraField){
-            // Récupération du type easy admin du champ
-            yield $article->getEasyAdminFieldType($extraField['ea_type'])::new($extraField['name'], $extraField['label'])
-//                ->formatValue(function ($value, $entity) {
-//                    return (string) $value;
-//                })
-                ->setColumns(12);
-        }
-
         // Champs pour l'édition d'un article.
         if(in_array($pageName, [Crud::PAGE_EDIT, Crud::PAGE_NEW])) {
             // Article parent
@@ -144,7 +141,7 @@ class ArticleCrudController extends BoController
                         yield FormField::addRow();
 
                         // Ajout d'un champ d'upload d'un média
-                        // Ajout du personnalisé  champ média.
+                        // Ajout du personnalisé champ média.
                         yield $imageField = Field::new('media' . ($index + 1), ucfirst($mediaspec->getName()) . ' : téléchargez un média ou...');
                         $imageField->setColumns(6);
                         // Récupération du média.
@@ -180,6 +177,42 @@ class ArticleCrudController extends BoController
                 }
             }
         }
+
+        // Onglet Contenu
+        yield FormField::addTab('Contenu');
+
+        yield LanguageSelectField::new('language','langue')->setColumns(3)->setChoices(
+          $this->entityManager->getRepository(Language::class)->getAllForChoices());
+        // yield TextField::new('title','titre')->setColumns(6);
+        // Ajout des champs spécifiques à l'instance définis dans l'entité.
+        foreach($article->getExtraFields() as $extraField){
+          // Récupération du type easy admin du champ
+            yield $article->getEasyAdminFieldType($extraField['ea_type'])::new($extraField['name'], $extraField['label'])
+    //                ->formatValue(function ($value, $entity) {
+    //                    return (string) $value;
+    //                })
+                ->setColumns(12);
+
+
+
+
+        }
+
+
+        if($pageName === Crud::PAGE_EDIT) {
+            if($this->entity->hasSeo()){
+                // Onglet SEO
+                yield FormField::addTab('SEO');
+                yield CollectionField::new('Seo','SEO')->setEntryType(SeoType::class);
+
+
+
+
+            }
+        }
+
+
+
     }
 //      by_reference
 //    Similarly, if you're using the CollectionType field where your underlying collection data is an object (like with Doctrine's ArrayCollection),

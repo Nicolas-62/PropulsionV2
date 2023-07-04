@@ -95,10 +95,12 @@ class DashboardController extends AbstractDashboardController
             // Titre du backoffice
             ->setTitle('PropulsionV2')
             // Langues supportées.
-            ->setLocales([
+            ->setLocales(
+              [
                 'en' => '🇬🇧 English', // locale without custom options
                 'fr' => '🇫🇷 Français',
-            ])
+            ]
+            )
             ;
     }
 
@@ -169,7 +171,7 @@ class DashboardController extends AbstractDashboardController
                 MenuItem::linkToCrud('Ajouter', 'fas fa-plus', User::class)->setAction(Crud::PAGE_NEW),
             ]);
 
-            yield MenuItem::linkToRoute('Preview', 'fa-solid fa-eye', 'bo_toggle_preview')->setBadge( $this->session->get('preview') ? "True" : "False");
+            yield MenuItem::linkToRoute('Preview', 'fa-solid fa-eye', 'bo_toggle_preview')->setBadge( $this->session->get('preview') ? "ON" : "OFF");
         }
 
 //        yield MenuItem::linkToRoute('Préférences','fa-solid fa-gears','',[]);
