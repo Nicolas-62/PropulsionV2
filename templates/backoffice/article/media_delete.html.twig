@@ -3,17 +3,19 @@
     <div class="article-detail-media-card mb-3">
         <div class="text-center">
             <img src="{{ asset(getThumbnailPath(ea.entity.fields.getByProperty(form.vars.name).value.media)) }}" class="article-detail-media-thumbnail">
-            <div class="btn-group mt-2">
-                <a
-                    class="btn btn-block btn-danger"
-                    href="{{
-                    ea_url().
-                        set('fieldName', 'unlink_media').
-                        set('newValue', ea.entity.fields.getByProperty(form.vars.name).value.id)
-                    }}"
-                >
-                    Supprimer
-                </a>
+            <div>
+                <div class="btn-group mt-2">
+                    <a
+                        class="btn btn-block btn-danger"
+                        href="{{
+                        ea_url().
+                            set('fieldName', 'unlink_media').
+                            set('newValue', ea.entity.fields.getByProperty(form.vars.name).value.id)
+                        }}"
+                    >
+                        Supprimer
+                    </a>
+                </div>
             </div>
         </div>
     </div>
