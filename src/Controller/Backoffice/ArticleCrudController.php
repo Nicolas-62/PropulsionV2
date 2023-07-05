@@ -23,6 +23,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
@@ -513,7 +514,8 @@ class ArticleCrudController extends BoController
     public function configureAssets(Assets $assets): Assets
     {
         return $assets
-            ->addWebpackEncoreEntry('bo_articles');
+            ->addWebpackEncoreEntry(Asset::new('bo_article')->ignoreOnIndex())
+            ->addWebpackEncoreEntry(Asset::new('bo_articles')->onlyOnIndex());
     }
 
 }
