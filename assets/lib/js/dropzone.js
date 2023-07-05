@@ -39,7 +39,7 @@ import Cropper from 'cropperjs';
                 }
 
                 // On instancie la zone de dropzone.
-                const dropzone = new Dropzone(dropzoneElement, options);
+                const dropzone  = new Dropzone(dropzoneElement, options);
 
                 // Si un fichier est correctement uploadé.
                 dropzone.on('success', function (file) {
@@ -51,6 +51,8 @@ import Cropper from 'cropperjs';
                         $main.find("#folderId").val(response.folderId);
                         // On ajoute le nom du fichier
                         $main.find("#filename").val(response.filename);
+                        // On déclenche un évènement
+                        $main.trigger("dropzone-success", [response]);
                     } else {
                         alert(response.error);
                     }

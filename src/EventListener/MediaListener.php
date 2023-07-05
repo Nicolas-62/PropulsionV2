@@ -46,7 +46,36 @@ class MediaListener implements EventSubscriberInterface
             BeforeCrudActionEvent::class    => 'unlinkMedia',
             AfterEntityUpdatedEvent::class => 'linkMedias',
             AfterEntityDeletedEvent::class  => 'removeMedia',
+            BeforeEntityPersistedEvent::class => 'createMedia'
         ];
+    }
+
+    public function createMedia(BeforeEntityPersistedEvent $event){
+        $entity = $event->getEntityInstance();
+        // Si l'élément supprimé n'est pas un média
+        if ($entity instanceof Media) {
+            $imageCropped = $this->requestStack->getCurrentRequest()->get('cropData');
+            if($imageCropped != null){
+                $new_filename = $this->mediaService->getFileCropped(
+                  $this->requestStack->getCurrentRequest()->get('folderId'),
+                  $this->requestStack->getCurrentRequest()->get('filename'),
+                  $imageCropped
+
+                );
+            }else{
+                // Récupère le fichier déposé par l'utilisateur à partir du nom de fichier et de l'identifiant du dossier d'upload
+                $new_filename = $this->mediaService->getFile(
+                  $this->requestStack->getCurrentRequest()->get('folderId'),
+                  $this->requestStack->getCurrentRequest()->get('filename')
+                );
+            }
+
+            // Si un fichier a été déposé a été retrouvé sur le serveur
+            if ($new_filename !== false) {
+                // On associe l'image téléchargée à l'objet média en cours de création.
+                $entity->setMedia($new_filename);
+            }
+        }
     }
 
     public function removeMedia(AfterEntityDeletedEvent $event){
@@ -91,6 +120,7 @@ class MediaListener implements EventSubscriberInterface
                 $new_filename = $this->mediaService->getFile(
                     $this->requestStack->getCurrentRequest()->get('folderId-media'.$index+1),
                     $this->requestStack->getCurrentRequest()->get('filename-media'.$index+1),
+
                 );
                 // Variable qui va récupérer le média.
                 $media = null;

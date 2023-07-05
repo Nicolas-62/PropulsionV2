@@ -15,7 +15,6 @@ use App\Field\LanguageSelectField;
 use App\Field\MediaSelectField;
 use App\Field\MediaUploadField;
 use App\Form\SeoType;
-use App\Service\MediaService;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;

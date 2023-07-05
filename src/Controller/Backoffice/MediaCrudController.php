@@ -37,10 +37,6 @@ class MediaCrudController extends BoController
 
 
     public function __construct(
-        // Services
-
-        // Gestionnaire d'entité Symfony
-        private MediaService $mediaService
     )
     {
         // Appel du constructeur du controller parent
@@ -194,29 +190,6 @@ class MediaCrudController extends BoController
         return $actions;
     }
 
-
-    /**
-     * Actions réalisées avant la sauvegarde de l'entité
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param $entityInstance
-     * @return void
-     */
-    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
-   {
-        // Récupère le fichier déposé par l'utilisateur à partir du nom de fichier et de l'identifiant du dossier d'upload
-       $new_filename = $this->mediaService->getFile(
-           $this->getContext()->getRequest()->get('folderId'),
-           $this->getContext()->getRequest()->get('filename')
-       );
-       // Si un fichier a été déposé a été retrouvé sur le serveur
-       if($new_filename !== false){
-           // On associe l'image téléchargée à l'objet média en cours de création.
-           $entityInstance->setMedia($new_filename);
-       }
-        // Sauvegarde du nouvel objet média.
-       parent::persistEntity($entityManager, $entityInstance);
-   }
 
     /**
      * Définie les assets nécessaires pour le controleur de médias.

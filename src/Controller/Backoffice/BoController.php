@@ -25,7 +25,12 @@ abstract class BoController extends AbstractCrudController
     public function upload(Secure $secureService, AdminContext $context): JsonResponse
     {
         // Objet réponse.
-        $response = array('error' => null, 'folderId' => null, 'filename' => null);
+        $response = array(
+          'error' => null,
+          'folderId' => null,
+          'filename' => null,
+//          'file' => ''
+        );
 
         // Récupération de l'image
         $file = $context->getRequest()->files->get('file');
@@ -43,6 +48,9 @@ abstract class BoController extends AbstractCrudController
             if($file->move($imageBasePath, $file->getClientOriginalName())){
                 $response["folderId"] = $folderId;
                 $response["filename"] = $file->getClientOriginalName();
+                // Transformation de l'image en base64
+//                $response["file"]     = base64_encode(file_get_contents($imageBasePath . $file->getClientOriginalName()));
+                $response["url"]      =  $context->getRequest()->getBaseUrl() . $imageBasePath . $file->getClientOriginalName();
             }
         }else{
             $response["error"] = "Impossible de récupérer le fichier";
