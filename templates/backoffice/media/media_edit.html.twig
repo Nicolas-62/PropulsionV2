@@ -11,25 +11,31 @@
         {# Zone d'upload du nouveau média #}
         <div class="form-group mb-3">
             <div
-                class="my-dropzone text-center dropzone"
+                class="my-dropzone text-center dropzone "
                 data-upload-url="{{ upload_url }}"
                 data-upload-message="{{ 'upload.upload-message'|trans }}"
+                data-id="{{ form.vars.name }}"
             >
             </div>
             <div
                     class="my-cropper text-center"
                     style="display: none;"
+                    data-id="{{ form.vars.name }}"
+
             >
-                    <img id="image" src="#">
+                    <img id="image-cropper-{{ form.vars.name }}" src="#">
                     <p class="mt-3">
-                        <a class="btn btn-primary crop-action">Crop</a>
-                        <a class="btn btn-success crop-valid" style="display: none">Valider</a>
+                        <a class="btn btn-primary crop-action">
+                            Crop
+                        </a>
+                        <a class="btn btn-success crop-valid crop-valid-{{ form.vars.name }}" style="display: none">Valider</a>
                     </p>
+
             </div>
         </div>
+        <input type="hidden" name="imageSelector-{{ form.vars.name }}" id="imageSelector-{{ form.vars.name }}" />
+        <input type="hidden" name="folderId-{{ form.vars.name }}" id="folderId-{{ form.vars.name }}" />
+        <input type="hidden" name="filename-{{ form.vars.name }}" id="filename-{{ form.vars.name }}" />
+        <input type="hidden" name="cropData-{{ form.vars.name }}" id="cropData-{{ form.vars.name }}" />
     {% endif %}
-    <input type="hidden" name="folderId" id="folderId" />
-    <input type="hidden" name="filename" id="filename" />
-    <input type="hidden" name="cropData" id="cropData" />
-
 {% endblock %}

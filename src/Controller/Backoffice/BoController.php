@@ -29,7 +29,7 @@ abstract class BoController extends AbstractCrudController
           'error' => null,
           'folderId' => null,
           'filename' => null,
-//          'file' => ''
+          'imageSelector' => null,
         );
 
         // Récupération de l'image

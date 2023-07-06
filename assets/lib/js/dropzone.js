@@ -9,21 +9,24 @@ import Cropper from 'cropperjs';
     console.info('welcome to dropzone.js');
 
     // ! Variables
-    let dropzone                =  null;
-    let dropzoneSelector        =  "div.my-dropzone";
-    let $dropzone               =   $(dropzoneSelector);
+    let dropzone               =  null;
+    let dropzoneSelector     =  "div.my-dropzone";
+    let $dropzone                   =   $(dropzoneSelector);
 
     // Sélecteur principal de la vue.
     let $main                 =     $('body');
 
     // When DOM is ready.
     $(document).ready(function() {
+
         // Si des dropzones sont présentes.
         if($dropzone.length > 0) {
             // Pour chaque dropzone
             $dropzone.each(function(index, dropzoneElement){
                 // Wrap de l'element html dans un Objet JQuery
                 let $dropzoneElement = $(dropzoneElement);
+                let dropzoneId = $dropzoneElement.attr("data-id");
+
                 // Init
 
                 // Options de la dropzone
@@ -48,11 +51,11 @@ import Cropper from 'cropperjs';
                     // Si pas d'erreurs.
                     if (response.error == null) {
                         // On récupère le nom du dossier temporaire et on l'ajoute au formulaire
-                        $main.find("#folderId").val(response.folderId);
+                        $main.find("#folderId-"+dropzoneId).val(response.folderId);
                         // On ajoute le nom du fichier
-                        $main.find("#filename").val(response.filename);
+                        $main.find("#filename-"+dropzoneId).val(response.filename);
                         // On déclenche un évènement
-                        $main.trigger("dropzone-success", [response]);
+                        $dropzoneElement.trigger("dropzone-success", [response]);
                     } else {
                         alert(response.error);
                     }

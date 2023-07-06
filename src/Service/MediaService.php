@@ -33,7 +33,7 @@ class MediaService{
      * @param Toolbox $toolbox
      * @return string
      */
-    public function getFile($folderId, $filename): string
+/*    public function getFile($folderId, $filename): string
     {
         $new_filename = false;
         // Si un fichier a été déposé
@@ -59,7 +59,7 @@ class MediaService{
             }
         }
         return $new_filename;
-    }
+    }*/
 
     /**
      *
@@ -67,7 +67,7 @@ class MediaService{
      * @param Toolbox $toolbox
      * @return string
      */
-    public function getFileCropped($folderId, $filename, $imgBase64): string
+/*    public function getFileCropped($folderId, $filename, $imgBase64): string
     {
         $new_filename = false;
         // Si un fichier a été déposé
@@ -101,6 +101,53 @@ class MediaService{
             }
         }
         return $new_filename;
+    }*/
+
+
+    /**
+     *
+     *
+     * @param Toolbox $toolbox
+     * @return string
+     */
+    public function getFile($folderId, $filename, $imgBase64 = null): string
+    {
+        $new_filename = false;
+        // Si un fichier a été déposé
+        if($folderId != null){
+            // Dossier d'upload temporaire.
+            $tmpPath = Constants::ASSETS_UPLOAD_PATH . $folderId . '/';
+            // Chemin du fichier temporaire.
+            $imageTmpPath = $tmpPath. '/'.$filename;
+            // Si le fichier source existe.
+            $filesystem = new Filesystem();
+            if($filesystem->exists($imageTmpPath)){
+                // Si on a une image en base64
+                if(isset($imgBase64) && trim($imgBase64) != '' && str_contains($imgBase64, 'data:image/png;base64,')){
+                    // Conversion de l'image en fichier
+                    $img = str_replace('data:image/png;base64,', '', $imgBase64);
+                    // On supprime l'image précédemment uploadée.
+                    $filesystem->remove($imageTmpPath);
+                    // On crée un nouveau fichier vide
+                    $filesystem->touch($imageTmpPath);
+                    // On écrit dans le fichier le contenu de l'image
+                    $filesystem->appendToFile($imageTmpPath, base64_decode($img));
+                }
+                // Infos de l'image
+                $file = new File($imageTmpPath);
+                // On ajoute un identifiant unique au nom de l'image.
+                $new_filename = $this->toolbox->url_compliant($file->getBasename('.' . $file->getExtension())).'-'.time().'.'.$file->guessExtension();
+                // Chemin de destination
+                $imagePath = Constants::ASSETS_IMG_PATH .$new_filename;
+                // Si on arrive à le déplacer dans la médiatheque.
+                $filesystem->rename($imageTmpPath, $imagePath);
+                // On supprime le dossier temporaire.
+                $filesystem->remove($tmpPath);
+            }
+        }
+        return $new_filename;
     }
+
+
 
 }
