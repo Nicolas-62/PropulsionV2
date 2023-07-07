@@ -22,7 +22,7 @@ class Online
 
     #[ORM\ManyToOne(cascade: ['persist'],inversedBy: 'online')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Language $langue = null;
+    private ?Language $language = null;
 
     #[ORM\Column]
     private ?bool $online = null;
@@ -35,8 +35,6 @@ class Online
 
     public function __construct()
     {
-//        $this->article = new Article();
-//        $this->category = new Category();
         $this->online = 0;
         $this->created_at = new \DateTimeImmutable();
         $this->updated_at = new \DateTimeImmutable();
@@ -47,17 +45,6 @@ class Online
         return $this->id;
     }
 
-    public function getLangue(): ?Language
-    {
-        return $this->langue;
-    }
-
-    public function setLangue(?Language $langue): self
-    {
-        $this->langue = $langue;
-
-        return $this;
-    }
 
     public function isOnline(): ?bool
     {
@@ -100,5 +87,21 @@ class Online
         $this->category = $category;
 
         return $this;
+    }
+
+    /**
+     * @return Language|null
+     */
+    public function getLanguage(): ?Language
+    {
+        return $this->language;
+    }
+
+    /**
+     * @param Language|null $language
+     */
+    public function setLanguage(?Language $language): void
+    {
+        $this->language = $language;
     }
 }

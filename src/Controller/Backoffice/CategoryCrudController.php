@@ -4,6 +4,9 @@ namespace App\Controller\Backoffice;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\Language;
+use App\Entity\Seo;
+use App\Field\LanguageSelectField;
 use App\Form\SeoType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Entity;
@@ -35,6 +38,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class CategoryCrudController extends AbstractCrudController
@@ -53,9 +57,9 @@ class CategoryCrudController extends AbstractCrudController
         private EntityManagerInterface $entityManager,
         // Repository EasyAdmin
         private EntityRepository $entityRepository,
-
-        private RequestStack $requestStack
-
+        private RequestStack $requestStack,
+        // Code Langue
+        private string $locale
     )
     {
     }
@@ -89,8 +93,11 @@ class CategoryCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
 
+        // Entité category.
+        $model = new Category();
+
         // Contenu de la catégorie
-        yield FormField::addTab('Contenu');
+        yield FormField::addTab('Paramètres');
             // Champs de la vue liste
         yield IdField::new("id")->hideOnForm();
         yield IntegerField::new('ordre', 'ordre')->setColumns(6)->hideOnForm();
@@ -99,8 +106,9 @@ class CategoryCrudController extends AbstractCrudController
         yield DateField::new('updated_at', 'dernière édition')->hideOnForm();
         yield AssociationField::new('children','Categories')->hideOnForm();
         yield AssociationField::new('articles', 'Articles')->hideOnForm();
-              // Champs du formulaire
-        yield AssociationField::new('parent','Parent')->hideOnIndex();
+
+        // Champs du formulaire
+        yield AssociationField::new('parent','Parent')->hideOnIndex()->setRequired(false);
         yield BooleanField::new('can_create','can_create')->hideOnIndex()->setColumns(3);
         yield BooleanField::new('has_multi','has_multi')->hideOnIndex()->setColumns(3);
         yield BooleanField::new('has_title','has_title')->hideOnIndex()->setColumns(3);
@@ -110,17 +118,46 @@ class CategoryCrudController extends AbstractCrudController
         yield BooleanField::new('has_theme','has_theme')->hideOnIndex()->setColumns(3);
         yield BooleanField::new('has_content','has_content')->hideOnIndex()->setColumns(3);
         yield BooleanField::new('isOnline')->hideOnForm();
-        // Champs communs
 
-        // CollectionField::new('grandParent','Grand Parent')->hideOnIndex()->hideOnForm(),
+        if($pageName === Crud::PAGE_EDIT) {
 
-        // SEO
+            // CONTENU
+            // Onglet Contenu, contient les champs extra, éditables en fonction de la langue.
+            yield FormField::addTab('Contenu');
+            // Récupération des langues
+            $languages = $this->entityManager->getRepository(Language::class)->getAllForChoices();
+            // Si on a plusieurs langues actives.
+            if(count($languages) > 1) {
+                // Sélecteur de langue pour édition du contenu en fonction de la langue
+                yield LanguageSelectField::new('language', 'langue')->setChoices(
+                    $this->entityManager->getRepository(Language::class)->getAllForChoices()
+                );
+            }
+            // SEO
+            // Si un de ses parent a de la SEO
+            if($this->entityManager->getRepository(Category::class)->hasSeo($this->entity)){
+                // Récupération de la seo de la langue courante.
+                $seo = $this->entity->getSeo($this->locale);
+                // Si la seo n'existe pas on retourne un objet vide.
+                if($seo == null){
+                    $seo = new Seo();
+                }
+                // Création d'un champ avec un vue customisée
+                yield CollectionField::new('seo','Seo')
+                    ->setFormTypeOptions([
+                        // Voir template : seo_edit.html.twig
+                        'block_name' => 'seo_edit',
+                        // Passage de la seo dans les champs du formulaire
+                        'data' => ['seo' => $seo]
+                    ])
+                ;
+            }
+            // Ajout des champs spécifiques à l'instance définis dans l'entité.
+            foreach($model->getExtraFields() as $extraField){
+                yield $model->getEasyAdminFieldType($extraField['ea_type'])::new($extraField['name'], $extraField['label'])->setColumns(12);
+            }
 
-
-      if($pageName === Crud::PAGE_EDIT) {
-        yield FormField::addTab('Seo');
-        yield CollectionField::new('seo', 'seo')->hideOnIndex()->setColumns(12)->setEntryType(SeoType::class);
-      }
+        }
 
 
     }
@@ -144,6 +181,12 @@ class CategoryCrudController extends AbstractCrudController
             ->setHelp('index', 'Liste des sous catégories')
             // Template personnalisé
             ->overrideTemplate('crud/index', 'backoffice/category/categories.html.twig')
+            // Personnalisation du formulaire
+            ->setFormThemes([
+                    'backoffice/category/seo_edit.html.twig',
+                    '@EasyAdmin/crud/form_theme.html.twig'
+                ]
+            )
            // Champs de recherche
             //->setSearchFields(['title'])
             // ->setDefaultSort(['id' => 'DESC'])
@@ -157,16 +200,14 @@ class CategoryCrudController extends AbstractCrudController
 
 
     /**
-     * index
      *
      * Affiche la liste des categories, affiche les categories enfant si l'id d'un parent est passé en paramètre
+     *
      * @param AdminContext $context
      * @return KeyValueStore|RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function index(AdminContext $context)
     {
-      dump($this->requestStack->getSession()->get('preview'));
-
       // Récupération de l'id de la categorie parent.
         $entityId   =    $this->adminUrlGenerator->get('entityId');
         // Si on doit afficher les enfants d'une catégorie
@@ -194,6 +235,25 @@ class CategoryCrudController extends AbstractCrudController
 
         // Redirection
         return $this->redirect($url);
+    }
+
+    /**
+     * Renvoi vers le formulaire d'édition de l'article
+     *
+     * @param AdminContext $context
+     * @return KeyValueStore|RedirectResponse|Response
+     */
+    public function edit(AdminContext $context)
+    {
+        // Récupération de l'article
+        $this->entity = $context->getEntity()->getInstance();
+        // Récupération des datas de la publication
+        $this->entity->getDatas($this->locale);
+
+        // Si ce n'est pas un sous article, on récupère sa categorie parent
+        //$this->category = $this->entity->getParent();
+
+        return parent::edit($context);
     }
 
 

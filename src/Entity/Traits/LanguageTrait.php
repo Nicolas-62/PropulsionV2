@@ -2,32 +2,36 @@
 
   namespace App\Entity\Traits;
 
-  use Doctrine\ORM\Mapping as ORM;
-
   trait LanguageTrait
   {
 
-    private $language;
+      /**
+       * code langue : fr|en
+       *
+       * @var string|null
+       */
+      private ?string $language = null;
 
 
-    public function __construct()
+      /**
+       * retourne le code langue : fr|en
+       *
+       * @return string|null
+       */
+    public function getLanguage(): ?string
     {
 
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLanguage()
-    {
       return $this->language;
     }
 
     /**
-     * @param mixed $language
+     * défini le code langue : fr|en
+     *
+     * @param string $language
      */
-    public function setLanguage($language): void
+    public function setLanguage($language): self
     {
       $this->language = $language;
+      return $this;
     }
   }

@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Entity\Traits\CMSTrait;
 use App\Entity\Traits\ExtraDataTrait;
+use App\Entity\Traits\ExtraFieldtrait;
+use App\Entity\Traits\LanguageTrait;
 use App\Entity\Traits\TimesTampableTrait;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -17,7 +19,20 @@ class Category
     use CMSTrait;
     // Champs date.
     use TimestampableTrait;
-    use ExtraDataTrait;
+    use ExtraFieldTrait;
+    use LanguageTrait;
+
+
+    // Champs supplémentaires
+    private ?string $content          = '';
+    private ?string $titleByLanguage  = '';
+
+
+    // Liste des champs supplémentaires spécifiques.
+    private array $extraFields = [
+        ['name' => 'titleByLanguage',   'label' => "Titre",             'ea_type' => 'TextField'      ],
+        ['name' => 'content',           'label' => "Contenu",           'ea_type' => 'TextEditorField'],
+    ];
 
     public function __construct()
     {
@@ -28,7 +43,7 @@ class Category
         $this->mediaLinks       = new ArrayCollection();
         $this->created_at       = new \DateTimeImmutable();
         $this->updated_at       = new \DateTimeImmutable();
-        $this->Seo = new ArrayCollection();
+        $this->seo = new ArrayCollection();
     }
 
     #[ORM\Column]
@@ -73,7 +88,7 @@ class Category
     private ?int $category_id = null;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Article::class, cascade: ['remove'], fetch: "EXTRA_LAZY")]
-    private Collection $articles;
+    private ?Collection $articles;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Online::class, cascade: ['remove'])]
     private Collection $onlines;
@@ -84,9 +99,31 @@ class Category
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Mediaspec::class)]
     private Collection $mediaspecs;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Seo::class)]
-    private Collection $Seo;
+    #[ORM\OneToMany(mappedBy: 'object', targetEntity: CategoryData::class, orphanRemoval: true)]
+    private Collection $data;
 
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Seo::class)]
+    private Collection $seo;
+
+
+     // Todo : fonction dupliquée dans l'entité Article
+    /**
+     * @param $code_langue
+     * @return mixed
+     */
+    public function getSeo($code_langue = null): mixed
+    {
+        // Todo : modifier la récup de la langue
+        if($code_langue == null){
+            // On récupère la langue du site par défaut.
+            $code_langue = $_ENV['LOCALE'];
+        }
+        $seo = $this->seo->filter(function(Seo $seo) use ($code_langue) {
+            return $seo->getLanguage()->getCode() === $code_langue;
+        })->first();
+
+        return $seo;
+    }
 
 
     public function canCreate(): ?bool
@@ -327,18 +364,10 @@ class Category
         return $this;
     }
 
-    /**
-     * @return Collection<int, Seo>
-     */
-    public function getSeo(): Collection
-    {
-        return $this->Seo;
-    }
-
     public function addSeo(Seo $seo): self
     {
         if (!$this->Seo->contains($seo)) {
-            $this->Seo->add($seo);
+            $this->seo->add($seo);
             $seo->setCategory($this);
         }
 
@@ -347,7 +376,7 @@ class Category
 
     public function removeSeo(Seo $seo): self
     {
-        if ($this->Seo->removeElement($seo)) {
+        if ($this->seo->removeElement($seo)) {
             // set the owning side to null (unless already changed)
             if ($seo->getCategory() === $this) {
                 $seo->setCategory(null);
@@ -355,6 +384,36 @@ class Category
         }
 
         return $this;
+    }
+
+    // ! EXTRA GETTERS & SETTERS
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(?string $content): self
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTitleByLanguage(): ?string
+    {
+        return $this->titleByLanguage;
+    }
+
+    /**
+     * @param string|null $titleByLanguage
+     */
+    public function setTitleByLanguage(?string $titleByLanguage): void
+    {
+        $this->titleByLanguage = $titleByLanguage;
     }
 
 }

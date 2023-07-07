@@ -18,7 +18,7 @@ class Theme
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(inversedBy: 'themes')]
+    #[ORM\ManyToOne(inversedBy: 'theme')]
     private ?Language $language = null;
 
     #[ORM\Column]

@@ -3,11 +3,13 @@
 namespace App\Entity\Traits;
 
 use App\Constants\Constants;
+use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Language;
 use App\Entity\Media;
 use App\Entity\Mediaspec;
 use App\Entity\Online;
+use App\Entity\Seo;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -131,14 +133,9 @@ trait CMSTrait
 
     public function getOnlineByCodeLangue($code_langue): false|Online
     {
-        // Si pas de langue précisé.
-        if($code_langue == null){
-            // On récupère la langue du site par défaut.
-            $code_langue = $_ENV['LOCALE'];
-        }
         // On filtre les articles en ligne par leur code langue.
         $online = $this->getOnlines()->filter(function(Online $online) use ($code_langue) {
-            return $online->getLangue()->getCode() === $code_langue;
+            return $online->getLanguage()->getCode() === $code_langue;
         })->first();
 
         return $online;
@@ -146,7 +143,11 @@ trait CMSTrait
 
     public function isOnline($code_langue = null): bool
     {
-
+        // Todo : modifier la récup de la langue
+        if($code_langue == null){
+            // On récupère la langue du site par défaut.
+            $code_langue = $_ENV['LOCALE'];
+        }
         $online = $this->getOnlineByCodeLangue($code_langue);
         if($online &&  $online->isOnline()){
             return true;
@@ -173,4 +174,29 @@ trait CMSTrait
         return $media;
     }
 
+
+    /**
+     * Récupère les ancetres de l'objet dans un array
+     *
+     * @param $ancestors
+     * @return ArrayCollection
+     */
+    public function getAncestors($ancestors = null): ArrayCollection
+    {
+        if($ancestors == null) {
+            $ancestors = new ArrayCollection();
+        }
+        // Si l'entite a un parent de la même famille..
+        if($this->getParent() != null) {
+            $ancestors->add($this->getParent());
+            $this->getParent()->getAncestors($ancestors);
+        }
+        // Si l'entité est un article est posède une catégorie parent.
+        else if($this instanceof Article && $this->getCategory() != null){
+            $ancestors->add($this->getCategory());
+            $this->getCategory()->getAncestors($ancestors);
+        }
+
+        return $ancestors;
+    }
 }

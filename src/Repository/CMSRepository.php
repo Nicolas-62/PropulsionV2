@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\Seo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\Entity;
@@ -98,9 +99,6 @@ Abstract class CMSRepository extends ServiceEntityRepository
      */
     public function getGenealogy(int $element_id, $code_langue, bool $online = true, ArrayCollection $parent_list = null): ArrayCollection
     {
-
-
-
         // Si pas de liste parente, on en crée une.
         if($parent_list == null){
             $parent_list = new ArrayCollection();
@@ -132,4 +130,55 @@ Abstract class CMSRepository extends ServiceEntityRepository
         $parent_list->set('elements', $child_list);
         return $parent_list;
     }
+
+    /**
+     * vérifie sur la catégorie parent de l'article a la SEO d'activé
+     *
+     * @param Article|Category $entity
+     * @return bool
+     */
+    public function hasSeo(Article|Category $entity): bool
+    {
+        // Si c'est une catégorie
+        if($entity instanceof Category){
+            return $entity->hasSeo();
+        }
+        // Sinon on cherche dans le ancêtres de l'article
+        else {
+            // On boucle sur les ancêtres de l'article
+            foreach ($entity->getAncestors() as $parent) {
+                // Si c'est une catégorie
+                if ($parent instanceof Category) {
+                    return $parent->hasSeo();
+                }
+            }
+        }
+
+        // retour
+        return false;
+    }
+
+    /**
+     * vérifie sur la catégorie parent de l'article a la SEO d'activé
+     *
+     * @param Article|Category $entity
+     * @return Seo
+     */
+    public function getSeo(Article|Category $entity, $code_langue = null): Seo
+    {
+        $seo = $entity->getSeo($code_langue);
+        if($seo == null){
+            // On boucle sur les ancêtres de l'article
+            foreach ($entity->getAncestors() as $parent) {
+                // On retourne la Seo du premier ancetre qui en possède.
+                if($parent->getSeo($code_langue) != null){
+                    return $parent->getSeo($code_langue);
+                }
+            }
+        }
+        return $seo;
+    }
+
+
+
 }

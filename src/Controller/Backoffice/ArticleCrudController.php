@@ -4,11 +4,12 @@ namespace App\Controller\Backoffice;
 
 use App\Constants\Constants;
 use App\Entity\Article;
-use App\Entity\ArticleData;
+use App\Entity\CategoryData;
 use App\Entity\Category;
 use App\Entity\Language;
 use App\Entity\Media;
 use App\Entity\MediaLink;
+use App\Entity\Seo;
 use App\Entity\Traits\ExtraDataTrait;
 use App\Field\ExtraField;
 use App\Field\LanguageSelectField;
@@ -55,8 +56,6 @@ class ArticleCrudController extends BoController
     private ?Article $entity = null;
     // Categorie parent.
     private ?Category $category = null;
-    // Code langue courant.
-    private string $locale = '';
 
     public function __construct(
         // Services
@@ -67,6 +66,8 @@ class ArticleCrudController extends BoController
         private EntityManagerInterface $entityManager,
         // Repository EasyAdmin
         private EntityRepository $entityRepository,
+        // Code Langue
+        private string $locale
     )
     {
         // Appel du constructeur du controller parent
@@ -105,6 +106,10 @@ class ArticleCrudController extends BoController
      */
     public function configureFields(string $pageName): iterable
     {
+
+        // Entité article.
+        $model = new Article();
+
         // Onglet
         yield FormField::addTab('Paramètres');
         // Champs communs à plusieurs actions (liste, edition, detail, formulaire...)
@@ -115,24 +120,20 @@ class ArticleCrudController extends BoController
         yield AssociationField::new('children','Enfants')->hideOnForm();
         yield BooleanField::new('isOnline', 'En ligne')->hideOnForm();
         yield TextField::new('title','titre')->setColumns(6);
-        yield BooleanField::new('hasSeo', 'Possède une SEO')->hideOnIndex();
 
-
-
-        
-        $article = new Article();
-        // Champs pour l'édition d'un article.
+        // Champs pour l'édition et la création d'un article.
         if(in_array($pageName, [Crud::PAGE_EDIT, Crud::PAGE_NEW])) {
             // Article parent
-            yield AssociationField::new('parent', 'Article Parent')->hideOnDetail()->setColumns(6)->hideOnIndex()->setRequired(false);
+            yield AssociationField::new('parent', 'Article Parent')->hideOnDetail()->setColumns(3)->hideOnIndex()->setRequired(false);
             // Catégorie parent
-            yield AssociationField::new('category', 'Catégorie Parent')->hideOnDetail()->setColumns(6)->hideOnIndex()->setRequired(false);
+            yield AssociationField::new('category', 'Catégorie Parent')->hideOnDetail()->setColumns(3)->hideOnIndex()->setRequired(false);
             // En édition on peut ajouter/enlever des médias.
             if($pageName === Crud::PAGE_EDIT) {
                 // Médiaspecs appliquées à l'entité
                 $mediaspecs = $this->entityManager->getRepository(Article::class)->getMediaspecs($this->entity);
                 // Si ils existent.
                 if ($mediaspecs != null) {
+                    // MEDIAS
                     // Ajout d'un onglet
                     yield FormField::addTab('Medias')
                         ->setIcon('image');
@@ -162,8 +163,8 @@ class ArticleCrudController extends BoController
                             // Ajout d'une zone d'upload de fichier
                             $imageField
                                 ->setFormTypeOptions([
-                                'block_name' => 'media_edit',
-                            ])
+                                    'block_name' => 'media_edit',
+                                ])
                             ;
                             // Ajout d'un champ supplémentaire de sélection d'un média existant.
                             yield MediaSelectField::new('media' . ($index + 11))
@@ -171,44 +172,50 @@ class ArticleCrudController extends BoController
                                     $this->entityManager->getRepository(Media::class)->getAllForChoices()
                                 )
                             ;
-
                         }
                     }
                 }
             }
         }
-
-        // Onglet Contenu
-        yield FormField::addTab('Contenu');
-
-        yield LanguageSelectField::new('language','langue')->setColumns(3)->setChoices(
-          $this->entityManager->getRepository(Language::class)->getAllForChoices());
-        // yield TextField::new('title','titre')->setColumns(6);
-        // Ajout des champs spécifiques à l'instance définis dans l'entité.
-        foreach($article->getExtraFields() as $extraField){
-          // Récupération du type easy admin du champ
-            yield $article->getEasyAdminFieldType($extraField['ea_type'])::new($extraField['name'], $extraField['label'])
-    //                ->formatValue(function ($value, $entity) {
-    //                    return (string) $value;
-    //                })
-                ->setColumns(12);
-
-
-
-
-        }
-
-
+        // Si l'article existe déjà on peut éditer le contenu en fonction de la langue
         if($pageName === Crud::PAGE_EDIT) {
-            if($this->entity->hasSeo()){
-                // Onglet SEO
-                yield FormField::addTab('SEO');
-                yield CollectionField::new('Seo','SEO')->setEntryType(SeoType::class);
 
-
-
-
+            // CONTENU
+            // Onglet Contenu, contient les champs extra, éditables en fonction de la langue.
+            yield FormField::addTab('Contenu');
+            // Récupération des langues
+            $languages = $this->entityManager->getRepository(Language::class)->getAllForChoices();
+            // Si on a plusieurs langues actives.
+            if(count($languages) > 1) {
+                // Sélecteur de langue pour édition du contenu en fonction de la langue
+                yield LanguageSelectField::new('language', 'langue')->setChoices(
+                    $this->entityManager->getRepository(Language::class)->getAllForChoices()
+                );
             }
+            // SEO
+            // Si un de ses parent a de la SEO
+            if($this->entityManager->getRepository(Article::class)->hasSeo($this->entity)){
+                // Récupération de la seo de la langue courante.
+                $seo = $this->entity->getSeo($this->locale);
+                // Si la seo n'existe pas on retourne un objet vide.
+                if($seo == null){
+                    $seo = new Seo();
+                }
+                // Création d'un champ avec un vue customisée
+                yield CollectionField::new('seo','Seo')
+                    ->setFormTypeOptions([
+                        // Voir template : seo_edit.html.twig
+                        'block_name' => 'seo_edit',
+                        // Passage de la seo dans les champs du formulaire
+                        'data' => ['seo' => $seo]
+                    ])
+                ;
+            }
+            // Ajout des champs spécifiques à l'instance définis dans l'entité.
+            foreach($model->getExtraFields() as $extraField){
+                yield $model->getEasyAdminFieldType($extraField['ea_type'])::new($extraField['name'], $extraField['label'])->setColumns(12);
+            }
+
         }
 
 
@@ -239,6 +246,7 @@ class ArticleCrudController extends BoController
 //
         return $article;
     }
+
 
     /**
      * Requêtage des entités à afficher.
@@ -357,12 +365,16 @@ class ArticleCrudController extends BoController
      */
     public function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
     {
-        // Génération de l'URL
-        $url = $this->adminUrlGenerator->setAction(Action::INDEX)
-            ->unset('entityId')
-            ->generateUrl();
-        // Redirection
-        return $this->redirect($url);
+        if($action == Action::INDEX) {
+            // Génération de l'URL
+            $url = $this->adminUrlGenerator->setAction(Action::INDEX)
+                ->unset('entityId')
+                ->generateUrl();
+            // Redirection
+            return $this->redirect($url);
+        }else{
+            return parent::getRedirectResponseAfterSave( $context, $action);
+        }
     }
 
     /**
@@ -373,8 +385,6 @@ class ArticleCrudController extends BoController
      */
     public function configureCrud(Crud $crud): Crud
     {
-        // Récupération de la langue courante.
-        $this->locale            = $this->getParameter('locale');
         // Parametrage du crud.
         return $crud
             // ...
@@ -394,7 +404,14 @@ class ArticleCrudController extends BoController
             ->overrideTemplate('crud/detail', 'backoffice/article/article.html.twig')
             ->overrideTemplate('crud/edit', 'backoffice/article/edit.html.twig')
             // Personnalisation du formulaire
-            ->setFormThemes(['backoffice/article/media_edit.html.twig', 'backoffice/article/media_delete.html.twig','backoffice/article/media_select.html.twig','@EasyAdmin/crud/form_theme.html.twig'])
+            ->setFormThemes([
+                'backoffice/article/media_edit.html.twig',
+                'backoffice/article/media_delete.html.twig',
+                'backoffice/article/media_select.html.twig',
+                'backoffice/article/seo_edit.html.twig',
+                '@EasyAdmin/crud/form_theme.html.twig'
+                ]
+            )
 
             //showEntityActionsInlined : permet d'afficher les actions en ligne plutôt que dans un menu
             ->showEntityActionsInlined()

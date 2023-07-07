@@ -48,22 +48,35 @@ class LanguageRepository extends ServiceEntityRepository
 
 
     /**
-     * Retourne la liste des médias que l'on peut associer à une entité (article/catégorie)
+     * Retourne la liste des langgues formatées pour un sélecteur de langue.
      *
      * @return array
      */
     public function getAllForChoices(): array
     {
-      $languages  =  $this->findAll();
       $choices =  array();
-      foreach($languages as $language){
+      foreach($this->findAllActive() as $language){
         $choices[$language->getLabel()] = $language->getCode();
       }
       return $choices;
     }
 
 
-
+    /**
+     * Retourne la liste des langues actives
+     *
+     * @return array
+     */
+    public function findAllActive(): array
+    {
+        $languages =  array();
+        foreach($this->findAll() as $language){
+            if($language->isActive()) {
+                $languages[] = $language;
+            }
+        }
+        return $languages;
+    }
 
 
 

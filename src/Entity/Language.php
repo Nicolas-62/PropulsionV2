@@ -23,7 +23,7 @@ class Language
         $this->created_at = new \DateTimeImmutable();
         $this->updated_at = new \DateTimeImmutable();
         $this->themes = new ArrayCollection();
-        $this->seos = new ArrayCollection();
+        $this->seo = new ArrayCollection();
     }
 
 
@@ -41,14 +41,17 @@ class Language
     #[ORM\Column]
     private ?int $ordre = null;
 
-    #[ORM\OneToMany(mappedBy: 'langue', targetEntity: Online::class)]
+    #[ORM\OneToMany(mappedBy: 'language', targetEntity: Online::class)]
     private Collection $online;
 
     #[ORM\OneToMany(mappedBy: 'language', targetEntity: Theme::class)]
-    private Collection $themes;
+    private Collection $theme;
 
-    #[ORM\OneToMany(mappedBy: 'langue', targetEntity: Seo::class)]
-    private Collection $seos;
+    #[ORM\OneToMany(mappedBy: 'language', targetEntity: Seo::class)]
+    private Collection $seo;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $active = null;
 
 
 
@@ -105,7 +108,7 @@ class Language
     {
         if (!$this->online->contains($online)) {
             $this->online->add($online);
-            $online->setLangue($this);
+            $online->setLanguage($this);
         }
 
         return $this;
@@ -115,8 +118,8 @@ class Language
     {
         if ($this->online->removeElement($online)) {
             // set the owning side to null (unless already changed)
-            if ($online->getLangue() === $this) {
-                $online->setLangue(null);
+            if ($online->getLanguage() === $this) {
+                $online->setLanguage(null);
             }
         }
 
@@ -168,16 +171,16 @@ class Language
     /**
      * @return Collection<int, Seo>
      */
-    public function getSeos(): Collection
+    public function getSeo(): Collection
     {
-        return $this->seos;
+        return $this->seo;
     }
 
     public function addSeo(Seo $seo): self
     {
-        if (!$this->seos->contains($seo)) {
-            $this->seos->add($seo);
-            $seo->setLangue($this);
+        if (!$this->seo->contains($seo)) {
+            $this->seo->add($seo);
+            $seo->setLanguage($this);
         }
 
         return $this;
@@ -185,12 +188,24 @@ class Language
 
     public function removeSeo(Seo $seo): self
     {
-        if ($this->seos->removeElement($seo)) {
+        if ($this->seo->removeElement($seo)) {
             // set the owning side to null (unless already changed)
-            if ($seo->getLangue() === $this) {
-                $seo->setLangue(null);
+            if ($seo->getLanguage() === $this) {
+                $seo->setLanguage(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(?bool $active): self
+    {
+        $this->active = $active;
 
         return $this;
     }
