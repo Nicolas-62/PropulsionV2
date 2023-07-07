@@ -19,12 +19,10 @@
     {
       // Configuration du champ d'upload d'un média.
       return (ChoiceField::new($propertyName, 'Choisissez un language existant.')
-        ->setColumns(6)
+        ->setColumns(4)
         ->setFormTypeOptions([
-          'multiple' => false,
-//                'block_name' => 'media_select',
-
-        ])
+            'multiple' => false,
+        ])->renderExpanded()
       );
     }
 

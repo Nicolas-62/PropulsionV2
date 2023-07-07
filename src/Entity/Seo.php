@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SeoRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SeoRepository::class)]
@@ -13,9 +14,9 @@ class Seo
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'seos')]
+    #[ORM\ManyToOne(inversedBy: 'seo')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Language $langue = null;
+    private ?Language $language = null;
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
@@ -32,24 +33,18 @@ class Seo
     #[ORM\ManyToOne(inversedBy: 'seo')]
     private ?Article $article = null;
 
-    #[ORM\ManyToOne(inversedBy: 'Seo')]
+    #[ORM\ManyToOne(inversedBy: 'seo')]
     private ?Category $category = null;
+
+    public function __construct()
+    {
+        $this->created_at   = new \DateTimeImmutable();
+        $this->updated_at   = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getLangue(): ?Language
-    {
-        return $this->langue;
-    }
-
-    public function setLangue(?Language $langue): self
-    {
-        $this->langue = $langue;
-
-        return $this;
     }
 
     public function getTitle(): ?string
@@ -104,6 +99,11 @@ class Seo
   public function __toString(): string
   {
     return $this->getTitle();
+      if($this->title) {
+          return $this->title;
+      }else{
+          return '';
+      }
   }
 
 
@@ -130,4 +130,20 @@ class Seo
 
       return $this;
   }
+
+    /**
+     * @return Language|null
+     */
+    public function getLanguage(): ?Language
+    {
+        return $this->language;
+    }
+
+    /**
+     * @param Language|null $language
+     */
+    public function setLanguage(?Language $language): void
+    {
+        $this->language = $language;
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Traits\CMSTrait;
 use App\Entity\Traits\ExtraDataTrait;
+use App\Entity\Traits\ExtraFieldtrait;
 use App\Entity\Traits\LanguageTrait;
 use App\Entity\Traits\MediaTrait;
 use App\Entity\Traits\PreviewTrait;
@@ -23,27 +24,21 @@ class Article
     use CMSTrait;
     // Champs date.
     use TimestampableTrait;
-    use ExtraDataTrait;
+    use ExtraFieldtrait;
     use MediaTrait;
     use LanguageTrait;
 
     // Champs supplémentaires
-    private bool  $headline = FALSE;
-    private bool  $vedette  = FALSE;
-    private ?string $content  = '';
+    private ?string $content          = '';
     private ?string $titleByLanguage  = '';
 
 
 
     // Liste des champs supplémentaires spécifiques.
     private array $extraFields = [
-        ['name' => 'titleByLanguage', 'label' => "Titre", 'ea_type' => 'TextField'],
-        ['name' => 'content', 'label' => "Contenu", 'ea_type' => 'TextEditorField'],
-        ['name' => 'headline', 'label' => "Tête d'affiche", 'ea_type' => 'booleanField'],
-        ['name' => 'vedette', 'label' => "Vedette", 'ea_type' => 'booleanField'],
+        ['name' => 'titleByLanguage',   'label' => "Titre",             'ea_type' => 'TextField'      ],
+        ['name' => 'content',           'label' => "Contenu",           'ea_type' => 'TextEditorField'],
     ];
-
-
 
 
     public function __construct()
@@ -93,8 +88,23 @@ class Article
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Seo::class)]
     private Collection $seo;
 
-    #[ORM\Column]
-    private ?bool $hasSeo = null;
+    /**
+     * @param $code_langue
+     * @return mixed
+     */
+    public function getSeo($code_langue = null): mixed
+    {
+        // Todo : modifier la récup de la langue
+        if($code_langue == null){
+            // On récupère la langue du site par défaut.
+            $code_langue = $_ENV['LOCALE'];
+        }
+        $seo = $this->seo->filter(function(Seo $seo) use ($code_langue) {
+            return $seo->getLanguage()->getCode() === $code_langue;
+        })->first();
+
+        return $seo;
+    }
 
 
     public function getArticleId(): ?int
@@ -155,18 +165,6 @@ class Article
                 $online->setArticle(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function setContent(?string $content): self
-    {
-        $this->content = $content;
 
         return $this;
     }
@@ -236,78 +234,6 @@ class Article
     }
 
     /**
-     * @return Collection<int, ArticleData>
-     */
-    public function getData(): Collection
-    {
-        return $this->data;
-    }
-
-
-    /**
-     * @param $code_langue
-     * @return void
-     */
-    public function getDatas($code_langue): void
-    {
-        $datas = $this->data->filter(function(ArticleData $data) use ($code_langue) {
-            return $data->getLanguage()->getCode() === $code_langue;
-        });
-        foreach($datas as $data){
-            $this->{'set' . $data->getFieldKey()}($data->getFieldValue());
-        }
-    }
-
-    public function addData(ArticleData $data): self
-    {
-        if (!$this->data->contains($data)) {
-            $this->data->add($data);
-            $data->setObject($this);
-        }
-
-        return $this;
-    }
-
-    public function removeData(ArticleData $data): self
-    {
-        if ($this->data->removeElement($data)) {
-            // set the owning side to null (unless already changed)
-            if ($data->getObject() === $this) {
-                $data->setObject(null);
-            }
-        }
-
-        return $this;
-    }
-
-
-    public function getHeadline()
-    {
-        return $this->headline;
-    }
-
-    public function setHeadline($headline): void
-    {
-        $this->headline = $headline;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getVedette(): bool
-    {
-        return $this->vedette;
-    }
-
-    /**
-     * @param bool $vedette
-     */
-    public function setVedette(bool $vedette): void
-    {
-        $this->vedette = $vedette;
-    }
-
-    /**
      * @return Collection<int, Theme>
      */
     public function getThemes(): Collection
@@ -331,29 +257,6 @@ class Article
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getTitleByLanguage(): ?string
-    {
-      return $this->titleByLanguage;
-    }
-
-    /**
-     * @param string|null $titleByLanguage
-     */
-    public function setTitleByLanguage(?string $titleByLanguage): void
-    {
-      $this->titleByLanguage = $titleByLanguage;
-    }
-
-    /**
-     * @return Collection<int, Seo>
-     */
-    public function getSeo(): Collection
-    {
-        return $this->seo;
-    }
 
     public function addSeo(Seo $seo): self
     {
@@ -377,16 +280,34 @@ class Article
         return $this;
     }
 
-    public function hasSeo(): ?bool
+    // ! EXTRA GETTERS & SETTERS
+
+    public function getContent(): ?string
     {
-        return $this->hasSeo;
+        return $this->content;
     }
 
-    public function setHasSeo(bool $hasSeo): self
+    public function setContent(?string $content): self
     {
-        $this->hasSeo = $hasSeo;
+        $this->content = $content;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTitleByLanguage(): ?string
+    {
+        return $this->titleByLanguage;
+    }
+
+    /**
+     * @param string|null $titleByLanguage
+     */
+    public function setTitleByLanguage(?string $titleByLanguage): void
+    {
+        $this->titleByLanguage = $titleByLanguage;
     }
 
 }

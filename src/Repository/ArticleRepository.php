@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Article;
+use App\Entity\Category;
 use App\Entity\Media;
 use App\Entity\MediaLink;
 use App\Entity\Mediaspec;
@@ -25,8 +26,8 @@ class ArticleRepository extends CMSRepository
     }
 
     /**
-     * getMediaspecs
      * Récupère les mediaspecs qui s'applique à l'article passé en paramètre.
+     *
      * @param Article $entity
      * @return Mediaspec
      */
@@ -62,8 +63,8 @@ class ArticleRepository extends CMSRepository
     }
 
     /**
-     * getMedia
      * Récupère un média pour une médiapsec donnée
+     *
      * @param Article $entity
      * @param Mediaspec $mediaspec_id
      * @return Media|null
@@ -72,6 +73,5 @@ class ArticleRepository extends CMSRepository
     {
         return $this->registry->getRepository(MediaLink::class)->findOneByArticle($entity, $mediaspec)?->getMedia();
     }
-
 
 }

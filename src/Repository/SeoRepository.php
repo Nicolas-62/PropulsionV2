@@ -2,6 +2,8 @@
 
 namespace App\Repository;
 
+use App\Entity\Article;
+use App\Entity\Category;
 use App\Entity\Seo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -38,6 +40,22 @@ class SeoRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function findByLanguage(Article|Category $publication, $language): Seo|null
+    {
+        $model_name = strtolower($publication->getClassName());
+
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.'.$model_name.' = :'.$model_name)
+            ->andWhere('s.language = :language')
+            ->setParameter($model_name, $publication)
+            ->setParameter('language', $language)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+
 
 //    /**
 //     * @return Seo[] Returns an array of Seo objects
