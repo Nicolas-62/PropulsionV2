@@ -48,10 +48,10 @@ class ExtraDataListener implements EventSubscriberInterface
         // Récupération de l'entité.
         $entity = $event->getEntityInstance();
 
-        $repository = "App\\Entity\\" . ucfirst($entity->getClassName()).'Data';
-
         // Si on est en édition d'un article.
         if ($entity instanceof Article || $entity instanceof Category) {
+            // Récupération du nom du repository des datas.
+            $repository = "App\\Entity\\" . ucfirst($entity->getClassName()).'Data';
 
             // Récupération du code langue par défaut.
             $code_langue = $this->locale;

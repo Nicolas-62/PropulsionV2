@@ -63,7 +63,7 @@ class OnlineListener implements EventSubscriberInterface
                     if( ! $online){
                         $online = new Online();
                         $online->{'set'.ucfirst($entity->getClassName())}($entity);
-                        $online->setLangue($this->entityManager->getRepository(Language::class)->findOneBy(['code' => $this->locale]));
+                        $online->setLanguage($this->entityManager->getRepository(Language::class)->findOneBy(['code' => $this->locale]));
                     }
                     // On passe la valeur que l'on souhaite mettre à jour
                     $online->setOnline($newValue);
@@ -94,7 +94,7 @@ class OnlineListener implements EventSubscriberInterface
             $online->setCategory(null);
 
             $langue = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $this->locale]);
-            $online->setLangue($langue);
+            $online->setLanguage($langue);
 
 
             // On passe l'objet à la BDD
@@ -109,7 +109,7 @@ class OnlineListener implements EventSubscriberInterface
             $online->setArticle(null);
             $online->setCategory($entity);
             $langue = $this->entityManager->getRepository(Language::class)->getDefaultLangue();
-            $online->setLangue($langue);
+            $online->setLanguage($langue);
 
 
             // On passe l'objet à la BDD

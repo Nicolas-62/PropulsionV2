@@ -18,5 +18,8 @@ class ArticleData
 
     #[ORM\ManyToOne(inversedBy: 'data')]
     #[ORM\JoinColumn(nullable: false)]
-    private  ?Article $object = null;
+    private ?Article $object = null;
+
+
 }
+

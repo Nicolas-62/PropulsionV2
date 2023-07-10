@@ -13,6 +13,7 @@ use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityBuiltEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
@@ -34,11 +35,13 @@ class Article
 
 
 
+
     // Liste des champs supplémentaires spécifiques.
     private array $extraFields = [
         ['name' => 'titleByLanguage',   'label' => "Titre",             'ea_type' => 'TextField'      ],
         ['name' => 'content',           'label' => "Contenu",           'ea_type' => 'TextEditorField'],
     ];
+
 
 
     public function __construct()
@@ -285,6 +288,7 @@ class Article
     public function getContent(): ?string
     {
         return $this->content;
+
     }
 
     public function setContent(?string $content): self

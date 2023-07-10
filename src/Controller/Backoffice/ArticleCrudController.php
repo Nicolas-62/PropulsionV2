@@ -144,7 +144,7 @@ class ArticleCrudController extends BoController
                         // Ajout d'un champ d'upload d'un média
                         // Ajout du personnalisé champ média.
                         yield $imageField = Field::new('media' . ($index + 1), ucfirst($mediaspec->getName()) . ' : téléchargez un média ou...');
-                        $imageField->setColumns(6);
+                        $imageField->setColumns(8);
                         // Récupération du média.
                         $media = $this->entityManager->getRepository(Article::class)->getMedia($this->entity, $mediaspec);
                         // Si l'entité possède un média pour cette mediaspec.
@@ -170,7 +170,7 @@ class ArticleCrudController extends BoController
                             yield MediaSelectField::new('media' . ($index + 11))
                                 ->setChoices(
                                     $this->entityManager->getRepository(Media::class)->getAllForChoices()
-                                )
+                                )->setColumns(4);
                             ;
                         }
                     }

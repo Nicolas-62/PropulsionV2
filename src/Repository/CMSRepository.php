@@ -79,7 +79,7 @@ Abstract class CMSRepository extends ServiceEntityRepository
         if($online && $preview == null)
         {
           $qb->join("$this->model_alias.onlines", 'online')
-                ->andWhere('online.langue = 1')
+                ->andWhere('online.language = 1')
                 ->andWhere('online.online = 1');
 
         }

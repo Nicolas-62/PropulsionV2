@@ -79,17 +79,17 @@ trait ExtraDataTrait
     }
 
     /**
-     * @return Category|null
+     * @return Category|Article|null
      */
-    public function getObject(): ?Category
+    public function getObject(): Article|Category|null
     {
         return $this->object;
     }
 
     /**
-     * @param Category|null $object
+     * @param Category|Article|null $object
      */
-    public function setObject(?Category $object): self
+    public function setObject(Article|Category|null $object): self
     {
         $this->object = $object;
         return $this;

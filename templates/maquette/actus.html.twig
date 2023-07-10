@@ -1,0 +1,57 @@
+{% extends 'maquette/layout.html.twig' %}
+{% block body %}
+
+
+
+
+
+
+
+    <!-- VOIR AUSSI -->
+    <div style="">
+        <div class="py-5 px-5">
+            <div class="row my-5">
+
+                {% for actu in actu_childs.elements %}
+                    <!-- DEBUG -->
+                    <!-- {{ dump(actu) }} -->
+
+
+                    <div class="col-4">
+                        <!-- Card-Actu -->
+                        <div class="card mb-3 mx-4 shadow-lg rounded-0">
+                            <img src="{{ asset(('assets/maquette/media-actu.png')) }}" class="card-img-top rounded-0" alt="...">
+                            <div class="card-body pt-0 ">
+                                <!-- Themes -->
+                                <div class="row">
+                                    {% for theme in actu.element.themes %}
+                                        <div class="col-6" style="background-color: #eab308; color: white">
+                                            {{ theme.name | upper}}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <!-- Titre -->
+                                <h5 class="card-title my-3">{{ actu.element.title }}</h5>
+
+                                <!-- Contenu -->
+                                <!-- <p class="card-text">{{ actu.element.content }}</p> -->
+                                <p class="card-text">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sollicitudin eros libero. Nulla a pretium metus. Proin euismod tellus tellus, at iaculis ex interdum et. Proin vitae volutpat purus. Mauris venenatis placerat rutrum. In euismod nisl elit, eget pulvinar quam aliquet non. Sed ut gravida arcu, sed ornare nulla. Fusce molestie diam ac orci tempor, id sollicitudin est efficitur. Maecenas quis rhoncus dolor
+                                </p>
+
+                            </div>
+
+                            <!-- Bouton Lien vers l'article -->
+                            <a class="btn border">LIRE LA SUITE</a>
+
+
+                            <!-- Potentiel lien Billetterie -->
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
