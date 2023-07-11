@@ -56,6 +56,10 @@ class MaquetteController extends AbstractController
     #[Route('/agenda', name: 'agenda')]
     public function agenda(): Response
     {
+
+        $events_agenda = $this->entityManager->getRepository(Category::class)->getGenealogy(10, $this->getParameter('locale'));
+
+
         return $this->render('maquette/agenda.html.twig', [
             'controller_name' => 'MaquetteController',
             'page_title' => 'Agenda',
@@ -64,6 +68,7 @@ class MaquetteController extends AbstractController
             'mentions' => $this->mentions,
             'btns_footer' => $this->btns_footer,
             'medias' => $this->medias,
+            'events_agenda' => $events_agenda,
         ]);
     }
 
@@ -108,6 +113,33 @@ class MaquetteController extends AbstractController
     #[Route('/soutiens', name: 'soutiens')]
     public function soutiens(): Response
     {
+        // Récupération artistes accompagnés
+        $accompagnes = $this->entityManager->getRepository(Category::class)->getGenealogy(12, $this->getParameter('locale'));
+
+        // Récupérations des medias
+        $accompagnes_medias =['ADAM','JONASKAY','ARYANE','DOUBLE', 'ETIENNE','KAMELECTRIC'];
+
+
+        // Récupération auditions
+        $auditions = $this->entityManager->getRepository(Category::class)->getGenealogy(13, $this->getParameter('locale'));
+
+        // Récupérations des medias
+        $auditions_medias =['AMBRE','CASSANDRE','EXAUBABA','LAST'];
+
+        // Récupération event actualités
+        $event_actus = $this->entityManager->getRepository(Category::class)->getGenealogy(14, $this->getParameter('locale'));
+
+        // Récupérations des medias
+        $event_actus_medias =['MUMBLE','APERO','ACTION','MAO'];
+
+
+        $tableau_categories = array();
+        $tableau_categories[0] = $accompagnes;
+        $tableau_categories[1] = $auditions;
+
+
+
+        // Envoi des données à la vue
         return $this->render('maquette/soutiens.html.twig', [
             'controller_name' => 'MaquetteController',
             'page_title' => 'Soutiens aux artistes',
@@ -116,6 +148,13 @@ class MaquetteController extends AbstractController
             'mentions' => $this->mentions,
             'btns_footer' => $this->btns_footer,
             'medias' => $this->medias,
+            'accompagnes' => $accompagnes,
+            'auditions' => $auditions,
+            'event_actus' => $event_actus,
+            'accompagnes_medias' => $accompagnes_medias,
+            'auditions_medias' => $auditions_medias,
+            'event_actus_medias' => $event_actus_medias,
+            'tableau_categories' => $tableau_categories,
         ]);
     }
 

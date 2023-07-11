@@ -1,1 +1,106 @@
 {% extends 'maquette/layout.html.twig' %}
+
+{% block body %}
+
+
+
+    <!-- ARTISTES ACCOMPAGNES -->
+    {% for cat in tableau_categories %}
+    <div class="py-5 px-5">
+        <h2 class="">{{ cat.element.title }}</h2>
+
+
+        <p>
+            Eux, elle, ce sont les artistes que La Lune va accompagner pendant un an, peut-être deux. Ce sont les projets qui ont été choisis pour leur parcours mais aussi pour leurs besoins auxquels nous allons tenter de répondre : structure administrative, besoin de répétitions ou de coaching, soutien à l’enregistrement...
+            8 personnalités pour autant d’univers, que nous tentons de vous faire connaître à travers ces quelques lignes qui, nous l’espérons, vous donneront envie d’aller voir plus loin.
+
+        </p>
+
+        <div class="row">
+            {% for accomp in cat.elements %}
+                <div class="col-4">
+                    <!-- Card-Actu -->
+                    <div class="card mb-3 mx-4 shadow-lg rounded-0">
+                        {% set src = accompagnes_medias[loop.index0] %}
+                        {% set url = 'assets/maquette/' %}
+                        {% set ext = '.png' %}
+                        {% set src = url ~ src ~ ext %}
+
+                        <img src="{{ asset(src) }}" class="card-img-top rounded-0" alt="...">
+                        <div class="card-body pt-0 ">
+                            <!-- Themes -->
+                            <div class="row">
+                            </div>
+
+                            <div class="row">
+                                <!-- ARTISTE -->
+                                <div class="col-9">
+                                    <h1 class="card-title my-3 fw-bold">{{ accomp.element.title }}</h1>
+                                </div>
+
+                                <!-- COUP DOEUIL -->
+                                <div class="col-3">
+                                    <img src="{{ asset(('assets/maquette/COUPDOEUIL.png')) }}" class="card-img-top rounded-0" alt="...">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+    
+
+
+    <!-- Évènements Actualités -->
+
+        <div class="py-5 px-5">
+            <h2 class="">Evenements Actualités</h2>
+
+            <div class="row">
+                {% for event_actu in event_actus.elements %}
+                    <div class="col-4">
+                        <!-- Card-Actu -->
+                        <div class="card mb-3 mx-4 shadow-lg rounded-0">
+
+                            {% set src = event_actus_medias[loop.index0] %}
+                            {% set url = 'assets/maquette/' %}
+                            {% set ext = '.png' %}
+                            {% set src = url ~ src ~ ext %}
+                            <img src="{{ asset(src) }}" class="card-img-top rounded-0" alt="...">
+                            <div class="card-body pt-0 ">
+                                <!-- Themes -->
+                                <div class="row">
+                                </div>
+                                <!-- ARTISTE -->
+
+                                <h2 class="card-title my-3">{{ event_actu.element.title }}</h2>
+
+                                <!-- seconde partie -->
+                                <p class="card-text">
+
+                                </p>
+
+                            </div>
+
+                            <div class="container">
+                                <div class="row">
+
+                                    <!-- COUP DOEUIL -->
+                                    <div class="col-3">
+                                        <a href="https://billetterie.lalune.net/">
+                                            <img src="{{ asset(('assets/maquette/BILLETTERIE.png')) }}" class="card-img-top rounded-0" alt="...">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+
+{% endblock %}
