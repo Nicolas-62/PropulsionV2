@@ -1,4 +1,4 @@
-<div style="background-color: #FF5D5D">
+<div class="bg-footer">
 
 
     <!-- LOGOS -->
@@ -59,7 +59,7 @@
 
 
     <!-- PARTENAIRES ET SPONSORS -->
-<div  style="background-color: #EDEDED" class="pt-5">
+<div class="pt-5 bg-grey">
     <div class="container">
         <img class="w-100" src="{{ asset('assets/maquette/FOOTER_SPONSORS.png') }}">
     </div>
@@ -67,12 +67,12 @@
 
 
     <!-- MENTIONS LEGALES -->
-<div class="" style="background-color: #EDEDED">
-    <nav class="navbar navbar-expand-lg col-12 mb-auto ml-5 mr-5">
+<div class="bg-grey">
+    <nav class="navbar navbar-expand-lg col-10 offset-1 mb-auto ml-5 mr-5">
         <ul class="navbar-nav w-100 justify-content-between">
         {% for name, url in mentions %}
             <li>
-                <a  class="text-decoration-none" style="color:black" href="{{ url }}">{{ name }}</a>
+                <a  class="text-decoration-none black" href="{{ url }}">{{ name }}</a>
             </li>
         {% endfor %}
         </ul>

@@ -1,4 +1,105 @@
 {% extends 'maquette/layout.html.twig' %}
+
+
+{% block javascripts %}
+    <script>
+        var x, i, j, l, ll, selElmnt, a, b, c;
+        /* Look for any elements with the class "custom-select": */
+        x = document.getElementsByClassName("custom-select");
+        l = x.length;
+        for (i = 0; i < l; i++) {
+            selElmnt = x[i].getElementsByTagName("select")[0];
+            ll = selElmnt.length;
+            /* For each element, create a new DIV that will act as the selected item: */
+            a = document.createElement("DIV");
+            a.setAttribute("class", "select-selected");
+            a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+            x[i].appendChild(a);
+            /* For each element, create a new DIV that will contain the option list: */
+            b = document.createElement("DIV");
+            b.setAttribute("class", "select-items select-hide");
+            for (j = 1; j < ll; j++) {
+                /* For each option in the original select element,
+                create a new DIV that will act as an option item: */
+                c = document.createElement("DIV");
+                c.innerHTML = selElmnt.options[j].innerHTML;
+                c.addEventListener("click", function(e) {
+                    /* When an item is clicked, update the original select box,
+                    and the selected item: */
+                    var y, i, k, s, h, sl, yl;
+                    s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+                    sl = s.length;
+                    h = this.parentNode.previousSibling;
+                    for (i = 0; i < sl; i++) {
+                        if (s.options[i].innerHTML == this.innerHTML) {
+                            s.selectedIndex = i;
+                            h.innerHTML = this.innerHTML;
+                            y = this.parentNode.getElementsByClassName("same-as-selected");
+                            yl = y.length;
+                            for (k = 0; k < yl; k++) {
+                                y[k].removeAttribute("class");
+                            }
+                            this.setAttribute("class", "same-as-selected");
+                            break;
+                        }
+                    }
+                    h.click();
+                });
+                b.appendChild(c);
+            }
+            x[i].appendChild(b);
+            a.addEventListener("click", function(e) {
+                /* When the select box is clicked, close any other select boxes,
+                and open/close the current select box: */
+                e.stopPropagation();
+                closeAllSelect(this);
+                this.nextSibling.classList.toggle("select-hide");
+                this.classList.toggle("select-arrow-active");
+            });
+        }
+
+        function closeAllSelect(elmnt) {
+            /* A function that will close all select boxes in the document,
+            except the current select box: */
+            var x, y, i, xl, yl, arrNo = [];
+            x = document.getElementsByClassName("select-items");
+            y = document.getElementsByClassName("select-selected");
+            xl = x.length;
+            yl = y.length;
+            for (i = 0; i < yl; i++) {
+                if (elmnt == y[i]) {
+                    arrNo.push(i)
+                } else {
+                    y[i].classList.remove("select-arrow-active");
+                }
+            }
+            for (i = 0; i < xl; i++) {
+                if (arrNo.indexOf(i)) {
+                    x[i].classList.add("select-hide");
+                }
+            }
+        }
+
+        /* If the user clicks anywhere outside the select box,
+        then close all select boxes: */
+        document.addEventListener("click", closeAllSelect);
+    </script>
+
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .card-actions {
+            display: flex;
+            align-content: end;
+            justify-content: space-between;
+            padding: 2rem;
+        }
+
+
+    </style>
+
+{% endblock %}
 {% block body %}
 
 
@@ -8,46 +109,95 @@
 
 
     <!-- VOIR AUSSI -->
-    <div style="">
-        <div class="py-5 px-5">
-            <div class="row my-5">
+    <div>
+        <div class="px-lg-5">
+            <div class="row">
+                <div class="px-lg-5 pt-5 row">
+                    <h1 class="col-lg-2 col-md-6 col-sm-12 big-subtitle blue-title">{{ page_title | upper }}</h1>
+                    <div class="custom-select col-lg-4 col-md-6 col-sm-12 d-flex align-items-end">
+                        <select class="text-uppercase col-4 rounded-0 fs-2">
+                            <option class="" selected>toutes les actualités &nbsp ></option>
 
+                            {% for actu in themes_actu %}
+                                <option value={{ actu }}>{{ actu }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
                 {% for actu in actu_childs.elements %}
                     <!-- DEBUG -->
                     <!-- {{ dump(actu) }} -->
 
 
-                    <div class="col-4">
+                    <div class="col-lg-4 col-md-12 py-lg-5">
                         <!-- Card-Actu -->
-                        <div class="card mb-3 mx-4 shadow-lg rounded-0">
-                            <img src="{{ asset(('assets/maquette/media-actu.png')) }}" class="card-img-top rounded-0" alt="...">
-                            <div class="card-body pt-0 ">
+                        <div class="card mb-3 mx-lg-4 shadow-lg rounded-0 h-100">
+                            {% if loop.index0 == 0 %}
+                                <img src="{{ asset(('assets/maquette/ACTION_ACTUS.png')) }}" class="card-img-top rounded-0" alt="...">
+                            {% elseif loop.index0 == 1 %}
+                                <img src="{{ asset(('assets/maquette/media-actu.png')) }}" class="card-img-top rounded-0" alt="...">
+                            {% elseif loop.index0 == 2 %}
+                                <img src="{{ asset(('assets/maquette/OBJECTIF_ACTUS.png')) }}" class="card-img-top rounded-0" alt="...">
+                            {% elseif loop.index0 == 3 %}
+                                <img src="{{ asset(('assets/maquette/PASS_ACTU.png')) }}" class="card-img-top rounded-0" alt="...">
+                            {% endif %}
+                            <div class="pt-0 ">
                                 <!-- Themes -->
-                                <div class="row">
-                                    {% for theme in actu.element.themes %}
-                                        <div class="col-6" style="background-color: #eab308; color: white">
-                                            {{ theme.name | upper}}
+                                <div class="row  mx-0 px-0">
+                                    {% if loop.index0 == 0  %}
+                                        <div class="col-5 white theme-1" style="background-color: #68FF85; ">
+                                            ACTION CULTURELLE
                                         </div>
-                                    {% endfor %}
+                                    {% elseif loop.index0 == 1 %}
+                                        <div class="col-5 white theme-1" style="background-color: #ffb24b;">
+                                            JEUNE PUBLIC
+                                        </div>
+                                        <div class="col-7 white justify-content-start theme-2">
+                                            <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('assets/maquette/MINI_BILLETTERIE.svg')) }}">GOÛTER CONCERT
+                                        </div>
+                                    {% elseif loop.index0 == 2 %}
+                                        <div class="col-5 white" style="background-color: #09b2ff; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px">
+                                            SOUTIEN AUX ARTISTES
+                                        </div>
+                                        <div class="col-7 white justify-content-start theme-2">
+                                            <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('assets/maquette/MINI_BILLETTERIE.svg')) }}">OBJECTIF LUNE
+                                        </div>
+                                    {% elseif loop.index0 == 3 %}
+                                        <div class="col-5 white theme-1" style="background-color: #fe513a;">
+                                            COMMUNICATION
+                                        </div>
+                                    {% endif %}
                                 </div>
-                                <!-- Titre -->
-                                <h5 class="card-title my-3">{{ actu.element.title }}</h5>
 
-                                <!-- Contenu -->
-                                <!-- <p class="card-text">{{ actu.element.content }}</p> -->
-                                <p class="card-text">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sollicitudin eros libero. Nulla a pretium metus. Proin euismod tellus tellus, at iaculis ex interdum et. Proin vitae volutpat purus. Mauris venenatis placerat rutrum. In euismod nisl elit, eget pulvinar quam aliquet non. Sed ut gravida arcu, sed ornare nulla. Fusce molestie diam ac orci tempor, id sollicitudin est efficitur. Maecenas quis rhoncus dolor
-                                </p>
+                                <div class="container">
 
+                                    <h5 class="card-title my-3 fs-2">{{ actu.element.title }}</h5>
+                                    <p class="card-text fs-4">
+                                        {% if loop.index0 == 0 %}
+                                            Souvent mentionnée mais parfois mal comprise, l’action culturelle est la mission de nombreuses structures culturelles avec lesquelles les artistes s’engagent à faire vivre aux publics une expérience sensible et leur donner les clés pour s’émerveiller, apprendre, créer et s’émouvoir !
+                                        {% elseif loop.index0 == 1 %}
+                                            Les enfants ont aussi le droit à la fête ! En famille, initiez vos kids aux joies du live : un concert comme pour les grands mais où le groupe joue moins fort et moins longtemps pour s’adapter à eux. Petit·e spectateur·rice deviendra grand·e fan !
+                                        {% elseif loop.index0 == 2 %}
+                                            Eux, elle, ce sont les artistes que La Lune va accompagner pendant un an, peut-être deux. Ce sont les projets qui ont été choisis pour leur parcours mais aussi pour leurs besoins auxquels nous allons tenter de répondre : structure admi- nistrative, besoin de répétitions ou de coaching, soutien à l’enregistrement...
+                                        {% elseif loop.index0 == 3 %}
+                                            Le pass Culture accompagne les jeunes de moins de 18 ans au quotidien en leur offrant un plus grand accès à la culture à travers une part collective, à partir de la classe de 4e et une part individuelle, à partir de 15 ans.
+                                        {% endif %}
+
+                                    </p>
+                                </div>
                             </div>
 
-                            <!-- Bouton Lien vers l'article -->
-                            <a class="btn border">LIRE LA SUITE</a>
-
-
-                            <!-- Potentiel lien Billetterie -->
+                            <!-- Boutons LIRE LA SUITE et lien Billetterie -->
+                            <div class="card-actions d-flex align-items-end">
+                                <button class="btn border rounded-0 border-dark fs-3" style="height: 60px">LIRE LA SUITE</button>
+                                <a href="https://billetterie.lalune.net/">
+                                    <img src="{{ asset(('assets/maquette/BILLETTERIE.png')) }}" alt="...">
+                                </a>
+                            </div>
                         </div>
+
                     </div>
+
                 {% endfor %}
             </div>
         </div>

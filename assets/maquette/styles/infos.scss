@@ -1,0 +1,17 @@
+.menu {
+  display: flex;
+}
+
+.menu-item {
+  cursor: pointer;
+  padding: 10px;
+  background-color: lightgray;
+}
+
+.content {
+  margin-left: 20px;
+}
+
+.hidden {
+  display: none;
+}
