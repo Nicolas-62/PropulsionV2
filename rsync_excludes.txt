@@ -7,7 +7,9 @@
 # assets utilisateur
 public/assets/
 public/build/
+public/bundles/
 vendor/
+node_modules/
 
 # Autres
 .git/
