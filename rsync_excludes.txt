@@ -1,0 +1,18 @@
+# fichiers/dossiers à ignorer lors de la synchronisation entre le dépôt git (/var/DATA/repos/<NOM_PROJET>)
+# et le site accessible (/var/www/sites/<NOM_PROJET>)
+
+# fichier gabarit contenant les variables d'environnement
+.env.*
+
+# assets utilisateur
+public/assets/
+public/build/
+vendor/
+
+# Autres
+.git/
+.gitignore
+.run/
+docker*
+schema.sql
+rsync_excludes.txt
