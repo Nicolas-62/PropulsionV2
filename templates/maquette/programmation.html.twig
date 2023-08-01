@@ -1,0 +1,453 @@
+{% extends 'maquette/layout.html.twig' %}
+
+{% block stylesheets %}
+    <style>
+        .container-big {
+            padding: 80px;
+        }
+
+
+    </style>
+{% endblock %}
+
+{% block body %}
+    <!-- IMAGE DU HAUT -->
+    <div class="row shadow-lg">
+        <div class="col-lg-8 col-md-12 p-0" style="z-index: 500">
+            <img  src="assets/maquette/GISCARD_GRAND.png" class="w-100">
+        </div>
+        <!-- BILLETTERIE AU DESSUS DE L'IMAGE -->
+        <div class="col-lg-4 col-md-12" style="z-index: 600">
+
+            <div class="col-12">
+                <div class="row text-center h3">
+                    <div class="col-3" style="background-color: #fa5faa; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px; color: white">CONCERT</div>
+                    <div class="col-9 text-uppercase white justify-content-start" style="background-color: black;min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px"><img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('assets/maquette/MINI_BILLETTERIE.svg')) }}">POP FRANçAISE</div>
+                </div>
+            </div>
+            <div class="container-big" >
+                <!-- Titre -->
+                <div class="lh-1">
+                    <p class="big-title mb-0">MR. GISCARD</p>
+                    <p class="big-subtitle mt-0">+Citron Sucré</p>
+                </div>
+
+                <!-- Date -->
+                <div style="padding-bottom: 30px; padding-top: 30px">
+                    <p style="font-size: 70px; font-weight: bold" class="mb-0">
+                        JEU. 11 MAI 2023
+                    </p>
+                    <p style="font-size: 60px" class="mt-0">
+                        20:30
+                    </p>
+                </div>
+
+                <!-- Tarifs -->
+
+
+                <!-- Bouton ajout panier -->
+                <div class="py-5">
+                    <div class="row  h3">
+                        <div class="col-6">
+                            <p>Tarif normal</p>
+                            <div class="row">
+                                <div class="col-6" style="padding-right: 0px; ">
+                                    <div class="border border-1 border-dark p-2 w-100" style="background-color: #e6e6e6">12 €</div>
+                                </div>
+                                <div class="col-6" style="padding-left: 0px">
+                                    <select class="w-100 p-1">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <p>Tarif abonné</p>
+                            <div class="row">
+                                <div class="col-6" style="padding-right: 0px;">
+                                    <div class="border border-1 border-dark p-2 w-100" style="background-color: #e6e6e6">12 €</div>
+                                </div>
+                                <div class="col-6" style="padding-left: 0px">
+                                    <select class="w-100 p-1">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <button class="btn border border-3 rounded-0 border-dark fw-bold px-4">AJOUTER AU PANIER</button>
+                </div>
+                <!-- Cartes Lunes -->
+                <div class="row">
+                    <div class="col-6">
+                        <img class="" style="width: 150px" src="{{ asset('assets/maquette/LUNE_ABONNE.svg') }}">
+                        <p class="h3">
+                            Profitez du tarif abonné<br>
+                            <b>
+                                avec la carte lune
+                            </b>
+                        </p>
+                    </div>
+                    <div class="col-6">
+                        <img style="width: 150px" src="{{ asset('assets/maquette/LUNE_PASS_CULTURE.svg') }}">
+                        <p class="h3">
+                            Tu as entre 15 et 18 ans ?<br>
+                            <b>
+                                Dispo sur le Pass Culture
+                            </b>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <div class="p-5">
+        <div class="row">
+            <div class="col-lg-8 col-md-12">
+                <!-- NOM GROUPE / STYLE / HORAIRE -->
+                <div class="row py-5 align-items-end">
+                    <div class="col-lg-6 col-md-12">
+                        <h1 class="big-title">MR.GISCARD</h1>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <h1>POP Française | Fr</h1>
+                    </div>
+                    <div class="col-lg-2 col-md-6 d-flex justify-content-end">
+                        <h1 style="font-size: 60px">20:30</h1>
+                    </div>
+                </div>
+
+                <!-- RESUME ARTISTE -->
+                <p class="h2 py-3 lh-lg">
+                    Monsieur Giscard, contrairement à son illustre roi républicain, a de quoi tenir ses promesses avec ce pre- mier programme musical de cinq titres qui pourrait bien provoquer une révolution de velours dans le monde de la chanson française. L’art du décalage est partout chez ce jeune homme de 28 ans, ultra séduisant par sa nonchalance masculine et sa candeur virile.
+                </p>
+
+                <!-- IMAGE ARTISTE -->
+                <img class="img-fluid py-3" src="{{ asset(('assets/maquette/GISCARD_GUITARE.jpg')) }}">
+
+                <!-- DESCRIPTION ARTISTE -->
+                <p class="h3 py-5 lh-lg">
+                    Un titre d’album en forme d’émoji palindrome. Une première, à notre connaissance, parfaitement adapté avec le contenu singulier de ce premier essai doux-amer. A la manœuvre un chanteur à la fin de sa vingtaine, repéré ici même il y a plus d’un an. On retrouve d’ailleurs les titres savoureux de cet EP initial comme Pho ou Sans sentiments qui nous avait donné alors envie de placer ce Giscard à la barre. Confirmation donc d’un talent hors norme. Notamment parce qu’il ne pratique pas le rap. Ce qui pour un jeune homme de sa généra- tion est plutôt une étrangeté, même s’il avoue en écouter beaucoup. Ce qui explique avec son phrasé dégin- gandé et langoureux, tel un Barry White de notre époque, plus O’Tacos que Chez Maxim’s, son goût pour lâcher de multiples punchlines bien senties, dont beaucoup tournent autour de son zizi («Oh je n’ai pas très envie de rester avec toi, mais si tu veux suce moi») et d’une vie sentimentale agitée dans le sens des départs («C’est pas contre toi mais je me préfère m’en aller, je sais pas pourquoi je préfère les filles d’à côté même quand elles sont moins fraîches que toi»).
+                </p>
+
+                <!-- VIDEO ARTISTE -->
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item w-100" style="height: 860px;" src="https://www.youtube.com/embed/koVfh6OijJw" allowfullscreen></iframe>
+                </div>
+
+                <!-- PLUS D'INFOS SUR L'ARTISTE -->
+                <div class="row py-5">
+                    <div class="col-lg-6 offset-lg-6 col-md-12">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-12 d-flex align-items-end">
+                                <h2>Plus d'infos sur l'artiste</h2>
+
+                            </div>
+                            <div class="col-lg-6 col-md-12">
+                                <!-- MEDIAS SOCIAUX -->
+                                <div class="row">
+                                    <div class="col-3">
+                                        <a href=""><img src="{{ asset('assets/maquette/INSTA_PROGRAMMATION.svg') }}"></a>
+                                    </div>
+                                    <div class="col-3">
+                                        <a href=""><img src="{{ asset('assets/maquette/TWITTER_PROGRAMMATION.svg') }}"></a>
+                                    </div>
+                                    <div class="col-3">
+                                        <a href=""><img src="{{ asset('assets/maquette/FACEBOOK_PROGRAMMATION.svg') }}"></a>
+                                    </div>
+                                    <div class="col-3">
+                                        <a href=""><img src="{{ asset('assets/maquette/INTERNET_PROGRAMMATION.svg') }}"></a>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12 d-flex align-content-end flex-wrap">
+
+                <div class="p-5">
+                    <!-- CARTE LUNE -->
+                    <div class="py-5">
+                        <img src="{{ asset('assets/maquette/CARTE_LUNE_BAS.svg') }}">
+                        <p class="h3">
+                            Concerts Gratuits Abonnés & Réductions
+                        </p>
+                        <p class="h3">
+                           <b> Abonnez-vous !</b>
+                        </p>
+                    </div>
+                    <div class="py-5 h3">
+                        <p>
+                            Tu as entre 15 et 18ans ?
+                        </p>
+                        <p>
+                            <b>Dispo sur le Pass Culture</b>
+                        </p>
+
+                        <img src="{{ asset('assets/maquette/PASS_CULTURE_BIG.svg') }}">
+                    </div>
+                    <div class="py-5">
+
+                        <img src="{{ asset('assets/maquette/INFOS_PRATIQUES.svg') }}">
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+
+
+
+
+
+        </div>
+
+
+
+
+    </div>
+
+
+    <!-- CITRON SUCRE -->
+    <div class="bg-grey">
+        <div class="p-5">
+            <div class="row">
+
+                <div class="col-lg-8 col-md-12">
+
+                    <!-- NOM GROUPE / STYLE / HORAIRE -->
+                    <div class="row py-5 align-items-end">
+                        <div class="col-lg-6 col-md-12">
+                            <h1 class="big-title">Citron Sucré</h1>
+                        </div>
+                        <div class="col-lg-4 col-md-8"  >
+                            <h1>Electro punk | Fr/Ukr</h1>
+                        </div>
+                        <div class="col-lg-2 col-md-4 d-flex justify-content-end">
+                            <h1 style="font-size: 60px">22:00</h1>
+                        </div>
+                    </div>
+
+                    <!-- DESCRIPTION ARTISTE -->
+                    <p class="h2 lh-lg">
+                        Citron Sucré c’est de l’electroclash aussi sombre que lumineuse, aussi « sour » que « sweet ». Chanteuse et musicienne russo-ukrainienne elle livre des performances chaotiques et habitées en jouant de l’electro punk fluo à la fois enragée et fragile.
+                    </p>
+
+
+                    <!-- Image Artiste -->
+                    <img class="w-100 py-5" src="{{ asset('assets/maquette/CITRON.png') }}">
+
+                    <!-- VIDEO ARTISTE -->
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item w-100" style="height: 860px" src="https://www.youtube.com/embed/rJdKOZyo3j0" allowfullscreen></iframe>
+                    </div>
+
+                    <!-- PLUS D'INFOS SUR L'ARTISTE -->
+                    <div class="row">
+                        <div class="col-lg-6 offset-lg-6 col-md-12 py-5">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-12 d-flex align-items-end">
+                                    <h2>Plus d'infos sur l'artiste</h2>
+
+                                </div>
+                                <div class="col-lg-6 col-md-12">
+                                    <!-- MEDIAS SOCIAUX -->
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <a href=""><img src="{{ asset('assets/maquette/INSTA_PROGRAMMATION.svg') }}"></a>
+                                        </div>
+                                        <div class="col-3">
+                                            <a href=""><img src="{{ asset('assets/maquette/TWITTER_PROGRAMMATION.svg') }}"></a>
+                                        </div>
+                                        <div class="col-3">
+                                            <a href=""><img src="{{ asset('assets/maquette/FACEBOOK_PROGRAMMATION.svg') }}"></a>
+                                        </div>
+                                        <div class="col-3">
+                                            <a href=""><img src="{{ asset('assets/maquette/INTERNET_PROGRAMMATION.svg') }}"></a>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 d-flex align-content-end flex-wrap">
+
+                    <div class="p-5">
+                        <div class="py-5" style="width: 500px">
+
+                            <img src="{{ asset('assets/maquette/INFOS_PRATIQUES.svg') }}">
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- A DECOUVRIR -->
+
+    <div class="container-big">
+        <h1 class="pb-5">
+            à découvrir >> >> >>
+        </h1>
+
+        <div class="row">
+            {% for event in events_agenda.elements %}
+
+                {% if loop.index0 > 0 and loop.index0 < 4 %}
+
+
+
+
+                    <div class="col-lg-4 col-md-12 px-0">
+                        <!-- Card-Actu -->
+                        <div class="card mb-3 mx-4 shadow-lg rounded-0 h-100 ">
+
+                            {% if loop.index0 == 1 %}
+                                <img src="{{ asset(('assets/maquette/GWENDOLINE.png')) }}" class="card-img-top rounded-0" alt="...">
+                            {% elseif loop.index0 == 2 %}
+                                <img src="{{ asset(('assets/maquette/MALN.png')) }}" class="card-img-top rounded-0" alt="...">
+                            {% elseif loop.index0 == 3 %}
+                                <img src="{{ asset(('assets/maquette/SILLYBOYBLUE.png')) }}" class="card-img-top rounded-0" alt="...">
+                            {% endif %}
+                            <div class=" pt-0">
+                                <!-- Themes -->
+                                <div class="row mx-0 px-0">
+                                    {% if loop.index0 == 1  %}
+                                        <div class="col-3 white"  style="background-color: #fa5faa; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px">
+                                            CONCERT
+                                        </div>
+                                        <div class="col-9 white justify-content-start"  style="background-color: black; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px">
+                                            <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('assets/maquette/MINI_BILLETTERIE.svg')) }}">SHLAG WAVE SOMBRE | INDIE POST-PUNK
+                                        </div>
+
+                                    {% elseif loop.index0 == 2  %}
+                                        <div class="col-3"  style="background-color: #2b0972; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px; color: #fa5faa">
+                                            FESTIVAL
+                                        </div>
+                                        <div class="col-9 white justify-content-start"  style="background-color: black; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px">
+                                            <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('assets/maquette/MINI_BILLETTERIE.svg')) }}">MINUIT AVANT LA NUIT #4
+                                        </div>
+
+                                    {% elseif loop.index0 == 3  %}
+                                        <div class="col-3 white"  style="background-color: #fa5faa; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px">
+                                            CONCERT
+                                        </div>
+                                        <div class="col-9 white justify-content-start"  style="background-color: black; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px">
+                                            <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('assets/maquette/MINI_BILLETTERIE.svg')) }}">POP
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="container">
+                                    <!-- ARTISTE -->
+
+                                    <h5 class="card-title my-3" style="font-size: 34px; font-weight: bold">{{ event.element.title }}</h5>
+
+                                    <!-- seconde partie -->
+                                    <p class="card-text">
+
+                                    </p>
+
+
+                                    <div class="row">
+                                        <!-- DATE CONCERT ET HEURE -->
+                                        <div class="col-9 d-flex align-content-end">
+
+                                            {% if loop.index0 == 1 %}
+                                                <div class="d-flex align-items-end" style="min-height: 200px">
+                                                    <div>
+                                                        <p style="font-size: 29px;font-weight: bold">MER. 17 MAI 2023</p>
+                                                        <div class="d-inline-flex ">
+
+                                                            <p style="font-size: 31px;font-weight: bold">20:30</p>
+                                                            <a href="https://billetterie.lalune.net/">
+                                                                <img src="{{ asset(('assets/maquette/BILLETTERIE.png')) }}" class="card-img-top rounded-0" alt="...">
+                                                            </a>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                            {% elseif loop.index0 == 2 %}
+
+                                                <div class="d-flex align-items-end" style="min-height: 200px">
+                                                    <div>
+                                                        <div class="d-inline-flex ">
+
+                                                            <p style="font-size: 29px;font-weight: bold">DU JEU. 08 AU DIM. 11 JUIN</p>
+                                                            <a href="https://billetterie.lalune.net/">
+                                                                <img src="{{ asset(('assets/maquette/BILLETTERIE.png')) }}" class="card-img-top rounded-0" alt="...">
+                                                            </a>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                            {% elseif loop.index0 == 3 %}
+
+                                                <div class="d-flex align-items-end" style="min-height: 200px">
+                                                    <div>
+                                                        <p style="font-size: 29px;font-weight: bold">MER. 11 OCT.</p>
+                                                        <div class="d-inline-flex ">
+
+                                                            <p style="font-size: 31px;font-weight: bold">20:30</p>
+                                                            <a href="https://billetterie.lalune.net/">
+                                                                <img src="{{ asset(('assets/maquette/BILLETTERIE.png')) }}" class="card-img-top rounded-0" alt="...">
+                                                            </a>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- Potentiel lien Billetterie -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+    </div>
+
+
+
+
+{% endblock %}

@@ -1,1 +1,233 @@
 @import './bootstrap/bootstrap.css';
+
+body {
+  font-family: 'Akshar', sans-serif;
+}
+
+.menu {
+}
+
+.menu-item {
+  cursor: pointer;
+}
+
+.content {
+}
+
+.hidden {
+  display: none;
+}
+
+/* Container */
+.container-lg {
+}
+
+.card-container {
+  padding: 50px;
+}
+
+/* Police */
+.font-primary {
+  font-family: 'Akshar', sans-serif;
+}
+
+.font-primary-light {
+  font-family: 'Akshar', sans-serif;
+  font-weight: 300;
+}
+
+/* Taille de texte */
+
+.big-title{
+  font-size: 120px;
+  font-weight: bold;
+}
+
+.big-subtitle{
+  font-size: 90px;
+}
+
+.big-text-bold{
+  font-size: 55px;
+  font-weight: bold;
+}
+
+.big-text{
+  font-size: 55px;
+}
+
+.text-theme {
+  font-size: 25px;
+}
+
+
+/* Couleur de fond */
+
+  .bg-grey {
+    background-color:#EDEDED;
+  }
+
+  .bg-footer {
+    background-color: #FF5D5D;
+  }
+
+  .bg-pink {
+    background-color: #fa5faa;
+  }
+
+  .bg-blue {
+    background-color: #09b2FF;
+  }
+
+  .bg-green {
+    background-color: #68ff85;
+  }
+
+  .bg-orange {
+    background-color: #fe513a;
+  }
+
+  .bg-yellow {
+    background-color: #ffb24b;
+  }
+
+  .bg-red {
+    background-color: #ea1e79;
+  }
+
+/* Couleur de texte */
+
+  .black {
+    color: black;
+  }
+
+  .white {
+    color: white;
+  }
+
+  .blue-title {
+    color: #08afff;
+  }
+
+  .color-primary {
+      color: #FF5D5D;
+  }
+
+/* Custom Select *
+
+  /* The container must be positioned relative: */
+  .custom-select {
+    position: relative;
+    text-transform: uppercase;
+    font-weight: bold;
+    bottom: 25px;
+  }
+
+  .custom-select select {
+    display: none; /*hide original SELECT element: */
+  }
+
+  .select-selected {
+    background-color: white;
+  }
+
+  /* Style the arrow inside the select element: */
+  .select-selected:after {
+    position: absolute;
+    content: "";
+    top: 14px;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: #fff transparent transparent transparent;
+  }
+
+  /* Point the arrow upwards when the select box is open (active): */
+  .select-selected.select-arrow-active:after {
+    border-color: transparent transparent #fff transparent;
+    top: 7px;
+  }
+
+  /* style the items (options), including the selected item: */
+  .select-items div,.select-selected {
+    font-size: 30px;
+    color: #000000;
+    padding: 8px 16px;
+    border: 0.5px solid black;
+    cursor: pointer;
+  }
+
+  /* Style items (options): */
+  .select-items {
+    position: absolute;
+    background-color: white;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+  }
+
+  /* Hide the items when the select box is closed: */
+  .select-hide {
+    display: none;
+  }
+
+  .select-items div:hover, .same-as-selected {
+    background-color: #09b2FF;
+    color: white;
+  }
+
+
+
+/* Event Annulé */
+.cancelled-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 0, 0, 0.5); /* Couleur rouge avec 50% d'opacité */
+  display: flex;
+  justify-content: center;
+}
+
+.cancelled-text {
+  position: relative;
+  font-size: 78px;
+  font-weight: bold;
+  color: white;
+  top: 200px;
+}
+
+/* Thème */
+.theme-1 {
+  background-color: #FF5D5D;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: white;
+}
+
+.theme-2 {
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  font-size: 22px;
+  color: white;
+}
+
+/* Icône */
+.tiny-icon {
+  width: 30px;
+  padding-right: 5px;
+}
+
+/* Select */
+
+.select-infos {
+  min-height: 90px
+}

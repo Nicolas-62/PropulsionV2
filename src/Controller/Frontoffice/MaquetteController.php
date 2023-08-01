@@ -37,11 +37,38 @@ class MaquetteController extends AbstractController
         $this->medias = array('FOOTER_TEL' => '', 'FOOTER_INSTA' => 'https://www.instagram.com/lalunedespirates/?hl=fr','FOOTER_TWITTER' => 'https://twitter.com/i/flow/login?redirect_after_login=%2Flunedespirates', 'FOOTER_FACEBOOK' => 'https://www.facebook.com/lalunedespirates/?locale=fr_FR');
 
 
+        // Infos pratiques
+        $this->infos_menu = array();
+        $this->infos_menu = array('Nous contacter' => '', 'Comment venir' => '','Tarifs et Billetterie' => '', 'Questions Fréquentes' => '');
+
+        $this->infos_contact = array();
+        $this->infos_contact = array('JIHANE MILADI' => 'Présidente', 'FRANÇOIS PARMENTIER' => 'Production & Vie Associative','ANTOINE GRILLON' => 'Direction & Programmation', 'VINCENT RISBOURG' => 'Soutien aux artistes', 'SANDRINE DARLOT AYMONE MIHINDOU' => 'Administration
+','MARIE YACHKOURI' => 'Billetterie & Communication', 'MARTIN ROGGEMAN' => 'Régie Générale', 'KHALID MHANNAOUI' => 'Accueil','ANAÏS FRAPSAUCE MARINE SALVAT' => 'Projets Culturels & Publics', 'OLIVIER BIKS/BIBI' => 'Graphisme','JIMMY BOURBIER' => 'Communication', 'LUDO LELEU' => 'Photographe');
+
+
+        $this->equipe_tech = array();
+        $this->equipe_tech = array('Emmanuel Héreau', 'Gwennaelle Krier','Illan Lacoudre', 'Jean Maillart', 'Benoit Moritz', 'Grégory Vanheulle', 'Alexandre Verger');
+
+        $this->benevoles = array();
+        $this->benevoles = array('Alexandra', 'Antoine','Arsène', 'Beniamin', 'Bertille', 'Côme', 'Déborah', 'Elena','Elisa', 'Ewan', 'Fanny', 'Francesca', 'Gaëtan', 'Giacomo','Jules Judith', 'Laurent', 'Lisa', 'Lorea', 'Lucile', 'Manon A','Manon P', 'Marine', 'Nahelou', 'Nicolas', 'Perrine', 'Rodolphe','Romain D', 'Romain M', 'Simon', 'Valère', 'Zoé');
+
+        $this->themes_agenda = array();
+        $this->themes_agenda = array('ATELIERS', 'CONCERTS','JEUNE PUBLIC', 'SOUTIEN AUX ARTISTES');
+
+        $this->themes_actu = array();
+        $this->themes_actu = array('LA LUNE DES PIRATES', 'CONCERTS','ACTION CULTURELLE','JEUNE PUBLIC', 'SOUTIEN AUX ARTISTES');
+
+
     }
 
     #[Route('/maquette', name: 'maquette')]
     public function index(): Response
     {
+
+        $events_agenda   = $this->entityManager->getRepository(Category::class)->getGenealogy(10, $this->getParameter('locale'));
+        $events_homepage = $this->entityManager->getRepository(Category::class)->getGenealogy(15, $this->getParameter('locale'));
+
+
         return $this->render('maquette/index.html.twig', [
             'controller_name' => 'MaquetteController',
             'page_title' => 'Maquette',
@@ -50,6 +77,8 @@ class MaquetteController extends AbstractController
             'mentions' => $this->mentions,
             'btns_footer' => $this->btns_footer,
             'medias' => $this->medias,
+            'events_agenda' => $events_agenda,
+            'events_homepage' => $events_homepage,
         ]);
     }
 
@@ -58,6 +87,7 @@ class MaquetteController extends AbstractController
     {
 
         $events_agenda = $this->entityManager->getRepository(Category::class)->getGenealogy(10, $this->getParameter('locale'));
+        $themes_agenda = $this->themes_agenda;
 
 
         return $this->render('maquette/agenda.html.twig', [
@@ -69,6 +99,7 @@ class MaquetteController extends AbstractController
             'btns_footer' => $this->btns_footer,
             'medias' => $this->medias,
             'events_agenda' => $events_agenda,
+            'themes_agenda' => $themes_agenda,
         ]);
     }
 
@@ -77,8 +108,9 @@ class MaquetteController extends AbstractController
     {
 
         $actu_childs = $this->entityManager->getRepository(Category::class)->getGenealogy(8, $this->getParameter('locale'));
-
         $actu_info = $this->entityManager->getRepository(Article::class)->findBy(['title' => 'Actu Infos']);
+
+        $themes_actu = $this->themes_actu;
 
 
 
@@ -93,12 +125,17 @@ class MaquetteController extends AbstractController
             'medias' => $this->medias,
             'actu_childs' => $actu_childs,
             'actu_info' => $actu_info,
+            'themes_actu' => $themes_actu,
         ]);
     }
 
     #[Route('/actions', name: 'actions')]
     public function pepiniere(): Response
     {
+
+
+        $actu_childs = $this->entityManager->getRepository(Category::class)->getGenealogy(16, $this->getParameter('locale'));
+
         return $this->render('maquette/actions.html.twig', [
             'controller_name' => 'MaquetteController',
             'page_title' => 'Action Culturelle',
@@ -107,6 +144,7 @@ class MaquetteController extends AbstractController
             'mentions' => $this->mentions,
             'btns_footer' => $this->btns_footer,
             'medias' => $this->medias,
+            'actu_childs' => $actu_childs,
         ]);
     }
 
@@ -163,6 +201,24 @@ class MaquetteController extends AbstractController
     #[Route('/infospratiques', name: 'infospratiques')]
     public function infospratiques(): Response
     {
+
+        $transports = array();
+        $transports = ['EN TRAIN' => "La gare se trouve à 15 minutes à pied de l'entrée des salles !
+        Avec son positionnement géographique central, Amiens se trouve à 40 minutes d'Arras, 1h05 de Paris, 1h20 de Lille, 1h25 de Rouen, 2h20 de Reims, ou encore à 3h de Bruxelles.", 'EN VOITURE' => "Amiens est au carrefour de grands axes de circulation de niveau européen : A16, A29 et à proximité des autoroutes A1 A2, A26 et A28.
+        Par la voiture également, vous arriverez rapidement aux salles de concerts : 40 minutes depuis Abbeville, 50 minutes depuis Beauvais, 1h20 d'Arras, 1h20 depuis Rouen, 1h30 de Paris et de Lille.", 'PARKING' => "À Amiens, le stationnement est payant dans les rues du centre-ville de 9h à 12h30 et de 14h à 17h30 (gratuité du dimanche au lundi à 14h), et dans les zones résiden- tielles de 9h à 12h30 et de 14h à 19h (gratuité du dimanche au lundi à 14h).
+        Pour mieux préparer votre venue, consultez la carte interactive du stationnement à Amiens.
+        Quitte à prendre la voiture, pensez à l'option covoiturage !
+        Proposez votre trajet ou cherchez-en un sur le site de notre partenaire Mobicoop.", 'À VÉLO' => "Préférez la mobilité douce ! Il est si agréable de se déplacer à vélo à Amiens...
+        Vous n'avez pas de vélo ?
+        Louez-en un avec le service Buscylette ou les Vélam en libre service.
+        Enfin, profitez-en pour faire une belle balade autour du Patrimoine, des Hortillon- nages ou de la nature environnante !", 'EN TRANSPORT EN COMMUN' => "Profitez du réseau de bus Ametis de la ville (en plus, le samedi, les bus sont gra- tuits !), ou encore de leur service de location de vélo !
+        Arrêt de bus à proximité immédiate de l'entrée des salles : Citadelle Montrescu, lignes désservies : N2, N3, 11 et L."];
+
+        $transports_medias = array();
+        $transports_medias = ['TRAIN', 'VOITURE', 'PARKING', 'VELO', 'BUS'];
+
+
+
         return $this->render('maquette/infospratiques.html.twig', [
             'controller_name' => 'MaquetteController',
             'page_title' => 'Infos Pratiques',
@@ -171,6 +227,13 @@ class MaquetteController extends AbstractController
             'mentions' => $this->mentions,
             'btns_footer' => $this->btns_footer,
             'medias' => $this->medias,
+            'infos_menu' => $this->infos_menu,
+            'infos_contact' => $this->infos_contact,
+            'equipe_tech' => $this->equipe_tech,
+            'benevoles' => $this->benevoles,
+            'transports' => $transports,
+            'transports_medias' => $transports_medias,
+            'active_entry' => 'entry1',
         ]);
     }
 
@@ -293,5 +356,23 @@ class MaquetteController extends AbstractController
         ]);
     }
 
+
+    #[Route('/maquetteprogrammation', name: 'programmation')]
+    public function programmation(): Response
+    {
+
+        $events_agenda = $this->entityManager->getRepository(Category::class)->getGenealogy(10, $this->getParameter('locale'));
+        return $this->render('maquette/programmation.html.twig', [
+            'controller_name' => 'MaquetteController',
+            'page_title' => 'Espace presse',
+            'data' => $this->data,
+            'btns' => $this->btns,
+            'mentions' => $this->mentions,
+            'btns_footer' => $this->btns_footer,
+            'medias' => $this->medias,
+            'events_agenda' => $events_agenda,
+
+        ]);
+    }
 
 }

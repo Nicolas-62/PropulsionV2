@@ -1,1 +1,678 @@
 {% extends 'maquette/layout.html.twig' %}
+
+    {% block stylesheets %}
+        {{ encore_entry_script_tags('maquette_infos_css') }}
+        <style>.menu-item.active {
+                position: relative;
+            }
+
+            .menu-item.active::before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: -60px; /* Ajustez cette valeur selon vos besoins */
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background-color: #09b2FF;
+                transform: translate(0, -50%);
+            }
+
+
+
+        </style>
+    {% endblock %}
+{% block javascripts %}
+    <script>
+        let activeFooter = null;
+
+        function showContent(entry, footer) {
+            // Cacher tous les contenus
+            let contentDivs = document.getElementsByClassName('content')[0].children;
+            for (let i = 0; i < contentDivs.length; i++) {
+                contentDivs[i].classList.add('hidden');
+            }
+
+            // Cacher le footer actuellement actif
+            if (activeFooter) {
+                activeFooter.classList.add('hidden');
+            }
+
+            // Afficher le contenu correspondant à l'entrée sélectionnée
+            let selectedContent = document.getElementById(entry);
+            selectedContent.classList.remove('hidden');
+
+            // Afficher le footer correspondant à l'entrée sélectionnée
+            let selectedFooter = document.getElementById(footer);
+            selectedFooter.classList.remove('hidden');
+
+            // Mettre à jour le footer actif
+            activeFooter = selectedFooter;
+
+
+
+            // Move the blue dot to the selected menu item
+            const menuItems = document.getElementsByClassName('menu-item');
+            for (let i = 0; i < menuItems.length; i++) {
+                menuItems[i].classList.remove('active');
+                const blueDot = document.getElementById('blue-dot' + i);
+                console.log(blueDot);
+                blueDot.style.visibility = 'hidden'; // Hide all blue dots first
+            }
+
+            const selectedMenuItem = document.querySelector('.menu-item[data-entry="' + entry + '"]');
+            selectedMenuItem.classList.add('active');
+            const selectedBlueDot = document.getElementById('blue-dot' + selectedMenuItem.dataset.index);
+        }
+
+        // On page load, show "footer0" as the active footer
+        document.addEventListener("DOMContentLoaded", function () {
+            showContent('entry1', 'footer0');
+        });
+    </script>
+{% endblock %}
+{% block body %}
+
+    <div class="p-5">
+        <div class="row">
+            <div class="col-lg-3 col-md-12 p-5 menu">
+                <div class="row">
+                    <div class="col-10">
+                        {% for info_menu, link in infos_menu %}
+                            <div class="h1 py-3 menu-item {% if active_entry == 'entry' ~ loop.index %}active{% endif %}" data-entry="entry{{ loop.index }}" onclick="showContent('entry{{ loop.index }}', 'footer{{ loop.index0 }}')">
+                                {{ info_menu | upper}}
+                            </div>
+                            <div id="blue-dot{{ loop.index0 }}" class="blue-dot"></div>
+                        {% endfor %}
+                    </div>
+                    <div class="col-2">
+                        <img src="{{ asset(('assets/maquette/SOUTIENS_MENU.png')) }}" class="">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenu -->
+            <!-- TODO Dynamiser tout cela -->
+            <!--  NOUS CONTACTER -->
+            <div class="content col-9">
+                <div id="entry1" class="py-5 px-5" >
+                    <div class="row">
+                        <div class="col-2">
+                            <img src="{{ asset(('assets/maquette/arrow_contact.png')) }}" class="">
+
+                        </div>
+                        <div class="col-3 h3 pb-5">
+
+                            <p>
+                                Accueil & Bureaux
+                            </p>
+                            <p>
+                                5/1 passage Bélu - 80000 AMIENS
+                            </p>
+                            <p>
+                                Contact : 03 22 97 88 01
+                            </p>
+                            <p>
+                                contact@lalune.net
+                            </p>
+                        </div>
+                    </div>
+
+                    <h1>HORAIRES</h1>
+
+                    <p class="h3 pt-3 pb-5">Ouverture des bureaux du mardi au vendredi de 14h à 18h</p>
+
+                    <h1 class="">NOUS ECRIRE</h1>
+
+                    <!-- Formulaire -->
+                    <form class="h4">
+                        <div class="form-group py-2">
+                            <label class="pb-2" for="exampleFormControlSelect1">Sujet (obligatoire)</label>
+                            <select class="form-control rounded-0 border-secondary fs-2 select-infos" id="exampleFormControlSelect1">
+                                <option>Sélectionner ...</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+                        </div>
+                        <div class="form-group py-4">
+                            <label class="pb-2" for="mailInput">Votre email (obligatoire)</label>
+                            <input type="email" class="form-control rounded-0 border-secondary select-infos" id="mailInput" aria-describedby="emailHelp">
+                        </div>
+                        <div class="form-group py-4">
+                            <label class="pb-2" for="nomInput">Votre nom (obligatoire)</label>
+                            <input type="text" class="form-control rounded-0 border-secondary select-infos" id="nomInput">
+                        </div>
+                        <div class="form-group py-4">
+                            <label class="pb-2" for="messageInput">Votre message (obligatoire)</label>
+                            <textarea class="form-control  rounded-0 border-secondary" style="min-height: 348px" id="messageInput" rows="3"></textarea>
+                        </div>
+                        <!-- Checkbox -->
+                        <div class="form-check py-4">
+                            <input class="form-check-input  rounded-0 border-secondary" type="checkbox" value="" id="newsCheck">
+                            <label class="pb-2" class="form-check-label" for="newsCheck">
+                                Je souhaite recevoir la Newsletter de La Lune
+                            </label>
+                        </div>
+                        <!-- Submit -->
+                        <div class="py-4">
+                            <button type="submit" class="btn border border-secondary rounded-0 p-3 fs-3"><div class="p-2">ENVOYER</div></button>
+                        </div>
+                        <p>
+                            En cliquant sur "Envoyer", vous acceptez de fournir les informations permettant qu'une réponse vous soit délivrée et que votre demande soit traitée. En indiquant votre adresse email, et en cochant la ou les cases associées, vous consentez à recevoir nos lettres d'information par voie électronique. Vous pouvez vous désinscrire à tout moment via les liens de désinscription ou en nous contactant.
+
+                        </p>
+                        <p>Pour en savoir plus, consultez notre Politique de confidentialité.</p>
+
+                    </form>
+
+                </div>
+
+
+
+                <!-- COMMENT VENIR -->
+                <div id="entry2"  class="py-5 px-5 hidden">
+
+                    <div class="row">
+                        <div class="col-2">
+
+
+                            <img src="{{ asset(('assets/maquette/point_venir.png')) }}" class="">
+                        </div>
+                        <div class="col-3 h3">
+
+                            <p>
+                                Scène de Musiques Actuelles
+                            </p>
+                            <p>
+                                17 quai Bélu - 80000 AMIENS
+                            </p>
+                            <p>
+                                Contact : 03 22 97 88 01
+                            </p>
+                            <p>
+                                contact@lalune.net
+                            </p>
+                        </div>
+                    </div>
+
+                    <h1>INFOS</h1>
+                    <p class="h3 py-2">
+                        Les horaires indiqués sur le programme et le site sont ceux de l'ouverture des portes. Début des concerts à 21h (sauf cas particuliers).
+                    </p>
+
+                    <p class="h3 py-4">
+                        Tous les concerts sont en placement libre assis et debout.
+                    </p>
+                    <p class="h3 py-4">
+                        L'accès à la salle lors des concerts en entrée libre se fait dans la limite des places disponibles.
+                    </p>
+                    <p class="h3 py-2">
+                        La Lune des Pirates est accessible aux personnes à mobilité réduite, merci de nous prévenir de votre venue par mail ou téléphone.
+                    </p>
+                    <p class="h3 py-2">
+                        Des bouchons d'oreilles sont disponibles qratuitement au bar ainsi que des casques adaptés aux enfants (en échange d'une pièce d'identité).
+                    </p>
+
+
+
+
+                </div>
+
+                <!-- TARIFS ET BILLETTERIE -->
+
+                <div id="entry3" class="py-5 px-5 hidden ">
+
+                    <div class="row pb-5">
+                        <div class="col-2">
+
+                            <img src="{{ asset(('assets/maquette/la_lune_infos.png')) }}" class="">
+
+                        </div>
+                        <div class="col-3 fs-3">
+
+                            <p>
+                                Scène de Musiques Actuelles
+                            </p>
+                            <p>
+                                17 quai Bélu - 80000 AMIENS
+                            </p>
+                            <p>
+                                Contact : 03 22 97 88 01
+                            </p>
+                            <p>
+                                contact@lalune.net
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h1 class="py-5">POINT ACCUEIL BILLETTERIE & EN LIGNE SANS FRAIS DE LOCATION</h1>
+                        <div class="row">
+                            <div class="col-2">
+
+                                <img src="{{ asset(('assets/maquette/bureaux_infos.png')) }}" class="">
+                            </div>
+                            <div class="col-3 fs-3">
+                                <p>
+                                    5/1 passage Bélu - 80000 AMIENS
+                                </p>
+                                <p>
+                                    Contact : 03 22 97 88 01
+                                </p>
+                                <p>
+                                    contact@lalune.net
+                                </p>
+
+                            </div>
+
+                        </div>
+                        <p class="h2 pt-2 pb-5">Le point accueil / billetterie est ouvert du mardi au vendredi de 14h à 18h</p>
+
+
+                        <h1 class="pt-5">TARIFS</h1>
+                        <p class="h2">Les tarifs sont indiqués pour chaque spectacle sur le site</p>
+
+
+                        <h1 class="pt-5">ABONNEMENT - LA CARTE LUNE - <b>10€</b></h1>
+                        <p class="h2">
+                            Valable 1 an de date à date : des économies dès votre deuxième concert !
+                        </p>
+
+                        <div class="row pt-4">
+                            <div class="col-5">
+
+                                <img src="{{ asset('assets/maquette/PLAY_LUNE.png') }}" class="">
+
+                            </div>
+
+                            <div class="col-7 h3">
+                                <p><b>> 3 concerts gratuits / an à La Lune des Pirates</b></p>
+                                <p>&nbsp; (chaque trimestre, un concert est labellisé « Gratuit abonné »)</p>
+                                <p><b>> 5 euros de réduction sur tous les concerts produits par et à La Lune des Pirates</b></p>
+                                <p><b>> Profitez de votre carte au cinéma</b></p>
+                                <p>&nbsp; Présentez votre Carte Lune au Ciné St-Leu et bénéficiez du tarif réduit de 6€ sur toutes les séances.</p>
+                                <p><b>> Profitez de votre carte dans les autres scènes de musiques actuelles de la région !</b></p>
+                                <p>&nbsp; Présentez votre Carte Lune à La Grange à Musique de Creil ou à Ouvre Boite Beauvais et bénéficiez du tarif abonné ou réduit sur tous les concerts proposés par les deux structures.</p>
+
+                            </div>
+                        </div>
+
+                        <p>Abonnez-vous à la billetterie les soirs de concerts ou à la billetterie de La Lune des Pirates ou en ligne en remplissant ce formulaire :</p>
+
+                        <h1>INFORMATIONS PERSONNELLES</h1>
+
+
+                        <!-- FORMULAIRE -->
+                        <form>
+                            <div class="row h3">
+                                <!-- Abonnement -->
+                                <div class="col-12 ">
+
+                                    <div class="form-group py-4">
+                                        <label for="exampleFormControlSelect1">Abonnement | Renouvellement (obligatoire)</label>
+                                        <select class="form-control rounded-0 border-secondary select-infos" id="exampleFormControlSelect1">
+                                            <option>Sélectionner ...</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="col-6">
+
+                                    <div class="form-group py-4">
+                                        <label for="nameInput">Nom (obligatoire)</label>
+                                        <input type="text" class="form-control rounded-0 border-secondary select-infos" id="nameInput">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+
+                                    <div class="form-group py-4">
+                                        <label for="lastnameInput">Prénom (obligatoire)</label>
+                                        <input type="text" class="form-control rounded-0 border-secondary select-infos" id="lastnameInput">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+
+                                    <div class="form-group py-4">
+                                        <label for="exampleFormControlSelect1">Genre (obligatoire)</label>
+                                        <select class="form-control rounded-0 border-secondary select-infos" id="exampleFormControlSelect1">
+                                            <option>Sélectionner ...</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+
+                                    <div class="form-group py-4">
+                                        <label for="exampleFormControlSelect1">Tarif (obligatoire)</label>
+                                        <select class="form-control rounded-0 border-secondary select-infos" id="exampleFormControlSelect1">
+                                            <option>Sélectionner ...</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+
+                                    <div class="form-group py-4">
+                                        <label for="dateInput">Date de naissance(obligatoire)</label>
+                                        <input type="date" class="form-control rounded-0 border-secondary select-infos" id="dateInput">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+
+                                    <div class="form-group py-4">
+                                        <label for="telInput">Téléphone (obligatoire)</label>
+                                        <input type="tel" class="form-control rounded-0 border-secondary select-infos" id="telInput" placeholder="XX XX XX XX XX">
+                                    </div>
+                                </div>
+
+                                <h1>COORDONNEES</h1>
+                                <div class="col-6">
+
+                                    <div class="form-group py-4">
+                                        <label for="lastnameInput">Adresse (obligatoire)</label>
+                                        <input type="text" class="form-control rounded-0 border-secondary select-infos" id="lastnameInput">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+
+                                    <div class="form-group py-4">
+                                        <label for="lastnameInput">Adresse 2 (obligatoire)</label>
+                                        <input type="text" class="form-control rounded-0 border-secondary select-infos" id="lastnameInput">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+
+                                    <div class="form-group py-4">
+                                        <label for="lastnameInput">Code Postal (obligatoire)</label>
+                                        <input type="text" class="form-control rounded-0 border-secondary select-infos" id="lastnameInput">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+
+                                    <div class="form-group py-4">
+                                        <label for="lastnameInput">Ville (obligatoire)</label>
+                                        <input type="text" class="form-control rounded-0 border-secondary select-infos" id="lastnameInput">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+
+
+                                    <div class="form-group py-4">
+                                        <label for="exampleFormControlSelect1">Pays (obligatoire)</label>
+                                        <select class="form-control rounded-0 border-secondary select-infos" id="exampleFormControlSelect1">
+                                            <option>Sélectionner ...</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- NEWSLETTER -->
+                                <div class="form-check py-4 px-1">
+                                    <input class="form-check-input  rounded-0 border-secondary" type="checkbox" value="" id="newsCheck">
+                                    <label class="form-check-label" for="newsCheck">
+                                        Je souhaite recevoir la Newsletter de La Lune
+                                    </label>
+                                </div>
+
+                                <!-- ENVOYER -->
+                                <button type="submit" class="btn border border-secondary rounded-0 py-1 fs-2">ENREGISTRER</button>
+
+                                <p class="pt-5">En cliquant sur "Enregistrer", vous acceptez de fournir les informations permettant de procéder à votre achat. En indiquant vos infor- mations personnelles, et en cochant la ou les cases associées, vous consentez à recevoir nos lettres d'information par voie électro- nique. Vous pouvez vous désinscrire à tout moment via les liens de désinscription ou en nous contactant.</p>
+                                <p class="pt-1">Pour en savoir plus, consultez notre Politique de confidentialité et nos conditions générales de vente.</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- QUESTIONS -->
+
+                <div id="entry4" class="py-5 px-5 hidden"><div class="accordion accordion-flush" id="accordionFlushExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fs-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                    Question #1
+                                </button>
+                            </h2>
+                            <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">Texte de question</div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fs-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                    Question #2
+                                </button>
+                            </h2>
+                            <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">Texte de question</div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fs-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                    Question #3
+                                </button>
+                            </h2>
+                            <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">Texte de question</div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fs-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                                    Question #4
+                                </button>
+                            </h2>
+                            <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">Texte de question</div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fs-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
+                                    Question #5
+                                </button>
+                            </h2>
+                            <div id="flush-collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">Texte de question</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+<!-- BAS CONTACT -->
+    <div id="footer0" class="bg-grey">
+        <div class="py-5 px-5">
+            <div class="row">
+
+                <!-- Vide -->
+                <div class="col-3">
+
+                </div>
+                <!-- Les Pirates -->
+                <div class="col-9">
+                    <!-- LOGO LUNE DES PIRATES -->
+
+
+                    <h1 class="pb-5"><img src="{{ asset(('assets/maquette/MINI_LOGO.png')) }}" class="">Les Pirates</h1>
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="row">
+                                {% for contact, role in infos_contact %}
+                                    <div class="col-6 py-2">
+                                        <p class="h2">{{ contact }}</p>
+                                        <p class="h3">{{ role }}</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+
+                        <!-- L'équipe technique / Bénévoles -->
+                        <div class="col-4">
+
+                            <h2>L'ÉQUIPE TECHNIQUE</h2>
+                            <p class="h3 pb-5">
+                                {% for membre_tech in equipe_tech %}
+                                    {{ membre_tech }},
+                                {% endfor %} ...
+                            </p>
+
+                            <h2 class="pt-5">MERCI AUX BÉNÉVOLES !</h2>
+                            <p class="h3">
+                                {% for benevole in benevoles %}
+                                    {{ benevole }},
+                                {% endfor %} ...
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <!-- BAS COMMENT VENIR -->
+    <div id="footer1" class="hidden bg-grey">
+        <div class="py-5 px-5">
+            <div class="row">
+                <div class="col-9">
+                    {% for transport, texte in transports %}
+                        <div class="row">
+                            <div class="col-4">
+                            </div>
+                            <div class="col-1">
+
+                                {% set src = 'assets/maquette/' %}
+                                {% set ext = '.png' %}
+                                {% set src = src ~ transports_medias[loop.index0] ~ ext %}
+                                <img src="{{ asset(src) }}" class="">
+
+                            </div>
+                            <div class="col-7 py-5">
+                                <h1 class="py-2">{{ transport }}</h1>
+                                <p class="h2">{{ texte }}</p>
+                            </div>
+
+                        </div>
+
+
+
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!-- PLAN -->
+
+        <a href="https://www.google.fr/maps/place/17+Quai+Belu,+80000+Amiens/@49.8964876,2.3023015,17z/data=!3m1!4b1!4m6!3m5!1s0x47e7843770099b73:0x65a4335dc8d72f5b!8m2!3d49.8964876!4d2.3048764!16s%2Fg%2F11cs8245jj?entry=ttu"><img src="{{ asset('assets/maquette/PLAN.png') }}" class="w-100"></a>
+    </div>
+
+    <!-- BILLETTERIE BAS -->
+    <div id="footer2" class="hidden">
+        <div class="py-5 px-5 bg-grey">
+            <div class="row">
+                <div class="col-3">
+
+                </div>
+                <div class="col-9">
+
+                    <div class="row">
+                        <div class="col-12">
+                            <h1>TARIF PASSEPORT VIE ÉTUDIANTE - <b>5 € LE CONCERT</b> </h1>
+                            <p class="h2">À destination des étudiants de l’Université de Picardie Jules Verne et des établissements relevant du CROUS Amiens Picardie.</p>
+                        </div>
+                        <!-- Image tarifs -->
+                        <div class="col-1">
+
+                        </div>
+                        <div class="col-11 h2">
+                            <p>
+                                > Tarif de 5.00 € sur l’ensemble des concerts à La Lune des Pirates toute l’année !
+                                Pour bénéficier de ce tarif préférentiel, vous avez 3 options :
+                            </p>
+                            <p>
+                                > Soit nous envoyer un mail à contact@lalune.net afin d'effectuer une réservation en ligne*
+                            </p>
+                            <p>
+                                > Soit vous rendre à la billetterie de La Lune des Pirates**
+                            </p>
+                            <p>
+                                > Soit vous rendre le soir du concert à la billetterie de La Lune des Pirates et présenter votre carte d'étudiante, si le concert n'est pas complet.
+                            </p>
+                            <p>
+                                * Attention : si vous ne vous présentez pas aux concerts sur les réservations effectuées, nous n'ac- cepterons plus de réservation de votre part.
+                                ** Du mardi au vendredi de 14h à 18h au 5/1 Passage Bélu 80000 Amiens
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+
+        </div>
+        <div class="col-9">
+
+            <div class="py-5 px-5 h2">
+                <h1 pb-2>PASS CULTURE</h1>
+                <p class="h2">
+                    Tu as entres 15 et 18 ans ?
+                </p>
+                <p>
+                    Profite de ton pass Culture pour commander tes places de concerts à La Lune !
+                </p>
+
+                <div class="row pt-2">
+                    <div class="col-6">
+
+                        <img src="{{ asset('assets/maquette/PASS_CULTURE.png') }}" class="">
+                    </div>
+                    <div class="col-6">
+
+                        <img src="{{ asset('assets/maquette/CAPTCHA_CULTURE.png') }}" class="">
+                    </div>
+
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div id="footer3" class="hidden">
+
+    </div>
+
+
+    {{ encore_entry_script_tags('maquette_infos_js') }}
+{% endblock %}

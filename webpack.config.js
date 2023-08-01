@@ -33,13 +33,21 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('backoffice', './assets/bo/js/main.js')
-    .addEntry('bo_medias', './assets/bo/js/medias.js')
-    .addEntry('bo_articles', './assets/bo/js/articles.js')
+    .addEntry('bo_medias',  './assets/bo/js/medias.js')
+    .addEntry('bo_articles','./assets/bo/js/articles.js')
     .addEntry('bo_article', './assets/bo/js/article.js')
 
 
     .addEntry('frontoffice',    './assets/front/js/main.js')
     .addEntry('home',           './assets/front/js/home.js')
+
+
+    // MAQUETTE
+    .addEntry('maquette_js',    './assets/maquette/js/main.js')
+    .addEntry('maquette_css',    './assets/maquette/styles/main.scss')
+    .addEntry('maquette_infos_js',    './assets/maquette/js/infos.js')
+    .addEntry('maquette_infos_css',    './assets/maquette/styles/infos.scss')
+    .addEntry('maquette_event_cancelled_js',    './assets/maquette/js/cancelled.js')
 
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
