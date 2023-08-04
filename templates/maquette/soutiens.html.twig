@@ -19,12 +19,6 @@
                     <p style="font-size: 80px; font-weight: bold">LUNE</p>
                 </div>
             </div>
-<!--            <h1>DUMP ARTICLES PAR FIND BY</h1>
-                {{ dump(accompagnes_test) }}
-            <h1>DUMP ARTICLES PAR GET GENEALOGY</h1>
-                {{ dump(accompagnes) }}
-            <h1>DUMP ARTICLES PAR GET ARTICLES</h1>
-                {{ dump(accompagnes_test2) }}-->
             <p class="h3 py-5">
                 Eux, elle, ce sont les artistes que La Lune va accompagner pendant un an, peut-être deux. Ce sont les projets qui ont été choisis pour leur parcours mais aussi pour leurs besoins auxquels nous allons tenter de répondre : structure administrative, besoin de répétitions ou de coaching, soutien à l’enregistrement...
             </p>
@@ -35,36 +29,27 @@
 
         <div class="row">
             {% for accomp in accompagnes.elements %}
-                <div class="col-lg-4 col-md-12">
+                {{  accomp.element.getDatas(locale) }}
+                <div class="col-lg-4 col-md-12 pb-5">
                     <!-- Card-Actu -->
-                    <div class="card mb-lg-3 mx-lg-4 shadow-lg rounded-0">
+                    <div class="card mb-lg-3 mx-lg-4 shadow-lg rounded-0 h-100">
                         {% set src = accompagnes_medias[loop.index0] %}
                         {% set url = 'build/maquette/images/' %}
                         {% set ext = '.png' %}
                         {% set src = url ~ src ~ ext %}
 
                         <img src="{{ asset(src) }}" class="card-img-top rounded-0" alt="...">
-
                         <!-- Themes -->
                         <div class="row m-0 p-0">
-                            <div class="col-5 theme-1"  style="background-color: {{ accomp.element.themeBackColor }};color: {{ accomp.element.themeTextColor }};">
-                                    LES INOUÏS
+                            <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ accomp.element.themeBackColor }};color: {{ accomp.element.themeTextColor }};">
+                                {% set themes = accomp.element.themes %}
+                                {% for theme in themes %}
+                                    {{ theme.name }}
+                                {% endfor %}
                             </div>
-                            <div class="col-7 theme-2">
+                            <div class="col-7 theme-2" style="background-color: {{ accomp.element.styleBackColor }};color: {{ accomp.element.styleTextColor }};">
                                 <img class="tiny-icon" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">
-                                {% if loop.index0 == 0  %}
-                                    ÉLECTRO - OISE
-                                {% elseif loop.index0 == 1 %}
-                                    POP - OISE
-                                {% elseif loop.index0 == 2 %}
-                                    RAP - SOMME
-                                {% elseif loop.index0 == 3 %}
-                                    2E NIVEAU | 1RE ANNÉE
-                                {% elseif loop.index0 == 4 %}
-                                    2E NIVEAU | 2E ANNÉE
-                                {% elseif loop.index0 == 5 %}
-                                    2E NIVEAU | 2E ANNÉE
-                                {% endif %}
+                                {{ accomp.element.style }}
                             </div>
                         </div>
                         <div class="card-body pt-0 ">
@@ -116,6 +101,7 @@
 
         <div class="row">
             {% for accomp in auditions.elements %}
+                {{  accomp.element.getDatas(locale) }}
                 <div class="col-lg-4 col-md-12">
                     <!-- Card-Actu -->
                     <div class="card mb-lg-3 mx-lg-4 shadow-lg rounded-0">
@@ -128,24 +114,16 @@
 
                         <!-- Themes -->
                         <div class="row m-0 p-0">
-                            <div class="col-5 theme-1"  style="background-color: {{ accomp.element.themeBackColor }};color: {{ accomp.element.themeTextColor }};">
-                                LES INOUÏS
+                            <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ accomp.element.themeBackColor }};color: {{ accomp.element.themeTextColor }};">
+                                {% set themes = accomp.element.themes %}
+                                {% for theme in themes %}
+                                    {{ theme.name }}
+                                {% endfor %}
+
                             </div>
-                            <div class="col-7 theme-2">
+                            <div class="col-7 theme-2 text-uppercase">
                                 <img class="tiny-icon" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">
-                                {% if loop.index0 == 0  %}
-                                    ÉLECTRO - OISE
-                                {% elseif loop.index0 == 1 %}
-                                    POP - OISE
-                                {% elseif loop.index0 == 2 %}
-                                    RAP - SOMME
-                                {% elseif loop.index0 == 3 %}
-                                    2E NIVEAU | 1RE ANNÉE
-                                {% elseif loop.index0 == 4 %}
-                                    2E NIVEAU | 2E ANNÉE
-                                {% elseif loop.index0 == 5 %}
-                                    2E NIVEAU | 2E ANNÉE
-                                {% endif %}
+                                {{ accomp.element.style }}
                             </div>
                         </div>
                         <div class="card-body pt-0 ">
@@ -176,6 +154,7 @@
         </div>
         <div class="row">
             {% for event_actu in event_actus.elements %}
+                {{  event_actu.element.getDatas(locale) }}
                 <div class="col-lg-4 col-md-12 mb-lg-5">
                     <!-- Card-Actu -->
                     <div class="card mb-lg-3 mx-lg-4 shadow-lg rounded-0 h-100">
@@ -187,16 +166,11 @@
                         <img src="{{ asset(src) }}" class="card-img-top rounded-0" alt="...">
                         <!-- Themes -->
                         <div class="row m-0 p-0">
-                            <div class="col-5 theme-1"  style="background-color: {{ event_actu.element.themeBackColor }};color: {{ event_actu.element.themeTextColor }};">
-                                {% if loop.index0 == 0  %}
-                                    LES BRUITS DE LA LUNE
-                                {% elseif loop.index0 == 1 %}
-                                    TOUS SUR LE PONT
-                                {% elseif loop.index0 == 2 %}
-                                    ATELIER
-                                {% elseif loop.index0 == 3 %}
-                                    MASTERCLASS
-                                {% endif %}
+                            <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ event_actu.element.themeBackColor }};color: {{ event_actu.element.themeTextColor }};">
+                                {% set themes = event_actu.element.themes %}
+                                {% for theme in themes %}
+                                    {{ theme.name }}
+                                {% endfor %}
                             </div>
                         </div>
                         <div class="card-body  ">

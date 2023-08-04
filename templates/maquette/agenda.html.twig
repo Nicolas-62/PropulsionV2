@@ -173,11 +173,15 @@
                         <div class=" ">
                             <!-- Themes -->
                             <div class="row mx-0 px-0">
-                                    <div class="col-3 theme-1"  style="background-color: {{ event.element.themeBackColor }};color: {{ event.element.themeTextColor }};">
-                                        CONCERT
+                                    <div class="col-3 theme-1 text-uppercase"  style="background-color: {{ event.element.themeBackColor }};color: {{ event.element.themeTextColor }};">
+
+                                        {% set themes = event.element.themes %}
+                                        {% for theme in themes %}
+                                            {{ theme.name }}
+                                        {% endfor %}
                                     </div>
                                     <div class="col-9 white theme-2 justify-content-start" style="background-color: {{ event.element.styleBackColor }};color: {{ event.element.styleTextColor }};">
-                                        <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">SHLAG WAVE SOMBRE | INDIE POST-PUNK
+                                        <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">{{ event.element.style }}
                                     </div>
                             </div>
                             <div class="card-container" style="line-height: 1.1">

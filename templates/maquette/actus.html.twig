@@ -180,8 +180,11 @@
 
                             <!-- Themes -->
                             <div class="row  mx-0 px-0">
-                                    <div class="col-5 theme-1"  style="background-color: {{ actu.element.themeBackColor }};color: {{ actu.element.themeTextColor }};">
-                                        ACTION CULTURELLE
+                                    <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ actu.element.themeBackColor }};color: {{ actu.element.themeTextColor }};">
+                                        {% set themes = actu.element.themes %}
+                                        {% for theme in themes %}
+                                            {{ theme.name }}
+                                        {% endfor %}
                                     </div>
                             </div>
 
