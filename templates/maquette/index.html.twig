@@ -66,21 +66,11 @@
                                 <div class="row mx-0">
                                     <div
                                         class="col-5 white theme-1"
-                                        style="
-                                            {% if event.element.themeBackColor != "" %}
-                                                background-color: {{ event.element.themeBackColor }};
-                                            {% else %}
-                                                background-color: black;
-                                            {% endif %}
-                                            {% if event.element.themeTextColor != "" %}
-                                                color: {{ event.element.themeTextColor }};
-                                            {% else %}
-                                                color: white;
-                                            {% endif %}"
+                                        style="background-color: {{ event.element.themeBackColor }};color: {{ event.element.themeTextColor }};"
                                     >
                                         CONCERT
                                     </div>
-                                    <div class="col-7 theme-2"  style="background-color:  #fa5faa;">
+                                    <div class="col-7 theme-2"  style="background-color: {{ event.element.styleBackColor }};color: {{ event.element.styleTextColor }};">
                                         POP
                                     </div>
                                 </div>
@@ -110,12 +100,36 @@
             <div class="card shadow-lg rounded-0 h-100 d-sm-block d-md-block d-lg-none  ">
                 <!-- Themes -->
                 <div class="row mx-0 px-0">
-                        <div class="col-3 theme-1"  style="
-                        background-color: #fa5faa;">
+                        <div
+                            class="col-3 theme-1"
+                            style="
+                                {% if event.element.themeBackColor != "" %}
+                                        background-color: {{ event.element.themeBackColor }};
+                                {% else %}
+                                        background-color: #fa5faa;
+                                {% endif %}
+                                {% if event.element.themeTextColor != "" %}
+                                    color: {{ event.element.themeTextColor }};
+                                {% else %}
+                                    color: white;
+                                {% endif %}"
+                        >
                             CONCERT
                         </div>
-                        <div class="col-9 theme-2 align-items-center">
-                            <img class="img-fluid" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">POP
+                        <div class="col-9 theme-2"  style="
+
+                            {% if event.element.themeBackColor != "" %}
+                                    background-color: {{ event.element.styleBackColor }};
+                            {% else %}
+                                    background-color: black;
+                            {% endif %}
+                                                            {% if event.element.themeTextColor != "" %}
+                                    color: {{ event.element.styleTextColor }};
+                            {% else %}
+                                    color: white;
+                            {% endif %}"
+                        >
+                            POP
                         </div>
                 </div>
 
@@ -149,64 +163,47 @@
                 <h1 class="pb-5">Programmation <b>à venir</b></h1>
             </div>
             {% for event in events_agenda.elements %}
-                {{ dump(event.element) }}
+<!--                {{ dump(event.element) }}-->
                 {% if loop.index0 < 3 %}
                     <div class="col-lg-4 col-md-12 px-0">
                         <!-- Card-Actu -->
                         <div class="card mb-3  mx-lg-3 shadow-lg rounded-0 h-100 ">
 
-                            {% if loop.index0 == 0 %}
-                                <img src="{{ asset(('build/maquette/images/GWENDOLINE.png')) }}" class="card-img-top rounded-0" alt="...">
-                            {% elseif loop.index0 == 1 %}
-                                <img src="{{ asset(('build/maquette/images/MALN.png')) }}" class="card-img-top rounded-0" alt="...">
-                            {% elseif loop.index0 == 2 %}
-                                <img src="{{ asset(('build/maquette/images/SILLYBOYBLUE.png')) }}" class="card-img-top rounded-0" alt="...">
-                            {% endif %}
-                            <div class=" ">
-                                <!-- Themes -->
-                                <div class="row mx-0 px-0">
-                                    {% if loop.index0 == 0  %}
-                                        <div class="col-3 white theme-1"  style="background-color: #fa5faa;">
-                                            CONCERT
-                                        </div>
-                                        <div class="col-9 white theme-2 justify-content-start">
-                                            <img class="card-ticketing" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">SHLAG WAVE SOMBRE | INDIE POST-PUNK
-                                        </div>
-
-                                     {% elseif loop.index0 == 1  %}
-                                         <div class="col-3 theme-1"  style="background-color: #2b0972; color: #fa5faa">
-                                             FESTIVAL
-                                         </div>
-                                         <div class="col-9 white theme-2 justify-content-start">
-                                             <img class="card-ticketing" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">MINUIT AVANT LA NUIT #4
-                                         </div>
-
-                                     {% elseif loop.index0 == 2  %}
-                                         <div class="col-3 white theme-1"  style="background-color: #fa5faa;">
-                                             CONCERT
-                                         </div>
-                                         <div class="col-9 white justify-content-start theme-2">
-                                             <img class="card-ticketing" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">POP
-                                         </div>
-                                     {% endif %}
+                        {% if loop.index0 == 0 %}
+                            <img src="{{ asset(('build/maquette/images/GWENDOLINE.png')) }}" class="card-img-top rounded-0" alt="...">
+                        {% elseif loop.index0 == 1 %}
+                            <img src="{{ asset(('build/maquette/images/MALN.png')) }}" class="card-img-top rounded-0" alt="...">
+                        {% elseif loop.index0 == 2 %}
+                            <img src="{{ asset(('build/maquette/images/SILLYBOYBLUE.png')) }}" class="card-img-top rounded-0" alt="...">
+                        {% endif %}
+                            <!-- Themes -->
+                            <div class="row mx-0 px-0">
+                                <div
+                                    class="col-3 theme-1"
+                                    style="background-color: {{ event.element.themeBackColor }};color: {{ event.element.themeTextColor }};"
+                                >
+                                    CONCERT
                                 </div>
-                                <div class="card-container" style="line-height: 1.1">
-                                    <div class="py-3">
-                                        <!-- ARTISTES -->
-                                        <div class="card-title text-uppercase" style="font-size: 34px; font-weight: bold">{{ event.element.title }}</div>
-                                        <div class="card-subtitle text-uppercase">{{ event.element.subtitle }}</div>
+                                <div class="col-9 white theme-2 justify-content-start" style="background-color: {{ event.element.styleBackColor }};color: {{ event.element.styleTextColor }};">
+                                    <img class="card-ticketing" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">SHLAG WAVE SOMBRE | INDIE POST-PUNK
+                                </div>
+                            </div>
+                            <div class="card-container" style="line-height: 1.1">
+                                <div class="py-3">
+                                    <!-- ARTISTES -->
+                                    <div class="card-title text-uppercase">{{ event.element.title }}</div>
+                                    <div class="card-subtitle text-uppercase">{{ event.element.subtitle }}</div>
+                                </div>
+                                <!-- DATE CONCERT ET HEURE -->
+                                <div class="row pt-4">
+                                    <div class="col-9" style="line-height: 1">
+                                        <div class="card-date">{{ event.element.dateEvent }}</div>
+                                        <div class="card-hour">{{ event.element.heureEvent }}</div>
                                     </div>
-                                    <!-- DATE CONCERT ET HEURE -->
-                                    <div class="row pt-4">
-                                        <div class="col-9" style="line-height: 1">
-                                            <div class="card-date">{{ event.element.dateEvent }}</div>
-                                            <div class="card-hour">{{ event.element.heureEvent }}</div>
-                                        </div>
-                                        <div class="col-2 offset-1">
-                                            <a href="https://billetterie.lalune.net/">
-                                                <img class="img-fluid" src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}">
-                                            </a>
-                                        </div>
+                                    <div class="col-2 offset-1">
+                                        <a href="https://billetterie.lalune.net/">
+                                            <img class="img-fluid" src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}">
+                                        </a>
                                     </div>
                                 </div>
                             </div>

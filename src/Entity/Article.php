@@ -47,10 +47,10 @@ class Article
     private ?string $siteInternet  = '';
     private ?string $twitterLink  = '';
     private ?string $origin  = '';
-    private ?string $themeBackColor  = '';
-    private ?string $themeTextColor  = '';
-    private ?string $styleBackColor  = '';
-    private ?string $styleTextColor  = '';
+    private ?string $themeBackColor  = '#fa5faa';
+    private ?string $themeTextColor  = '#FFFFFF';
+    private ?string $styleBackColor  = '#000000';
+    private ?string $styleTextColor  = '#FFFFFF';
     private ?string $style  = '';
 
 

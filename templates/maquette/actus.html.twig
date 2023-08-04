@@ -180,29 +180,9 @@
 
                             <!-- Themes -->
                             <div class="row  mx-0 px-0">
-                                {% if loop.index0 == 0  %}
-                                    <div class="col-5 white theme-1" style="background-color: #68FF85; ">
+                                    <div class="col-5 theme-1"  style="background-color: {{ actu.element.themeBackColor }};color: {{ actu.element.themeTextColor }};">
                                         ACTION CULTURELLE
                                     </div>
-                                {% elseif loop.index0 == 1 %}
-                                    <div class="col-5 white theme-1" style="background-color: #ffb24b;">
-                                        JEUNE PUBLIC
-                                    </div>
-                                    <div class="col-7 white justify-content-start theme-2">
-                                        <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">GOÛTER CONCERT
-                                    </div>
-                                {% elseif loop.index0 == 2 %}
-                                    <div class="col-5 white" style="background-color: #09b2ff; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px">
-                                        SOUTIEN AUX ARTISTES
-                                    </div>
-                                    <div class="col-7 white justify-content-start theme-2">
-                                        <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">OBJECTIF LUNE
-                                    </div>
-                                {% elseif loop.index0 == 3 %}
-                                    <div class="col-5 white theme-1" style="background-color: #fe513a;">
-                                        COMMUNICATION
-                                    </div>
-                                {% endif %}
                             </div>
 
                             <!-- CARD CONTAINER -->

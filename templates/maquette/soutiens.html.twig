@@ -47,7 +47,7 @@
 
                         <!-- Themes -->
                         <div class="row m-0 p-0">
-                            <div class="col-5 bg-blue theme-1" style="background-color: #09b2FF">
+                            <div class="col-5 theme-1"  style="background-color: {{ accomp.element.themeBackColor }};color: {{ accomp.element.themeTextColor }};">
                                     LES INOUÏS
                             </div>
                             <div class="col-7 theme-2">
@@ -128,7 +128,7 @@
 
                         <!-- Themes -->
                         <div class="row m-0 p-0">
-                            <div class="col-5 bg-blue theme-1" style="background-color: #09b2FF">
+                            <div class="col-5 theme-1"  style="background-color: {{ accomp.element.themeBackColor }};color: {{ accomp.element.themeTextColor }};">
                                 LES INOUÏS
                             </div>
                             <div class="col-7 theme-2">
@@ -187,7 +187,7 @@
                         <img src="{{ asset(src) }}" class="card-img-top rounded-0" alt="...">
                         <!-- Themes -->
                         <div class="row m-0 p-0">
-                            <div class="col-5 bg-blue theme-1" style="background-color: #09b2FF">
+                            <div class="col-5 theme-1"  style="background-color: {{ event_actu.element.themeBackColor }};color: {{ event_actu.element.themeTextColor }};">
                                 {% if loop.index0 == 0  %}
                                     LES BRUITS DE LA LUNE
                                 {% elseif loop.index0 == 1 %}
