@@ -121,8 +121,11 @@ class ArticleCrudController extends BoController
         yield BooleanField::new('isOnline', 'En ligne')->hideOnForm();
         yield TextField::new('title','titre')->setColumns(6);
 
+
         // Champs pour l'édition et la création d'un article.
         if(in_array($pageName, [Crud::PAGE_EDIT, Crud::PAGE_NEW])) {
+            // Themes
+            yield AssociationField::new('themes','Thèmes')->setRequired(false);
             // Article parent
             yield AssociationField::new('parent', 'Article Parent')->hideOnDetail()->setColumns(3)->hideOnIndex()->setRequired(false);
             // Catégorie parent
