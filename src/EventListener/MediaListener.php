@@ -16,6 +16,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityDeletedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityUpdatedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeCrudActionEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityDeletedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -45,7 +46,7 @@ class MediaListener implements EventSubscriberInterface
         return [
             BeforeCrudActionEvent::class    => 'unlinkMedia',
             AfterEntityUpdatedEvent::class => 'linkMedias',
-            AfterEntityDeletedEvent::class  => 'removeMedia',
+            BeforeEntityDeletedEvent::class  => 'removeMedia',
             BeforeEntityPersistedEvent::class => 'createMedia'
         ];
     }
@@ -68,8 +69,13 @@ class MediaListener implements EventSubscriberInterface
         }
     }
 
-
-    public function removeMedia(AfterEntityDeletedEvent $event){
+    /**
+     * Supprime le fichier avant la suppression de l'entité média
+     *
+     * @param BeforeEntityDeletedEvent $event
+     * @return void
+     */
+    public function removeMedia(BeforeEntityDeletedEvent $event){
         $entity = $event->getEntityInstance();
         // Si l'élément supprimé n'est pas un média
         if (!($entity instanceof Media)){
@@ -80,6 +86,7 @@ class MediaListener implements EventSubscriberInterface
 
         // Chemin de l'image
         $imagepath = Constants::ASSETS_IMG_PATH.$entity->getMedia();
+
         // Suppression de l'image
         if($filesystem->exists($imagepath)) {
             $filesystem->remove($imagepath);
@@ -90,7 +97,7 @@ class MediaListener implements EventSubscriberInterface
 
 
     /**
-     * Permet de faire des actions avant la modification d'une entité
+     * Permet de faire des actions après la modification d'une entité
      *
      * @param AfterEntityUpdatedEvent $event
      * @return void

@@ -83,13 +83,11 @@ class MediaCrudController extends BoController
             ])
         ;
 
-//        // Si le média existe déjà.
-//        if(Crud::PAGE_EDIT === $pageName) {
-//            // On personnalise la vue, on affiche l'image.
-//            $mediaField->setFormTypeOptions([
-//                'block_name' => 'media_edit',
-//            ]);
-//        }
+        // Si le média existe déjà.
+        if(Crud::PAGE_EDIT === $pageName) {
+            // On personnalise la vue, on affiche l'image.
+            $mediaField->setDisabled();
+        }
 
         yield $mediaField;
 
