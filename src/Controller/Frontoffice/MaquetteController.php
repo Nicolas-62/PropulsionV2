@@ -28,7 +28,7 @@ class MaquetteController extends AbstractController
         $this->btns = array('pic_icon', 'search_icon', 'profile_icon', 'menu_icon');
 
         $this->mentions = array();
-        $this->mentions = array('Plan du site' => 'plan', 'FAQ' => 'faq','Mentions légales' => 'mentions', 'Crédits' => 'credits', 'CGV' => 'cgv', 'Poltique de Confidentialité' => 'confidentialite', 'Gestion des cookies' => 'cookies', 'Espace presse' => 'presse');
+        $this->mentions = array('Plan du site' => 'plan', 'FAQ' => 'faq','Mentions légales' => 'mentions', 'CGV' => 'cgv', 'Poltique de Confidentialité' => 'confidentialite', 'Gestion des cookies' => 'cookies', 'Espace presse' => 'presse');
 
         $this->btns_footer = array();
         $this->btns_footer = array('FOOTER_SCENE', 'FOOTER_CONTACT','FOOTER_COMMANDE', 'FOOTER_NEWS');
@@ -58,6 +58,9 @@ class MaquetteController extends AbstractController
         $this->themes_actu = array();
         $this->themes_actu = array('LA LUNE DES PIRATES', 'CONCERTS','ACTION CULTURELLE','JEUNE PUBLIC', 'SOUTIEN AUX ARTISTES');
 
+        $this->sponsors = array();
+        $this->sponsors = array('AMIENS_METROPOLE', 'AMIENS', 'SOMME', 'HDF', 'PREFET_HDF', 'CNM', 'SACEM', 'COPIE_PRIVEE', 'CREDIT_MUTUEL', 'FESTIVAL_INDE');
+
 
     }
 
@@ -65,8 +68,8 @@ class MaquetteController extends AbstractController
     public function index(): Response
     {
 
-        $events_agenda   = $this->entityManager->getRepository(Category::class)->getGenealogy(10, $this->getParameter('locale'));
-        $events_homepage = $this->entityManager->getRepository(Category::class)->getGenealogy(15, $this->getParameter('locale'));
+        $events_agenda   = $this->entityManager->getRepository(Category::class)->getGenealogy(2, $this->getParameter('locale'));
+        $events_homepage = $this->entityManager->getRepository(Category::class)->getGenealogy(1, $this->getParameter('locale'));
 
 
         return $this->render('maquette/index.html.twig', [
@@ -79,6 +82,8 @@ class MaquetteController extends AbstractController
             'medias' => $this->medias,
             'events_agenda' => $events_agenda,
             'events_homepage' => $events_homepage,
+            'sponsors' => $this->sponsors,
+            'locale' => $this->getParameter('locale'),
         ]);
     }
 
@@ -86,7 +91,7 @@ class MaquetteController extends AbstractController
     public function agenda(): Response
     {
 
-        $events_agenda = $this->entityManager->getRepository(Category::class)->getGenealogy(10, $this->getParameter('locale'));
+        $events_agenda = $this->entityManager->getRepository(Category::class)->getGenealogy(3, $this->getParameter('locale'));
         $themes_agenda = $this->themes_agenda;
 
 
@@ -100,6 +105,8 @@ class MaquetteController extends AbstractController
             'medias' => $this->medias,
             'events_agenda' => $events_agenda,
             'themes_agenda' => $themes_agenda,
+            'sponsors' => $this->sponsors,
+            'locale' => $this->getParameter('locale'),
         ]);
     }
 
@@ -107,7 +114,7 @@ class MaquetteController extends AbstractController
     public function actus(): Response
     {
 
-        $actu_childs = $this->entityManager->getRepository(Category::class)->getGenealogy(8, $this->getParameter('locale'));
+        $actu_childs = $this->entityManager->getRepository(Category::class)->getGenealogy(4, $this->getParameter('locale'));
         $actu_info = $this->entityManager->getRepository(Article::class)->findBy(['title' => 'Actu Infos']);
 
         $themes_actu = $this->themes_actu;
@@ -126,6 +133,8 @@ class MaquetteController extends AbstractController
             'actu_childs' => $actu_childs,
             'actu_info' => $actu_info,
             'themes_actu' => $themes_actu,
+            'sponsors' => $this->sponsors,
+            'locale' => $this->getParameter('locale'),
         ]);
     }
 
@@ -134,7 +143,8 @@ class MaquetteController extends AbstractController
     {
 
 
-        $actu_childs = $this->entityManager->getRepository(Category::class)->getGenealogy(16, $this->getParameter('locale'));
+        $actu_test = $this->entityManager->getRepository(Article::class)->findOneBy(['id' => '5']);
+        $actu_childs = $this->entityManager->getRepository(Category::class)->getGenealogy(5, $this->getParameter('locale'));
 
         return $this->render('maquette/actions.html.twig', [
             'controller_name' => 'MaquetteController',
@@ -145,6 +155,9 @@ class MaquetteController extends AbstractController
             'btns_footer' => $this->btns_footer,
             'medias' => $this->medias,
             'actu_childs' => $actu_childs,
+            'sponsors' => $this->sponsors,
+            'locale' => $this->getParameter('locale'),
+            'actu_test' => $actu_test,
         ]);
     }
 
@@ -152,28 +165,28 @@ class MaquetteController extends AbstractController
     public function soutiens(): Response
     {
         // Récupération artistes accompagnés
-        $accompagnes = $this->entityManager->getRepository(Category::class)->getGenealogy(12, $this->getParameter('locale'));
+        $accompagnes = $this->entityManager->getRepository(Category::class)->getGenealogy(7, $this->getParameter('locale'));
+        $accompagnes_test2 = $this->entityManager->getRepository(Category::class)->getArticles(7, $this->getParameter('locale'),1);
+
+        $accompagnes_test = $this->entityManager->getRepository(Article::class)->findBy(['category' => '7']);
 
         // Récupérations des medias
         $accompagnes_medias =['ADAM','JONASKAY','ARYANE','DOUBLE', 'ETIENNE','KAMELECTRIC'];
 
 
         // Récupération auditions
-        $auditions = $this->entityManager->getRepository(Category::class)->getGenealogy(13, $this->getParameter('locale'));
+        $auditions = $this->entityManager->getRepository(Category::class)->getGenealogy(8, $this->getParameter('locale'));
 
         // Récupérations des medias
         $auditions_medias =['AMBRE','CASSANDRE','EXAUBABA','LAST'];
 
         // Récupération event actualités
-        $event_actus = $this->entityManager->getRepository(Category::class)->getGenealogy(14, $this->getParameter('locale'));
+        $event_actus = $this->entityManager->getRepository(Category::class)->getGenealogy(9, $this->getParameter('locale'));
 
         // Récupérations des medias
         $event_actus_medias =['MUMBLE','APERO','ACTION','MAO'];
 
 
-        $tableau_categories = array();
-        $tableau_categories[0] = $accompagnes;
-        $tableau_categories[1] = $auditions;
 
 
 
@@ -192,7 +205,10 @@ class MaquetteController extends AbstractController
             'accompagnes_medias' => $accompagnes_medias,
             'auditions_medias' => $auditions_medias,
             'event_actus_medias' => $event_actus_medias,
-            'tableau_categories' => $tableau_categories,
+            'accompagnes_test' => $accompagnes_test,
+            'sponsors' => $this->sponsors,
+            'accompagnes_test2' => $accompagnes_test2,
+            'locale' => $this->getParameter('locale'),
         ]);
     }
 
@@ -234,6 +250,8 @@ class MaquetteController extends AbstractController
             'transports' => $transports,
             'transports_medias' => $transports_medias,
             'active_entry' => 'entry1',
+            'sponsors' => $this->sponsors,
+            'locale' => $this->getParameter('locale'),
         ]);
     }
 
@@ -251,6 +269,8 @@ class MaquetteController extends AbstractController
           'mentions' => $this->mentions,
           'btns_footer' => $this->btns_footer,
           'medias' => $this->medias,
+          'sponsors' => $this->sponsors,
+          'locale' => $this->getParameter('locale'),
         ]);
     }
 
@@ -266,6 +286,8 @@ class MaquetteController extends AbstractController
           'mentions' => $this->mentions,
           'btns_footer' => $this->btns_footer,
           'medias' => $this->medias,
+          'sponsors' => $this->sponsors,
+          'locale' => $this->getParameter('locale'),
         ]);
     }
 
@@ -281,6 +303,8 @@ class MaquetteController extends AbstractController
           'mentions' => $this->mentions,
           'btns_footer' => $this->btns_footer,
           'medias' => $this->medias,
+          'sponsors' => $this->sponsors,
+          'locale' => $this->getParameter('locale'),
         ]);
     }
 
@@ -296,6 +320,8 @@ class MaquetteController extends AbstractController
           'mentions' => $this->mentions,
           'btns_footer' => $this->btns_footer,
           'medias' => $this->medias,
+          'sponsors' => $this->sponsors,
+          'locale' => $this->getParameter('locale'),
         ]);
     }
 
@@ -311,6 +337,8 @@ class MaquetteController extends AbstractController
           'mentions' => $this->mentions,
           'btns_footer' => $this->btns_footer,
           'medias' => $this->medias,
+          'sponsors' => $this->sponsors,
+          'locale' => $this->getParameter('locale'),
         ]);
     }
     #[Route('/credits', name: 'credits')]
@@ -324,6 +352,8 @@ class MaquetteController extends AbstractController
           'mentions' => $this->mentions,
           'btns_footer' => $this->btns_footer,
           'medias' => $this->medias,
+          'sponsors' => $this->sponsors,
+          'locale' => $this->getParameter('locale'),
         ]);
     }
 
@@ -339,6 +369,8 @@ class MaquetteController extends AbstractController
           'mentions' => $this->mentions,
           'btns_footer' => $this->btns_footer,
           'medias' => $this->medias,
+          'sponsors' => $this->sponsors,
+          'locale' => $this->getParameter('locale'),
         ]);
     }
 
@@ -353,6 +385,8 @@ class MaquetteController extends AbstractController
           'mentions' => $this->mentions,
           'btns_footer' => $this->btns_footer,
           'medias' => $this->medias,
+          'sponsors' => $this->sponsors,
+          'locale' => $this->getParameter('locale'),
         ]);
     }
 
@@ -360,7 +394,8 @@ class MaquetteController extends AbstractController
     #[Route('/maquetteprogrammation', name: 'programmation')]
     public function programmation(): Response
     {
-
+        $giscard = $this->entityManager->getRepository(Article::class)->findOneBy(['id' => '13']);
+        $citron = $this->entityManager->getRepository(Article::class)->findOneBy(['id' => '39']);
         $events_agenda = $this->entityManager->getRepository(Category::class)->getGenealogy(10, $this->getParameter('locale'));
         return $this->render('maquette/programmation.html.twig', [
             'controller_name' => 'MaquetteController',
@@ -371,6 +406,10 @@ class MaquetteController extends AbstractController
             'btns_footer' => $this->btns_footer,
             'medias' => $this->medias,
             'events_agenda' => $events_agenda,
+            'sponsors' => $this->sponsors,
+            'locale' => $this->getParameter('locale'),
+            'giscard' => $giscard,
+            'citron' => $citron,
 
         ]);
     }

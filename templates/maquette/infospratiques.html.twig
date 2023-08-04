@@ -75,9 +75,9 @@
 
     <div class="p-5">
         <div class="row">
-            <div class="col-lg-3 col-md-12 p-5 menu">
+            <div class="col-lg-3 col-md-12 p-5 menu text-md-center text-sm-center">
                 <div class="row">
-                    <div class="col-10">
+                    <div class="col-lg-10 col-md-12">
                         {% for info_menu, link in infos_menu %}
                             <div class="h1 py-3 menu-item {% if active_entry == 'entry' ~ loop.index %}active{% endif %}" data-entry="entry{{ loop.index }}" onclick="showContent('entry{{ loop.index }}', 'footer{{ loop.index0 }}')">
                                 {{ info_menu | upper}}
@@ -85,8 +85,8 @@
                             <div id="blue-dot{{ loop.index0 }}" class="blue-dot"></div>
                         {% endfor %}
                     </div>
-                    <div class="col-2">
-                        <img src="{{ asset(('assets/maquette/SOUTIENS_MENU.png')) }}" class="">
+                    <div class="col-2 d-sm-none d-md-none d-lg-block">
+                        <img src="{{ asset(('build/maquette/images/SOUTIENS_MENU.png')) }}" class="">
                     </div>
                 </div>
             </div>
@@ -94,11 +94,11 @@
             <!-- Contenu -->
             <!-- TODO Dynamiser tout cela -->
             <!--  NOUS CONTACTER -->
-            <div class="content col-9">
+            <div class="content col-lg-9 col-md-12">
                 <div id="entry1" class="py-5 px-5" >
                     <div class="row">
-                        <div class="col-2">
-                            <img src="{{ asset(('assets/maquette/arrow_contact.png')) }}" class="">
+                        <div class="col-lg-2 col-md-3">
+                            <img src="{{ asset(('build/maquette/images/arrow_contact.png')) }}" class="">
 
                         </div>
                         <div class="col-3 h3 pb-5">
@@ -175,10 +175,10 @@
                 <div id="entry2"  class="py-5 px-5 hidden">
 
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-lg-2 col-md-3">
 
 
-                            <img src="{{ asset(('assets/maquette/point_venir.png')) }}" class="">
+                            <img src="{{ asset(('build/maquette/images/point_venir.png')) }}" class="">
                         </div>
                         <div class="col-3 h3">
 
@@ -225,9 +225,9 @@
                 <div id="entry3" class="py-5 px-5 hidden ">
 
                     <div class="row pb-5">
-                        <div class="col-2">
+                        <div class="col-lg-2 col-md-3">
 
-                            <img src="{{ asset(('assets/maquette/la_lune_infos.png')) }}" class="">
+                            <img src="{{ asset(('build/maquette/images/la_lune_infos.png')) }}" class="">
 
                         </div>
                         <div class="col-3 fs-3">
@@ -250,9 +250,9 @@
                     <div>
                         <h1 class="py-5">POINT ACCUEIL BILLETTERIE & EN LIGNE SANS FRAIS DE LOCATION</h1>
                         <div class="row">
-                            <div class="col-2">
+                            <div class="col-lg-2 col-md-3">
 
-                                <img src="{{ asset(('assets/maquette/bureaux_infos.png')) }}" class="">
+                                <img src="{{ asset(('build/maquette/images/bureaux_infos.png')) }}" class="">
                             </div>
                             <div class="col-3 fs-3">
                                 <p>
@@ -283,7 +283,7 @@
                         <div class="row pt-4">
                             <div class="col-5">
 
-                                <img src="{{ asset('build/assets/maquette/images/PLAY_LUNE.png') }}" class="">
+                                <img class="img-fluid" src="{{ asset('build/maquette/images/PLAY_LUNE.png') }}" class="">
 
                             </div>
 
@@ -508,16 +508,12 @@
         <div class="py-5 px-5">
             <div class="row">
 
-                <!-- Vide -->
-                <div class="col-3">
-
-                </div>
                 <!-- Les Pirates -->
-                <div class="col-9">
+                <div class="col-md-12 col-lg-9 offset-lg-3">
                     <!-- LOGO LUNE DES PIRATES -->
 
 
-                    <h1 class="pb-5"><img src="{{ asset(('assets/maquette/MINI_LOGO.png')) }}" class="">Les Pirates</h1>
+                    <h1 class="pb-5"><img src="{{ asset(('build/maquette/images/MINI_LOGO.png')) }}" class="">Les Pirates</h1>
                     <div class="row">
                         <div class="col-8">
                             <div class="row">
@@ -565,20 +561,18 @@
     <div id="footer1" class="hidden bg-grey">
         <div class="py-5 px-5">
             <div class="row">
-                <div class="col-9">
+                <div class="col-lg-9 col-md-12">
                     {% for transport, texte in transports %}
                         <div class="row">
-                            <div class="col-4">
-                            </div>
-                            <div class="col-1">
+                            <div class="col-lg-2 offset-lg-4 col-md-3">
 
-                                {% set src = 'assets/maquette/' %}
+                                {% set src = 'build/maquette/images/' %}
                                 {% set ext = '.png' %}
                                 {% set src = src ~ transports_medias[loop.index0] ~ ext %}
-                                <img src="{{ asset(src) }}" class="">
+                                <img class="img-fluid" src="{{ asset(src) }}" class="">
 
                             </div>
-                            <div class="col-7 py-5">
+                            <div class="col-lg-6 col-md-9 py-5">
                                 <h1 class="py-2">{{ transport }}</h1>
                                 <p class="h2">{{ texte }}</p>
                             </div>
@@ -593,7 +587,7 @@
         </div>
         <!-- PLAN -->
 
-        <a href="https://www.google.fr/maps/place/17+Quai+Belu,+80000+Amiens/@49.8964876,2.3023015,17z/data=!3m1!4b1!4m6!3m5!1s0x47e7843770099b73:0x65a4335dc8d72f5b!8m2!3d49.8964876!4d2.3048764!16s%2Fg%2F11cs8245jj?entry=ttu"><img src="{{ asset('build/assets/maquette/images/PLAN.png') }}" class="w-100"></a>
+        <a href="https://www.google.fr/maps/place/17+Quai+Belu,+80000+Amiens/@49.8964876,2.3023015,17z/data=!3m1!4b1!4m6!3m5!1s0x47e7843770099b73:0x65a4335dc8d72f5b!8m2!3d49.8964876!4d2.3048764!16s%2Fg%2F11cs8245jj?entry=ttu"><img src="{{ asset('build/maquette/images/PLAN.png') }}" class="w-100"></a>
     </div>
 
     <!-- BILLETTERIE BAS -->
@@ -603,7 +597,7 @@
                 <div class="col-3">
 
                 </div>
-                <div class="col-9">
+                <div class="col-lg-9 col-md-12">
 
                     <div class="row">
                         <div class="col-12">
@@ -640,7 +634,7 @@
         <div class="col-3">
 
         </div>
-        <div class="col-9">
+        <div class="col-lg-9 col-md-12">
 
             <div class="py-5 px-5 h2">
                 <h1 pb-2>PASS CULTURE</h1>
@@ -654,11 +648,11 @@
                 <div class="row pt-2">
                     <div class="col-6">
 
-                        <img src="{{ asset('build/assets/maquette/images/PASS_CULTURE.png') }}" class="">
+                        <img class="img-fluid" src="{{ asset('build/maquette/images/PASS_CULTURE.png') }}" class="">
                     </div>
                     <div class="col-6">
 
-                        <img src="{{ asset('build/assets/maquette/images/CAPTCHA_CULTURE.png') }}" class="">
+                        <img class="img-fluid" src="{{ asset('build/maquette/images/CAPTCHA_CULTURE.png') }}" class="">
                     </div>
 
 

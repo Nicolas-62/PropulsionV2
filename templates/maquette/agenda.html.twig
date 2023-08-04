@@ -91,116 +91,151 @@
     <style>
 
 
+        .card-title {
+            font-size: 40px !important;
+            font-weight: bold !important;
+        }
 
+        .card-date {
+            font-size: 35px !important;
+            font-weight: bold !important;
+        }
+
+        .card-subtitle {
+            font-size: 30px !important;
+            font-weight: normal;
+        }
+
+        .card-hour {
+            font-size: 30px !important;
+        }
+
+        .date {
+            font-size: 35px !important;
+            font-weight: bold !important;
+        }
+
+        .hour {
+            font-size: 30px !important;
+        }
+
+        @media (max-width: 991px) {
+            .card-container {
+                padding : 30px 160px 30px 160px !important;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .card-container {
+                padding : 20px 40px 20px 40px !important;
+            }
+        }
     </style>
 {% endblock %}
 
 {% block body %}
 
-    <div class="p-5">
-        <div class="px-5 row font-primary">
-            <h1 class="col-lg-2 col-md-6 col-sm-12 big-subtitle blue-title">{{ page_title | upper }}</h1>
-            <div class="custom-select col-lg-2 col-md-6 col-sm-12 d-flex align-items-end">
-                <select>
-                    <option class="option-class" selected>Tous les évènements &nbsp ></option>
+    <div class="px-lg-5">
+        <div class="row font-primary">
+            <div class="px-lg-5 pt-5 row">
+                <h1 class="col-lg-3 col-md-6 col-sm-12 big-subtitle blue-title">{{ page_title | upper }}</h1>
+                <div class="custom-select col-lg-3 col-md-6 col-sm-12 d-flex align-items-end">
+                    <select>
+                        <option class="option-class" selected>Tous les évènements &nbsp ></option>
 
-                    {% for event in themes_agenda %}
-                        <option >{{ event }}</option>
-                    {% endfor %}
-                </select>
+                        {% for event in themes_agenda %}
+                            <option >{{ event }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
-        </div>
-    </div>
-
-    <div class="pb-lg-5 px-lg-5">
-        <div class="row">
 
             {% for event in events_agenda.elements %}
+                {{  event.element.getDatas(locale) }}
+                {% set media = event.element.getMedia(1) %}
+
                 <div class="col-lg-4 col-md-12 col-sm-12 pb-lg-5 ">
                     <!-- Card-Actu -->
-                    <div class="card mb-lg-3 mx-lg-4 shadow-lg rounded-0 h-100 position-relative">
-                        {% if loop.index0 == 0 %}
+                    <div class="card mb-3  mx-lg-3 shadow-lg rounded-0 h-100 ">
+
+                        {% if event.element.cancelled %}
                             <div class="cancelled-overlay">
                                 <p class="cancelled-text">ANNULÉ</p>
                             </div>
-                            <img  src="{{ asset(('assets/maquette/GWENDOLINE.png')) }}" class="card-img-top rounded-0" alt="...">
-                        {% elseif loop.index0 == 1 %}
-                            <img src="{{ asset(('assets/maquette/media-actu.png')) }}" class="card-img-top rounded-0" alt="...">
-                        {% elseif loop.index0 == 2 %}
-                            <img src="{{ asset(('assets/maquette/NOVEMBER_ULTRA.png')) }}" class="card-img-top rounded-0" alt="...">
-                        {% elseif loop.index0 == 3 %}
-                            <img src="{{ asset(('assets/maquette/KULTUR.png')) }}" class="card-img-top rounded-0" alt="...">
-                        {% elseif loop.index0 == 4 %}
-                            <img src="{{ asset(('assets/maquette/GISCARD_PETIT.png')) }}" class="card-img-top rounded-0" alt="...">
-                        {% elseif loop.index0 == 5 %}
-                            <img src="{{ asset(('assets/maquette/GWENDOLINE.png')) }}" class="card-img-top rounded-0" alt="...">
                         {% endif %}
-                        <div class="pt-0">
+
+                        {% if media is not null %}
+                            {% set url = '/assets/images/' ~ media.name  %}
+                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                        {% else  %}
+                            <img src="{{ asset(('build/maquette/images/GWENDOLINE.png')) }}" class="card-img-top rounded-0" alt="...">
+                        {% endif %}
+                        <div class=" ">
                             <!-- Themes -->
-                            <div class="row mx-0" >
-                                {% for theme in event.element.themes %}
-                                    <div class="col-5 white text-theme text-center theme-1" style="background-color:
-                                        {% if loop.parent.loop.index0 == 0 %}
-                                            #68FF85
-                                        {% elseif loop.parent.loop.index0 == 1 %}
-                                            #ea1e79
-                                        {% elseif loop.parent.loop.index0 == 2 %}
-                                            #fa5faa
-                                        {% elseif loop.parent.loop.index0 == 3 %}
-                                            #fa5faa
-                                        {% elseif loop.parent.loop.index0 == 4 %}
-                                            #fa5faa
-                                        {% elseif loop.parent.loop.index0 == 5 %}
-                                            #fa5faa
-                                        {% endif %}
-                                        ;"
-                                    >
-                                        {{ theme.name | upper}}
+                            <div class="row mx-0 px-0">
+                                {% if loop.index0 == 0  %}
+                                    <div class="col-3 white"  style="background-color: #fa5faa; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px">
+                                        CONCERT
                                     </div>
-                                {% endfor %}
-                                    <div class="col-7 white text-theme theme-2">
-                                        <img class="tiny-icon" src="{{ asset(('assets/maquette/MINI_BILLETTERIE.svg')) }}"> ATELIER
+                                    <div class="col-9 white justify-content-start"  style="background-color: black; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px">
+                                        <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">SHLAG WAVE SOMBRE | INDIE POST-PUNK
                                     </div>
+
+                                {% elseif loop.index0 == 1  %}
+                                    <div class="col-3"  style="background-color: #2b0972; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px; color: #fa5faa">
+                                        FESTIVAL
+                                    </div>
+                                    <div class="col-9 white justify-content-start"  style="background-color: black; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px">
+                                        <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">MINUIT AVANT LA NUIT #4
+                                    </div>
+
+                                {% elseif loop.index0 == 2  %}
+                                    <div class="col-3 white"  style="background-color: #fa5faa; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px">
+                                        CONCERT
+                                    </div>
+                                    <div class="col-9 white justify-content-start"  style="background-color: black; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px">
+                                        <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">POP
+                                    </div>
+                                {% elseif loop.index0 == 3  %}
+                                    <div class="col-3 white"  style="background-color: #fa5faa; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px">
+                                        CONCERT
+                                    </div>
+                                    <div class="col-9 white justify-content-start"  style="background-color: black; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px">
+                                        <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">POP
+                                    </div>
+                                {% elseif loop.index0 == 4  %}
+                                    <div class="col-3 white"  style="background-color: #fa5faa; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px">
+                                        CONCERT
+                                    </div>
+                                    <div class="col-9 white justify-content-start"  style="background-color: black; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px">
+                                        <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">POP
+                                    </div>
+                                {% elseif loop.index0 == 5  %}
+                                    <div class="col-3 white"  style="background-color: #fa5faa; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px">
+                                        CONCERT
+                                    </div>
+                                    <div class="col-9 white justify-content-start"  style="background-color: black; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px">
+                                        <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">POP
+                                    </div>
+                                {% endif %}
                             </div>
-                            <!-- ARTISTE -->
-                            <!-- seconde partie -->
-                            <p class="card-text">
-
-                            </p>
-                        </div>
-
-                        <div class="container ">
-                            <div class="row ">
-                                <!-- DATE CONCERT ET HEURE -->
-                                <div class="col-9 ">
-                                    <h5 class="card-title big-text-bold pb-5 text-uppercase">{{ event.element.title }}</h5>
-                                    <div class="">
-                                        {% if loop.index0 == 0 %}
-                                            <p class="big-text-bold pt-5 mb-0">MAR. 02 MAI 2023</p>
-                                            <p class="big-text">18:30</p>
-                                        {% elseif loop.index0 == 1  %}
-                                            <p class="big-text-bold pt-5">MER. 03 MAI 2023</p>
-                                            <p class="big-text">15:00</p>
-                                        {% elseif loop.index0 == 2  %}
-                                            <p class="big-text-bold pt-5">JEU. 04 MAI 2023</p>
-                                            <p class="big-text">20:30</p>
-                                        {% elseif loop.index0 == 3  %}
-                                            <p class="big-text-bold pt-5">VEN. 05 MAI 2023</p>
-                                            <p class="big-text">20:30</p>
-                                        {% elseif loop.index0 == 4  %}
-                                            <p class="big-text-bold pt-5">JEU. 11 MAI 2023</p>
-                                            <p class="big-text">20:30</p>
-                                        {% elseif loop.index0 == 5  %}
-                                            <p class="big-text-bold pt-5">MER. 17 MAI 2023</p>
-                                            <p class="big-text">20:30</p>
-                                        {% endif %}
-                                    </div>
+                            <div class="card-container" style="line-height: 1.1">
+                                <div class="py-3">
+                                    <!-- ARTISTES -->
+                                    <div class="card-title text-uppercase" style="font-size: 34px; font-weight: bold">{{ event.element.title }}</div>
+                                    <div class="card-subtitle text-uppercase">{{ event.element.subtitle }}</div>
                                 </div>
-                                <!-- Potentiel lien Billetterie -->
-                                <div class="col-3 d-flex align-items-end">
-                                    <a href="https://billetterie.lalune.net/">
-                                        <img src="{{ asset(('assets/maquette/BILLETTERIE.png')) }}" class="card-img-top rounded-0" alt="...">
-                                    </a>
+                                <!-- DATE CONCERT ET HEURE -->
+                                <div class="row pt-4">
+                                    <div class="col-9" style="line-height: 1">
+                                        <div class="card-date">{{ event.element.dateEvent }}</div>
+                                        <div class="card-hour">{{ event.element.heureEvent }}</div>
+                                    </div>
+                                    <div class="col-2 offset-1">
+                                        <a href="https://billetterie.lalune.net/">
+                                            <img class="img-fluid" src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}">
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

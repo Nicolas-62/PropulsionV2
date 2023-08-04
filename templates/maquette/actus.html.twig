@@ -97,109 +97,140 @@
         }
 
 
+        .card-title {
+            font-size: 40px !important;
+            font-weight: bold !important;
+        }
+
+        .card-date {
+            font-size: 35px !important;
+            font-weight: bold !important;
+        }
+
+        .card-subtitle {
+            font-size: 30px !important;
+            font-weight: normal;
+        }
+
+        .card-hour {
+            font-size: 30px !important;
+        }
+
+        .date {
+            font-size: 35px !important;
+            font-weight: bold !important;
+        }
+
+        .hour {
+            font-size: 30px !important;
+        }
+
+        @media (max-width: 991px) {
+            .card-container {
+                padding : 30px 160px 30px 160px !important;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .card-container {
+                padding : 20px 40px 20px 40px !important;
+            }
+        }
+
     </style>
 
 {% endblock %}
 {% block body %}
 
-
-
-
-
-
-
     <!-- VOIR AUSSI -->
-    <div>
-        <div class="px-lg-5">
-            <div class="row">
-                <div class="px-lg-5 pt-5 row">
-                    <h1 class="col-lg-2 col-md-6 col-sm-12 big-subtitle blue-title">{{ page_title | upper }}</h1>
-                    <div class="custom-select col-lg-4 col-md-6 col-sm-12 d-flex align-items-end">
-                        <select class="text-uppercase col-4 rounded-0 fs-2">
-                            <option class="" selected>toutes les actualités &nbsp ></option>
+    <div class="px-lg-5">
+        <div class="row">
+            <div class="px-lg-5 pt-5 row">
+                <h1 class="px-0 col-lg-3 col-md-6 col-sm-12 big-subtitle blue-title">{{ page_title | upper }}</h1>
+                <div class="px-0 custom-select col-lg-4 col-md-6 col-sm-12 d-flex align-items-end">
+                    <select class="text-uppercase col-4 rounded-0 fs-2">
+                        <option class="" selected>toutes les actualités &nbsp ></option>
 
-                            {% for actu in themes_actu %}
-                                <option value={{ actu }}>{{ actu }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
+                        {% for actu in themes_actu %}
+                            <option value={{ actu }}>{{ actu }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
-                {% for actu in actu_childs.elements %}
-                    <!-- DEBUG -->
-                    <!-- {{ dump(actu) }} -->
+            </div>
 
+            {% for actu in actu_childs.elements %}
 
-                    <div class="col-lg-4 col-md-12 py-lg-5">
-                        <!-- Card-Actu -->
-                        <div class="card mb-3 mx-lg-4 shadow-lg rounded-0 h-100">
-                            {% if loop.index0 == 0 %}
-                                <img src="{{ asset(('assets/maquette/ACTION_ACTUS.png')) }}" class="card-img-top rounded-0" alt="...">
-                            {% elseif loop.index0 == 1 %}
-                                <img src="{{ asset(('assets/maquette/media-actu.png')) }}" class="card-img-top rounded-0" alt="...">
-                            {% elseif loop.index0 == 2 %}
-                                <img src="{{ asset(('assets/maquette/OBJECTIF_ACTUS.png')) }}" class="card-img-top rounded-0" alt="...">
-                            {% elseif loop.index0 == 3 %}
-                                <img src="{{ asset(('assets/maquette/PASS_ACTU.png')) }}" class="card-img-top rounded-0" alt="...">
-                            {% endif %}
-                            <div class="pt-0 ">
-                                <!-- Themes -->
-                                <div class="row  mx-0 px-0">
-                                    {% if loop.index0 == 0  %}
-                                        <div class="col-5 white theme-1" style="background-color: #68FF85; ">
-                                            ACTION CULTURELLE
-                                        </div>
-                                    {% elseif loop.index0 == 1 %}
-                                        <div class="col-5 white theme-1" style="background-color: #ffb24b;">
-                                            JEUNE PUBLIC
-                                        </div>
-                                        <div class="col-7 white justify-content-start theme-2">
-                                            <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('assets/maquette/MINI_BILLETTERIE.svg')) }}">GOÛTER CONCERT
-                                        </div>
-                                    {% elseif loop.index0 == 2 %}
-                                        <div class="col-5 white" style="background-color: #09b2ff; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px">
-                                            SOUTIEN AUX ARTISTES
-                                        </div>
-                                        <div class="col-7 white justify-content-start theme-2">
-                                            <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('assets/maquette/MINI_BILLETTERIE.svg')) }}">OBJECTIF LUNE
-                                        </div>
-                                    {% elseif loop.index0 == 3 %}
-                                        <div class="col-5 white theme-1" style="background-color: #fe513a;">
-                                            COMMUNICATION
-                                        </div>
-                                    {% endif %}
-                                </div>
+                <!-- Récupération des datas de l'article -->
+                {{  actu.element.getDatas(locale) }}
+                <!-- DEBUG -->
+                <!-- {{ dump(actu) }} -->
 
-                                <div class="container">
+                {% set media = actu.element.getMedia(1) %}
 
-                                    <h5 class="card-title my-3 fs-2">{{ actu.element.title }}</h5>
-                                    <p class="card-text fs-4">
-                                        {% if loop.index0 == 0 %}
-                                            Souvent mentionnée mais parfois mal comprise, l’action culturelle est la mission de nombreuses structures culturelles avec lesquelles les artistes s’engagent à faire vivre aux publics une expérience sensible et leur donner les clés pour s’émerveiller, apprendre, créer et s’émouvoir !
-                                        {% elseif loop.index0 == 1 %}
-                                            Les enfants ont aussi le droit à la fête ! En famille, initiez vos kids aux joies du live : un concert comme pour les grands mais où le groupe joue moins fort et moins longtemps pour s’adapter à eux. Petit·e spectateur·rice deviendra grand·e fan !
-                                        {% elseif loop.index0 == 2 %}
-                                            Eux, elle, ce sont les artistes que La Lune va accompagner pendant un an, peut-être deux. Ce sont les projets qui ont été choisis pour leur parcours mais aussi pour leurs besoins auxquels nous allons tenter de répondre : structure admi- nistrative, besoin de répétitions ou de coaching, soutien à l’enregistrement...
-                                        {% elseif loop.index0 == 3 %}
-                                            Le pass Culture accompagne les jeunes de moins de 18 ans au quotidien en leur offrant un plus grand accès à la culture à travers une part collective, à partir de la classe de 4e et une part individuelle, à partir de 15 ans.
-                                        {% endif %}
+                <div class="col-lg-4 col-md-12 py-lg-5 px-0">
+                    <!-- Card-Actu -->
+                    <div class="card mb-3 mx-lg-4 shadow-lg rounded-0 h-100">
+                        <!-- Image -->
 
-                                    </p>
-                                </div>
+                        {% if media is not null %}
+                            {% set url = '/assets/images/' ~ media.name  %}
+                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                        {% endif %}
+                        <div class="pt-0 ">
+
+                            <!-- Themes -->
+                            <div class="row  mx-0 px-0">
+                                {% if loop.index0 == 0  %}
+                                    <div class="col-5 white theme-1" style="background-color: #68FF85; ">
+                                        ACTION CULTURELLE
+                                    </div>
+                                {% elseif loop.index0 == 1 %}
+                                    <div class="col-5 white theme-1" style="background-color: #ffb24b;">
+                                        JEUNE PUBLIC
+                                    </div>
+                                    <div class="col-7 white justify-content-start theme-2">
+                                        <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">GOÛTER CONCERT
+                                    </div>
+                                {% elseif loop.index0 == 2 %}
+                                    <div class="col-5 white" style="background-color: #09b2ff; min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px">
+                                        SOUTIEN AUX ARTISTES
+                                    </div>
+                                    <div class="col-7 white justify-content-start theme-2">
+                                        <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">OBJECTIF LUNE
+                                    </div>
+                                {% elseif loop.index0 == 3 %}
+                                    <div class="col-5 white theme-1" style="background-color: #fe513a;">
+                                        COMMUNICATION
+                                    </div>
+                                {% endif %}
                             </div>
 
-                            <!-- Boutons LIRE LA SUITE et lien Billetterie -->
-                            <div class="card-actions d-flex align-items-end">
-                                <button class="btn border rounded-0 border-dark fs-3" style="height: 60px">LIRE LA SUITE</button>
-                                <a href="https://billetterie.lalune.net/">
-                                    <img src="{{ asset(('assets/maquette/BILLETTERIE.png')) }}" alt="...">
-                                </a>
+                            <!-- CARD CONTAINER -->
+                            <div class="card-container">
+                                <!-- Titre -->
+                                <h5 class="card-title my-3 pt-5 fs-2">
+                                    {{ actu.element.title }}
+                                </h5>
+                                <!-- CONTENU -->
+                                <div class="card-text fs-4">
+                                    {{ actu.element.content | raw }}
+                                </div>
+
+                                <!-- Boutons LIRE LA SUITE et lien Billetterie -->
+                                <div class="card-actions px-0 pt-0 d-flex align-items-end">
+                                    <button class="btn border rounded-0 border-dark fs-3" style="height: 60px">LIRE LA SUITE</button>
+                                    <a href="https://billetterie.lalune.net/">
+                                        <img src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}" alt="...">
+                                    </a>
+                                </div>
                             </div>
                         </div>
 
                     </div>
 
-                {% endfor %}
-            </div>
+                </div>
+
+            {% endfor %}
         </div>
     </div>
 

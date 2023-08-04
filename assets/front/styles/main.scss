@@ -100,14 +100,12 @@ $badge-font-weight: $font-weight-normal;
 
 // header
 .header-bg {
-    background-image: url("../images/bg-header-footer.jpg");
     background-repeat: repeat-x;
     background-position-x:center;
     background-position-y:top;
 
 }
 .footer-bg {
-    background-image: url("../images/bg-header-footer.jpg");
     background-repeat: repeat-x;
     background-position-x:center;
     background-position-y:bottom;
@@ -117,7 +115,6 @@ $badge-font-weight: $font-weight-normal;
 // bloc programmation home page
 .billetterie-lg-bg {
     max-height:778px;
-    background-image: url("../images/fondrayure.jpg");
     background-repeat: repeat-x;
     background-repeat: repeat-x;
     background-position-x:center;
@@ -125,7 +122,6 @@ $badge-font-weight: $font-weight-normal;
 }
 .billetterie-bg {
     max-height:1198px;
-    background-image: url("../images/fondrayure.jpg");
     background-repeat: repeat-x;
     background-position-x:center;
     background-position-y:top;
@@ -150,7 +146,6 @@ $badge-font-weight: $font-weight-normal;
     background-color: rgb(38, 85, 70);
 }
 .bandeau-bg {
-    background-image: url("../images/bg-footer.png");
     background-repeat: repeat-y;
     background-position-x:center;
     background-position-y:top;

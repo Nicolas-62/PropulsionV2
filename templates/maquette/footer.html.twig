@@ -1,13 +1,35 @@
-<div class="bg-footer">
+
+
+
+{% block stylesheets %}
+    <style>
+        .form-control::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+            color: white;
+        }
+        .form-control::-moz-placeholder { /* Firefox 19+ */
+            color: white;
+        }
+        .form-control:-ms-input-placeholder { /* IE 10+ */
+            color: white;
+        }
+        .form-control:-moz-placeholder { /* Firefox 18- */
+            color: white;
+        }
+    </style>
+
+{% endblock %}
+
+
+<div class="bg-footer pt-5 px-5">
 
 
     <!-- LOGOS -->
-    <div class="row pt-5">
-        <div class="col-8">
-            <img class="" src="{{ asset('build/assets/maquette/images/FOOTER_LUNE.png') }}">
+    <div class="row py-5">
+        <div class="col-md-12 col-lg-9">
+            <img class="img-fluid" src="{{ asset('build/maquette/images/FOOTER_LUNE.png') }}">
         </div>
-        <div class="col-4">
-            <img class="" src="{{ asset('build/assets/maquette/images/FOOTER_LOGO.png') }}">
+        <div class="d-sm-none d-md-none d-lg-block col-lg-3">
+            <img class="img-fluid" src="{{ asset('build/maquette/images/FOOTER_LOGO.png') }}">
         </div>
     </div>
 
@@ -15,66 +37,135 @@
 
 
     <!-- BOUTONS FOOTER -->
-    <div class="row">
-        <nav class="navbar navbar-expand-lg col-12 mb-auto">
-            <ul class="navbar-nav w-100 justify-content-between">
-                {% for src in btns_footer %}
-                    {% set url = 'assets/maquette/' %}
-                    {% set ext = '.png' %}
-                    {% set src = url ~ src ~ ext %}
-                    <li>
-                        <img class="" src="{{ asset(src) }}">
-                    </li>
-                {% endfor %}
-            </ul>
-        </nav>
+    <div class="row pt-5">
+        <div class="col-12">
+            <div class="row text-white fs-3">
+                <div class="col-sm-12 col-md-4 col-lg-2 pb-5 offset-lg-1">
+                    <div class="row">
+                        <div class="col-11 text-center">
+                            <img class="col-12 img-fluid" style="width: 200px" src="/build/maquette/images/FOOTER_ARROW.svg">
+                            <div class="mt-5">
+                                <b>SCÈNE <br>
+                                DE MUSIQUES <br> ACTUELLES </b><br> 17 Quai Bélu <br> 80000 Amiens
+                            </div>
+                        </div>
+
+                        <img class="col-1 img-fluid" style="max-height: 400px" src="/build/maquette/images/SEPARATOR_FOOTER.svg">
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-2 pb-5">
+                    <div class="row h-100">
+                        <div class="col-11 text-center">
+                            <img class="img-fluid" style="width: 200px" src="/build/maquette/images/FOOTER_BUBBLE.svg">
+                            <div class="mt-5">
+                                NOUS CONTACTER
+                            </div>
+                        </div>
+                        <img class="col-1 img-fluid" style="max-height: 400px" src="/build/maquette/images/SEPARATOR_FOOTER.svg">
+
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-2 pb-5">
+                    <div class="row h-100">
+                        <div class="col-11 text-center">
+                            <img class="img-fluid" style="width: 200px" src="/build/maquette/images/FOOTER_CADDIE.svg">
+                            <div class="mt-5">
+                                VOS COMMANDES
+                            </div>
+                        </div>
+                        <div class="col-1 d-md-none d-lg-block">
+                            <img class="img-fluid" style="max-height: 400px" src="/build/maquette/images/SEPARATOR_FOOTER.svg">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-5">
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <div class="row">
+                                <div class="col-4">
+                                    <img class="" style="width: 200px" src="/build/maquette/images/FOOTER_ENVELOPPE.svg">
+                                </div>
+                            </div>
+                            <div class="row mt-5">
+                                <div class="col-4">
+                                    NEWSLETTER
+                                </div>
+                                <div class="col-7">
+                                    <input class="form-control border-0 rounded rounded-0" style="background-color: #FF5D5D; color: white; border-bottom: 1px solid white !important; ::placeholder { color: white; }" type="text" placeholder="Votre e-mail">
+
+                                </div>
+                                <div class="col-1">
+                                    <img src="/build/maquette/images/BOUTON_FORM_FOOTER.png">
+                                </div>
+
+                                <div class="col-12 text-start">
+                                    En indiquant votre adresse email, vous consentez à recevoir nos lettres d'information par voie électronique. Vous pouvez vous désinscrire à tout moment via les liens de désinscription ou en nous contactant. Pour en savoir plus, consultez notre Politique de confidentialité.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 
     <!-- MEDIAS SOCIAUX -->
     <div class="row">
-        <div class="col-5">
-        </div>
-        <div class="col-2">
-            <nav class="navbar navbar-expand-lg col-12 pb-0">
-                <ul class="navbar-nav w-100 justify-content-between">
-                    {% for src, link in medias %}
-                        {% set url = 'assets/maquette/' %}
-                        {% set ext = '.png' %}
-                        {% set src = url ~ src ~ ext %}
-                        <li>
-                            <a href="{{ link }}">
-                                <img src="{{ asset(src) }}">
-                            </a>
-                        </li>
-                    {% endfor %}
-
-                </ul>
-            </nav>
-        </div>
-        <div class="col-5">
-        </div>
+        {% for src, link in medias %}
+            {% set url = 'build/maquette/images/' %}
+            {% set ext = '.png' %}
+            {% set src = url ~ src ~ ext %}
+                <div class="col-1 {% if loop.index0 == 0 %}offset-4{% endif %}">
+                    <img class="img-fluid" src="{{ asset(src) }}">
+                </div>
+        {% endfor %}
     </div>
 </div>
 
 
     <!-- PARTENAIRES ET SPONSORS -->
-<div class="pt-5 bg-grey">
-    <div class="container">
-        <img class="w-100" src="{{ asset('build/assets/maquette/images/FOOTER_SPONSORS.png') }}">
+<div class="pt-5 bg-grey px-0 mx-0">
+    <div class="row px-0 mx-0">
+
+        {% for src in sponsors %}
+            {% set url = 'build/maquette/images/' %}
+            {% set ext = '.png' %}
+            {% set src = url ~ src ~ ext %}
+            <div class="col-md-4 col-lg-2 mb-2 {% if loop.index0 == 0 or loop.index0 == 4 or loop.index0 == 5 or loop.index0 == 9 %}offset-lg-1{% endif %}">
+                <img class="img-fluid" src="{{ asset(src) }}">
+            </div>
+        {% endfor %}
     </div>
 </div>
 
 
     <!-- MENTIONS LEGALES -->
-<div class="bg-grey">
-    <nav class="navbar navbar-expand-lg col-10 offset-1 mb-auto ml-5 mr-5">
-        <ul class="navbar-nav w-100 justify-content-between">
+<div class="bg-grey row fs-4 pt-5 px-0 mx-0">
+    <!-- LG / XL -->
+    <div class="d-lg-flex d-none justify-content-center mb-5">
         {% for name, url in mentions %}
-            <li>
-                <a  class="text-decoration-none black" href="{{ url }}">{{ name }}</a>
-            </li>
+            {% if loop.index0 > 0 %} | {% endif %}
+            <div class="mx-4">
+               <a  class="text-decoration-none black" href="{{ url }}">{{ name }}</a>
+            </div>
         {% endfor %}
-        </ul>
-    </nav>
+    </div>
+
+    <div class="d-md-flex d-lg-none d-xl-none justify-content-center mb-5">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row mx-4 text-center">
+                        {% for name, url in mentions %}
+
+                            <div class="px-0 {% if loop.index0 < 4 %}col-3{% else %}col-4{% endif %}">
+
+                                {% if loop.index0 > 0 and loop.index0 != 4 %} | {% endif %}
+                                <a  class="text-decoration-none black" href="{{ url }}">{{ name }}</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+    </div>
 </div>

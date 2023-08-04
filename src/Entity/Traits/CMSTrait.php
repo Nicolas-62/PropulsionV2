@@ -163,11 +163,11 @@ trait CMSTrait
 
 
 
-    public function getMedia(Mediaspec $mediaspec): ?Media
+    public function getMedia(int $mediaspec_id): ?Media
     {
         $media = null;
         foreach ($this->getMediaLinks() as $mediaLink){
-            if($mediaLink->getMediaspec() === $mediaspec){
+            if($mediaLink->getMediaspec()->getId() == $mediaspec_id){
                 $media = $mediaLink->getMedia();
             }
         }
