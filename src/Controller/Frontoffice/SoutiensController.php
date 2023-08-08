@@ -2,15 +2,18 @@
 
 namespace App\Controller\Frontoffice;
 
+use App\Entity\Article;
 use App\Entity\Category;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/', name: 'fo_home_')]
-class HomeController extends FOController
+class SoutiensController extends FOController
 {
+
+
+
 
     public function __construct(EntityManagerInterface $entityManager) {
         dump('HomeController');
@@ -29,26 +32,46 @@ class HomeController extends FOController
         //$this->data['header_partial'] = 'home/header.html.twig';
         //$this->data['header_partial'] = '';
         //$this->data['footer_partial'] = '';
-        $this->list_partial     =       'home.html.twig';
-        $this->data['test'] = 'HomeController';
+        $this->list_partial     =       'soutiens/index.html.twig';
 
     }
 
-    #[Route('home', name: 'index')]
+
+    #[Route('/soutiens', name: 'fo_soutiens')]
     public function index(): Response
     {
 
-        $events_agenda   = $this->entityManager->getRepository(Category::class)->getGenealogy(2, $this->getParameter('locale'));
-        $events_homepage = $this->entityManager->getRepository(Category::class)->getGenealogy(1, $this->getParameter('locale'));
 
-        $this->data['events_homepage']  = $events_homepage;
-        $this->data['events_agenda']    = $events_agenda;
-        $this->data['lien_billetterie'] = '';
-        $this->data['scripts'][]        = 'home_js';
-        $this->data['styles'][]         = 'home_css';
+
+        $this->data['page_title'] = 'Soutiens aux artistes';
+
+        // Récupération artistes accompagnés
+        $this->data['accompagnes'] = $this->entityManager->getRepository(Category::class)->getGenealogy(7, $this->getParameter('locale'));
+        $this->data['accompagnes_test2'] = $this->entityManager->getRepository(Category::class)->getArticles(7, $this->getParameter('locale'),1);
+
+        $this->data['accompagnes_test'] = $this->entityManager->getRepository(Article::class)->findBy(['category' => '7']);
+        $this->data['accompagnes_medias'] = ['ADAM','JONASKAY','ARYANE','DOUBLE', 'ETIENNE','KAMELECTRIC'];
+
+
+        // Récupération auditions
+        $auditions = $this->entityManager->getRepository(Category::class)->getGenealogy(8, $this->getParameter('locale'));
+
+        // Récupérations des medias
+        $auditions_medias =['AMBRE','CASSANDRE','EXAUBABA','LAST'];
+
+        // Récupération event actualités
+        $event_actus = $this->entityManager->getRepository(Category::class)->getGenealogy(9, $this->getParameter('locale'));
+
+        // Récupérations des medias
+        $event_actus_medias =['MUMBLE','APERO','ACTION','MAO'];
+
+        $this->data['auditions'] = $this->entityManager->getRepository(Category::class)->getGenealogy(8, $this->getParameter('locale'));
+        $this->data['auditions_medias'] = ['AMBRE','CASSANDRE','EXAUBABA','LAST'];
+        $this->data['event_actus'] = $this->entityManager->getRepository(Category::class)->getGenealogy(9, $this->getParameter('locale'));
+        $this->data['event_actus_medias'] = ['MUMBLE','APERO','ACTION','MAO'];
 
         // HEADER
-        $this->data['btns']             = $this->btns = array('pic_icon', 'search_icon', 'profile_icon', 'menu_icon');
+        $this->data['btns']             = array('pic_icon', 'search_icon', 'profile_icon', 'menu_icon');
         $this->data['menu']             = array('Agenda' => 'fo_agenda','Actus' => 'fo_actus','Action Culturelle' => 'fo_actions','Soutiens aux artistes' => 'fo_soutiens','Infos Pratiques' => 'fo_infospratiques');
 
         // FOOTER
@@ -61,11 +84,4 @@ class HomeController extends FOController
 
         return parent::lister();
     }
-
-    #[Route('/programmation', name: 'programmation')]
-    public function programmation(): Response
-    {
-        return $this->redirect('home');
-    }
-
 }

@@ -1,40 +1,131 @@
-<nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
-<div class="container-fluid">
-    <a class="navbar-brand" href="#">E-systemes</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse"  id="navbarScroll">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-            <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="/">Accueil</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url('fo_liste') }}">Articles</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="dropdown-language" role="button"
-                   data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    English
-                </a>
-                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-language">
-                    <li><a class="dropdown-item" href="{{ path('fo_index', {_locale: 'fr'}) }}">Français</a></li>
-                    <li><a class="dropdown-item" href="{{ path('fo_index', {_locale: 'en'}) }}">English</a></li>
-                </ul>
-            </li>
-        </ul>
-        <ul class="navbar-nav mb-2 mb-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-            <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="{{ url('fo_contact') }}">Contact</a>
-            </li>
-        </ul>
-{#            Barre de recherche à réactiver au besoin #}
+{# LOGO LUNE #}
 
-{#            <form class="d-flex" role="search">#}
-{#                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">#}
-{#                <button class="btn btn-outline-success" type="submit">Search</button>#}
-{#            </form>#}
+
+
+{# IMAGE CONCERT / GALLERIE / RECHERCHE / PROFIL / PANIER ? #}
+
+{# NAV BAR #}
+
+{% block stylesheet %}
+
+    <style>
+        .offcanvas {
+            border: none !important;
+        }
+
+        .offcanvas.offcanvas-end {
+            top:20%;
+            background:transparent;
+            right: -15px;
+            width: 450px;
+        }
+        .nav-link {
+            color: black;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .round-left {
+            border-top-left-radius: 30px;
+            border-bottom-left-radius: 30px;
+            padding-left: 15px;
+            background-color: #FFFFFF;
+            color: black;
+            border: 1px solid black;
+        }
+        .btn-move-up {
+            margin-top: -10px; /* Ajustez cette valeur selon le déplacement souhaité */
+        }
+    </style>
+
+{% endblock %}
+<!-- HEADER LG -->
+<div class="d-md-none d-sm-none p-0 m-0 d-lg-block">
+    <div class="row">
+        <div class="col-3">
+            <a href="{{ path('ma_home') }}">
+                <img class="img-fluid" src="{{ asset('build/maquette/images/LOGO_ACTUEL.png') }}">
+            </a>
+        </div>
+        <div class="col-9 d-block flex-column align-items-start p-0">
+            <nav class="navbar navbar-expand-lg col-12 mt-auto">
+                <ul class="navbar-nav w-100 justify-content-end">
+                    <li><img class="img-fluid" src="{{ asset('build/maquette/images/artistes_header.png') }}"></li></li>
+                    {% for src in btns %}
+                        {% set url = 'build/maquette/images/' %}
+                        {% set ext = '.png' %}
+                        {% set src = url ~ src ~ ext %}
+                        <li><img src="{{ asset(src) }}"></li>
+                    {% endfor %}
+                </ul>
+            </nav>
+            <!-- NAV BAR LG -->
+            <nav class="d-none d-lg-flex block navbar-expand-lg col-12 mb-auto">
+                <div class="row">
+                    <ul class="navbar-nav w-100 justify-content-between nav-md-sm">
+                        {% for name, url in menu %}
+                            <li style="margin-left: 20px;margin-right: 20px"><strong><a class="text-decoration-none black" style="font-size:32px" href="{{ path(url) }}">{{ name|upper }}</a></strong></li>
+                            {% if loop.index0 < 4 %}
+                                <img src="{{ asset('build/maquette/images/separator.png') }}">
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </nav>
+        </div>
     </div>
 </div>
-</nav>
+
+
+<!-- HEADER MD/SM -->
+
+<div class="d-lg-none">
+    <div class="row">
+        <div class="col-3">
+            <a href="{{ path('ma_home') }}">
+                <img src="{{ asset('build/maquette/images/LOGO_ACTUEL.png') }}">
+            </a>
+        </div>
+        <div class="col-9">
+            <div class="row">
+                <div class="col-8 offset-3 pt-5">
+                    <img src="{{ asset('build/maquette/images/ARTISTES_HEADER_SM.png') }}">
+                </div>
+            </div>
+        </div>
+        <div class="col-1"></div>
+        {% for src in btns %}
+            <div class="col-2">
+                {% set url = 'build/maquette/images/' %}
+                {% set ext = '.png' %}
+                {% set src = url ~ src ~ ext %}
+                <img src="{{ asset(src) }}">
+            </div>
+        {% endfor %}
+        <div class="col-2">
+            <div class="dropdown">
+
+                <button class="btn btn-move-up" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                    <img src="{{ asset('build/maquette/images/MENU_HEADER.png') }}">
+                </button>
+
+                <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                    <div class="offcanvas-body">
+                        <nav class="navbar navbar-dark py-0" style="color: black">
+                            <ul class="navbar-nav w-100">
+                                <!-- Catégorie du menu -->
+                                <li class="nav-item border-y ps-3">
+                                    <div class="round-left nav-link fs-1" href=""><a class="text-decoration-none" style="color: black" href="/maquette">> ACCUEIL</a></div>
+                                    <div class="round-left nav-link fs-1" href=""><a class="text-decoration-none" style="color: black" href="/maquetteprogrammation">> PROGRAMMATION</a></div>
+                                    {% for name, url in menu %}
+                                        <div class="round-left nav-link fs-1" href=""><a class="text-decoration-none" style="color: black" href="{{ path(url) }}">> {{ name|upper }}</a></div>
+                                    {% endfor %}
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 

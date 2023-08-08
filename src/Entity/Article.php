@@ -673,8 +673,15 @@ class Article
         $this->style = $style;
     }
 
-
-
+    /**
+     * @param Collection $themes
+     * @return Article
+     */
+    public function setThemes(Collection $themes): Article
+    {
+        $this->themes = $themes;
+        return $this;
+    }
 
 }
 

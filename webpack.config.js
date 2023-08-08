@@ -38,14 +38,21 @@ Encore
      * Each entry will result in one JavaScript file (e.g. main.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
+    // BACKOFFICE
     .addEntry('backoffice', './assets/bo/js/main.js')
     .addEntry('bo_medias',  './assets/bo/js/medias.js')
     .addEntry('bo_articles','./assets/bo/js/articles.js')
     .addEntry('bo_article', './assets/bo/js/article.js')
 
+    // FRONTOFFICE
 
-    .addEntry('frontoffice',    './assets/front/js/main.js')
-    .addEntry('home',           './assets/front/js/home.js')
+    // MAIN
+    .addEntry('fo_main_js',    './assets/front/js/main.js')
+    .addEntry('fo_main_css',    './assets/front/styles/main.scss')
+    // PAGES
+    .addEntry('home_js',           './assets/front/js/home.js')
+    .addEntry('home_css',           './assets/front/styles/home.scss')
+
 
 
     // MAQUETTE

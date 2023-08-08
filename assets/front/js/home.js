@@ -20,9 +20,3 @@ $(".prog").hover(
         $(this).children(".overlay").hide();
     }
 )
-
-// A l'affichage de la modale de suppression
-$('#exampleModal').on('show.bs.modal', function(event){
-    console.log('coucou')
-});
-

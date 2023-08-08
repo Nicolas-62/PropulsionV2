@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/', name: 'ma_')]
+#[Route('/maquette/', name: 'ma_')]
 class MaquetteController extends AbstractController
 {
 
@@ -21,50 +21,38 @@ class MaquetteController extends AbstractController
 
 
 
-        $this->data = array();
         $this->data = array('Agenda' => 'ma_agenda','Actus' => 'ma_actus','Action Culturelle' => 'ma_actions','Soutiens aux artistes' => 'ma_soutiens','Infos Pratiques' => 'ma_infospratiques');
 
-        $this->btns = array();
         $this->btns = array('pic_icon', 'search_icon', 'profile_icon', 'menu_icon');
 
-        $this->mentions = array();
         $this->mentions = array('Plan du site' => 'plan', 'FAQ' => 'faq','Mentions légales' => 'mentions', 'CGV' => 'cgv', 'Poltique de Confidentialité' => 'confidentialite', 'Gestion des cookies' => 'cookies', 'Espace presse' => 'presse');
 
-        $this->btns_footer = array();
         $this->btns_footer = array('FOOTER_SCENE', 'FOOTER_CONTACT','FOOTER_COMMANDE', 'FOOTER_NEWS');
 
-        $this->medias = array();
         $this->medias = array('FOOTER_TEL' => '', 'FOOTER_INSTA' => 'https://www.instagram.com/lalunedespirates/?hl=fr','FOOTER_TWITTER' => 'https://twitter.com/i/flow/login?redirect_after_login=%2Flunedespirates', 'FOOTER_FACEBOOK' => 'https://www.facebook.com/lalunedespirates/?locale=fr_FR');
 
 
         // Infos pratiques
-        $this->infos_menu = array();
         $this->infos_menu = array('Nous contacter' => '', 'Comment venir' => '','Tarifs et Billetterie' => '', 'Questions Fréquentes' => '');
 
-        $this->infos_contact = array();
         $this->infos_contact = array('JIHANE MILADI' => 'Présidente', 'FRANÇOIS PARMENTIER' => 'Production & Vie Associative','ANTOINE GRILLON' => 'Direction & Programmation', 'VINCENT RISBOURG' => 'Soutien aux artistes', 'SANDRINE DARLOT AYMONE MIHINDOU' => 'Administration
 ','MARIE YACHKOURI' => 'Billetterie & Communication', 'MARTIN ROGGEMAN' => 'Régie Générale', 'KHALID MHANNAOUI' => 'Accueil','ANAÏS FRAPSAUCE MARINE SALVAT' => 'Projets Culturels & Publics', 'OLIVIER BIKS/BIBI' => 'Graphisme','JIMMY BOURBIER' => 'Communication', 'LUDO LELEU' => 'Photographe');
 
 
-        $this->equipe_tech = array();
         $this->equipe_tech = array('Emmanuel Héreau', 'Gwennaelle Krier','Illan Lacoudre', 'Jean Maillart', 'Benoit Moritz', 'Grégory Vanheulle', 'Alexandre Verger');
 
-        $this->benevoles = array();
         $this->benevoles = array('Alexandra', 'Antoine','Arsène', 'Beniamin', 'Bertille', 'Côme', 'Déborah', 'Elena','Elisa', 'Ewan', 'Fanny', 'Francesca', 'Gaëtan', 'Giacomo','Jules Judith', 'Laurent', 'Lisa', 'Lorea', 'Lucile', 'Manon A','Manon P', 'Marine', 'Nahelou', 'Nicolas', 'Perrine', 'Rodolphe','Romain D', 'Romain M', 'Simon', 'Valère', 'Zoé');
 
-        $this->themes_agenda = array();
         $this->themes_agenda = array('ATELIERS', 'CONCERTS','JEUNE PUBLIC', 'SOUTIEN AUX ARTISTES');
 
-        $this->themes_actu = array();
         $this->themes_actu = array('LA LUNE DES PIRATES', 'CONCERTS','ACTION CULTURELLE','JEUNE PUBLIC', 'SOUTIEN AUX ARTISTES');
 
-        $this->sponsors = array();
         $this->sponsors = array('AMIENS_METROPOLE', 'AMIENS', 'SOMME', 'HDF', 'PREFET_HDF', 'CNM', 'SACEM', 'COPIE_PRIVEE', 'CREDIT_MUTUEL', 'FESTIVAL_INDE');
 
 
     }
 
-    #[Route('/maquette', name: 'maquette')]
+    #[Route('home', name: 'home')]
     public function index(): Response
     {
 
@@ -87,7 +75,7 @@ class MaquetteController extends AbstractController
         ]);
     }
 
-    #[Route('/agenda', name: 'agenda')]
+    #[Route('agenda', name: 'agenda')]
     public function agenda(): Response
     {
 
@@ -110,7 +98,7 @@ class MaquetteController extends AbstractController
         ]);
     }
 
-    #[Route('/actu', name: 'actus')]
+    #[Route('actus', name: 'actus')]
     public function actus(): Response
     {
 
@@ -138,7 +126,7 @@ class MaquetteController extends AbstractController
         ]);
     }
 
-    #[Route('/actions', name: 'actions')]
+    #[Route('actions', name: 'actions')]
     public function pepiniere(): Response
     {
 
@@ -161,7 +149,7 @@ class MaquetteController extends AbstractController
         ]);
     }
 
-    #[Route('/soutiens', name: 'soutiens')]
+    #[Route('soutiens', name: 'soutiens')]
     public function soutiens(): Response
     {
         // Récupération artistes accompagnés
@@ -214,7 +202,7 @@ class MaquetteController extends AbstractController
 
 
 
-    #[Route('/infospratiques', name: 'infospratiques')]
+    #[Route('infospratiques', name: 'infospratiques')]
     public function infospratiques(): Response
     {
 
@@ -258,7 +246,7 @@ class MaquetteController extends AbstractController
 
     // MENTIONS LEGALES
 
-    #[Route('/plan', name: 'plan')]
+    #[Route('plan', name: 'plan')]
     public function plandusite(): Response
     {
         return $this->render('maquette/plan.html.twig', [
@@ -275,7 +263,7 @@ class MaquetteController extends AbstractController
     }
 
 
-    #[Route('/faq', name: 'faq')]
+    #[Route('faq', name: 'faq')]
     public function faq(): Response
     {
         return $this->render('maquette/faq.html.twig', [
@@ -292,7 +280,7 @@ class MaquetteController extends AbstractController
     }
 
 
-    #[Route('/mentions', name: 'mentions')]
+    #[Route('mentions', name: 'mentions')]
     public function mentions(): Response
     {
         return $this->render('maquette/mentions.html.twig', [
@@ -309,7 +297,7 @@ class MaquetteController extends AbstractController
     }
 
 
-    #[Route('/cgv', name: 'cgv')]
+    #[Route('cgv', name: 'cgv')]
     public function cgv(): Response
     {
         return $this->render('maquette/mentions.html.twig', [
@@ -326,7 +314,7 @@ class MaquetteController extends AbstractController
     }
 
 
-    #[Route('/confidentialite', name: 'confidentialite')]
+    #[Route('confidentialite', name: 'confidentialite')]
     public function confidentialite(): Response
     {
         return $this->render('maquette/confidentialite.html.twig', [
@@ -341,7 +329,7 @@ class MaquetteController extends AbstractController
           'locale' => $this->getParameter('locale'),
         ]);
     }
-    #[Route('/credits', name: 'credits')]
+    #[Route('credits', name: 'credits')]
     public function credits(): Response
     {
         return $this->render('maquette/credits.html.twig', [
@@ -358,7 +346,7 @@ class MaquetteController extends AbstractController
     }
 
 
-    #[Route('/cookies', name: 'cookies')]
+    #[Route('cookies', name: 'cookies')]
     public function cookies(): Response
     {
         return $this->render('maquette/cookies.html.twig', [
@@ -374,7 +362,7 @@ class MaquetteController extends AbstractController
         ]);
     }
 
-    #[Route('/presse', name: 'presse')]
+    #[Route('presse', name: 'presse')]
     public function presse(): Response
     {
         return $this->render('maquette/presse.html.twig', [
@@ -391,7 +379,7 @@ class MaquetteController extends AbstractController
     }
 
 
-    #[Route('/maquetteprogrammation', name: 'programmation')]
+    #[Route('maquetteprogrammation', name: 'programmation')]
     public function programmation(): Response
     {
         $giscard = $this->entityManager->getRepository(Article::class)->findOneBy(['id' => '13']);

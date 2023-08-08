@@ -5,13 +5,6 @@
  * (and its CSS file) in your base layout (layout.html.twig).
  */
 
-// any CSS you import will output into a single css file (app.css in this case)
-import '../styles/main.scss';
-
-// start the Stimulus application
-//import '../../bootstrap';
-
-
 const $ = require('jquery');
 // import $ from 'jquery';
 global.$ = $;

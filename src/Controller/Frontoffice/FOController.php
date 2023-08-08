@@ -24,13 +24,13 @@ class FOController extends AbstractController
     protected array $data;
 
     public function __construct(
-        private EntityManagerInterface $entityManager,
+        protected EntityManagerInterface $entityManager,
     )
     {
         // Code langue.
         $this->entityManager              =     $entityManager;
         // Datas passées à la vue.
-        $this->data                       =     array();
+        $this->data                       =     array();        // Array des données passées au layout
         $this->data['styles']             = 	array(); 		// Array des feuilles de styles supplémentaires passées au layout
         $this->data['scripts']            = 	array(); 		// Array des fichiers javascript passés au layout ; chemin relatif depuis le dossier assets sans extension
         $this->list_partial               =     '';

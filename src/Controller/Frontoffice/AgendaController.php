@@ -3,13 +3,12 @@
 namespace App\Controller\Frontoffice;
 
 use App\Entity\Category;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/', name: 'fo_home_')]
-class HomeController extends FOController
+class AgendaController extends FOController
 {
 
     public function __construct(EntityManagerInterface $entityManager) {
@@ -29,23 +28,19 @@ class HomeController extends FOController
         //$this->data['header_partial'] = 'home/header.html.twig';
         //$this->data['header_partial'] = '';
         //$this->data['footer_partial'] = '';
-        $this->list_partial     =       'home.html.twig';
-        $this->data['test'] = 'HomeController';
+        $this->list_partial     =       'agenda/index.html.twig';
 
     }
 
-    #[Route('home', name: 'index')]
+    #[Route('/agenda', name: 'fo_agenda')]
     public function index(): Response
     {
+        $events_agenda = $this->entityManager->getRepository(Category::class)->getGenealogy(3, $this->getParameter('locale'));
+        $themes_agenda = array('ATELIERS', 'CONCERTS','JEUNE PUBLIC', 'SOUTIEN AUX ARTISTES');
 
-        $events_agenda   = $this->entityManager->getRepository(Category::class)->getGenealogy(2, $this->getParameter('locale'));
-        $events_homepage = $this->entityManager->getRepository(Category::class)->getGenealogy(1, $this->getParameter('locale'));
-
-        $this->data['events_homepage']  = $events_homepage;
-        $this->data['events_agenda']    = $events_agenda;
-        $this->data['lien_billetterie'] = '';
-        $this->data['scripts'][]        = 'home_js';
-        $this->data['styles'][]         = 'home_css';
+        $this->data['page_title'] = 'Agenda';
+        $this->data['events_agenda'] = $events_agenda;
+        $this->data['themes_agenda'] = $themes_agenda;
 
         // HEADER
         $this->data['btns']             = $this->btns = array('pic_icon', 'search_icon', 'profile_icon', 'menu_icon');
@@ -61,11 +56,4 @@ class HomeController extends FOController
 
         return parent::lister();
     }
-
-    #[Route('/programmation', name: 'programmation')]
-    public function programmation(): Response
-    {
-        return $this->redirect('home');
-    }
-
 }
