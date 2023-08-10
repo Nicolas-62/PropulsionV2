@@ -7,6 +7,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
+
+#[Route('/infos/', name: 'fo_infos_')]
 class InfosPratiquesController extends FOController
 {
 
@@ -33,7 +36,7 @@ class InfosPratiquesController extends FOController
 
 
 
-    #[Route('/infospratiques', name: 'fo_infospratiques')]
+    #[Route('', name: 'index')]
     public function index(): Response
     {
         $this->data['transports'] = ['EN TRAIN' => "La gare se trouve à 15 minutes à pied de l'entrée des salles !
@@ -57,15 +60,6 @@ class InfosPratiquesController extends FOController
 
 
 
-
-        // HEADER
-        $this->data['btns']             = array('pic_icon', 'search_icon', 'profile_icon', 'menu_icon');
-        $this->data['menu']             = array('Agenda' => 'fo_agenda','Actus' => 'fo_actus','Action Culturelle' => 'fo_actions','Soutiens aux artistes' => 'fo_soutiens','Infos Pratiques' => 'fo_infospratiques');
-
-        // FOOTER
-        $this->data['medias']           = array('FOOTER_TEL' => '', 'FOOTER_INSTA' => 'https://www.instagram.com/lalunedespirates/?hl=fr','FOOTER_TWITTER' => 'https://twitter.com/i/flow/login?redirect_after_login=%2Flunedespirates', 'FOOTER_FACEBOOK' => 'https://www.facebook.com/lalunedespirates/?locale=fr_FR');
-        $this->data['sponsors']         = array('AMIENS_METROPOLE', 'AMIENS', 'SOMME', 'HDF', 'PREFET_HDF', 'CNM', 'SACEM', 'COPIE_PRIVEE', 'CREDIT_MUTUEL', 'FESTIVAL_INDE');
-        $this->data['mentions']         = array('Plan du site' => 'plan', 'FAQ' => 'faq','Mentions légales' => 'mentions', 'CGV' => 'cgv', 'Poltique de Confidentialité' => 'confidentialite', 'Gestion des cookies' => 'cookies', 'Espace presse' => 'presse');
 
         // CONSTANTES GENERALES
         $this->data['locale']           = $this->getParameter('locale');

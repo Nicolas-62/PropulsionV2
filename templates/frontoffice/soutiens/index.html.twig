@@ -11,10 +11,10 @@
                 <div class="col-md-6 col-lg-3">
                     <h1 class="pt-4">Artistes Accompagnés</h1>
                 </div>
-                <div class="col-md-6 col-lg-3 offset-lg-4">
+                <div class="col-md-6 col-lg-3 offset-lg-3">
                     <h2>Dispositif d’accompagnement de La Lune des Pirates</h2>
                 </div>
-                <div class="col-2" style="line-height: 0.7">
+                <div class="col-3" style="line-height: 0.7">
                     <p style="font-size: 60px; font-weight: bold">Objectif</p>
                     <p style="font-size: 80px; font-weight: bold">LUNE</p>
                 </div>
@@ -30,15 +30,17 @@
         <div class="row">
             {% for accomp in accompagnes.elements %}
                 {{  accomp.element.getDatas(locale) }}
-                <div class="col-lg-4 col-md-12 pb-5">
-                    <!-- Card-Actu -->
-                    <div class="card mb-lg-3 mx-lg-4 shadow-lg rounded-0 h-100">
-                        {% set src = accompagnes_medias[loop.index0] %}
-                        {% set url = 'build/maquette/images/' %}
-                        {% set ext = '.png' %}
-                        {% set src = url ~ src ~ ext %}
 
-                        <img src="{{ asset(src) }}" class="card-img-top rounded-0" alt="...">
+                {% set media = accomp.element.getMedia(4) %}
+                <div class="col-lg-4 col-md-12 pb-lg-3 px-0">
+                    <!-- Card-Actu -->
+                    <a class="text-decoration-none" href="{{ path('fo_soutiens_detail', { 'title': accomp.element.title }) }}">
+                        <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100">
+
+                        {% if media is not null %}
+                            {% set url = '/assets/images/' ~ media.name  %}
+                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                        {% endif %}
                         <!-- Themes -->
                         <div class="row m-0 p-0">
                             <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ accomp.element.themeBackColor }};color: {{ accomp.element.themeTextColor }};">
@@ -69,6 +71,7 @@
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
             {% endfor %}
         </div>
@@ -81,10 +84,10 @@
                 <div class="col-md-6 col-lg-3">
                     <h1 class="pt-4">Auditions</h1>
                 </div>
-                <div class="col-3">
+                <div class="col-md-6 col-lg-3 offset-lg-3">
                     <h2>Dispositif national de repérage et de sélection de nouveaux talents</h2>
                 </div>
-                <div class="col-2" style="line-height: 30pt">
+                <div class="col-3" style="line-height: 40pt">
                     <p style="font-size: 60px; font-weight: bold">Les inouïs du printemps de Bourges</p>
                 </div>
             </div>
@@ -102,15 +105,17 @@
         <div class="row">
             {% for accomp in auditions.elements %}
                 {{  accomp.element.getDatas(locale) }}
-                <div class="col-lg-4 col-md-12">
-                    <!-- Card-Actu -->
-                    <div class="card mb-lg-3 mx-lg-4 shadow-lg rounded-0">
-                        {% set src = auditions_medias[loop.index0] %}
-                        {% set url = 'build/maquette/images/' %}
-                        {% set ext = '.png' %}
-                        {% set src = url ~ src ~ ext %}
 
-                        <img src="{{ asset(src) }}" class="card-img-top rounded-0" alt="...">
+                {% set media2 = accomp.element.getMedia(4) %}
+                <div class="col-lg-4 col-md-12 pb-lg-3 px-0">
+                    <!-- Card-Actu -->
+                    <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100">
+
+
+                        {% if media2 is not null %}
+                            {% set url = '/assets/images/' ~ media2.name  %}
+                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                        {% endif %}
 
                         <!-- Themes -->
                         <div class="row m-0 p-0">
@@ -119,9 +124,8 @@
                                 {% for theme in themes %}
                                     {{ theme.name }}
                                 {% endfor %}
-
                             </div>
-                            <div class="col-7 theme-2 text-uppercase">
+                            <div class="col-7 theme-2 text-uppercase" style="background-color: {{ accomp.element.styleBackColor }};color: {{ accomp.element.styleTextColor }}">
                                 <img class="tiny-icon" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">
                                 {{ accomp.element.style }}
                             </div>
@@ -148,22 +152,25 @@
 
     <!-- Évènements Actualités -->
 
-    <div class="py-lg-5 px-lg-5">
+    <div class="p-lg-5">
         <div class="p-sm-5 p-md-5 p-lg-0">
-            <h2 class="">Evenements Actualités</h2>
+            <div class="row">
+                <h1 class="py-4">Evenements Actualités</h1>
+            </div>
         </div>
         <div class="row">
             {% for event_actu in event_actus.elements %}
                 {{  event_actu.element.getDatas(locale) }}
-                <div class="col-lg-4 col-md-12 mb-lg-5">
-                    <!-- Card-Actu -->
-                    <div class="card mb-lg-3 mx-lg-4 shadow-lg rounded-0 h-100">
 
-                        {% set src = event_actus_medias[loop.index0] %}
-                        {% set url = 'build/maquette/images/' %}
-                        {% set ext = '.png' %}
-                        {% set src = url ~ src ~ ext %}
-                        <img src="{{ asset(src) }}" class="card-img-top rounded-0" alt="...">
+                {% set media3 = event_actu.element.getMedia(4) %}
+                <div class="col-lg-4 col-md-12 pb-lg-3 px-0">
+                    <!-- Card-Actu -->
+                    <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100">
+
+                        {% if media3 is not null %}
+                            {% set url = '/assets/images/' ~ media3.name  %}
+                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                        {% endif %}
                         <!-- Themes -->
                         <div class="row m-0 p-0">
                             <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ event_actu.element.themeBackColor }};color: {{ event_actu.element.themeTextColor }};">

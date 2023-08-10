@@ -1,4 +1,5 @@
-{% extends 'maquette/layout.html.twig' %}
+{% extends 'frontoffice/_components/layout.html.twig' %}
+
 
 {% block stylesheets %}
     <style>
@@ -11,12 +12,19 @@
 {% endblock %}
 
 {% block body %}
-
-    {{ giscard.getDatas(locale) }}
+    {{ article.getDatas(locale) }}
     <!-- IMAGE DU HAUT -->
     <div class="row shadow-lg">
         <div class="col-lg-8 col-md-12 p-0" style="z-index: 500">
-            <img  src="build/maquette/images/GISCARD_GRAND.png" class="w-100">
+            {% set media = article.getMedia(9) %}
+            {% if media is not null %}
+                {% set url = '/assets/images/' ~ media.name  %}
+                <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+            {% endif %}
+
+
+
+
         </div>
         <!-- BILLETTERIE AU DESSUS DE L'IMAGE -->
         <div class="col-lg-4 col-md-12" style="z-index: 600">
@@ -25,7 +33,7 @@
                 <div class="row text-center h3">
                     <div
                             class="col-3 theme-1"
-                            style="background-color: {{ giscard.themeBackColor }};color: {{ giscard.themeTextColor }};"
+                            style="background-color: {{ article.themeBackColor }};color: {{ article.themeTextColor }};"
                     >
                         CONCERT
                     </div>
@@ -35,17 +43,17 @@
             <div class="card-container" >
                 <!-- Titre -->
                 <div class="lh-1">
-                    <p class="big-title mb-0">{{ giscard.title }}</p>
-                    <p class="big-subtitle mt-0">{{ giscard.subtitle }}</p>
+                    <p class="big-title mb-0">{{ article.title }}</p>
+                    <p class="big-subtitle mt-0">{{ article.subtitle }}</p>
                 </div>
 
                 <!-- Date -->
-                <div style="padding-bottom: 30px; padding-top: 30px">
-                    <p style="font-size: 70px; font-weight: bold" class="mb-0">
-                        {{ giscard.dateEvent }}
+                <div style="padding-bottom: 20px; padding-top: 20px">
+                    <p style="font-size: 40px; font-weight: bold" class="mb-0">
+                        {{ article.dateEvent }}
                     </p>
-                    <p style="font-size: 60px" class="mt-0">
-                        {{ giscard.heureEvent }}
+                    <p style="font-size: 30px" class="mt-0">
+                        {{ article.heureEvent }}
                     </p>
                 </div>
 
@@ -53,7 +61,7 @@
 
 
                 <!-- Bouton ajout panier -->
-                <div class="py-5">
+                <div class="pt-2 pb-5">
                     <div class="row  h3">
                         <div class="col-6">
                             <p>Tarif normal</p>
@@ -126,32 +134,43 @@
                 <!-- NOM GROUPE / STYLE / HORAIRE -->
                 <div class="row py-5 align-items-end">
                     <div class="col-lg-6 col-md-12">
-                        <h1 class="big-title">{{ giscard.title }}</h1>
+                        <h1 class="big-title">{{ article.title }}</h1>
                     </div>
                     <div class="col-lg-4 col-md-6">
-                        <h1>{{ giscard.typeMusic}} | {{ giscard.origin }}</h1>
+                        <h1>{{ article.typeMusic}}  {% if article.origin != "" %} | {{ article.origin }}{% endif %}</h1>
                     </div>
                     <div class="col-lg-2 col-md-6 d-flex justify-content-end">
-                        <h1 style="font-size: 60px">{{ giscard.heureEvent }}</h1>
+                        <h1 style="font-size: 60px">{{ article.heureEvent }}</h1>
                     </div>
                 </div>
 
                 <!-- RESUME ARTISTE -->
                 <div class="h2 py-3 lh-lg">
-                    {{ giscard.description | raw }}
+                    {{ article.description | raw }}
                 </div>
 
                 <!-- IMAGE ARTISTE -->
-                <img class="img-fluid py-3" src="{{ asset(('build/maquette/images/GISCARD_GUITARE.jpg')) }}">
+                {% set media2 = article.getMedia(10) %}
+                {% set media3 = article.getMedia(1) %}
+                {% if media2 is not null %}
+                    {% set url = '/assets/images/' ~ media2.name  %}
+                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                {% elseif media3 is not null %}
+                    {% set url = '/assets/images/' ~ media3.name  %}
+                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                {% endif %}
+
+
+
 
                 <!-- DESCRIPTION ARTISTE -->
                 <div class="h3 py-5 lh-lg">
-                        {{ giscard.content | raw }}
+                    {{ article.content | raw }}
                 </div>
 
                 <!-- VIDEO ARTISTE -->
                 <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item w-100" style="height: 860px;" src="{{ giscard.youtubeLink }}" allowfullscreen></iframe>
+                    <iframe class="embed-responsive-item w-100" style="height: 860px;" src="{{ article.youtubeLink }}" allowfullscreen></iframe>
                 </div>
 
                 <!-- PLUS D'INFOS SUR L'ARTISTE -->
@@ -159,30 +178,31 @@
                     <div class="col-lg-6 offset-lg-6 col-md-12">
                         <div class="row">
                             <div class="col-lg-6 col-md-12 d-flex align-items-end">
-                                <h2>Plus d'infos sur l'artiste</h2>
-
+                                {% if article.instagramLink != '' or article.twitterLink != '' or article.facebookLink != '' or article.siteInternet != ''  %}
+                                    <h2>Plus d'infos sur l'artiste</h2>
+                                {% endif %}
                             </div>
                             <div class="col-lg-6 col-md-12">
                                 <!-- MEDIAS SOCIAUX -->
                                 <div class="row">
-                                    {% if giscard.instagramLink != '' %}
+                                    {% if article.instagramLink != '' %}
                                         <div class="col-3">
-                                            <a href="{{ giscard.instagramLink }}"><img src="{{ asset('build/maquette/images/INSTA_PROGRAMMATION.svg') }}"></a>
+                                            <a href="{{ article.instagramLink }}"><img src="{{ asset('build/maquette/images/INSTA_PROGRAMMATION.svg') }}"></a>
                                         </div>
                                     {% endif %}
-                                    {% if giscard.twitterLink != '' %}
+                                    {% if article.twitterLink != '' %}
                                         <div class="col-3">
-                                            <a href="{{ giscard.twitterLink }}"><img src="{{ asset('build/maquette/images/TWITTER_PROGRAMMATION.svg') }}"></a>
+                                            <a href="{{ article.twitterLink }}"><img src="{{ asset('build/maquette/images/TWITTER_PROGRAMMATION.svg') }}"></a>
                                         </div>
                                     {% endif %}
-                                    {% if giscard.facebookLink != '' %}
+                                    {% if article.facebookLink != '' %}
                                         <div class="col-3">
-                                            <a href="{{ giscard.facebookLink }}"><img src="{{ asset('build/maquette/images/FACEBOOK_PROGRAMMATION.svg') }}"></a>
+                                            <a href="{{ article.facebookLink }}"><img src="{{ asset('build/maquette/images/FACEBOOK_PROGRAMMATION.svg') }}"></a>
                                         </div>
                                     {% endif %}
-                                    {% if giscard.siteInternet != '' %}
+                                    {% if article.siteInternet != '' %}
                                         <div class="col-3">
-                                            <a href="{{ giscard.siteInternet }}"><img src="{{ asset('build/maquette/images/INTERNET_PROGRAMMATION.svg') }}"></a>
+                                            <a href="{{ article.siteInternet }}"><img src="{{ asset('build/maquette/images/INTERNET_PROGRAMMATION.svg') }}"></a>
                                         </div>
                                     {% endif %}
 
@@ -206,7 +226,7 @@
                             Concerts Gratuits Abonnés & Réductions
                         </p>
                         <p class="h3">
-                           <b> Abonnez-vous !</b>
+                            <b> Abonnez-vous !</b>
                         </p>
                     </div>
                     <div class="py-5 h3">
@@ -244,8 +264,11 @@
 
 
     <!-- CITRON SUCRE -->
+    {% for child in children %}
+        {{ child.getDatas(locale) }}
 
     {{ citron.getDatas(locale) }}
+
     <div class="bg-grey">
         <div class="p-5">
             <div class="row">
@@ -255,33 +278,37 @@
                     <!-- NOM GROUPE / STYLE / HORAIRE -->
                     <div class="row py-5 align-items-end">
                         <div class="col-lg-6 col-md-12">
-                            <h1 class="big-title">{{ citron.title }}</h1>
+                            <h1 class="big-title">{{ child.title }}</h1>
                         </div>
                         <div class="col-lg-4 col-md-8"  >
-                            <h1>{{ citron.typeMusic}} | {{ citron.origin }}</h1>
+                            <h1>{{ child.typeMusic}} {% if child.origin != "" %} | {{ child.origin }}{% endif %}</h1>
                         </div>
                         <div class="col-lg-2 col-md-4 d-flex justify-content-end">
-                            <h1 style="font-size: 60px">{{ citron.heureEvent }}</h1>
+                            <h1 style="font-size: 60px">{{ child.heureEvent }}</h1>
                         </div>
                     </div>
 
                     <!-- DESCRIPTION ARTISTE -->
                     <div class="h2 lh-lg">
-                        {{ citron.description | raw }}
+                        {{ child.description | raw }}
                     </div>
 
 
                     <!-- Image Artiste -->
-                    <img class="w-100 py-5" src="{{ asset('build/maquette/images/CITRON.png') }}">
+                    {% set media3 = child.getMedia(1) %}
+                    {% if media3 is not null %}
+                        {% set url = '/assets/images/' ~ media3.name  %}
+                        <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                    {% endif %}
 
                     <!-- CONTENT ARTISTE -->
 
                     <div class="h2 lh-lg">
-                        {{ citron.content | raw }}
+                        {{ child.content | raw }}
                     </div>
                     <!-- VIDEO ARTISTE -->
                     <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item w-100" style="height: 860px" src="{{ citron.youtubeLink }}" allowfullscreen></iframe>
+                        <iframe class="embed-responsive-item w-100" style="height: 860px" src="{{ child.youtubeLink }}" allowfullscreen></iframe>
                     </div>
 
                     <!-- PLUS D'INFOS SUR L'ARTISTE -->
@@ -295,24 +322,24 @@
                                 <div class="col-lg-6 col-md-12">
                                     <!-- MEDIAS SOCIAUX -->
                                     <div class="row">
-                                        {% if citron.instagramLink != '' %}
+                                        {% if child.instagramLink != '' %}
                                             <div class="col-3">
-                                                <a href="{{ citron.instagramLink }}"><img src="{{ asset('build/maquette/images/INSTA_PROGRAMMATION.svg') }}"></a>
+                                                <a href="{{ child.instagramLink }}"><img src="{{ asset('build/maquette/images/INSTA_PROGRAMMATION.svg') }}"></a>
                                             </div>
                                         {% endif %}
-                                        {% if citron.twitterLink != '' %}
+                                        {% if child.twitterLink != '' %}
                                             <div class="col-3">
-                                                <a href="{{ citron.twitterLink }}"><img src="{{ asset('build/maquette/images/TWITTER_PROGRAMMATION.svg') }}"></a>
+                                                <a href="{{ child.twitterLink }}"><img src="{{ asset('build/maquette/images/TWITTER_PROGRAMMATION.svg') }}"></a>
                                             </div>
                                         {% endif %}
-                                        {% if citron.facebookLink != '' %}
+                                        {% if child.facebookLink != '' %}
                                             <div class="col-3">
-                                                <a href="{{ citron.facebookLink }}"><img src="{{ asset('build/maquette/images/FACEBOOK_PROGRAMMATION.svg') }}"></a>
+                                                <a href="{{ child.facebookLink }}"><img src="{{ asset('build/maquette/images/FACEBOOK_PROGRAMMATION.svg') }}"></a>
                                             </div>
                                         {% endif %}
-                                        {% if citron.siteInternet != '' %}
+                                        {% if child.siteInternet != '' %}
                                             <div class="col-3">
-                                                <a href="{{ citron.siteInternet }}"><img src="{{ asset('build/maquette/images/INTERNET_PROGRAMMATION.svg') }}"></a>
+                                                <a href="{{ child.siteInternet }}"><img src="{{ asset('build/maquette/images/INTERNET_PROGRAMMATION.svg') }}"></a>
                                             </div>
                                         {% endif %}
 
@@ -345,7 +372,7 @@
         </div>
 
     </div>
-
+    {% endfor %}
     <!-- A DECOUVRIR -->
 
     <div class="card-container">

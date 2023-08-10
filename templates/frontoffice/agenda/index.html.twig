@@ -85,59 +85,12 @@
     </script>
 
 {% endblock %}
-
-
-{% block stylesheets %}
-    <style>
-
-
-        .card-title {
-            font-size: 40px !important;
-            font-weight: bold !important;
-        }
-
-        .card-date {
-            font-size: 35px !important;
-            font-weight: bold !important;
-        }
-
-        .card-subtitle {
-            font-size: 30px !important;
-            font-weight: normal;
-        }
-
-        .card-hour {
-            font-size: 30px !important;
-        }
-
-        .date {
-            font-size: 35px !important;
-            font-weight: bold !important;
-        }
-
-        .hour {
-            font-size: 30px !important;
-        }
-
-        @media (max-width: 991px) {
-            .card-container {
-                padding : 30px 160px 30px 160px !important;
-            }
-        }
-
-        @media (min-width: 992px) {
-            .card-container {
-                padding : 20px 40px 20px 40px !important;
-            }
-        }
-    </style>
-{% endblock %}
-
 {% block body %}
 
     <div class="px-lg-5">
         <div class="row font-primary">
             <div class="px-lg-5 pt-5 row">
+
                 <h1 class="col-lg-3 col-md-6 col-sm-12 big-subtitle blue-title">{{ page_title | upper }}</h1>
                 <div class="custom-select col-lg-3 col-md-6 col-sm-12 d-flex align-items-end">
                     <select>
@@ -154,13 +107,22 @@
                 {{  event.element.getDatas(locale) }}
                 {% set media = event.element.getMedia(1) %}
 
-                <div class="col-lg-4 col-md-12 col-sm-12 pb-lg-5 ">
+                <div class="col-lg-4 col-md-12 pb-lg-5 px-0 ">
                     <!-- Card-Actu -->
-                    <div class="card mb-3  mx-lg-3 shadow-lg rounded-0 h-100 ">
+                    <a class="text-decoration-none" href="{{ path('fo_agenda_detail', { 'title': event.element.title }) }}">
+                        <div class="card mb-3  mx-lg-4 shadow-lg rounded-0 h-100 ">
 
                         {% if event.element.cancelled %}
                             <div class="cancelled-overlay">
                                 <p class="cancelled-text">ANNULÉ</p>
+                            </div>
+                        {% elseif event.element.full %}
+                            <div class="full-overlay">
+                                <p class="cancelled-text">COMPLET</p>
+                            </div>
+                        {% elseif event.element.reported %}
+                            <div class="cancelled-overlay">
+                                <p class="cancelled-text">REPORTÉ</p>
                             </div>
                         {% endif %}
 
@@ -170,7 +132,7 @@
                         {% else  %}
                             <img src="{{ asset(('build/maquette/images/GWENDOLINE.png')) }}" class="card-img-top rounded-0" alt="...">
                         {% endif %}
-                        <div class=" ">
+                        <div>
                             <!-- Themes -->
                             <div class="row mx-0 px-0">
                                 <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ event.element.themeBackColor }};color: {{ event.element.themeTextColor }};">
@@ -184,15 +146,15 @@
                                     <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">{{ event.element.style }}
                                 </div>
                             </div>
-                            <div class="card-container" style="line-height: 1.1">
-                                <div class="py-3">
+                            <div class="card-container black" style="line-height: 1.1">
+                                <div class="py-3 black">
                                     <!-- ARTISTES -->
                                     <div class="card-title text-uppercase" style="font-size: 34px; font-weight: bold">{{ event.element.title }}</div>
                                     <div class="card-subtitle text-uppercase">{{ event.element.subtitle }}</div>
                                 </div>
                                 <!-- DATE CONCERT ET HEURE -->
                                 <div class="row pt-4">
-                                    <div class="col-9" style="line-height: 1">
+                                    <div class="col-9 black" style="line-height: 1">
                                         <div class="card-date">{{ event.element.dateEvent }}</div>
                                         <div class="card-hour">{{ event.element.heureEvent }}</div>
                                     </div>
@@ -205,6 +167,7 @@
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
             {% endfor %}
 

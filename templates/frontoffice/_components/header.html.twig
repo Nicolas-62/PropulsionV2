@@ -42,7 +42,7 @@
 <div class="d-md-none d-sm-none p-0 m-0 d-lg-block">
     <div class="row">
         <div class="col-3">
-            <a href="{{ path('ma_home') }}">
+            <a href="{{ path('fo_home_index') }}">
                 <img class="img-fluid" src="{{ asset('build/maquette/images/LOGO_ACTUEL.png') }}">
             </a>
         </div>
@@ -114,8 +114,8 @@
                             <ul class="navbar-nav w-100">
                                 <!-- Catégorie du menu -->
                                 <li class="nav-item border-y ps-3">
-                                    <div class="round-left nav-link fs-1" href=""><a class="text-decoration-none" style="color: black" href="/maquette">> ACCUEIL</a></div>
-                                    <div class="round-left nav-link fs-1" href=""><a class="text-decoration-none" style="color: black" href="/maquetteprogrammation">> PROGRAMMATION</a></div>
+                                    <div class="round-left nav-link fs-1" href=""><a class="text-decoration-none" style="color: black" href="/home">> ACCUEIL</a></div>
+                                    <div class="round-left nav-link fs-1" href=""><a class="text-decoration-none" style="color: black" href="/programmations">> PROGRAMMATION</a></div>
                                     {% for name, url in menu %}
                                         <div class="round-left nav-link fs-1" href=""><a class="text-decoration-none" style="color: black" href="{{ path(url) }}">> {{ name|upper }}</a></div>
                                     {% endfor %}

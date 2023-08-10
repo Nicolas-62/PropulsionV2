@@ -1,0 +1,33 @@
+{% extends 'frontoffice/_components/layout.html.twig' %}
+
+
+{% block body %}
+
+    {{  article.getDatas(locale) }}
+    <div class="p-5">
+        <h1 class="text-center mb-5 ">{{ article.title }}</h1>
+
+
+
+        <div class="row">
+            <div class="col-lg-6 col-md-12">
+                {% set media = article.getMedia(4) %}
+                {% if media is not null %}
+                    {% set url = '/assets/images/' ~ media.name  %}
+                    <img src="{{ url }}" alt="{{ media.name }}" class="img-fluid">
+                {% endif %}
+
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <div class="fs-3">{{ article.description | raw }}</div>
+
+                <div class="fs-3">{{ article.content | raw }}</div>
+
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item w-100" style="height: 860px" src="{{ article.youtubeLink }}" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

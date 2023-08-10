@@ -17,6 +17,23 @@ trait MediaTrait
 
     private $media11;
     private $media12;
+    private $media13;
+
+    /**
+     * @return mixed
+     */
+    public function getMedia13()
+    {
+        return $this->media13;
+    }
+
+    /**
+     * @param mixed $media13
+     */
+    public function setMedia13($media13): void
+    {
+        $this->media13 = $media13;
+    }
 
 
     public function __construct(){

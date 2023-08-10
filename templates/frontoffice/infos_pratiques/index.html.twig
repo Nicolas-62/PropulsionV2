@@ -1,27 +1,5 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
 
-    {% block stylesheets %}
-        {{ encore_entry_script_tags('maquette_infos_css') }}
-        <style>.menu-item.active {
-                position: relative;
-            }
-
-            .menu-item.active::before {
-                content: "";
-                position: absolute;
-                top: 50%;
-                left: -60px; /* Ajustez cette valeur selon vos besoins */
-                width: 30px;
-                height: 30px;
-                border-radius: 50%;
-                background-color: #09b2FF;
-                transform: translate(0, -50%);
-            }
-
-
-
-        </style>
-    {% endblock %}
 {% block javascripts %}
     <script>
         let activeFooter = null;
@@ -668,5 +646,4 @@
     </div>
 
 
-    {{ encore_entry_script_tags('maquette_infos_js') }}
 {% endblock %}

@@ -6,7 +6,7 @@
     {% for event in events_agenda.elements %}
 
         {{  event.element.getDatas(locale) }}
-        {% if loop.index0 == 3  %}
+        {% if loop.index0 == 4  %}
             <div class="container-fluid px-0">
                 <div class="row">
                     <div class="col-12 px-0 mx-0">
@@ -50,9 +50,9 @@
             </div>
 
             <!-- Artiste Vedette MD/SM -->
-            <div class="card shadow-lg rounded-0 h-100 d-sm-block d-md-block d-lg-none  ">
+            <div class="d-sm-block d-md-block d-lg-none  ">
                 <!-- Themes -->
-                <div class="row mx-0 px-0">
+                <div class="row">
                     <div
                             class="col-3 theme-1 text-uppercase"
                             style="
@@ -72,18 +72,19 @@
                             {{ theme.name }}
                         {% endfor %}
                     </div>
-                    <div class="col-9 theme-2"  style="
+                    <div class="col-9 theme-2  justify-content-start"  style="
 
                     {% if event.element.themeBackColor != "" %}
                             background-color: {{ event.element.styleBackColor }};
                     {% else %}
                             background-color: black;
                     {% endif %}
-                                                            {% if event.element.themeTextColor != "" %}
+
+                    {% if event.element.themeTextColor != "" %}
                             color: {{ event.element.styleTextColor }};
                     {% else %}
                             color: white;
-                            {% endif %}"
+                    {% endif %}"
                     >
                         <img class="card-ticketing" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">{{ event.element.style }}
                     </div>
@@ -92,7 +93,7 @@
                 <div class="card-container" style="line-height: 1.1">
                     <div class="py-3">
                         <!-- ARTISTES -->
-                        <div class="card-title text-uppercase" style="font-size: 34px; font-weight: bold">{{ event.element.title }}</div>
+                        <div class="card-title text-uppercase">{{ event.element.title }}</div>
                         <div class="card-subtitle text-uppercase">{{ event.element.subtitle }}</div>
                     </div>
                     <!-- DATE CONCERT ET HEURE -->
@@ -119,18 +120,18 @@
                 <h1 class="pb-5">Programmation <b>à venir</b></h1>
             </div>
             {% for event in events_agenda.elements %}
+
+                {{  event.element.getDatas(locale) }}
                 <!--                {{ dump(event.element) }}-->
                 {% if loop.index0 < 3 %}
                     <div class="col-lg-4 col-md-12 px-0">
                         <!-- Card-Actu -->
                         <div class="card mb-3  mx-lg-3 shadow-lg rounded-0 h-100 ">
 
-                            {% if loop.index0 == 0 %}
-                                <img src="{{ asset(('build/maquette/images/GWENDOLINE.png')) }}" class="card-img-top rounded-0" alt="...">
-                            {% elseif loop.index0 == 1 %}
-                                <img src="{{ asset(('build/maquette/images/MALN.png')) }}" class="card-img-top rounded-0" alt="...">
-                            {% elseif loop.index0 == 2 %}
-                                <img src="{{ asset(('build/maquette/images/SILLYBOYBLUE.png')) }}" class="card-img-top rounded-0" alt="...">
+                            {% set media = event.element.getMedia(1) %}
+                            {% if media is not null %}
+                                {% set url = '/assets/images/' ~ media.name  %}
+                                <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
                             {% endif %}
                             <!-- Themes -->
                             <div class="row mx-0 px-0">
@@ -203,7 +204,7 @@
                                         <div class="date">{{ event.element.dateEvent }}</div>
                                         <div class="hour">{{ event.element.heureEvent }}</div>
                                     </div>
-                                    <button class="btn border rounded-0 border-dark mt-5">LIRE LA SUITE</button>
+                                    <a href="{{ path('fo_actus_detail', { 'title': event.element.title }) }}" class="btn border rounded-0 border-dark mt-5">LIRE LA SUITE</a>
                                 </div>
                             </div>
                         {% endfor %}
@@ -314,4 +315,5 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
+
 {% endblock %}

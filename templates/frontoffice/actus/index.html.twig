@@ -87,69 +87,16 @@
 
 {% endblock %}
 
-{% block stylesheets %}
-    <style>
-        .card-actions {
-            display: flex;
-            align-content: end;
-            justify-content: space-between;
-            padding: 2rem;
-        }
-
-
-        .card-title {
-            font-size: 40px !important;
-            font-weight: bold !important;
-        }
-
-        .card-date {
-            font-size: 35px !important;
-            font-weight: bold !important;
-        }
-
-        .card-subtitle {
-            font-size: 30px !important;
-            font-weight: normal;
-        }
-
-        .card-hour {
-            font-size: 30px !important;
-        }
-
-        .date {
-            font-size: 35px !important;
-            font-weight: bold !important;
-        }
-
-        .hour {
-            font-size: 30px !important;
-        }
-
-        @media (max-width: 991px) {
-            .card-container {
-                padding : 30px 160px 30px 160px !important;
-            }
-        }
-
-        @media (min-width: 992px) {
-            .card-container {
-                padding : 20px 40px 20px 40px !important;
-            }
-        }
-
-    </style>
-
-{% endblock %}
 {% block body %}
 
     <!-- VOIR AUSSI -->
     <div class="px-lg-5">
         <div class="row">
             <div class="px-lg-5 pt-5 row">
-                <h1 class="px-0 col-lg-3 col-md-6 col-sm-12 big-subtitle blue-title">{{ page_title | upper }}</h1>
-                <div class="px-0 custom-select col-lg-4 col-md-6 col-sm-12 d-flex align-items-end">
-                    <select class="text-uppercase col-4 rounded-0 fs-2">
-                        <option class="" selected>toutes les actualités &nbsp ></option>
+                <h1 class="col-lg-3 col-md-6 col-sm-12 big-subtitle blue-title">{{ page_title | upper }}</h1>
+                <div class="custom-select col-lg-3 col-md-6 col-sm-12 d-flex align-items-end">
+                    <select>
+                        <option class="option-class" selected>toutes les actualités &nbsp ></option>
 
                         {% for actu in themes_actu %}
                             <option value={{ actu }}>{{ actu }}</option>
@@ -164,22 +111,20 @@
                 {{  actu.element.getDatas(locale) }}
                 <!-- DEBUG -->
                 <!-- {{ dump(actu) }} -->
+                {% set media = actu.element.getMedia(2) %}
 
-                {% set media = actu.element.getMedia(1) %}
-
-                <div class="col-lg-4 col-md-12 py-lg-5 px-0">
+                <div class="col-lg-4 col-md-12 pb-lg-5 px-0">
                     <!-- Card-Actu -->
                     <div class="card mb-3 mx-lg-4 shadow-lg rounded-0 h-100">
                         <!-- Image -->
-
                         {% if media is not null %}
                             {% set url = '/assets/images/' ~ media.name  %}
                             <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
                         {% endif %}
-                        <div class="pt-0 ">
+                        <div>
 
                             <!-- Themes -->
-                            <div class="row  mx-0 px-0">
+                            <div class="row mx-0 px-0">
                                 <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ actu.element.themeBackColor }};color: {{ actu.element.themeTextColor }};">
                                     {% set themes = actu.element.themes %}
                                     {% for theme in themes %}
@@ -191,7 +136,7 @@
                             <!-- CARD CONTAINER -->
                             <div class="card-container">
                                 <!-- Titre -->
-                                <h5 class="card-title my-3 pt-5 fs-2">
+                                <h5 class="card-title my-3 fs-2">
                                     {{ actu.element.title }}
                                 </h5>
                                 <!-- CONTENU -->
@@ -201,7 +146,7 @@
 
                                 <!-- Boutons LIRE LA SUITE et lien Billetterie -->
                                 <div class="card-actions px-0 pt-0 d-flex align-items-end">
-                                    <button class="btn border rounded-0 border-dark fs-3" style="height: 60px">LIRE LA SUITE</button>
+                                    <a href="{{ path('fo_actus_detail', { 'title': actu.element.title }) }}" class="btn border rounded-0 border-dark fs-3" style="height: 60px">LIRE LA SUITE</a>
                                     <a href="https://billetterie.lalune.net/">
                                         <img src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}" alt="...">
                                     </a>

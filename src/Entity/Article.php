@@ -52,6 +52,8 @@ class Article
     private ?string $styleBackColor  = '#000000';
     private ?string $styleTextColor  = '#FFFFFF';
     private ?string $style  = '';
+    private ?bool $reported  = false;
+    private ?bool $full  = false;
 
 
     // Liste des champs supplémentaires spécifiques.
@@ -69,6 +71,8 @@ class Article
         ['name' => 'siteInternet',      'label' => "Site internet",                 'ea_type' => 'TextField'],
         ['name' => 'twitterLink',       'label' => "Lien Twitter",                  'ea_type' => 'TextField'],
         ['name' => 'cancelled',         'label' => "Evenement annulé",              'ea_type' => 'BooleanField'],
+        ['name' => 'reported',          'label' => "Reporté",                       'ea_type' => 'BooleanField'],
+        ['name' => 'full',              'label' => "Complet",                       'ea_type' => 'BooleanField'],
         ['name' => 'ticketingLink',     'label' => "Lien Billetterie",              'ea_type' => 'TextField'],
         ['name' => 'typeMusic',         'label' => "Type de musique",               'ea_type' => 'TextField'],
         ['name' => 'origin',            'label' => "Origine",                       'ea_type' => 'TextField'],
@@ -77,6 +81,7 @@ class Article
         ['name' => 'themeTextColor',    'label' => "Couleur du texte du thème",     'ea_type' => 'ColorField'],
         ['name' => 'styleBackColor',    'label' => "Couleur de fond du style",      'ea_type' => 'ColorField'],
         ['name' => 'styleTextColor',    'label' => "Couleur du texte du style",     'ea_type' => 'ColorField'],
+        ['name' => 'style',             'label' => "Style",                         'ea_type' => 'TextField'],
     ];
 
 
@@ -682,6 +687,42 @@ class Article
         $this->themes = $themes;
         return $this;
     }
+
+    /**
+     * @return bool|null
+     */
+    public function getReported(): ?bool
+    {
+        return $this->reported;
+    }
+
+    /**
+     * @param bool|null $reported
+     */
+    public function setReported(?bool $reported): void
+    {
+        $this->reported = $reported;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getFull(): ?bool
+    {
+        return $this->full;
+    }
+
+    /**
+     * @param bool|null $full
+     */
+    public function setFull(?bool $full): void
+    {
+        $this->full = $full;
+    }
+
+
+
+
 
 }
 
