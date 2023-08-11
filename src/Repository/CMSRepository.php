@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\Language;
 use App\Entity\Seo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -67,9 +68,9 @@ Abstract class CMSRepository extends ServiceEntityRepository
      * @param bool $online
      * @return ArrayCollection
      */
-    public function getChildren($element_id, bool $online = true): ArrayCollection
+    public function getChildren($element_id, $code_langue, bool $online = true): ArrayCollection
     {
-
+        $language = $this->registry->getRepository(Language::class)->findOneBy(['code' => $code_langue]);
         $qb = $this->createQueryBuilder($this->model_alias);
         $qb->where("$this->model_alias.$this->model_key = :val");
 
@@ -79,12 +80,13 @@ Abstract class CMSRepository extends ServiceEntityRepository
         if($online && $preview == null)
         {
           $qb->join("$this->model_alias.onlines", 'online')
-                ->andWhere('online.language = 1')
+                // Todo Passer la langue en paramètre
+                ->andWhere('online.language = :language')
                 ->andWhere('online.online = 1');
-
         }
         $qb->orderBy("$this->model_alias.ordre", 'ASC')
-            ->setParameter('val', $element_id);
+            ->setParameter('val', $element_id)
+            ->setParameter('language', $language);
 
         $query = $qb->getQuery();
         return new ArrayCollection($query->getResult());
@@ -97,7 +99,7 @@ Abstract class CMSRepository extends ServiceEntityRepository
      * @param bool $online
      * @return ArrayCollection
      */
-    public function getGenealogy(int $element_id, $code_langue, bool $online = true, ArrayCollection $parent_list = null): ArrayCollection
+    public function getGenealogy(int $element_id, $code_langue, bool $online = true, string $field = 'ordre', string $order = 'DESC',  ArrayCollection $parent_list = null): ArrayCollection
     {
         // Si pas de liste parente, on en crée une.
         if($parent_list == null){
@@ -109,13 +111,13 @@ Abstract class CMSRepository extends ServiceEntityRepository
         // Enfants
         $child_list = new ArrayCollection();
         // Récup des catégories enfant
-        $children = $this->getChildren($element_id, $online);
+        $children = $this->getChildren($element_id, $code_langue, $online);
         // Si pas d'enfants
         if($children->isEmpty()) {
             // Si on traite des categories
             if($this->model_label == 'category') {
                 // On récupère les articles enfant
-                $articles = $this->getArticles($element_id, $code_langue, $online);
+                $articles = $this->getArticles(array($element_id), $code_langue, $online, $field, $order);
                 foreach ($articles as $article) {
                     $child_list->add($this->registry->getRepository(Article::class)->getGenealogy($article->getId(), $code_langue, $online));
                 }

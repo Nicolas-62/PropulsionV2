@@ -103,24 +103,23 @@
                 </div>
             </div>
 
-            {% for event in events_agenda.elements %}
-                {{  event.element.getDatas(locale) }}
-                {% set media = event.element.getMedia(1) %}
+            {% for event in events_agenda %}
+                {% set media = event.getMedia(1) %}
 
                 <div class="col-lg-4 col-md-12 pb-lg-5 px-0 ">
                     <!-- Card-Actu -->
-                    <a class="text-decoration-none" href="{{ path('fo_agenda_detail', { 'title': event.element.title }) }}">
+                    <a class="text-decoration-none" href="{{ path('fo_agenda_detail', { 'title': event.title, 'category_id': event.category.id  }) }}">
                         <div class="card mb-3  mx-lg-4 shadow-lg rounded-0 h-100 ">
 
-                        {% if event.element.cancelled %}
+                        {% if event.cancelled %}
                             <div class="cancelled-overlay">
                                 <p class="cancelled-text">ANNULÉ</p>
                             </div>
-                        {% elseif event.element.full %}
+                        {% elseif event.full %}
                             <div class="full-overlay">
                                 <p class="cancelled-text">COMPLET</p>
                             </div>
-                        {% elseif event.element.reported %}
+                        {% elseif event.reported %}
                             <div class="cancelled-overlay">
                                 <p class="cancelled-text">REPORTÉ</p>
                             </div>
@@ -130,33 +129,29 @@
                             {% set url = '/assets/images/' ~ media.name  %}
                             <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
                         {% else  %}
-                            <img src="{{ asset(('build/maquette/images/GWENDOLINE.png')) }}" class="card-img-top rounded-0" alt="...">
+                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD.png')) }}" class="card-img-top rounded-0" alt="...">
                         {% endif %}
                         <div>
                             <!-- Themes -->
                             <div class="row mx-0 px-0">
-                                <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ event.element.themeBackColor }};color: {{ event.element.themeTextColor }};">
-
-                                    {% set themes = event.element.themes %}
-                                    {% for theme in themes %}
-                                        {{ theme.name }}
-                                    {% endfor %}
+                                <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ event.themeBackColor }};color: {{ event.themeTextColor }};">
+                                    {{ event.category.title }}
                                 </div>
-                                <div class="col-7 white theme-2 justify-content-start" style="background-color: {{ event.element.styleBackColor }};color: {{ event.element.styleTextColor }};">
-                                    <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">{{ event.element.style }}
+                                <div class="col-7 white theme-2 justify-content-start" style="background-color: {{ event.styleBackColor }};color: {{ event.styleTextColor }};">
+                                    <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">{{ event.style }}
                                 </div>
                             </div>
                             <div class="card-container black" style="line-height: 1.1">
                                 <div class="py-3 black">
                                     <!-- ARTISTES -->
-                                    <div class="card-title text-uppercase" style="font-size: 34px; font-weight: bold">{{ event.element.title }}</div>
-                                    <div class="card-subtitle text-uppercase">{{ event.element.subtitle }}</div>
+                                    <div class="card-title text-uppercase" style="font-size: 34px; font-weight: bold">{{ event.title }}</div>
+                                    <div class="card-subtitle text-uppercase">{{ event.subtitle }}</div>
                                 </div>
                                 <!-- DATE CONCERT ET HEURE -->
                                 <div class="row pt-4">
                                     <div class="col-9 black" style="line-height: 1">
-                                        <div class="card-date">{{ event.element.dateEvent }}</div>
-                                        <div class="card-hour">{{ event.element.heureEvent }}</div>
+                                        <div class="card-date">{{ event.dateEvent }}</div>
+                                        <div class="card-hour">{{ event.heureEvent }}</div>
                                     </div>
                                     <div class="col-2 offset-1">
                                         <a href="https://billetterie.lalune.net/">

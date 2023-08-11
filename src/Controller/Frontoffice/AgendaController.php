@@ -37,7 +37,17 @@ class AgendaController extends FOController
     #[Route('', name: 'index')]
     public function index(): Response
     {
-        $events_agenda = $this->entityManager->getRepository(Category::class)->getGenealogy(3, $this->getParameter('locale'));
+        $cat_agenda_id = 3;
+        // Récupération des sous catégories de la catégorie agenda
+        $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_agenda_id)->getChildrenIds();
+
+        // Récupération des articles des sous catégories de la catégorie agenda
+        $events_agenda = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
+        foreach($events_agenda as $event) {
+            dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
+        }
+
+        //TODO : récupérer les thèmes de catégories
         $themes_agenda = array('ATELIERS', 'CONCERTS','JEUNE PUBLIC', 'SOUTIEN AUX ARTISTES');
 
         $this->data['page_title']    = 'Agenda';
@@ -50,18 +60,40 @@ class AgendaController extends FOController
         return parent::lister();
     }
 
-    #[Route('{title}', name: 'detail')]
-    public function detail(string $title): Response
+    #[Route('{category_id}/{title}', name: 'detail')]
+    public function detail(string $title, int $category_id): Response
     {
+
+
+
+        $cat_agenda_id = 3;
+        // Récupération des sous catégories de la catégorie agenda
+        $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_agenda_id)->getChildrenIds();
+
+        // Récupération des articles des sous catégories de la catégorie agenda
+        $events_agenda = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
+        foreach($events_agenda as $event) {
+            dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
+        }
+
+        $cat_actu_id = 4;
+        // Récupération des sous catégories de la catégorie actu
+        $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_actu_id)->getChildrenIds();
+
+        // Récupération des articles des sous catégories de la catégorie actu
+        $events_actus = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
+        foreach($events_actus as $event) {
+            dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
+        }
+
         $this->data['detail_partial']       = 'frontoffice/agenda/detail.html.twig';
-        $category                           = $this->entityManager->getRepository(Category::class)->findOneBy(['id' => 3]);
-        $article                            = $this->entityManager->getRepository(Article::class)->findOneBy(['title' => $title, 'category' => $category]);
-        $this->data['citron']               = $this->entityManager->getRepository(Article::class)->findOneBy(['id' => '39']);
-        $this->data['events_agenda']        = $this->entityManager->getRepository(Category::class)->getGenealogy(3, $this->getParameter('locale'));
+        $category                           = $this->entityManager->getRepository(Category::class)->findOneBy(['id' => $category_id]);
+        $article                            = $this->entityManager->getRepository(Article::class)->findOneBy(['title' => $title]);
+        $this->data['events_agenda']        = $events_agenda;
         $this->data['children']             = $this->entityManager->getRepository(Article::class)->findBy(['article_id' => $article->getId()]);
         $this->data['article']              = $article;
         $this->data['locale']               = $this->getParameter('locale');
-        $this->data['actu_childs']          = $this->entityManager->getRepository(Category::class)->getGenealogy(4, $this->getParameter('locale'));
+        $this->data['actu_childs']          = $events_actus;
         return $this->render(
           $this->data['detail_partial'],
           $this->data);

@@ -39,9 +39,21 @@ class ActionsController extends FOController
     #[Route('', name: 'index')]
     public function index(): Response
     {
+
+        $cat_actu_id = 4;
+        // Récupération des sous catégories de la catégorie actu
+        $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_actu_id)->getChildrenIds();
+
+        // Récupération des articles des sous catégories de la catégorie actu
+        $events_actus = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
+        foreach($events_actus as $event) {
+            dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
+        }
+
+
         $this->data['page_title']   = 'Action Culturelle';
         $this->data['actu_test']    = $this->entityManager->getRepository(Article::class)->findOneBy(['id' => '9']);
-        $this->data['actu_childs']  = $this->entityManager->getRepository(Category::class)->getGenealogy(4, $this->getParameter('locale'));
+        $this->data['actu_childs']  = $events_actus;
         $this->data['locale']       = $this->getParameter('locale');
 
         return parent::lister();

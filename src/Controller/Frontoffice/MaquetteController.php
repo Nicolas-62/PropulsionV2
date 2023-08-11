@@ -57,7 +57,7 @@ class MaquetteController extends AbstractController
     {
 
         $events_agenda   = $this->entityManager->getRepository(Category::class)->getGenealogy(2, $this->getParameter('locale'));
-        $events_homepage = $this->entityManager->getRepository(Category::class)->getGenealogy(1, $this->getParameter('locale'));
+        $events_actus = $this->entityManager->getRepository(Category::class)->getGenealogy(1, $this->getParameter('locale'));
 
 
         return $this->render('maquette/index.html.twig', [
@@ -69,7 +69,7 @@ class MaquetteController extends AbstractController
             'btns_footer' => $this->btns_footer,
             'medias' => $this->medias,
             'events_agenda' => $events_agenda,
-            'events_homepage' => $events_homepage,
+            'events_actus' => $events_actus,
             'sponsors' => $this->sponsors,
             'locale' => $this->getParameter('locale'),
         ]);
@@ -154,7 +154,7 @@ class MaquetteController extends AbstractController
     {
         // Récupération artistes accompagnés
         $accompagnes = $this->entityManager->getRepository(Category::class)->getGenealogy(7, $this->getParameter('locale'));
-        $accompagnes_test2 = $this->entityManager->getRepository(Category::class)->getArticles(7, $this->getParameter('locale'),1);
+        $accompagnes_test2 = $this->entityManager->getRepository(Category::class)->getArticles(array(7), $this->getParameter('locale'),1);
 
         $accompagnes_test = $this->entityManager->getRepository(Article::class)->findBy(['category' => '7']);
 

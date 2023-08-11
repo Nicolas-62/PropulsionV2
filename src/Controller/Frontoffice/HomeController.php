@@ -2,6 +2,7 @@
 
 namespace App\Controller\Frontoffice;
 
+use App\Entity\Article;
 use App\Entity\Category;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,7 +19,7 @@ class HomeController extends FOController
 
 
         // Identifiants des catégories concernées.
-        $this->category_ids		=		array(46,59,69);
+//        $this->category_ids		=		array(46,59,69);
 
 
         // Initialisation du controller.
@@ -38,10 +39,34 @@ class HomeController extends FOController
     public function index(): Response
     {
 
-        $events_agenda   = $this->entityManager->getRepository(Category::class)->getGenealogy(3, $this->getParameter('locale'));
-        $events_homepage = $this->entityManager->getRepository(Category::class)->getGenealogy(4, $this->getParameter('locale'));
+//        $events_concert = $this->entityManager->getRepository(Category::class)->getGenealogy(12, $this->getParameter('locale'));
+//        $events_jeune = $this->entityManager->getRepository(Category::class)->getGenealogy(13, $this->getParameter('locale'));
+//        $events_soutiens = $this->entityManager->getRepository(Category::class)->getGenealogy(14, $this->getParameter('locale'));
+//        $events_rdv = $this->entityManager->getRepository(Category::class)->getGenealogy(15, $this->getParameter('locale'));
+//        $events_hors_les_murs = $this->entityManager->getRepository(Category::class)->getGenealogy(16, $this->getParameter('locale'));
 
-        $this->data['events_homepage']  = $events_homepage;
+        $cat_agenda_id = 3;
+        // Récupération des sous catégories de la catégorie agenda
+        $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_agenda_id)->getChildrenIds();
+
+        // Récupération des articles des sous catégories de la catégorie agenda
+        $events_agenda = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
+        foreach($events_agenda as $event) {
+            dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
+        }
+
+        dump('-------------------');
+        $cat_actu_id = 4;
+        // Récupération des sous catégories de la catégorie actu
+        $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_actu_id)->getChildrenIds();
+
+        // Récupération des articles des sous catégories de la catégorie actu
+        $events_actus = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
+        foreach($events_actus as $event) {
+            dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
+        }
+
+        $this->data['events_actus']     = $events_actus;
         $this->data['events_agenda']    = $events_agenda;
         $this->data['lien_billetterie'] = '';
         $this->data['scripts'][]        = 'home_js';

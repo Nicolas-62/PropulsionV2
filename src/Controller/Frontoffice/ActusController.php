@@ -47,22 +47,46 @@ class ActusController extends FOController
     public function index(): Response
     {
 
+        $cat_actu_id = 4;
+        // Récupération des sous catégories de la catégorie actu
+        $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_actu_id)->getChildrenIds();
+
+        // Récupération des articles des sous catégories de la catégorie actu
+        $events_actus = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
+        foreach($events_actus as $event) {
+            dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
+        }
+
+
         $this->data['page_title']  = 'Actus';
         $this->data['themes_actu'] = array('LA LUNE DES PIRATES', 'CONCERTS','ACTION CULTURELLE','JEUNE PUBLIC', 'SOUTIEN AUX ARTISTES');
-        $this->data['actu_childs'] = $this->entityManager->getRepository(Category::class)->getGenealogy(4, $this->getParameter('locale'));
+        $this->data['actu_childs'] = $events_actus;
         $this->data['locale']      = $this->getParameter('locale');
 
         return parent::lister();
     }
 
-    #[Route('{title}', name: 'detail')]
-    public function detail(string $title): Response
+    #[Route('{category_id}/{title}', name: 'detail')]
+    public function detail(string $title, int $category_id): Response
     {
-        $category = $this->entityManager->getRepository(Category::class)->findOneBy(['id' => 4]);
+
+        $cat_actu_id = 4;
+        // Récupération des sous catégories de la catégorie actu
+        $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_actu_id)->getChildrenIds();
+
+        // Récupération des articles des sous catégories de la catégorie actu
+        $events_actus = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
+        foreach($events_actus as $event) {
+            dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
+        }
+
+
+
+        $category = $this->entityManager->getRepository(Category::class)->findOneBy(['id' => $category_id]);
         $article = $this->entityManager->getRepository(Article::class)->findOneBy(['title' => $title, 'category' => $category]);
         $this->data['article']      = $article;
         $this->data['locale']       = $this->getParameter('locale');
-        $this->data['actu_childs']  = $this->entityManager->getRepository(Category::class)->getGenealogy(4, $this->getParameter('locale'));
+        $this->data['actu_childs']  = $events_actus;
         return $this->render(
           $this->data['detail_partial'],
           $this->data);

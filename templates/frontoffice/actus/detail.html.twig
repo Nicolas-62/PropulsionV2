@@ -30,11 +30,8 @@
                         <div class="text-center h2 white" style="background-color: {{ article.themeBackColor }}; min-height: 50px;">
                             <div class="p-1">
 
-                                {% set themes = article.themes %}
-                                {% for theme in themes %}
-                                    {{ theme.name }}
-                                    {% set themeArticle = theme.name %}
-                                {% endfor %}
+                                {% set themeArticle = article.category.title %}
+                                {{ article.category.title }}
                             </div>
                         </div>
                     </div>
@@ -101,56 +98,50 @@
             <h1 class="pb-5">Voir aussi >> >> >></h1>
             <div class="row">
                 {% set test = 0 %}
-                {% for actu in actu_childs.elements %}
+                {% for actu in actu_childs %}
                     <!-- DEBUG -->
                     <!-- {{ dump(actu) }} -->
 
                     <!-- Récupération des datas de l'article -->
-                    {{ actu.element.getDatas(locale) }}
-                    {% set media = actu.element.getMedia(2) %}
+                    {{ actu.getDatas(locale) }}
+                    {% set media = actu.getMedia(2) %}
 
-                    {% if actu.element.title|upper != article.title|upper %}
+                    {% if actu.title|upper != article.title|upper %}
 
-                        {% set themesChild = actu.element.themes %}
-                        {% for themeChild in themesChild %}
-
-                                {% for theme in themes %}
-                                    {% set themeArticle = theme.name %}
-                                {% if themeChild.name == themeArticle %}
-                                    {% set test = test + 1 %}
-                                    <div class="col-lg-4 col-md-12 py-2">
-                                        <!-- Card-Actu -->
-                                        <div class="card mb-3 mx-4 shadow-lg rounded-0 h-100">
+                        {% set themesChild = actu.category.title %}
+                            {% if actu.category.title == themeArticle %}
+                                {% set test = test + 1 %}
+                                <div class="col-lg-4 col-md-12 py-2">
+                                    <!-- Card-Actu -->
+                                    <div class="card mb-3 mx-4 shadow-lg rounded-0 h-100">
 
 
-                                            {% if media is not null %}
-                                                {% set url = '/assets/images/' ~ media.name  %}
-                                                <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
-                                            {% endif %}
-                                            <div class="row m-0">
-                                                <!-- Themes -->
-                                                <div class="col-5 theme-1"  style="background-color: {{ actu.element.themeBackColor }};color: {{ actu.element.themeTextColor }};">
-                                                    ACTION CULTURELLE
-                                                </div>
+                                        {% if media is not null %}
+                                            {% set url = '/assets/images/' ~ media.name  %}
+                                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                                        {% endif %}
+                                        <div class="row m-0">
+                                            <!-- Themes -->
+                                            <div class="col-5 theme-1"  style="background-color: {{ actu.themeBackColor }};color: {{ actu.themeTextColor }};">
+                                                ACTION CULTURELLE
                                             </div>
-                                            <div class="p-5">
-                                                <div class=" pb-5">
-                                                    <!-- Titre -->
-                                                    <h2 class="card-title pb-3">{{ actu.element.title }}</h2>
-                                                    <!-- Contenu -->
-                                                    <div class="card-text fs-3">{{ actu.element.content | raw }}</div>
-                                                </div>
-                                                <!-- Bouton Lien vers l'article -->
-                                                <a href="{{ path('fo_actus_detail', { 'title': actu.element.title }) }}" class="fs-3 w-40 btn border border-dark rounded-0 p-3">LIRE LA SUITE</a>
-                                            </div>
-                                            <!-- Potentiel lien Billetterie -->
                                         </div>
+                                        <div class="p-5">
+                                            <div class=" pb-5">
+                                                <!-- Titre -->
+                                                <h2 class="card-title pb-3">{{ actu.title }}</h2>
+                                                <!-- Contenu -->
+                                                <div class="card-text fs-3">{{ actu.content | raw }}</div>
+                                            </div>
+                                            <!-- Bouton Lien vers l'article -->
+                                            <a href="{{ path('fo_actus_detail', { 'title': actu.title, 'category_id': actu.category.id }) }}" class="fs-3 w-40 btn border border-dark rounded-0 p-3">LIRE LA SUITE</a>
+                                        </div>
+                                        <!-- Potentiel lien Billetterie -->
                                     </div>
+                                </div>
 
-                                {% endif %}
+                            {% endif %}
 
-                            {% endfor %}
-                        {% endfor %}
                     {% endif %}
                 {% endfor %}
                 {% if test == 0 %}

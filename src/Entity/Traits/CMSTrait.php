@@ -99,6 +99,18 @@ trait CMSTrait
         return $this->children;
     }
 
+    /**
+     * @return Array
+     */
+    public function getChildrenIds(): Array
+    {
+        $childrenIds = [];
+        foreach ($this->getChildren() as $child){
+            $childrenIds[] = $child->getId();
+        }
+        return $childrenIds;
+    }
+
     public function addChild(self $child): self
     {
         if (!$this->children->contains($child)) {

@@ -105,13 +105,8 @@
                 </div>
             </div>
 
-            {% for actu in actu_childs.elements %}
-
-                <!-- Récupération des datas de l'article -->
-                {{  actu.element.getDatas(locale) }}
-                <!-- DEBUG -->
-                <!-- {{ dump(actu) }} -->
-                {% set media = actu.element.getMedia(2) %}
+            {% for actu in actu_childs %}
+                {% set media = actu.getMedia(2) %}
 
                 <div class="col-lg-4 col-md-12 pb-lg-5 px-0">
                     <!-- Card-Actu -->
@@ -125,11 +120,8 @@
 
                             <!-- Themes -->
                             <div class="row mx-0 px-0">
-                                <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ actu.element.themeBackColor }};color: {{ actu.element.themeTextColor }};">
-                                    {% set themes = actu.element.themes %}
-                                    {% for theme in themes %}
-                                        {{ theme.name }}
-                                    {% endfor %}
+                                <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ actu.themeBackColor }};color: {{ actu.themeTextColor }};">
+                                    {{ actu.category.title }}
                                 </div>
                             </div>
 
@@ -137,16 +129,16 @@
                             <div class="card-container">
                                 <!-- Titre -->
                                 <h5 class="card-title my-3 fs-2">
-                                    {{ actu.element.title }}
+                                    {{ actu.title }}
                                 </h5>
                                 <!-- CONTENU -->
                                 <div class="card-text fs-4">
-                                    {{ actu.element.content | raw }}
+                                    {{ actu.description | raw }}
                                 </div>
 
                                 <!-- Boutons LIRE LA SUITE et lien Billetterie -->
                                 <div class="card-actions px-0 pt-0 d-flex align-items-end">
-                                    <a href="{{ path('fo_actus_detail', { 'title': actu.element.title }) }}" class="btn border rounded-0 border-dark fs-3" style="height: 60px">LIRE LA SUITE</a>
+                                    <a href="{{ path('fo_actus_detail', { 'title': actu.title, 'category_id': actu.category.id }) }}" class="btn border rounded-0 border-dark fs-3" style="height: 60px">LIRE LA SUITE</a>
                                     <a href="https://billetterie.lalune.net/">
                                         <img src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}" alt="...">
                                     </a>

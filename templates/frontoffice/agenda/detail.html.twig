@@ -381,7 +381,7 @@
         </h1>
 
         <div class="row">
-            {% for event in events_agenda.elements %}
+            {% for event in events_agenda %}
 
                 {% if loop.index0 < 3 %}
 
@@ -431,7 +431,7 @@
                                 <div class="container">
                                     <!-- ARTISTE -->
 
-                                    <h5 class="card-title my-3" style="font-size: 34px; font-weight: bold">{{ event.element.title }}</h5>
+                                    <h5 class="card-title my-3" style="font-size: 34px; font-weight: bold">{{ event.title }}</h5>
 
                                     <!-- seconde partie -->
                                     <p class="card-text">

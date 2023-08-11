@@ -27,8 +27,13 @@ class FOController extends AbstractController
         protected EntityManagerInterface $entityManager,
     )
     {
-        // Code langue.
+        //  Configuration du controller :
+
+        // Manager de Doctrine.
         $this->entityManager              =     $entityManager;
+
+        $this->category_ids               =     array();        // Identifiants des catégories concernées.
+
         // Datas passées à la vue.
         $this->data                       =     array();        // Array des données passées au layout
         $this->data['styles']             = 	array(); 		// Array des feuilles de styles supplémentaires passées au layout

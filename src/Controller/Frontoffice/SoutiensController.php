@@ -43,7 +43,7 @@ class SoutiensController extends FOController
     {
         $this->data['page_title']           = 'Soutiens aux artistes';
         $this->data['accompagnes']          = $this->entityManager->getRepository(Category::class)->getGenealogy(7, $this->getParameter('locale'));
-        $this->data['accompagnes_test2']    = $this->entityManager->getRepository(Category::class)->getArticles(7, $this->getParameter('locale'),1);
+        $this->data['accompagnes_test2']    = $this->entityManager->getRepository(Category::class)->getArticles(array(7), $this->getParameter('locale'),1);
         $this->data['accompagnes_test']     = $this->entityManager->getRepository(Article::class)->findBy(['category' => '7']);
         $this->data['accompagnes_medias']   = ['ADAM','JONASKAY','ARYANE','DOUBLE', 'ETIENNE','KAMELECTRIC'];
         $this->data['auditions']            = $this->entityManager->getRepository(Category::class)->getGenealogy(8, $this->getParameter('locale'));
