@@ -99,7 +99,7 @@ class CategoryCrudController extends AbstractCrudController
         // Contenu de la catégorie
         yield FormField::addTab('Paramètres');
             // Champs de la vue liste
-        yield IdField::new("id")->hideOnForm();
+        yield IdField::new("id")->hideOnForm()->setPermission('ROLE_DEV');
         yield IntegerField::new('ordre', 'ordre')->setColumns(6)->hideOnForm();
         yield TextField::new('title', 'title')->setColumns(6);
         yield DateField::new('created_at', 'creation')->hideOnForm();

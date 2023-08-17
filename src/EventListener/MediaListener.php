@@ -104,7 +104,7 @@ class MediaListener implements EventSubscriberInterface
      */
     public function linkMedias(AfterEntityUpdatedEvent $event)
     {
-        dump('AfterEntityUpdatedEvent : linkMedias');
+        //dump('AfterEntityUpdatedEvent : linkMedias');
         // Récupération de l'entité
         $entity = $event->getEntityInstance();
 

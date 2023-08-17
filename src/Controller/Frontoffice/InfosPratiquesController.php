@@ -14,7 +14,7 @@ class InfosPratiquesController extends FOController
 {
 
     public function __construct(EntityManagerInterface $entityManager) {
-        dump('HomeController');
+        //dump('HomeController');
         // ! Configuration du controller :
 
 

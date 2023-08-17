@@ -47,10 +47,7 @@ class UserCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        if ( !  $this->isGranted('ROLE_ADMIN')) {
-            yield IdField::new('id')->hideOnForm();
-        }
-
+        yield IdField::new('id')->hideOnForm()->setPermission('ROLE_DEV');
         yield TextField::new('firstname', 'prénom')
             ->setColumns(7)
 
@@ -106,6 +103,8 @@ class UserCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('Utilisateur')
             ->setEntityLabelInPlural('Utilisateurs')
             ->showEntityActionsInlined()
+            // Seul les administrateurs peuvent éditer les utilisateurs
+            ->setEntityPermission('ROLE_ADMIN')
             ;
     }
 

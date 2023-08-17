@@ -14,7 +14,6 @@ class AgendaController extends FOController
 {
 
     public function __construct(EntityManagerInterface $entityManager) {
-        dump('HomeController');
         // ! Configuration du controller :
 
 
@@ -44,7 +43,7 @@ class AgendaController extends FOController
         // Récupération des articles des sous catégories de la catégorie agenda
         $events_agenda = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
         foreach($events_agenda as $event) {
-            dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
+            //dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
         }
 
         //TODO : récupérer les thèmes de catégories
@@ -73,7 +72,7 @@ class AgendaController extends FOController
         // Récupération des articles des sous catégories de la catégorie agenda
         $events_agenda = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
         foreach($events_agenda as $event) {
-            dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
+            //dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
         }
 
         $cat_actu_id = 4;
@@ -83,7 +82,7 @@ class AgendaController extends FOController
         // Récupération des articles des sous catégories de la catégorie actu
         $events_actus = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
         foreach($events_actus as $event) {
-            dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
+            //dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
         }
 
         $this->data['detail_partial']       = 'frontoffice/agenda/detail.html.twig';

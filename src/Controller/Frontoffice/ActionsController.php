@@ -16,7 +16,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class ActionsController extends FOController
 {
     public function __construct(EntityManagerInterface $entityManager) {
-        dump('HomeController');
         // ! Configuration du controller :
 
 
@@ -47,7 +46,7 @@ class ActionsController extends FOController
         // Récupération des articles des sous catégories de la catégorie actu
         $events_actus = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
         foreach($events_actus as $event) {
-            dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
+            //dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
         }
 
 

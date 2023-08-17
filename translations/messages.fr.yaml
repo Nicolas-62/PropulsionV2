@@ -47,6 +47,7 @@ content_admin:
     create: Le contenu "%name%" a été créé avec succès.
     update: Le contenu "%name%" a été mis à jour avec succès.
     delete: Le contenu "%name%" a été supprimé avec succès.
+    clearCache: Le cache a bien été vidé.
 
 login:
   signin: Connexion

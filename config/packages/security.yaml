@@ -35,7 +35,9 @@ security:
         # - { path: ^/profile, roles: ROLE_USER }
 
     role_hierarchy:
+        # Le rôle DEV possède tous les droits du rôle admin
         ROLE_DEV: ROLE_ADMIN
+        # Le rôle ADMIN possède tous les droits des rôles USER et AUTHOR
         ROLE_ADMIN: [ ROLE_USER, ROLE_AUTHOR ]
 
 when@test:

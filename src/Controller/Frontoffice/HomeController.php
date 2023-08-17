@@ -14,7 +14,7 @@ class HomeController extends FOController
 {
 
     public function __construct(EntityManagerInterface $entityManager) {
-        dump('HomeController');
+        //dump('HomeController');
         // ! Configuration du controller :
 
 
@@ -52,10 +52,10 @@ class HomeController extends FOController
         // Récupération des articles des sous catégories de la catégorie agenda
         $events_agenda = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
         foreach($events_agenda as $event) {
-            dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
+            //dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
         }
 
-        dump('-------------------');
+        //dump('-------------------');
         $cat_actu_id = 4;
         // Récupération des sous catégories de la catégorie actu
         $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_actu_id)->getChildrenIds();
@@ -63,7 +63,7 @@ class HomeController extends FOController
         // Récupération des articles des sous catégories de la catégorie actu
         $events_actus = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
         foreach($events_actus as $event) {
-            dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
+            //dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
         }
 
         $this->data['events_actus']     = $events_actus;

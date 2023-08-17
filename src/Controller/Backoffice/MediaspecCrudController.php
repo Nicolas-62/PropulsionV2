@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
@@ -27,15 +28,17 @@ class MediaspecCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            //showEntityActionsInlined : permet d'afficher les actions en ligne plutot que dans un menu
+            // showEntityActionsInlined : permet d'afficher les actions en ligne plutot que dans un menu
             ->showEntityActionsInlined()
+            // Seul les développeurs peuvent éditer les médiaspecs
+            ->setEntityPermission('ROLE_DEV')
             ;
 
     }
 
     public function configureFields(string $pageName): iterable
     {
-
+        yield IdField::new('id')->hideOnForm()->setPermission('ROLE_DEV');
         yield TextField::new('name','Nom')->setColumns(12);
         yield IntegerField::new('width','Largeur')->setColumns(6);
         yield IntegerField::new('height','Hauteur')->setColumns(6);

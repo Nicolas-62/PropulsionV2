@@ -45,6 +45,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -113,7 +114,7 @@ class ArticleCrudController extends BoController
         // Onglet
         yield FormField::addTab('Paramètres');
         // Champs communs à plusieurs actions (liste, edition, detail, formulaire...)
-        yield IdField::new('id')->hideOnForm();
+        yield IdField::new('id')->hideOnForm()->setPermission('ROLE_DEV');
         yield IntegerField::new('ordre', 'ordre')->hideOnForm();
         yield DateField::new('created_at','création')->hideOnForm();
         yield DateField::new('updated_at','dernière édition')->hideOnForm();
@@ -124,12 +125,27 @@ class ArticleCrudController extends BoController
 
         // Champs pour l'édition et la création d'un article.
         if(in_array($pageName, [Crud::PAGE_EDIT, Crud::PAGE_NEW])) {
+
+
             // Themes
             yield AssociationField::new('themes','Thèmes')->setRequired(false);
+
+
             // Article parent
             yield AssociationField::new('parent', 'Article Parent')->hideOnDetail()->setColumns(3)->hideOnIndex()->setRequired(false);
+
+            if(isset($this->category) && $this->category != null){
+
+            }
             // Catégorie parent
-            yield AssociationField::new('category', 'Catégorie Parent')->hideOnDetail()->setColumns(3)->hideOnIndex()->setRequired(false);
+            yield AssociationField::new('category', 'Catégorie Parent')
+                ->hideOnDetail()->setColumns(3)->hideOnIndex()->setRequired(false)->setFormTypeOptions([
+                    'data' => $this->category
+                ])
+            ;
+
+
+
             // En édition on peut ajouter/enlever des médias.
             if($pageName === Crud::PAGE_EDIT) {
                 // Médiaspecs appliquées à l'entité
@@ -238,15 +254,21 @@ class ArticleCrudController extends BoController
      */
     public function createEntity(string $entityFqcn)
     {
+        // Récupération de l'id de la catégorie si on vient d'une catégorie.
+        $referrer   =   $this->adminUrlGenerator->get('referrer');
+        // Si on créer un article depuis une catégorie
+        if($referrer != null) {
+            $categoryId = Request::create($referrer)->get('categoryId');
+            if($categoryId != null){
+                $this->category = $this->entityManager->getRepository(Category::class)->find($categoryId);
+            }
+        }
 
         $article = new Article();
         $article->setCreatedAt( new DateTimeImmutable() );
         $article->setUpdatedAt( new DateTimeImmutable() );
         $article->setOrdre( $this->entityManager->getRepository(Article::class)->count([]) + 1 );
-//        if($entityId != null){
-//            $article->setArticleId($entityId);
-//        }
-//
+
         return $article;
     }
 

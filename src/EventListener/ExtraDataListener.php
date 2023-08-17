@@ -55,14 +55,14 @@ class ExtraDataListener implements EventSubscriberInterface
 
             // Récupération du code langue par défaut.
             $code_langue = $this->locale;
-            dump($entity->getLanguage());
+            //dump($entity->getLanguage());
             if($entity->getLanguage() != null && trim($entity->getLanguage()) != ''){
                 // Récupération du code langue.
                 $code_langue = $entity->getLanguage();
             }
             // Récupération de la langue.
             $language = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $code_langue]);
-            dump($language);
+            //dump($language);
             // Récupération des datas de l'entité.
             $datas = $this->entityManager->getRepository($repository)->getDatas($entity, $language->getCode());
 

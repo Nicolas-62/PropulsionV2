@@ -16,6 +16,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
@@ -55,11 +56,9 @@ class MediaCrudController extends BoController
      */
     public function configureFields(string $pageName): iterable
     {
-        // LISTE
+        yield IdField::new('id')->hideOnForm()->setPermission('ROLE_DEV');
         // Nom du média.
         yield TextField::new('getName', 'nom')->onlyOnIndex();
-
-
         yield TextField::new('legend', 'description');
 // TEST VICHUPLOAD BUNDLE
 //        yield ImageField::new('media', 'Image')

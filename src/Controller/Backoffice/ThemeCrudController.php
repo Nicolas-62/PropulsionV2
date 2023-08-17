@@ -4,10 +4,12 @@ namespace App\Controller\Backoffice;
 
 use App\Entity\Theme;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 use DateTimeImmutable;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
@@ -27,11 +29,15 @@ class ThemeCrudController extends AbstractCrudController
 
     )
     {
-
-
-
     }
 
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            // Seul les administrateurs peuvent éditer les thèmes
+            ->setEntityPermission('ROLE_ADMIN')
+            ;
+    }
 
     public static function getEntityFqcn(): string
     {
@@ -41,12 +47,12 @@ class ThemeCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        return [
-            TextField::new('name'),
-            IntegerField::new('ordre'),
-            DateTimeField::new('createdAt')->hideOnForm(),
-            DateTimeField::new('updatedAt')->hideOnForm(),
-        ];
+
+            yield IdField::new('id')->hideOnForm()->setPermission('ROLE_DEV');
+            yield TextField::new('name');
+            yield IntegerField::new('ordre');
+            yield DateTimeField::new('createdAt')->hideOnForm();
+            yield DateTimeField::new('updatedAt')->hideOnForm();
     }
 
 

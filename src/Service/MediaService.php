@@ -19,7 +19,7 @@ class MediaService{
     {
         // Chemin d'accès des images depuis le dossier 'public' de l'application
         $base_path  = Constants::ASSETS_IMG_PATH;
-        // Chémin d'upload des images.
+        // Chemin d'upload des images.
         $upload_dir = Constants::UPLOAD_PATH . Constants::ASSETS_IMG_PATH;
         // Si le dossier n'existe pas on le créer.
         $filesystem = new Filesystem();

@@ -23,6 +23,7 @@ class FOController extends AbstractController
     // Datas passées à la vue.
     protected array $data;
 
+
     public function __construct(
         protected EntityManagerInterface $entityManager,
     )
@@ -79,9 +80,9 @@ class FOController extends AbstractController
         $form = $this->createForm(ContactType::class, $contact);
         $form->handleRequest($request);
 
-//        dump($form->getExtraData());
-//        dump($form['ville']);
-//        dump($contact);
+        //dump($form->getExtraData());
+        //dump($form['ville']);
+        //dump($contact);
 
         if($form->isSubmitted() && $form->isValid()){
             $notification->notify($contact);
