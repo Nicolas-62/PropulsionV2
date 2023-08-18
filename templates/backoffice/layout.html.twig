@@ -286,7 +286,10 @@
                                                 <input type="hidden" name="menuIndex" value="{{ ea.request.query.get('menuIndex') }}">
                                                 <input type="hidden" name="submenuIndex" value="{{ ea.request.query.get('submenuIndex') }}">
                                                 <input type="hidden" name="page" value="1">
-
+                                                {# CUSTOM : ajout de l'id de l'élément courant pour faire une recherche sur ses enfants #}
+                                                {% if parentId is defined and parentId is not null %}
+                                                    <input type="hidden" name="{{ searchKeyName }}" value="{{ parentId }}">
+                                                {% endif %}
                                                 <div class="form-group">
                                                     <div class="form-widget">
                                                         <i class="fas fa-search content-search-icon"></i>

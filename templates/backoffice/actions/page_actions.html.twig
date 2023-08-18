@@ -7,8 +7,8 @@
             {{ include(action.templatePath, {
                 action: action,
                 ancestorId: ancestorId,
+                ancestorKeyName: ancestorKeyName,
                 crudControllerName: crudControllerName,
-                keyName: keyName
             }, with_context = false) }}
         {% else %}
             {{ include(action.templatePath, { action: action}, with_context = false) }}

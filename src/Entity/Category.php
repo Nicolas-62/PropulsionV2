@@ -2,16 +2,19 @@
 
 namespace App\Entity;
 
+use App\Entity\ExtraDataTrait\CategoryDataTrait;
 use App\Entity\Traits\CMSTrait;
 use App\Entity\Traits\ExtraDataTrait;
 use App\Entity\Traits\ExtraFieldtrait;
 use App\Entity\Traits\LanguageTrait;
+use App\Entity\Traits\MediaTrait;
 use App\Entity\Traits\TimesTampableTrait;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Boolean;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
@@ -20,19 +23,9 @@ class Category
     // Champs date.
     use TimestampableTrait;
     use ExtraFieldTrait;
+    use CategoryDataTrait;
     use LanguageTrait;
-
-
-    // Champs supplémentaires
-    private ?string $content          = '';
-    private ?string $titleByLanguage  = '';
-
-
-    // Liste des champs supplémentaires spécifiques.
-    private array $extraFields = [
-        ['name' => 'titleByLanguage',   'label' => "Titre",             'ea_type' => 'TextField'      ],
-        ['name' => 'content',           'label' => "Contenu",           'ea_type' => 'TextEditorField'],
-    ];
+    use MediaTrait;
 
     public function __construct()
     {
@@ -43,32 +36,14 @@ class Category
         $this->mediaLinks       = new ArrayCollection();
         $this->created_at       = new \DateTimeImmutable();
         $this->updated_at       = new \DateTimeImmutable();
-        $this->seo = new ArrayCollection();
+        $this->seo              = new ArrayCollection();
     }
-
-    #[ORM\Column]
-    private ?bool $canCreate = null;
-
-    #[ORM\Column]
-    private ?bool $hasMulti = null;
 
     #[ORM\Column]
     private ?bool $hasTheme = null;
 
     #[ORM\Column]
-    private ?bool $hasTitle = null;
-
-    #[ORM\Column]
-    private ?bool $hasSubTitle = null;
-
-    #[ORM\Column]
-    private ?bool $hasContent = null;
-
-    #[ORM\Column]
     private ?bool $hasSeo = null;
-
-    #[ORM\Column]
-    private ?bool $hasLink = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, cascade: ['remove'], inversedBy: 'children')]
     #[ORM\JoinColumn(name:"category_id", referencedColumnName:"id")]
@@ -104,123 +79,6 @@ class Category
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Seo::class)]
     private Collection $seo;
-
-
-     // Todo : fonction dupliquée dans l'entité Article
-    /**
-     * @param $code_langue
-     * @return mixed
-     */
-    public function getSeo($code_langue = null): mixed
-    {
-        // Todo : modifier la récup de la langue
-        if($code_langue == null){
-            // On récupère la langue du site par défaut.
-            $code_langue = $_ENV['LOCALE'];
-        }
-        $seo = $this->seo->filter(function(Seo $seo) use ($code_langue) {
-            return $seo->getLanguage()->getCode() === $code_langue;
-        })->first();
-
-        return $seo;
-    }
-
-
-    public function canCreate(): ?bool
-    {
-        return $this->canCreate;
-    }
-
-    public function setCanCreate(bool $canCreate): self
-    {
-        $this->canCreate = $canCreate;
-
-        return $this;
-    }
-
-    public function hasMulti(): ?bool
-    {
-        return $this->hasMulti;
-    }
-
-    public function setHasMulti(bool $hasMulti): self
-    {
-        $this->hasMulti = $hasMulti;
-
-        return $this;
-    }
-
-    public function hasTheme(): ?bool
-    {
-        return $this->hasTheme;
-    }
-
-    public function setHasTheme(bool $hasTheme): self
-    {
-        $this->hasTheme = $hasTheme;
-
-        return $this;
-    }
-
-    public function hasTitle(): ?bool
-    {
-        return $this->hasTitle;
-    }
-
-    public function setHasTitle(bool $hasTitle): self
-    {
-        $this->hasTitle = $hasTitle;
-
-        return $this;
-    }
-
-    public function hasSubTitle(): ?bool
-    {
-        return $this->hasSubTitle;
-    }
-
-    public function setHasSubTitle(bool $hasSubTitle): self
-    {
-        $this->hasSubTitle = $hasSubTitle;
-
-        return $this;
-    }
-
-    public function hasContent(): ?bool
-    {
-        return $this->hasContent;
-    }
-
-    public function setHasContent(bool $hasContent): self
-    {
-        $this->hasContent = $hasContent;
-
-        return $this;
-    }
-
-    public function hasSeo(): ?bool
-    {
-        return $this->hasSeo;
-    }
-
-    public function setHasSeo(bool $hasSeo): self
-    {
-        $this->hasSeo = $hasSeo;
-
-        return $this;
-    }
-
-    public function hasLink(): ?bool
-    {
-        return $this->hasLink;
-    }
-
-    public function setHasLink(bool $hasLink): self
-    {
-        $this->hasLink = $hasLink;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Article>
@@ -386,34 +244,27 @@ class Category
         return $this;
     }
 
-    // ! EXTRA GETTERS & SETTERS
-
-    public function getContent(): ?string
+    public function hasTheme(): ?bool
     {
-        return $this->content;
+        return $this->hasTheme;
     }
 
-    public function setContent(?string $content): self
+    public function setHasTheme(bool $hasTheme): self
     {
-        $this->content = $content;
+        $this->hasTheme = $hasTheme;
 
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getTitleByLanguage(): ?string
+    public function hasSeo(): ?bool
     {
-        return $this->titleByLanguage;
+        return $this->hasSeo;
     }
 
-    /**
-     * @param string|null $titleByLanguage
-     */
-    public function setTitleByLanguage(?string $titleByLanguage): void
+    public function setHasSeo(bool $hasSeo): self
     {
-        $this->titleByLanguage = $titleByLanguage;
-    }
+        $this->hasSeo = $hasSeo;
 
+        return $this;
+    }
 }

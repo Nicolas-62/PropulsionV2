@@ -33,6 +33,24 @@ trait CMSTrait
     #[ORM\Column]
     private ?int $ordre = null;
 
+    /**
+     * @param $code_langue
+     * @return mixed
+     */
+    public function getSeo($code_langue = null): mixed
+    {
+        // Todo : modifier la récup de la langue
+        if($code_langue == null){
+            // On récupère la langue du site par défaut.
+            $code_langue = $_ENV['LOCALE'];
+        }
+        $seo = $this->seo->filter(function(Seo $seo) use ($code_langue) {
+            return $seo->getLanguage()->getCode() === $code_langue;
+        })->first();
+
+        return $seo;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -211,4 +229,24 @@ trait CMSTrait
 
         return $ancestors;
     }
+
+
+    /**
+     * Retourne la première catégorie parent trouvée.
+     *
+     * @return Category|null
+     */
+    public function getCategoryParent(): ?Category
+    {
+        if($this->getCategory() != null){
+            return $this->getCategory();
+        }
+        foreach($this->getAncestors() as $ancestor){
+            if($ancestor instanceof Category){
+                return $ancestor;
+            }
+        }
+        return null;
+    }
+
 }

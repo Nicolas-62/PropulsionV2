@@ -116,27 +116,27 @@ class ArticleCrudController extends BoController
         // Champs communs à plusieurs actions (liste, edition, detail, formulaire...)
         yield IdField::new('id')->hideOnForm()->setPermission('ROLE_DEV');
         yield IntegerField::new('ordre', 'ordre')->hideOnForm();
+        yield TextField::new('title','titre')->setColumns(6);
+        yield AssociationField::new('children','Enfants')->hideOnForm();
+        yield AssociationField::new('category','Categorie')->hideOnForm();
+        yield BooleanField::new('isOnline', 'En ligne')->hideOnForm();
         yield DateField::new('created_at','création')->hideOnForm();
         yield DateField::new('updated_at','dernière édition')->hideOnForm();
-        yield AssociationField::new('children','Enfants')->hideOnForm();
-        yield BooleanField::new('isOnline', 'En ligne')->hideOnForm();
-        yield TextField::new('title','titre')->setColumns(6);
-
 
         // Champs pour l'édition et la création d'un article.
         if(in_array($pageName, [Crud::PAGE_EDIT, Crud::PAGE_NEW])) {
+            // Récupération de la première catégorie parent pour appluqer la configuration des champs.
+            $categoryParent = $this->entity->getCategoryParent();
 
-
-            // Themes
-            yield AssociationField::new('themes','Thèmes')->setRequired(false);
-
+            // Si thèmes actifs.
+            if($categoryParent != null && $categoryParent->hasTheme()) {
+                // Themes
+                yield AssociationField::new('themes', 'Thèmes')->setRequired(false);
+            }
 
             // Article parent
             yield AssociationField::new('parent', 'Article Parent')->hideOnDetail()->setColumns(3)->hideOnIndex()->setRequired(false);
 
-            if(isset($this->category) && $this->category != null){
-
-            }
             // Catégorie parent
             yield AssociationField::new('category', 'Catégorie Parent')
                 ->hideOnDetail()->setColumns(3)->hideOnIndex()->setRequired(false)->setFormTypeOptions([
@@ -195,7 +195,8 @@ class ArticleCrudController extends BoController
                     }
                 }
             }
-        }
+        }// Fin si PAGE_EDIT ou PAGE_NEW
+
         // Si l'article existe déjà on peut éditer le contenu en fonction de la langue
         if($pageName === Crud::PAGE_EDIT) {
 
@@ -230,14 +231,45 @@ class ArticleCrudController extends BoController
                     ])
                 ;
             }
-            // Ajout des champs spécifiques à l'instance définis dans l'entité.
-            foreach($model->getExtraFields() as $extraField){
-                yield $model->getEasyAdminFieldType($extraField['ea_type'])::new($extraField['name'], $extraField['label'])->setColumns(12);
+
+
+            // EXTRA FIELDS
+            // Si la catégorie parent existe.
+            if($categoryParent != null) {
+                // Récupération des datas de la catégorie.
+                $categoryParent->getDatas($this->locale);
+                // Ajout des champs spécifiques à l'instance définis dans l'entité.
+                foreach ($model->getExtraFields() as $extraField) {
+                    $show_field = false;
+                    // si activé depuis la catégorie parent.
+                    if(method_exists($categoryParent, 'getHas'.ucfirst($extraField['name'])) ){
+                        if($categoryParent->{'getHas' . ucfirst($extraField['name'])}() ){
+                            $show_field = true;
+                        }
+                    }else{
+                        $show_field = true;
+                    }
+                    // Si on affiche le champ
+                    if($show_field){
+                        yield $field = $model->getEasyAdminFieldType($extraField['ea_type'])::new($extraField['name'], $extraField['label'])
+                            ->setColumns((int) $extraField['column']);
+                    }
+                }
             }
 
-        }
+        }// Fin si PAGE_EDIT
 
-
+        // Définition des champs extras visibles en vue liste.
+        if($pageName === Crud::PAGE_INDEX) {
+            // Ajout des champs spécifiques à l'instance définis dans l'entité.
+            foreach ($model->getExtraFields() as $extraField) {
+                // Si visible en vue liste.
+                if ($extraField['list'] !== 'false') {
+                    yield $model->getEasyAdminFieldType($extraField['ea_type'])::new($extraField['name'], $extraField['label'])
+                        ->setColumns((int) $extraField['column']);
+                }
+            }
+        }// Fin si PAGE_INDEX
 
     }
 //      by_reference
@@ -289,7 +321,7 @@ class ArticleCrudController extends BoController
         // Si on affiche les articles d'une catégorie
         if($this->category != null)
         {
-            $response->where('entity.category = :element');
+            $response->andWhere('entity.category = :element');
             $response->setParameter('element', $this->category->getId());
         }
         // Si on affiche les sous articles d'un article
@@ -304,8 +336,12 @@ class ArticleCrudController extends BoController
         {
             $response->andWhere('entity.article_id IS NULL');
         }
-        // Tri par ordre.
-        $response->orderBy('entity.ordre');
+        // Si pas d'ordre
+        if($searchDto->getSort() == [])
+        {
+            // Ordonne par ordre
+            $response->orderBy('entity.created_at', 'DESC');
+        }
         return $response;
     }
 
@@ -462,24 +498,27 @@ class ArticleCrudController extends BoController
 
         // Nom du controleur parent dans l'arboresence.
         $crudControllerName     =   'Category';
+        // nom du champ du modèle parent du parent pour retour à la liste
+        $ancestorKeyName        =   'entityId';
         // nom du champ du modèle parent sur lequel filtrer.
-        $keyName                =   'entityId';
+        $searchKeyName          =   'categoryId';
 
         // Si on affiche une liste d'article
         if (Crud::PAGE_INDEX === $responseParameters->get('pageName')) {
             // Si on est sur la liste des articles d'une catégorie.
             if ($this->category != null) {
-                $parentId         =   $this->category->getId();
+                $parentId               =   $this->category->getId();
                 // Envoi de l'id du grand-parent à la vue.
-                $ancestorId  =   $this->category->getParent()?->getId();
+                $ancestorId             =   $this->category->getParent()?->getId();
             }
             // Si on est sur la liste des sous articles d'un article.
             else if ($this->entity != null) {
-                $parentId         =   $this->entity->getId();
+                $parentId               =   $this->entity->getId();
                 // Envoi de l'id du grand-parent à la vue.
-                $ancestorId  =   $this->entity->getCategory()?->getId();
-                $crudControllerName =   'Article';
-                $keyName        =   'categoryId';
+                $ancestorId             =   $this->entity->getCategory()?->getId();
+                $crudControllerName     =   'Article';
+                $ancestorKeyName        =   'categoryId';
+                $searchKeyName          =   'entityId';
             }
         }
         // Si on affiche le détail d'un article
@@ -489,13 +528,13 @@ class ArticleCrudController extends BoController
             if ($this->category != null)
             {
                 // Envoi de l'id du parent à la vue.
-                $ancestorId  =   $this->category->getId();
-                $keyName        =   'categoryId';
+                $ancestorId         =   $this->category->getId();
+                $ancestorKeyName    =   'categoryId';
             } // Si on est sur la liste des sous articles d'un article.
             else if ($this->entity != null)
             {
                 // Envoi de l'id du parent à la vue.
-                $ancestorId  =   $this->entity->getParent()?->getId();
+                $ancestorId     =   $this->entity->getParent()?->getId();
             }
             // Envoi des mediaspecs à la vue
             $responseParameters->set('mediaspecs', $this->entityManager->getRepository(Article::class)->getMediaspecs($this->entity));
@@ -505,7 +544,8 @@ class ArticleCrudController extends BoController
         $responseParameters->set('parentId', $parentId);
         $responseParameters->set('crudControllerName', $crudControllerName);
         $responseParameters->set('ancestorId', $ancestorId);
-        $responseParameters->set('keyName', $keyName);
+        $responseParameters->set('ancestorKeyName', $ancestorKeyName);
+        $responseParameters->set('searchKeyName', $searchKeyName);
 
         return parent::configureResponseParameters($responseParameters);
     }

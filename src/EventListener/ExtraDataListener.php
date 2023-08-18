@@ -78,6 +78,7 @@ class ExtraDataListener implements EventSubscriberInterface
                         // Mise à jour de la valeur.
                         // CASTING en string pour formatage des booleens.
                         $datas[$field['name']]->setFieldValue( (string) $entity->{'get'.ucfirst($field['name'])}());
+                        $datas[$field['name']]->setUpdatedAt(new \DateTimeImmutable());
                         $this->entityManager->persist($datas[$field['name']]);
                     }
                 }

@@ -130,9 +130,9 @@ class Media
 
     public static function getNameOf($filename): string
     {
-        $filename_explode = explode('_', pathinfo($filename)['filename']);
+        $filename_explode = explode('-', pathinfo($filename)['filename']);
         $last_explode_part    = $filename_explode[count($filename_explode) - 1];
-        return str_replace('_'.$last_explode_part, '', $filename);
+        return str_replace('-'.$last_explode_part, '', $filename);
     }
 
     /**

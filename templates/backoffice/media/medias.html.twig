@@ -22,9 +22,6 @@
 
                         {#  CUSTOM Légende #}
                         {% if field.property == 'legend' %}
-                                <a href="{{ url.setAction('edit').setEntityId(entity.primaryKeyValue) }}">
-                                    {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
-                                </a>
                         {% else %}
                             {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
                         {% endif %}

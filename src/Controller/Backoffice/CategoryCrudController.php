@@ -102,24 +102,24 @@ class CategoryCrudController extends AbstractCrudController
         yield IdField::new("id")->hideOnForm()->setPermission('ROLE_DEV');
         yield IntegerField::new('ordre', 'ordre')->setColumns(6)->hideOnForm();
         yield TextField::new('title', 'title')->setColumns(6);
-        yield DateField::new('created_at', 'creation')->hideOnForm();
-        yield DateField::new('updated_at', 'dernière édition')->hideOnForm();
         yield AssociationField::new('children','Categories')->hideOnForm();
         yield AssociationField::new('articles', 'Articles')->hideOnForm();
-
+        yield BooleanField::new('isOnline')->hideOnForm();
+        yield DateField::new('created_at', 'creation')->hideOnForm();
+        yield DateField::new('updated_at', 'dernière édition')->hideOnForm();
         // Champs du formulaire
         yield AssociationField::new('parent','Parent')->hideOnIndex()->setRequired(false);
-        yield BooleanField::new('can_create','can_create')->hideOnIndex()->setColumns(3);
-        yield BooleanField::new('has_multi','has_multi')->hideOnIndex()->setColumns(3);
-        yield BooleanField::new('has_title','has_title')->hideOnIndex()->setColumns(3);
-        yield BooleanField::new('has_sub_title','has_sub_title')->hideOnIndex()->setColumns(3);
         yield BooleanField::new('has_seo','has_seo')->hideOnIndex()->setColumns(3);
-        yield BooleanField::new('has_link','has_link')->hideOnIndex()->setColumns(3);
         yield BooleanField::new('has_theme','has_theme')->hideOnIndex()->setColumns(3);
-        yield BooleanField::new('has_content','has_content')->hideOnIndex()->setColumns(3);
-        yield BooleanField::new('isOnline')->hideOnForm();
 
         if($pageName === Crud::PAGE_EDIT) {
+            // Ajout des champs spécifiques à l'instance définis dans l'entité, pour la partie paramétrage
+            foreach($model->getExtraFields() as $extraField){
+
+                if(str_starts_with($extraField['name'], 'has')) {
+                    yield $model->getEasyAdminFieldType($extraField['ea_type'])::new($extraField['name'], $extraField['label'])->setColumns(3);
+                }
+            }
 
             // CONTENU
             // Onglet Contenu, contient les champs extra, éditables en fonction de la langue.
@@ -154,7 +154,9 @@ class CategoryCrudController extends AbstractCrudController
             }
             // Ajout des champs spécifiques à l'instance définis dans l'entité.
             foreach($model->getExtraFields() as $extraField){
-                yield $model->getEasyAdminFieldType($extraField['ea_type'])::new($extraField['name'], $extraField['label'])->setColumns(12);
+                if( ! str_starts_with($extraField['name'], 'has')) {
+                    yield $model->getEasyAdminFieldType($extraField['ea_type'])::new($extraField['name'], $extraField['label'])->setColumns(12);
+                }
             }
 
         }
@@ -208,7 +210,7 @@ class CategoryCrudController extends AbstractCrudController
      */
     public function index(AdminContext $context)
     {
-      // Récupération de l'id de la categorie parent.
+        // Récupération de l'id de la categorie parent.
         $entityId   =    $this->adminUrlGenerator->get('entityId');
         // Si on doit afficher les enfants d'une catégorie
         if($entityId != null) {
@@ -219,10 +221,10 @@ class CategoryCrudController extends AbstractCrudController
     }
 
     /**
-     * detail
      *
      * Affiche la liste des enfants de la categorie dont l'id est passé en paramètre
      * , redirige vers la méthode : index
+     *
      * @param AdminContext $context
      * @return KeyValueStore|RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
@@ -273,25 +275,29 @@ class CategoryCrudController extends AbstractCrudController
 
         // Récupération du query builder
         $response = $this->entityRepository->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
+
         // Si pas d'ordre
         if($searchDto->getSort() == [])
         {
             // Ordonne par ordre
             $response->orderBy('entity.ordre');
         }
+
+        // Si une categorie a été précisée, on veut afficher uniquement ses enfants
+        if ($this->entity != null)
+        {
+            $response->andWhere('entity.category_id = :entityId');
+            $response->setParameter('entityId', $this->entity->getId());
+        }
+        // Sinon on affiche que les categories qui n'ont pas de parent.
+        else {
+            $response->andWhere('entity.category_id IS NULL');
+        }
+
         // Si pas de recherche
         if($searchDto->getQuery() == '')
         {
-            // Si une categorie a été précisée, on veut afficher uniquement ses enfants
-            if ($this->entity != null)
-            {
-                $response->where('entity.category_id = :entityId');
-                $response->setParameter('entityId', $this->entity->getId());
-            }
-            // Sinon on affiche que les categories qui n'ont pas de parent.
-            else {
-                $response->andwhere('entity.category_id IS NULL');
-            }
+
         }
         // Retour
         return $response;
@@ -314,11 +320,13 @@ class CategoryCrudController extends AbstractCrudController
      */
     public function configureResponseParameters(KeyValueStore $responseParameters): KeyValueStore
     {
+        $responseParameters->set('searchKeyName', 'entityId');
         // Passage du parent des enfants de la liste affichée.
         $responseParameters->set('parentId', $this->entity?->getId());
         // Envoi de l'id du grand-parent à la vue.
         $ancestorId = $this->entity?->getParent()?->getId();
         $responseParameters->set('ancestorId', $ancestorId);
+        $responseParameters->set('ancestorKeyName', 'categoryId');
         $responseParameters->set('crudControllerName', 'Category');
         $responseParameters->set('keyName', 'entityId');
 

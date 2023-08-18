@@ -8,6 +8,9 @@ use App\Field\MediaUploadField;
 use App\Service\MediaService;
 use App\Entity\Media;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
@@ -15,6 +18,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
@@ -38,6 +44,8 @@ class MediaCrudController extends BoController
 
 
     public function __construct(
+        // Repository EasyAdmin
+        private EntityRepository $entityRepository
     )
     {
         // Appel du constructeur du controller parent
@@ -70,6 +78,8 @@ class MediaCrudController extends BoController
 
         // Vignette du média dans la liste des médias.
         yield MediaUploadField::new('media', 'Image')->onlyOnIndex();
+        yield DateField::new('created_at','création')->hideOnForm();
+        yield DateField::new('updated_at','dernière édition')->hideOnForm();
 
         // FORMULAIRE
 
@@ -198,4 +208,28 @@ class MediaCrudController extends BoController
         return $assets
             ->addWebpackEncoreEntry('bo_medias');
     }
+
+    /**
+     * Requêtage des entités à afficher.
+     *
+     * @param SearchDto $searchDto
+     * @param EntityDto $entityDto
+     * @param FieldCollection $fields
+     * @param FilterCollection $filters
+     * @return QueryBuilder
+     */
+    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
+    {
+        // récupération des articles.
+        $response = $this->entityRepository->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
+
+        // Si pas d'ordre
+        if($searchDto->getSort() == [])
+        {
+            // Ordonne par ordre
+            $response->orderBy('entity.created_at', 'DESC');
+        }
+        return $response;
+    }
+
 }

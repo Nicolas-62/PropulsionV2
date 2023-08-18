@@ -73,5 +73,4 @@ class ArticleRepository extends CMSRepository
     {
         return $this->registry->getRepository(MediaLink::class)->findOneByArticle($entity, $mediaspec)?->getMedia();
     }
-
 }

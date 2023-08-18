@@ -7,7 +7,7 @@
 {% set url = ea_url()
     .unsetAll()
     .setController('App\\Controller\\Backoffice\\' ~ crudControllerName ~ 'CrudController')
-    .setAction(action.crudActionName).set(keyName, ancestorId)
+    .setAction(action.crudActionName).set(ancestorKeyName, ancestorId)
 %}
 
 {% if 'a' == action.htmlElement %}

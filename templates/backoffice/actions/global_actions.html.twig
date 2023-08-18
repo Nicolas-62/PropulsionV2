@@ -8,9 +8,9 @@
                 {# Passage de l'id du grand parent pour afficher la liste de ses enfant (dont fait partie le parent actuel) #}
                 {{ include(action.templatePath, {
                     action: action,
+                    ancestorKeyName: ancestorKeyName,
                     ancestorId: ancestorId,
-                    crudControllerName: crudControllerName,
-                    keyName: keyName
+                    crudControllerName: crudControllerName
                 }, with_context = false) }}
             {% endif %}
         {% else %}
