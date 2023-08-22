@@ -14,6 +14,8 @@ use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
@@ -190,6 +192,8 @@ class CategoryCrudController extends BoController
             ->setHelp('index', 'Liste des sous catégories')
             // Template personnalisé
             ->overrideTemplate('crud/index', 'backoffice/category/categories.html.twig')
+            ->overrideTemplate('crud/edit', 'backoffice/category/edit.html.twig')
+
             // Personnalisation du formulaire
             ->setFormThemes([
                     'backoffice/category/media_edit.html.twig',
@@ -324,13 +328,20 @@ class CategoryCrudController extends BoController
      */
     public function configureResponseParameters(KeyValueStore $responseParameters): KeyValueStore
     {
+        $ancestorId = $this->entity?->getParent()?->getId();
+        if (Crud::PAGE_INDEX === $responseParameters->get('pageName')) {
+            $ancestorKeyName = 'categoryId';
+        }
+        // Si édite un article
+        else if (Crud::PAGE_EDIT === $responseParameters->get('pageName')) {
+            $ancestorKeyName = 'entityId';
+        }
+
         $responseParameters->set('searchKeyName', 'entityId');
         // Passage du parent des enfants de la liste affichée.
         $responseParameters->set('parentId', $this->entity?->getId());
-        // Envoi de l'id du grand-parent à la vue.
-        $ancestorId = $this->entity?->getParent()?->getId();
         $responseParameters->set('ancestorId', $ancestorId);
-        $responseParameters->set('ancestorKeyName', 'categoryId');
+        $responseParameters->set('ancestorKeyName', $ancestorKeyName);
         $responseParameters->set('crudControllerName', 'Category');
         $responseParameters->set('keyName', 'entityId');
 
@@ -386,6 +397,29 @@ class CategoryCrudController extends BoController
         // Ajout des boutons à la liste des actions disponibles.
         $actions->add(Crud::PAGE_INDEX, $returnAction);
 
+        // Bouton de retour au détail du parent.
+        $returnPageAction = Action::new('return', 'Revenir', 'fa fa-arrow-left');
+        $returnPageAction->setTemplatePath('backoffice/actions/return.html.twig');
+        // renders the action as a <a> HTML element
+        $returnPageAction->displayAsLink();
+        // associé à l'action index
+        $returnPageAction->linkToCrudAction('index');
+        $returnPageAction->addCssClass('btn btn-primary');
+        // Ajout des boutons à la liste des actions disponibles.
+        $actions->add(Crud::PAGE_EDIT, $returnPageAction);
+
         return $actions;
+    }
+
+    /**
+     * Définie les assets nécessaires pour le controleur de médias.
+     * @param Assets $assets
+     * @return Assets
+     */
+    public function configureAssets(Assets $assets): Assets
+    {
+        return $assets
+            ->addWebpackEncoreEntry(Asset::new('bo_category')->ignoreOnIndex())
+            ;
     }
 }

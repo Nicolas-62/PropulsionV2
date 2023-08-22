@@ -43,6 +43,7 @@ Encore
     .addEntry('bo_medias',  './assets/bo/js/medias.js')
     .addEntry('bo_articles','./assets/bo/js/articles.js')
     .addEntry('bo_article', './assets/bo/js/article.js')
+    .addEntry('bo_category', './assets/bo/js/category.js')
 
     // FRONTOFFICE
 
