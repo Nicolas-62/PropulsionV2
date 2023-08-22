@@ -50,7 +50,7 @@ class Article
     }
 
 
-    #[ORM\ManyToOne(targetEntity: self::class, cascade: ['remove'], inversedBy: 'children')]
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
     #[ORM\JoinColumn(name:"article_id", referencedColumnName:"id")]
     protected ?Article $parent;
 
@@ -79,7 +79,7 @@ class Article
     #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'articles')]
     private Collection $themes;
 
-    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Seo::class)]
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Seo::class, cascade: ['remove'])]
     private Collection $seo;
 
 

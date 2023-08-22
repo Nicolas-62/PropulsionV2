@@ -1,6 +1,6 @@
 "name","label","ea_type","list","column",
 "titleByLanguage","Titre","TextField","true",12,
-"description","Description","TextEditorField","true",12,
+"description","Description","TextEditorField","false",12,
 "content","Contenu","TextEditorField","false",12,
 "subtitle","Sous-titre","TextField","false",12,
 "dateEvent","Date de l'évènement","TextField","false",3,

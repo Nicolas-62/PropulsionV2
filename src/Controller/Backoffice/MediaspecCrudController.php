@@ -5,12 +5,15 @@ namespace App\Controller\Backoffice;
 use App\Entity\Mediaspec;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class MediaspecCrudController extends AbstractCrudController
 {
@@ -42,9 +45,19 @@ class MediaspecCrudController extends AbstractCrudController
         yield TextField::new('name','Nom')->setColumns(12);
         yield IntegerField::new('width','Largeur')->setColumns(6);
         yield IntegerField::new('height','Hauteur')->setColumns(6);
-        yield AssociationField::new('article','Article')->setColumns(6);
-        yield AssociationField::new('category','Category')->setColumns(6);
-        yield IntegerField::new('heritage','Héritage')->setColumns(6);
+        // AU moins un des deux champs suivant doit être saisi.
+        yield AssociationField::new('article','Article')->setRequired(false)->setColumns(6);
+        yield AssociationField::new('category','Category')->setRequired(false)->setColumns(6);
+        if($pageName == Crud::PAGE_INDEX) {
+            yield ArrayField::new('heritage', 'Héritage')->setColumns(6);
+        }else if(in_array($pageName, array(Crud::PAGE_EDIT, Crud::PAGE_NEW)) ) {
+            yield CollectionField::new('heritage', 'Héritage')->setColumns(6)->setFormTypeOptions([
+                'entry_type' => IntegerType::class,
+                'entry_options' => [
+                    'attr' => ['type' => 'number', 'min' => 0, 'max' => 9]
+                ]
+            ]);
+        }
         yield AssociationField::new('mediaType','Type de média');
 
         yield BooleanField::new('mandatory','Est Obligatoire')->setColumns(3);

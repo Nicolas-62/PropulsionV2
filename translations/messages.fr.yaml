@@ -48,6 +48,9 @@ content_admin:
     update: Le contenu "%name%" a été mis à jour avec succès.
     delete: Le contenu "%name%" a été supprimé avec succès.
     clearCache: Le cache a bien été vidé.
+    error:
+      parent:
+        choice: Vous ne pouvez choisir qu'un parent.
 
 login:
   signin: Connexion

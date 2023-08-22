@@ -62,6 +62,39 @@ class ArticleRepository extends CMSRepository
         return $mediaspecs;
     }
 
+
+    /**
+     * Récupère les articles dont la catégorie parent autorise la création de sous articles.
+     *
+     * @param $code_langue
+     * @return ArrayCollection
+     */
+    public function getHasSubArticleArticles(?Article $article, $code_langue): ArrayCollection
+    {
+        // Récupération des articles
+        $request = $this->createQueryBuilder('a');
+        $articles = new ArrayCollection($request->getQuery()->getResult());
+        // Filtre des articles
+        return $articles->filter(function($article_choice) use ($article, $code_langue){
+            if($article != null && $article_choice->getId() == $article->getId()) {
+                return false;
+            }
+            // Récupération de la catégorie parent
+            $category = $article_choice->getCategoryParent();
+
+            if ($category != null) {
+                $category->getDatas($code_langue);
+                if ($category->getHasSubArticle()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        });
+    }
+
     /**
      * Récupère un média pour une médiapsec donnée
      *
@@ -73,4 +106,6 @@ class ArticleRepository extends CMSRepository
     {
         return $this->registry->getRepository(MediaLink::class)->findOneByArticle($entity, $mediaspec)?->getMedia();
     }
+
+
 }

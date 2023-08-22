@@ -45,7 +45,7 @@ class Category
     #[ORM\Column]
     private ?bool $hasSeo = null;
 
-    #[ORM\ManyToOne(targetEntity: self::class, cascade: ['remove'], inversedBy: 'children')]
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
     #[ORM\JoinColumn(name:"category_id", referencedColumnName:"id")]
     protected ?Category $parent;
 
@@ -77,7 +77,7 @@ class Category
     #[ORM\OneToMany(mappedBy: 'object', targetEntity: CategoryData::class, orphanRemoval: true)]
     private Collection $data;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Seo::class)]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Seo::class, cascade: ['remove'])]
     private Collection $seo;
 
     /**

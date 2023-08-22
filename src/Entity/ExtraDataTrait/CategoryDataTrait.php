@@ -20,7 +20,10 @@ define('CATEGORY_DATA_FIELDS', $fields);
 trait CategoryDataTrait
 {
     // Champs spécifiques !! à synchroniser manuellement avec les champs définis dans le csv
+    // !! Ajouter les getters et les setters également, définir une valeur par défaut.
     private ?string $titleByLanguage = '';
+    private ?bool $hasCreate = true;
+    private ?bool $hasSubArticle = false;
     private ?bool $hasDescription = false;
     private ?bool $hasContent = false;
     private ?bool $hasSubtitle = false;
@@ -413,6 +416,38 @@ trait CategoryDataTrait
     public function setHasStyleTextColor(?bool $hasStyleTextColor): void
     {
         $this->hasStyleTextColor = $hasStyleTextColor;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getHasCreate(): ?bool
+    {
+        return $this->hasCreate;
+    }
+
+    /**
+     * @param bool|null $hasCreate
+     */
+    public function setHasCreate(?bool $hasCreate): void
+    {
+        $this->hasCreate = $hasCreate;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getHasSubArticle(): ?bool
+    {
+        return $this->hasSubArticle;
+    }
+
+    /**
+     * @param bool|null $hasSubArticle
+     */
+    public function setHasSubArticle(?bool $hasSubArticle): void
+    {
+        $this->hasSubArticle = $hasSubArticle;
     }
 
 }

@@ -143,7 +143,7 @@ class MediaListener implements EventSubscriberInterface
                 if ($media != null) {
                     // On créer un lien entre la mediaspec le media et la publication
                     $mediaLink = new MediaLink();
-                    $mediaLink->setMediaspec($mediaspec)->setMedia($media)->setArticle($entity);
+                    $mediaLink->setMediaspec($mediaspec)->setMedia($media)->{'set'.ucfirst($entity->getClassName())}($entity);
                     // On sauvegarde
                     $this->entityManager->getRepository(MediaLink::class)->save($mediaLink, true);
                 }

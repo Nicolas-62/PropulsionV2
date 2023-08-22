@@ -41,27 +41,28 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 
 
-class CategoryCrudController extends AbstractCrudController
+class CategoryCrudController extends BoController
 {
     // Variables.
 
 
-    private ?Category $entity = null;
+    protected ?Category $entity = null;
 
     public function __construct(
         // Services
 
         // Générateur de routes
-        private AdminUrlGenerator $adminUrlGenerator,
+        protected AdminUrlGenerator $adminUrlGenerator,
         // Gestionnaire d'entité Symfony
-        private EntityManagerInterface $entityManager,
+        protected EntityManagerInterface $entityManager,
         // Repository EasyAdmin
-        private EntityRepository $entityRepository,
-        private RequestStack $requestStack,
+        protected EntityRepository $entityRepository,
         // Code Langue
-        private string $locale
+        protected string $locale
     )
     {
+        // Appel du constructeur du controller parent
+        parent::__construct();
     }
 
 
@@ -119,6 +120,12 @@ class CategoryCrudController extends AbstractCrudController
                 if(str_starts_with($extraField['name'], 'has')) {
                     yield $model->getEasyAdminFieldType($extraField['ea_type'])::new($extraField['name'], $extraField['label'])->setColumns(3);
                 }
+            }
+
+            // MEDIAS
+            // Ajout des formulaires d'ajout de médias en fonction des mediaspecs qui s'appliquent à l'entité
+            foreach($this->getMediaFields() as $mediaField){
+                yield $mediaField;
             }
 
             // CONTENU
@@ -185,16 +192,13 @@ class CategoryCrudController extends AbstractCrudController
             ->overrideTemplate('crud/index', 'backoffice/category/categories.html.twig')
             // Personnalisation du formulaire
             ->setFormThemes([
+                    'backoffice/category/media_edit.html.twig',
+                    'backoffice/category/media_delete.html.twig',
+                    'backoffice/category/media_select.html.twig',
                     'backoffice/category/seo_edit.html.twig',
                     '@EasyAdmin/crud/form_theme.html.twig'
                 ]
             )
-           // Champs de recherche
-            //->setSearchFields(['title'])
-            // ->setDefaultSort(['id' => 'DESC'])
-            // ->setPaginatorPageSize(30)
-            // ->setPaginatorRangeSize(4)
-            // Actions sur la liste visible (par défaut cachées dans un dropdown)
             ->showEntityActionsInlined()
             ;
 

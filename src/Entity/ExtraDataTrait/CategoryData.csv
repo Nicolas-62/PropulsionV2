@@ -1,5 +1,7 @@
 "name","label","ea_type","list"
 "titleByLanguage","Titre","TextField","true"
+"hasCreate","Création/Suppression","BooleanField","false"
+"hasSubArticle","Ajout de sous articles","BooleanField","false"
 "hasDescription","Possède une descrition","BooleanField","false"
 "hasContent","Possède du contenu","BooleanField","false"
 "hasSubtitle","Possède un sous titre","BooleanField","false"

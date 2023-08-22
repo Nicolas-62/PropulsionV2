@@ -2,20 +2,13 @@
 
 namespace App\Controller\Backoffice;
 
-use App\Constants\Constants;
 use App\Entity\Article;
-use App\Entity\CategoryData;
 use App\Entity\Category;
 use App\Entity\Language;
 use App\Entity\Media;
-use App\Entity\MediaLink;
 use App\Entity\Seo;
-use App\Entity\Traits\ExtraDataTrait;
-use App\Field\ExtraField;
 use App\Field\LanguageSelectField;
 use App\Field\MediaSelectField;
-use App\Field\MediaUploadField;
-use App\Form\SeoType;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -54,21 +47,21 @@ class ArticleCrudController extends BoController
     // Variables
 
     // Article courant
-    private ?Article $entity = null;
+    protected ?Article $entity = null;
     // Categorie parent.
-    private ?Category $category = null;
+    protected ?Category $category = null;
 
     public function __construct(
         // Services
 
         // Générateur de routes
-        private AdminUrlGenerator $adminUrlGenerator,
+        protected AdminUrlGenerator $adminUrlGenerator,
         // Gestionnaire d'entité Symfony
-        private EntityManagerInterface $entityManager,
+        protected EntityManagerInterface $entityManager,
         // Repository EasyAdmin
-        private EntityRepository $entityRepository,
+        protected EntityRepository $entityRepository,
         // Code Langue
-        private string $locale
+        protected string $locale
     )
     {
         // Appel du constructeur du controller parent
@@ -116,89 +109,85 @@ class ArticleCrudController extends BoController
         // Champs communs à plusieurs actions (liste, edition, detail, formulaire...)
         yield IdField::new('id')->hideOnForm()->setPermission('ROLE_DEV');
         yield IntegerField::new('ordre', 'ordre')->hideOnForm();
-        yield TextField::new('title','titre')->setColumns(6);
+        yield TextField::new('title','titre')->setColumns(4);
         yield AssociationField::new('children','Enfants')->hideOnForm();
-        yield AssociationField::new('category','Categorie')->hideOnForm();
+        yield AssociationField::new('category','Categorie')->setColumns(4)->hideOnForm()->formatValue(function($value, $article) {
+            // Concatenation du nom de la catégorie avec les noms des catégories parentes.
+            $category = $article->getCategory();
+            if($category != null) {
+                $value = $category->getTitle();
+                foreach($category->getAncestors() as $ancestor) {
+                    $value = $ancestor->getTitle() . ' / '. $value;
+                }
+            }
+            return $value;
+        });
+        yield AssociationField::new('parent','Article Parent')->setColumns(4)->hideOnForm()->formatValue(function($value, $article) {
+            // Concatenation du nom de l'article parent avec les noms des articles parents.
+            $parent = $article->getParent();
+            if($parent != null) {
+                $value = $parent->getTitle();
+                $ancestors = array();
+                foreach($parent->getAncestors() as $ancestor) {
+                    if($ancestor instanceof Article){
+                        $value = $ancestor->getTitle() . ' / ' . $value;
+                    }
+                }
+            }
+            return $value;
+        });
+
         yield BooleanField::new('isOnline', 'En ligne')->hideOnForm();
         yield DateField::new('created_at','création')->hideOnForm();
         yield DateField::new('updated_at','dernière édition')->hideOnForm();
 
         // Champs pour l'édition et la création d'un article.
         if(in_array($pageName, [Crud::PAGE_EDIT, Crud::PAGE_NEW])) {
-            // Récupération de la première catégorie parent pour appluqer la configuration des champs.
-            $categoryParent = $this->entity->getCategoryParent();
 
-            // Si thèmes actifs.
-            if($categoryParent != null && $categoryParent->hasTheme()) {
-                // Themes
-                yield AssociationField::new('themes', 'Thèmes')->setRequired(false);
-            }
-
+            // On récupère les articles qui peuvent avoir des sous articles.
+            $hasCreateArticles = $this->entityManager->getRepository(Article::class)->getHasSubArticleArticles($this->entity, $this->locale);
             // Article parent
-            yield AssociationField::new('parent', 'Article Parent')->hideOnDetail()->setColumns(3)->hideOnIndex()->setRequired(false);
+            yield AssociationField::new('parent', 'Article Parent')->hideOnDetail()->setColumns(3)->hideOnIndex()->setRequired(false)->setFormTypeOptions([
+                // Article parent associé.
+                'data' => $this->entity?->getParent(),
+                // Choix possibles.
+                'choices' =>$hasCreateArticles
+            ]);
+
+            // On récupère les catégories auxquelles on peut associer des articles.
+            $hasCreateCategories = $this->entityManager->getRepository(Category::class)->getHasCreateCategories($this->getUser(), $this->locale);
 
             // Catégorie parent
             yield AssociationField::new('category', 'Catégorie Parent')
                 ->hideOnDetail()->setColumns(3)->hideOnIndex()->setRequired(false)->setFormTypeOptions([
-                    'data' => $this->category
+                    // Catégorie parent associée.
+                    'data' => $this->category,
+                    // Choix possibles.
+                    'choices' =>$hasCreateCategories
                 ])
             ;
 
 
-
-            // En édition on peut ajouter/enlever des médias.
-            if($pageName === Crud::PAGE_EDIT) {
-                // Médiaspecs appliquées à l'entité
-                $mediaspecs = $this->entityManager->getRepository(Article::class)->getMediaspecs($this->entity);
-                // Si ils existent.
-                if ($mediaspecs != null) {
-                    // MEDIAS
-                    // Ajout d'un onglet
-                    yield FormField::addTab('Medias')
-                        ->setIcon('image');
-                    // Pour chaque mediaspec
-                    foreach ($mediaspecs as $index => $mediaspec) {
-                        yield FormField::addRow();
-
-                        // Ajout d'un champ d'upload d'un média
-                        // Ajout du personnalisé champ média.
-                        yield $imageField = Field::new('media' . ($index + 1), ucfirst($mediaspec->getName()) . ' : téléchargez un média ou...');
-                        $imageField->setColumns(8);
-                        // Récupération du média.
-                        $media = $this->entityManager->getRepository(Article::class)->getMedia($this->entity, $mediaspec);
-                        // Si l'entité possède un média pour cette mediaspec.
-                        if ($media != null) {
-                            $imageField->setLabel(ucfirst($mediaspec->getName()))
-                                // On associe le média existant au champ configuré
-                                ->setValue($media)
-                                // On définit la vue dédiée à l'affichage du média
-                                ->setFormTypeOptions([
-                                    'block_name' => 'media_delete',
-                                ])
-                            ;
-                        }
-                        // Si pas encore de média défini.
-                        else {
-                            // Ajout d'une zone d'upload de fichier
-                            $imageField
-                                ->setFormTypeOptions([
-                                    'block_name' => 'media_edit',
-                                ])
-                            ;
-                            // Ajout d'un champ supplémentaire de sélection d'un média existant.
-                            yield MediaSelectField::new('media' . ($index + 11))
-                                ->setChoices(
-                                    $this->entityManager->getRepository(Media::class)->getAllForChoices()
-                                )->setColumns(4);
-                            ;
-                        }
-                    }
-                }
-            }
         }// Fin si PAGE_EDIT ou PAGE_NEW
 
         // Si l'article existe déjà on peut éditer le contenu en fonction de la langue
         if($pageName === Crud::PAGE_EDIT) {
+
+            // Si on est en édition, l'ajout des thèmes dépend de la config sur la catégorie parent.
+            // Récupération de la première catégorie parent pour appliquer la configuration des champs.
+            $categoryParent = $this->entity->getCategoryParent();
+
+            // Si thèmes actifs.
+            if ($categoryParent != null && $categoryParent->hasTheme()) {
+                // Themes
+                yield AssociationField::new('themes', 'Thèmes')->setRequired(false);
+            }
+
+            // MEDIAS
+            // Ajout des formulaires d'ajout de médias en fonction des mediaspecs qui s'appliquent à l'entité
+            foreach($this->getMediaFields() as $mediaField){
+                yield $mediaField;
+            }
 
             // CONTENU
             // Onglet Contenu, contient les champs extra, éditables en fonction de la langue.
@@ -233,7 +222,7 @@ class ArticleCrudController extends BoController
             }
 
 
-            // EXTRA FIELDS
+            // EXTRA FIELDS VUE FORM
             // Si la catégorie parent existe.
             if($categoryParent != null) {
                 // Récupération des datas de la catégorie.
@@ -259,14 +248,19 @@ class ArticleCrudController extends BoController
 
         }// Fin si PAGE_EDIT
 
+        // EXTRA FIELDS VUE LIST
         // Définition des champs extras visibles en vue liste.
         if($pageName === Crud::PAGE_INDEX) {
             // Ajout des champs spécifiques à l'instance définis dans l'entité.
             foreach ($model->getExtraFields() as $extraField) {
+
                 // Si visible en vue liste.
                 if ($extraField['list'] !== 'false') {
                     yield $model->getEasyAdminFieldType($extraField['ea_type'])::new($extraField['name'], $extraField['label'])
-                        ->setColumns((int) $extraField['column']);
+                        ->setColumns((int) $extraField['column'])->formatValue(function($value, $entity) use($extraField){
+                            $entity->getDatas($this->locale);
+                            return $entity->{'get' . ucfirst($extraField['name'])}();
+                        });
                 }
             }
         }// Fin si PAGE_INDEX
@@ -292,6 +286,7 @@ class ArticleCrudController extends BoController
         if($referrer != null) {
             $categoryId = Request::create($referrer)->get('categoryId');
             if($categoryId != null){
+                // On pré-rempli le champ category.
                 $this->category = $this->entityManager->getRepository(Category::class)->find($categoryId);
             }
         }
@@ -330,11 +325,6 @@ class ArticleCrudController extends BoController
             $response->andWhere('entity.article_id = :entity_id');
             $response->setParameter('entity_id', $this->entity->getId());
 
-        }
-        // Sinon on affiche tous les articles qui ne sont pas des sous articles.
-        else
-        {
-            $response->andWhere('entity.article_id IS NULL');
         }
         // Si pas d'ordre
         if($searchDto->getSort() == [])
@@ -521,7 +511,7 @@ class ArticleCrudController extends BoController
                 $searchKeyName          =   'entityId';
             }
         }
-        // Si on affiche le détail d'un article
+        // Si édite un article
         else if (Crud::PAGE_EDIT === $responseParameters->get('pageName')) {
             $crudControllerName     =   'Article';
             // Si on est sur la liste des articles d'une catégorie.

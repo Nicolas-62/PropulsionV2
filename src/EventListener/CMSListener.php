@@ -16,6 +16,7 @@ class CMSListener implements EventSubscriberInterface
     {
         return [
             BeforeEntityUpdatedEvent::class => 'update',
+
         ];
 
     }
@@ -35,5 +36,8 @@ class CMSListener implements EventSubscriberInterface
             $entity->setUpdatedAt(new \DateTimeImmutable());
         }
     }
+
+
+
 
 }

@@ -36,7 +36,7 @@ class Mediaspec
     private ?bool $haslegend = null;
 
     #[ORM\Column]
-    private ?int $heritage = 0;
+    private ?array $heritage = array('0');
 
     #[ORM\OneToMany(mappedBy: 'mediaspec', targetEntity: MediaLink::class, cascade: ['remove'])]
     private Collection $mediaLinks;
@@ -103,18 +103,6 @@ class Mediaspec
     public function setHeight(int $height): self
     {
         $this->height = $height;
-
-        return $this;
-    }
-
-    public function getHeritage(): ?int
-    {
-        return $this->heritage;
-    }
-
-    public function setHeritage(int $heritage): self
-    {
-        $this->heritage = $heritage;
 
         return $this;
     }
@@ -216,4 +204,21 @@ class Mediaspec
 
         return $this;
     }
+
+    /**
+     * @return array|null
+     */
+    public function getHeritage(): ?array
+    {
+        return $this->heritage;
+    }
+
+    /**
+     * @param array|null $heritage
+     */
+    public function setHeritage(?array $heritage): void
+    {
+        $this->heritage = $heritage;
+    }
+
 }

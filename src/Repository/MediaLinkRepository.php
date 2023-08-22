@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Article;
+use App\Entity\Category;
 use App\Entity\MediaLink;
 use App\Entity\Mediaspec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -67,4 +68,17 @@ class MediaLinkRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function findOneByCategory(Category $category, Mediaspec $mediaspec): ?MediaLink
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.mediaspec = :mediaspec')
+            ->andWhere('m.category   = :category')
+            ->setParameter('mediaspec', $mediaspec)
+            ->setParameter('category', $category)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
 }

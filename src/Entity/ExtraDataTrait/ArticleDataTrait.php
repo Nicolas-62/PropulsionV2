@@ -20,6 +20,7 @@ define('ARTICLE_DATA_FIELDS', $fields);
 trait ArticleDataTrait
 {
     // Champs spécifiques !! à synchroniser manuellement avec les champs définis dans le csv
+    // !! Ajouter les getters et les setters également, définir une valeur par défaut.
     private ?string $titleByLanguage  = '';
     private ?string $description  = '';
     private ?string $content          = '';

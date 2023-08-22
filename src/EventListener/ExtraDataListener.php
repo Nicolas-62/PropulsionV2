@@ -85,13 +85,13 @@ class ExtraDataListener implements EventSubscriberInterface
                 // Si l'entrée n'existe pas
                 else{
                     // Création de la data
-                    $articleData = new $repository();
-                    $articleData
+                    $entityData = new $repository();
+                    $entityData
                         ->setObject($entity)
                         ->setLanguage($language)
                         ->setFieldKey( $field['name'] )
                         ->setFieldValue( (string) $entity->{'get'.ucfirst($field['name'])}() );
-                    $this->entityManager->persist($articleData);
+                    $this->entityManager->persist($entityData);
                 }
             }// end foreach
 

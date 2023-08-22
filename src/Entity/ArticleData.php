@@ -20,6 +20,10 @@ class ArticleData
     #[ORM\JoinColumn(nullable: false)]
     private ?Article $object = null;
 
-
+    public function __construct()
+    {
+        $this->created_at       = new \DateTimeImmutable();
+        $this->updated_at       = new \DateTimeImmutable();
+    }
 }
 

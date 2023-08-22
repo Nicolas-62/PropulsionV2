@@ -30,6 +30,13 @@ class MediaLink
     #[ORM\ManyToOne(inversedBy: 'mediaLinks')]
     private ?Media $media = null;
 
+
+    public function __construct()
+    {
+        $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTimeImmutable();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

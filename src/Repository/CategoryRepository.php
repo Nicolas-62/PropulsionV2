@@ -5,7 +5,10 @@ namespace App\Repository;
 use App\Constants\Constants;
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\Media;
+use App\Entity\MediaLink;
 use App\Entity\Mediaspec;
+use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -90,5 +93,60 @@ class CategoryRepository extends CMSRepository
     {
         $heritage  =   0;
         return $this->registry->getRepository(Mediaspec::class)->findByCategory($entity, $heritage);
+    }
+
+
+    /**
+     * Récupère les catégories qui auxquelles l'utilisateur peut ajouter/enlever des articles.
+     *
+     * @param User $user
+     * @return Category[]
+     */
+    public function getHasCreateCategories(User $user, string $code_langue): array
+    {
+        $request = $this->createQueryBuilder('c');
+        // Seul les développeurs sont autorisés à ajouter des articles à des catégories bloquées en ajout/suppression d'articles
+        if( ! $user->hasRole('ROLE_DEV')) {
+            $request->andWhere('data.field_key = :fieldKey');
+            $request->setParameter('fieldKey', 'hasCreate');
+            $request->andWhere('data.field_value = :fieldValue');
+            $request->setParameter('fieldValue', true);
+            $request->join('c.data', 'data');
+            // On filtre sur la langue
+            $request->andWhere('language.code = :languageCode');
+            $request->setParameter('languageCode', $code_langue);
+            $request->join('data.language', 'language');
+        }
+        return $request->getQuery()->getResult();
+    }
+
+    public function hasCreate($category, string $code_langue): ?Category
+    {
+        $request = $this->createQueryBuilder('c');
+        $request->andWhere('c = :category');
+        $request->setParameter('category', $category);
+        $request->andWhere('data.field_key = :fieldKey');
+        $request->setParameter('fieldKey', 'hasCreate');
+        $request->andWhere('data.field_value = :fieldValue');
+        $request->setParameter('fieldValue', true);
+        $request->join('c.data', 'data');
+        // On filtre sur la langue
+        $request->andWhere('language.code = :languageCode');
+        $request->setParameter('languageCode', $code_langue);
+        $request->join('data.language', 'language');
+
+        return $request->getQuery()->getSingleResult();
+    }
+
+    /**
+     * Récupère un média pour une médiapsec donnée
+     *
+     * @param Article $entity
+     * @param Mediaspec $mediaspec_id
+     * @return Media|null
+     */
+    public function getMedia(Category $entity, Mediaspec $mediaspec): Media|null
+    {
+        return $this->registry->getRepository(MediaLink::class)->findOneByCategory($entity, $mediaspec)?->getMedia();
     }
 }

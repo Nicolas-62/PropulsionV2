@@ -55,9 +55,9 @@ class MediaspecsRepository extends ServiceEntityRepository
 
         return $this->createQueryBuilder('m')
             ->andWhere("m.$model_name = :entity")
-            ->andWhere("m.heritage = :level")
             ->setParameter('entity', $entity)
-            ->setParameter('level', $heritage)
+            ->andWhere("m.heritage LIKE :level")
+            ->setParameter('level', '%'.$heritage.'%')
             ->orderBy('m.id', 'ASC')
             ->getQuery()
             ->getResult()

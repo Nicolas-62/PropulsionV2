@@ -58,8 +58,8 @@
                         {% if field.value != null %}
                             <td>
                                 <div>
-                                    <a class='test' href="{{ my_url.unsetAll().setController(my_controller).setAction('index').set('categoryId', field.value.id) }}">
-                                        {{ field.value.title }}
+                                    <a href="{{ my_url.unsetAll().setController(my_controller).setAction('index').set('categoryId', field.value.id) }}">
+                                        {{ field.formattedValue }}
                                     </a>
                                 </div>
                             </td>
