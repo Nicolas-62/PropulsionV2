@@ -77,8 +77,11 @@ trait ExtraFieldtrait
         $datas = $this->data->filter(function($data) use ($code_langue) {
             return $data->getLanguage()->getCode() === $code_langue;
         });
+        // Si on a un setter pour le champ renseigné en BDD
         foreach($datas as $data){
-            $this->{'set' . $data->getFieldKey()}($data->getFieldValue());
+            if(method_exists($this, 'set' . $data->getFieldKey())){
+                $this->{'set' . $data->getFieldKey()}($data->getFieldValue());
+            }
         }
     }
 
