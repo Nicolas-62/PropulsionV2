@@ -84,7 +84,7 @@ class InfosPratiquesController extends FOController
                 $this->addFlash('error', 'Formulaire non valide');
             }
         }else{
-            $this->addFlash('error', 'Formulaire non soumis');
+            //$this->addFlash('error', 'Formulaire non soumis');
         }
         // Passage du formulaire à la vue.
         $this->data['form'] = $form->createView();
