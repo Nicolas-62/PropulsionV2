@@ -47,6 +47,7 @@ class Article
         $this->data         = new ArrayCollection();
         $this->themes       = new ArrayCollection();
         $this->seo          = new ArrayCollection();
+        $this->parent       = null;
     }
 
 

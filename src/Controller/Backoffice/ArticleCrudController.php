@@ -155,16 +155,23 @@ class ArticleCrudController extends BoController
             ]);
 
             // On récupère les catégories auxquelles on peut associer des articles.
-            $hasCreateCategories = $this->entityManager->getRepository(Category::class)->getHasCreateCategories($this->getUser(), $this->locale);
-
+            $category_form_options = [
+                // Catégorie associée.
+                'data' => $this->category,
+                // Choix possibles.
+                'choices' => $this->entityManager->getRepository(Category::class)->getHasCreateCategories($this->getUser(), $this->locale),
+                // On ajoute dans le label le nom des ancètres
+                'choice_label' => function($category, $key, $value) {
+                    $value = $category->getTitle();
+                    foreach($category->getAncestors() as $ancestor) {
+                        $value = $ancestor->getTitle() . ' / '. $value;
+                    }
+                    return $value;
+                },
+            ];
             // Catégorie parent
             yield AssociationField::new('category', 'Catégorie Parent')
-                ->hideOnDetail()->setColumns(3)->hideOnIndex()->setRequired(false)->setFormTypeOptions([
-                    // Catégorie parent associée.
-                    'data' => $this->category,
-                    // Choix possibles.
-                    'choices' =>$hasCreateCategories
-                ])
+                ->hideOnDetail()->setColumns(3)->hideOnIndex()->setRequired(false)->setFormTypeOptions($category_form_options)
             ;
 
 

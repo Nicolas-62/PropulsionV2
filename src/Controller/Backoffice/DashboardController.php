@@ -51,32 +51,6 @@ class DashboardController extends AbstractDashboardController
         return $this->redirect($adminUrlGenerator->setController(ArticleCrudController::class)->generateUrl());
     }
 
-//    #[Route('/clearCache', name: 'clear_cache')]
-//    public function clearCache(KernelInterface $appKernel): Response
-//    {
-//        $filesystem = new Filesystem();
-//
-//        // Chemin du cache
-//        $cache_path = $appKernel->getCacheDir();
-//        $appKernel->
-//        // Dossier de cache
-//        $cache_dir = basename($cache_path);
-//        // Nouveau chemin du cache
-//        $new_cache_path = str_replace($cache_dir, $cache_dir.'-old', $cache_path);
-//        try {
-//            // Renommage du dossier
-//            $filesystem->rename($cache_path, $new_cache_path);
-//            // Suppression du dossier
-//            //$filesystem->remove($new_cache_path);
-//            $this->session->getFlashBag()->add('success', new TranslatableMessage('content_admin.flash_message.clearCache') );
-//        }catch(Exception $e){
-//            $this->session->getFlashBag()->add('error', $e->getMessage());
-//        }
-//
-//
-//        return $this->redirectToRoute('bo_home');
-//    }
-
     #[Route('/clearCache', name: 'clear_cache')]
     public function clearCache(CacheItemPoolInterface $cache): Response
     {

@@ -14,7 +14,7 @@ import Cropper from 'cropperjs';
     let $main                      =        $('body');
     let dropzoneSelector    =       ".my-dropzone";
     let btnCropSelector     =       ".crop-action";
-    let btnValidCropSelector=       ".crop-valid";
+    let btnValidCropSelector =      ".crop-valid";
     let cropperSelector     =       ".my-cropper";
     let imageSelector       =       "#image-cropper";
     let imageDataInputSelector =    "#cropData";
@@ -57,8 +57,9 @@ import Cropper from 'cropperjs';
             $btnCrop.text('Annuler');
             $btnValidate.show();
             let cropper = new Cropper($image[0], {
-                minContainerWidth: 300,
-                minContainerHeight: 300, // Spécifiez les dimensions prédéfinies pour le recadrage (1:1 dans cet exemple)
+                viewMode: 1, // La zonne de recardage ne peut pas sortir de l'image
+                // Spécifiez les dimensions prédéfinies pour le recadrage (1:1 dans cet exemple)
+                aspectRatio: $btnCrop.attr('data-width') / $btnCrop.attr('data-height'),
                 // Ajoutez d'autres options Cropper.js selon vos besoins
             });
         }
@@ -134,6 +135,7 @@ import Cropper from 'cropperjs';
 
         // Click sur le bouton de validation du croppage
         $main.on('click', btnValidCropSelector, validateCrop);
+
     });
 
 

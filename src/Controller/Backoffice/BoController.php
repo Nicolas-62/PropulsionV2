@@ -8,11 +8,18 @@ use App\Entity\Media;
 use App\Field\MediaSelectField;
 use App\Service\Secure;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use http\Client\Response;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 abstract class BoController extends AbstractCrudController
 {
@@ -54,7 +61,6 @@ abstract class BoController extends AbstractCrudController
                 $response["folderId"] = $folderId;
                 $response["filename"] = $file->getClientOriginalName();
                 // Transformation de l'image en base64
-//                $response["file"]     = base64_encode(file_get_contents($imageBasePath . $file->getClientOriginalName()));
                 $response["url"]      =  $context->getRequest()->getBaseUrl() . $imageBasePath . $file->getClientOriginalName();
             }
         }else{
@@ -63,6 +69,46 @@ abstract class BoController extends AbstractCrudController
         // Retour
         return new JsonResponse($response);
     }
+
+    /**
+     * Supprime sur le serveur le fichier déposé par l'utilisateur
+     *
+     * @param AdminContext $context
+     */
+    public function deleteUpload(AdminContext $context, AdminUrlGenerator $adminUrlGenerator,)
+    {
+
+        // Récupération du nom du fichier à supprimer.
+        $filename = $context->getRequest()->get('filename');
+        // Récupération du dossier temporaire.
+        $folderId = $context->getRequest()->get('folderId');
+        // Chemin temporaire de l'image
+        $imageBasePath = Constants::ASSETS_UPLOAD_PATH . $folderId . '/';
+        $filesystem = new Filesystem();
+        $filepath = $imageBasePath . $filename;
+        // Si le fichier existe.
+        if($filesystem->exists($filepath)) {
+            // Suppression du fichier.
+            $filesystem->remove($filepath);
+        }else{
+            $response["error"] = "Impossible de supprimer le fichier";
+        }
+
+        // Récupération de l'id de l'entité
+        $entityId = $context->getRequest()->get('entityId');
+        if($entityId != null){
+            $crudAction = Action::EDIT;
+        }else{
+            $crudAction = Action::NEW;
+        }
+        $url = $adminUrlGenerator->setAction($crudAction)
+            ->set('entityId', $context->getRequest()->get('entityId'))
+            ->unset('folderId')
+            ->generateUrl();
+        // Retour
+        return $this->redirect($url);
+    }
+
 
 
     /**
@@ -110,6 +156,9 @@ abstract class BoController extends AbstractCrudController
                     $imageField
                         ->setFormTypeOptions([
                             'block_name' => 'media_edit',
+                        ])->setCustomOptions([
+                            'cropWidth' => $mediaspec->getWidth(),
+                            'cropHeight' => $mediaspec->getHeight(),
                         ])
                     ;
                     $mediaFields[] =  $imageField;

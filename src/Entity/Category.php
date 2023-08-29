@@ -39,6 +39,7 @@ class Category
         $this->seo              = new ArrayCollection();
     }
 
+
     #[ORM\Column]
     private ?bool $hasTheme = null;
 

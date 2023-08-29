@@ -24,7 +24,25 @@
             >
                 <img id="image-cropper-{{ form.vars.name }}" class="img-fluid" src="#">
                 <p class="mt-3">
-                    <a class="btn btn-primary crop-action">
+                    <a
+                        class="btn btn-delete-upload btn-danger"
+                        id="btn-delete-upload-{{ form.vars.name }}"
+                        href="#"
+                        data-href="{{ ea_url()
+                            .unsetAll()
+                            .setController('App\\Controller\\Backoffice\\ArticleCrudController')
+                            .setAction('deleteUpload')
+                            .set('entityId', ea.entity.primaryKeyValue)
+                            .generateUrl()
+                        }}"
+                    >
+                        Supprimer
+                    </a>
+                    <a
+                        class="btn btn-primary crop-action"
+                        data-width="{{ form.vars.ea_crud_form.ea_field.customOptions.get('cropWidth') }}"
+                        data-height="{{ form.vars.ea_crud_form.ea_field.customOptions.get('cropHeight') }}"
+                    >
                         Crop
                     </a>
                     <a class="btn btn-success crop-valid crop-valid-{{ form.vars.name }}" style="display: none">Valider</a>

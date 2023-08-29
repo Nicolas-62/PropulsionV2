@@ -16,6 +16,11 @@ import Cropper from 'cropperjs';
     // Sélecteur principal de la vue.
     let $main                 =     $('body');
 
+
+    // ! Events
+
+
+
     // When DOM is ready.
     $(document).ready(function() {
 
@@ -52,8 +57,14 @@ import Cropper from 'cropperjs';
                     if (response.error == null) {
                         // On récupère le nom du dossier temporaire et on l'ajoute au formulaire
                         $main.find("#folderId-"+dropzoneId).val(response.folderId);
+                        // On ajoute le nom du dossier temporaire dans le lien du bouton de suppression
+                        let btnDeleteUpload = $main.find("#btn-delete-upload-"+dropzoneId);
+                        let url = new URL(btnDeleteUpload.attr('data-href'));
+                        url.searchParams.append("folderId", response.folderId);
+                        btnDeleteUpload.attr("href", url);
                         // On ajoute le nom du fichier
                         $main.find("#filename-"+dropzoneId).val(response.filename);
+
                         // On déclenche un évènement
                         $dropzoneElement.trigger("dropzone-success", [response]);
                     } else {
@@ -62,6 +73,8 @@ import Cropper from 'cropperjs';
                 });
             });
         }
+
+
 
     });
 })();
