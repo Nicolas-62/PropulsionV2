@@ -38,7 +38,7 @@
                         <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100">
 
                         {% if media is not null %}
-                            {% set url = '/assets/images/' ~ media.name  %}
+                            {% set url = '/assets/images/' ~ media.media %}
                             <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
                         {% endif %}
                         <!-- Themes -->

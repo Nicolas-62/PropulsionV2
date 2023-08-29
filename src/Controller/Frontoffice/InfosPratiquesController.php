@@ -2,8 +2,12 @@
 
 namespace App\Controller\Frontoffice;
 
+use App\Entity\Contact;
+use App\Form\ContactType;
+use App\Notification\ContactNotification;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -34,11 +38,17 @@ class InfosPratiquesController extends FOController
 
     }
 
-
-
     #[Route('', name: 'index')]
     public function index(): Response
     {
+        return $this->redirect('contact');
+    }
+
+
+    #[Route('contact', name: 'contact')]
+    public function contact(Request $request, ContactNotification $notification): Response
+    {
+
         $this->data['transports'] = ['EN TRAIN' => "La gare se trouve à 15 minutes à pied de l'entrée des salles !
         Avec son positionnement géographique central, Amiens se trouve à 40 minutes d'Arras, 1h05 de Paris, 1h20 de Lille, 1h25 de Rouen, 2h20 de Reims, ou encore à 3h de Bruxelles.", 'EN VOITURE' => "Amiens est au carrefour de grands axes de circulation de niveau européen : A16, A29 et à proximité des autoroutes A1 A2, A26 et A28.
         Par la voiture également, vous arriverez rapidement aux salles de concerts : 40 minutes depuis Abbeville, 50 minutes depuis Beauvais, 1h20 d'Arras, 1h20 depuis Rouen, 1h30 de Paris et de Lille.", 'PARKING' => "À Amiens, le stationnement est payant dans les rues du centre-ville de 9h à 12h30 et de 14h à 17h30 (gratuité du dimanche au lundi à 14h), et dans les zones résiden- tielles de 9h à 12h30 et de 14h à 19h (gratuité du dimanche au lundi à 14h).
@@ -58,12 +68,28 @@ class InfosPratiquesController extends FOController
         $this->data['equipe_tech'] = array('Emmanuel Héreau', 'Gwennaelle Krier','Illan Lacoudre', 'Jean Maillart', 'Benoit Moritz', 'Grégory Vanheulle', 'Alexandre Verger');
         $this->data['benevoles'] = array('Alexandra', 'Antoine','Arsène', 'Beniamin', 'Bertille', 'Côme', 'Déborah', 'Elena','Elisa', 'Ewan', 'Fanny', 'Francesca', 'Gaëtan', 'Giacomo','Jules Judith', 'Laurent', 'Lisa', 'Lorea', 'Lucile', 'Manon A','Manon P', 'Marine', 'Nahelou', 'Nicolas', 'Perrine', 'Rodolphe','Romain D', 'Romain M', 'Simon', 'Valère', 'Zoé');
 
-
-
-
         // CONSTANTES GENERALES
         $this->data['locale']           = $this->getParameter('locale');
+        // Création du formulaire de contact.
+        $contact = new Contact();
+        $form = $this->createForm(ContactType::class, $contact);
+        $form->handleRequest($request);
+        // Récupération des données du formulaire de contact.
+        if($form->isSubmitted()) {
+            if ($form->isValid()) {
+                // Envoi du mail
+                $notification->notify($contact);
+                $this->addFlash('success', 'Votre email a bien été envoyé');
+            }else{
+                $this->addFlash('error', 'Formulaire non valide');
+            }
+        }else{
+            $this->addFlash('error', 'Formulaire non soumis');
+        }
+        // Passage du formulaire à la vue.
+        $this->data['form'] = $form->createView();
 
         return parent::lister();
     }
+
 }

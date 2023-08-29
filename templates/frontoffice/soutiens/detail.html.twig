@@ -13,8 +13,8 @@
             <div class="col-lg-6 col-md-12">
                 {% set media = article.getMedia(4) %}
                 {% if media is not null %}
-                    {% set url = '/assets/images/' ~ media.name  %}
-                    <img src="{{ url }}" alt="{{ media.name }}" class="img-fluid">
+                    {% set url = '/assets/images/' ~ media.media %}
+                    <img src="{{ url }}" alt="{{ media.media}}" class="img-fluid">
                 {% endif %}
 
             </div>

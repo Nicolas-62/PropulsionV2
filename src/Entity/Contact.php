@@ -8,6 +8,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class Contact {
 
+    const SUBJECTS = [
+        0 => 'Sujet 1',
+        1 => 'Sujet 2',
+        2 => 'Sujet 3',
+        3 => 'Sujet 4'
+    ];
+
     /**
      * @var string|null
      */
@@ -18,24 +25,7 @@ class Contact {
 //        maxMessage: 'Your first name cannot be longer than {{ limit }} characters',
     )]
     #[Assert\NotBlank]
-    private $firstname;
-
-    /**
-     * @var string|null
-     */
-    #[Assert\Length(
-        min: 2,
-        max: 50,
-    )]
-    #[Assert\NotBlank]
-    private $lastname;
-
-    /**
-     * @var string|null
-     */
-//    #[Assert\NotBlank]
-    #[Assert\Regex(pattern: '/[0-9]{10}/')]
-    private $phone;
+    private $name;
 
     /**
      * @var string|null
@@ -53,59 +43,17 @@ class Contact {
     #[Assert\NotBlank]
     private $message;
 
-    /**
-     * @return string|null
-     */
-    public function getFirstname(): ?string
-    {
-        return $this->firstname;
-    }
+    #[Assert\Values(
+        values: Contact::SUBJECTS,
+        message: 'Veuillez choisir un sujet valide'
+    )]
+    #[Assert\NotBlank]
+    private $subject;
 
     /**
-     * @param string|null $firstname
-     * @return Contact
+     * @var bool|null
      */
-    public function setFirstname(?string $firstname): Contact
-    {
-        $this->firstname = $firstname;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getLastname(): ?string
-    {
-        return $this->lastname;
-    }
-
-    /**
-     * @param string|null $lastname
-     * @return Contact
-     */
-    public function setLastname(?string $lastname): Contact
-    {
-        $this->lastname = $lastname;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    /**
-     * @param string|null $phone
-     * @return Contact
-     */
-    public function setPhone(?string $phone): Contact
-    {
-        $this->phone = $phone;
-        return $this;
-    }
+    private $getNewsletter;
 
     /**
      * @return string|null
@@ -141,6 +89,54 @@ class Contact {
     {
         $this->message = $message;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSubject()
+    {
+        return $this->subject;
+    }
+
+    /**
+     * @param mixed $subject
+     */
+    public function setSubject($subject): void
+    {
+        $this->subject = $subject;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string|null $name
+     */
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getGetNewsletter(): ?bool
+    {
+        return $this->getNewsletter;
+    }
+
+    /**
+     * @param bool|null $getNewsletter
+     */
+    public function setGetNewsletter(?bool $getNewsletter): void
+    {
+        $this->getNewsletter = $getNewsletter;
     }
 
 }

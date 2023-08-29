@@ -18,7 +18,7 @@
         <div class="col-lg-8 col-md-12 p-0" style="z-index: 500">
             {% set media = article.getMedia(9) %}
             {% if media is not null %}
-                {% set url = '/assets/images/' ~ media.name  %}
+                {% set url = '/assets/images/' ~ media.media %}
                 <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
             {% endif %}
 

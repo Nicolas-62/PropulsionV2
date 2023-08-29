@@ -101,38 +101,45 @@
                     <p class="h3 pt-3 pb-5">Ouverture des bureaux du mardi au vendredi de 14h à 18h</p>
 
                     <h1 class="">NOUS ECRIRE</h1>
-
                     <!-- Formulaire -->
-                    <form class="h4">
+                    <form class="h4"  method="post" action="{{ path('fo_infos_contact') }}" >
+
                         <div class="form-group py-2">
-                            <label class="pb-2" for="exampleFormControlSelect1">Sujet (obligatoire)</label>
-                            <select class="form-control rounded-0 border-secondary fs-2 select-infos" id="exampleFormControlSelect1">
+                            <label class="pb-2" for="exampleFormControlSelect1">{{ field_label(form.subject) }}</label>
+                            <select class="form-control rounded-0 border-secondary fs-2 select-infos"  name="{{ field_name(form.subject) }}" id="exampleFormControlSelect1">
                                 <option>Sélectionner ...</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                                {% for value, subject in field_choices(form.subject) %}
+                                    <option value="{{ value }}">{{ subject }}</option>
+                                {% endfor %}
                             </select>
+                            {{ form_errors(form.subject) }}
+                        </div>
+
+                        <div class="form-group py-4">
+                            <label class="pb-2" for="mailInput">{{ field_label(form.email) }}</label>
+                            <input type="email" class="form-control rounded-0 border-secondary select-infos"  name="{{ field_name(form.email) }}"  value="{{ field_value(form.email) }}" id="mailInput" aria-describedby="emailHelp">
+                            {{ form_errors(form.email) }}
+
                         </div>
                         <div class="form-group py-4">
-                            <label class="pb-2" for="mailInput">Votre email (obligatoire)</label>
-                            <input type="email" class="form-control rounded-0 border-secondary select-infos" id="mailInput" aria-describedby="emailHelp">
+                            <label class="pb-2" for="nomInput">{{ field_label(form.name) }}</label>
+                            <input type="text" class="form-control rounded-0 border-secondary select-infos"  name="{{ field_name(form.name) }}" value="{{ field_value(form.email) }}" id="nomInput">
+                            {{ form_errors(form.name) }}
+
                         </div>
                         <div class="form-group py-4">
-                            <label class="pb-2" for="nomInput">Votre nom (obligatoire)</label>
-                            <input type="text" class="form-control rounded-0 border-secondary select-infos" id="nomInput">
-                        </div>
-                        <div class="form-group py-4">
-                            <label class="pb-2" for="messageInput">Votre message (obligatoire)</label>
-                            <textarea class="form-control  rounded-0 border-secondary" style="min-height: 348px" id="messageInput" rows="3"></textarea>
+                            <label class="pb-2" for="messageInput">{{ field_label(form.message) }}</label>
+                            <textarea class="form-control  rounded-0 border-secondary"  name="{{ field_name(form.message) }}" style="min-height: 348px" id="messageInput" rows="3">{{ field_value(form.message) }}</textarea>
+                            {{ form_errors(form.message) }}
                         </div>
                         <!-- Checkbox -->
                         <div class="form-check py-4">
-                            <input class="form-check-input  rounded-0 border-secondary" type="checkbox" value="" id="newsCheck">
+                            <input class="form-check-input  rounded-0 border-secondary"  name="{{ field_name(form.getNewsletter) }}" type="checkbox" value="{{ field_value(form.getNewsletter) }}" id="newsCheck">
                             <label class="pb-2" class="form-check-label" for="newsCheck">
-                                Je souhaite recevoir la Newsletter de La Lune
+                                {{ field_label(form.getNewsletter) }}
                             </label>
                         </div>
+                        {{ form_row(form._token) }}
                         <!-- Submit -->
                         <div class="py-4">
                             <button type="submit" class="btn border border-secondary rounded-0 p-3 fs-3"><div class="p-2">ENVOYER</div></button>
@@ -142,10 +149,9 @@
 
                         </p>
                         <p>Pour en savoir plus, consultez notre Politique de confidentialité.</p>
-
                     </form>
-
                 </div>
+
 
 
 

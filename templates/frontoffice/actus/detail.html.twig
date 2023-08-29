@@ -117,7 +117,7 @@
 
 
                                         {% if media is not null %}
-                                            {% set url = '/assets/images/' ~ media.name  %}
+                                            {% set url = '/assets/images/' ~ media.media %}
                                             <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
                                         {% endif %}
                                         <div class="row m-0">

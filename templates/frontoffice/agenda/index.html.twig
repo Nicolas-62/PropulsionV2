@@ -126,7 +126,7 @@
                         {% endif %}
 
                         {% if media is not null %}
-                            {% set url = '/assets/images/' ~ media.name  %}
+                            {% set url = '/assets/images/' ~ media.media %}
                             <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
                         {% else  %}
                             <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD.png')) }}" class="card-img-top rounded-0" alt="...">

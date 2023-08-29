@@ -3,7 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Contact;
+use App\Entity\Property;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -16,24 +19,24 @@ class ContactType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('firstname', TextType::class)
-            ->add('ville', TextType::class,
-                [
-                    'mapped' => false,
-                    'constraints' => [
-                        new Length([
-                            'min' => 5,
-                            'minMessage' => 'Vous devez saisir au moins 5 caractères'
-                        ])
-                    ]
-                ]
-            )
-//            ->add('lastname', TextType::class)
-//            ->add('phone', TextType::class)
-//            ->add('email', EmailType::class)
-//            ->add('message', TextareaType::class)
+            ->add('subject', ChoiceType::class, [
+                'choices' => $this->getChoices(),
+                'label' => 'Sujet',
+            ])
+            ->add('email', EmailType::class, [
+                'label' => 'Email',
+            ])
+            ->add('name', TextType::class, [
+                'label' => 'Nom',
+            ])
+            ->add('message', TextareaType::class, [
+                'label' => 'Message',
+            ])
+            ->add('getNewsletter', CheckboxType::class, [
+                'label'    => 'Je souhaite recevoir la newsletter de la lune',
+                'required' => false,
+            ]);
         ;
-
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -44,6 +47,20 @@ class ContactType extends AbstractType
             // Fichier de traduction des labels
             'translation_domain' => 'contact'
         ]);
+    }
+
+    /**
+     * Récupère les choix pour le champ sujet
+     * @return array
+     */
+    private function getChoices(): array
+    {
+        $choices = Contact::SUBJECTS;
+        $output = [];
+        foreach($choices as $value => $choice){
+            $output[$choice] = $choice;
+        }
+        return $output;
     }
 
 }
