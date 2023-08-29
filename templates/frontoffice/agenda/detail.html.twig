@@ -153,10 +153,10 @@
                 {% set media2 = article.getMedia(10) %}
                 {% set media3 = article.getMedia(1) %}
                 {% if media2 is not null %}
-                    {% set url = '/assets/images/' ~ media2.name  %}
+                    {% set url = '/assets/images/' ~ media2.media  %}
                     <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
                 {% elseif media3 is not null %}
-                    {% set url = '/assets/images/' ~ media3.name  %}
+                    {% set url = '/assets/images/' ~ media3.media  %}
                     <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
                 {% endif %}
 
@@ -297,7 +297,7 @@
                     <!-- Image Artiste -->
                     {% set media3 = child.getMedia(1) %}
                     {% if media3 is not null %}
-                        {% set url = '/assets/images/' ~ media3.name  %}
+                        {% set url = '/assets/images/' ~ media3.media  %}
                         <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
                     {% endif %}
 

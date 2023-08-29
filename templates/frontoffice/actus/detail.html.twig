@@ -14,7 +14,7 @@
             <!-- IMAGE ARTICLE -->
 
             {% if mediaArticle is not null %}
-                {% set url = '/assets/images/' ~ mediaArticle.name  %}
+                {% set url = '/assets/images/' ~ mediaArticle.media  %}
                 <img  src="{{ asset((url)) }}" class="mb-4 card-img-top rounded-0" alt="...">
             {% endif %}
             <div class="pt-4 position-relative">
