@@ -52,6 +52,7 @@ class CategoryCrudController extends BoController
 
     public function __construct(
         // Services
+        // Services
 
         // Générateur de routes
         protected AdminUrlGenerator $adminUrlGenerator,
@@ -330,18 +331,17 @@ class CategoryCrudController extends BoController
     {
         $ancestorId = $this->entity?->getParent()?->getId();
         if (Crud::PAGE_INDEX === $responseParameters->get('pageName')) {
-            $ancestorKeyName = 'categoryId';
+            $responseParameters->set('ancestorKeyName', 'categoryId');
         }
         // Si édite un article
         else if (Crud::PAGE_EDIT === $responseParameters->get('pageName')) {
-            $ancestorKeyName = 'entityId';
-        }
+            $responseParameters->set('ancestorKeyName', 'entityId');
+        } else
 
         $responseParameters->set('searchKeyName', 'entityId');
         // Passage du parent des enfants de la liste affichée.
         $responseParameters->set('parentId', $this->entity?->getId());
         $responseParameters->set('ancestorId', $ancestorId);
-        $responseParameters->set('ancestorKeyName', $ancestorKeyName);
         $responseParameters->set('crudControllerName', 'Category');
         $responseParameters->set('keyName', 'entityId');
 

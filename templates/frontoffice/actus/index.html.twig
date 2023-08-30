@@ -110,11 +110,14 @@
 
                 <div class="col-lg-4 col-md-12 pb-lg-5 px-0">
                     <!-- Card-Actu -->
-                    <div class="card mb-3 mx-lg-4 shadow-lg rounded-0 h-100">
+                    <div class="card mb-3 mx-lg-4 shadow-lg rounded-0 h-100" style="max-height: 1100px">
                         <!-- Image -->
                         {% if media is not null %}
                             {% set url = '/assets/images/' ~ media.media %}
                             <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+
+                        {% else  %}
+                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD.png')) }}" class="card-img-top rounded-0" alt="...">
                         {% endif %}
                         <div>
 

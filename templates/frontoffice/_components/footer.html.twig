@@ -116,7 +116,7 @@
             {% set url = 'build/maquette/images/' %}
             {% set ext = '.png' %}
             {% set src = url ~ src ~ ext %}
-            <div class="col-1 {% if loop.index0 == 0 %}offset-4{% endif %}">
+            <div class="col-1 {% if loop.index0 == 0 %}offset-5{% endif %}">
                 <img class="img-fluid" src="{{ asset(src) }}">
             </div>
         {% endfor %}
@@ -128,14 +128,16 @@
 <div class="pt-5 bg-grey px-0 mx-0">
     <div class="row px-0 mx-0">
 
-        {% for src in sponsors %}
-            {% set url = 'build/maquette/images/' %}
-            {% set ext = '.png' %}
-            {% set src = url ~ src ~ ext %}
-            <div class="col-md-4 col-lg-2 mb-2 {% if loop.index0 == 0 or loop.index0 == 4 or loop.index0 == 5 or loop.index0 == 9 %}offset-lg-1{% endif %}">
-                <img class="img-fluid" src="{{ asset(src) }}">
+        {% for sponsor_img in sponsors_img %}
+            {% set media_footer = sponsor_img.getMedia(11) %}
+            <div class="col-md-4 col-lg-3 mb-2 text-center">
+                {% if media_footer is not null %}
+                    {% set url = '/assets/images/' ~ media_footer.media %}
+                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="height: 100px; width: 163px" alt="...">
+                {% endif %}
             </div>
         {% endfor %}
+
     </div>
 </div>
 

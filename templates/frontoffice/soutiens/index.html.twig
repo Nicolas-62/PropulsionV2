@@ -32,14 +32,20 @@
                 {{  accomp.element.getDatas(locale) }}
 
                 {% set media = accomp.element.getMedia(4) %}
-                <div class="col-lg-4 col-md-12 pb-lg-3 px-0">
+                <div class="col-lg-4 col-md-12 pb-lg-3 px-">
+
                     <!-- Card-Actu -->
                     <a class="text-decoration-none" href="{{ path('fo_soutiens_detail', { 'title': accomp.element.title }) }}">
-                        <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100">
+                        <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100 prog">
+
+                            <div class="overlay" style="">
+                            </div>
 
                         {% if media is not null %}
                             {% set url = '/assets/images/' ~ media.media %}
                             <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                        {% else  %}
+                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD.png')) }}" style="max-height:500px; object-fit: cover"  class="card-img-top rounded-0" alt="...">
                         {% endif %}
                         <!-- Themes -->
                         <div class="row m-0 p-0">
@@ -108,13 +114,18 @@
 
                 {% set media2 = accomp.element.getMedia(4) %}
                 <div class="col-lg-4 col-md-12 pb-lg-3 px-0">
+
                     <!-- Card-Actu -->
-                    <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100">
+                    <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100 prog">
 
+                        <div class="overlay" style="">
+                        </div>
 
-                        {% if media2 is not null %}
+                        {% if media2 is not null and media2 is not empty %}
                             {% set url = '/assets/images/' ~ media2.name  %}
                             <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                        {% else  %}
+                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD.png')) }}" class="card-img-top rounded-0" style="max-height:500px; object-fit: cover" alt="...">
                         {% endif %}
 
                         <!-- Themes -->
@@ -164,12 +175,17 @@
 
                 {% set media3 = event_actu.element.getMedia(4) %}
                 <div class="col-lg-4 col-md-12 pb-lg-3 px-0">
-                    <!-- Card-Actu -->
-                    <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100">
 
-                        {% if media3 is not null %}
+                    <!-- Card-Actu -->
+                    <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100 prog">
+
+                        <div class="overlay" style="">
+                        </div>
+                        {% if media3 is not null and media3 is not empty %}
                             {% set url = '/assets/images/' ~ media3.name  %}
                             <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                        {% else  %}
+                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD.png')) }}" style="max-height:500px; object-fit: cover"  class="card-img-top rounded-0" alt="...">
                         {% endif %}
                         <!-- Themes -->
                         <div class="row m-0 p-0">

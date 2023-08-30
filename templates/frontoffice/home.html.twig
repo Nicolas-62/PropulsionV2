@@ -95,7 +95,10 @@
                 {% if loop.index0 < 3 %}
                     <div class="col-lg-4 col-md-12 px-0">
                         <!-- Card-Actu -->
-                        <div class="card mb-3  mx-lg-3 shadow-lg rounded-0 h-100 ">
+                        <div class="card mb-3  mx-lg-3 shadow-lg rounded-0 h-100 prog">
+
+                            <div class="overlay" style="">
+                            </div>
 
                             {% set media = event.getMedia(1) %}
                             {% if media is not null %}
