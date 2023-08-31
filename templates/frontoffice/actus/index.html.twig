@@ -92,9 +92,9 @@
     <!-- VOIR AUSSI -->
     <div class="px-lg-5">
         <div class="row">
-            <div class="px-lg-5 pt-5 row">
-                <h1 class="col-lg-3 col-md-6 col-sm-12 big-subtitle blue-title">{{ page_title | upper }}</h1>
-                <div class="custom-select col-lg-3 col-md-6 col-sm-12 d-flex align-items-end">
+            <div class="px-lg-5 pt-5 mb-3 row">
+                <h1 class="col-lg-1 col-md-6 col-sm-12 big-subtitle blue-title" style="margin-left: 20px">{{ page_title | upper }}</h1>
+                <div class="custom-select col-lg-3 col-md-6 col-sm-12 d-flex align-items-end" style="bottom: 17px">
                     <select>
                         <option class="option-class" selected>toutes les actualités &nbsp ></option>
 
@@ -108,52 +108,47 @@
             {% for actu in actu_childs %}
                 {% set media = actu.getMedia(2) %}
 
-                <div class="col-lg-4 col-md-12 pb-lg-5 px-0">
+                <div class="col-lg-4 col-md-12 pb-lg-5 px-lg-3">
                     <!-- Card-Actu -->
-                    <div class="card mb-3 mx-lg-4 shadow-lg rounded-0 h-100" style="max-height: 1100px">
+                    <div class="card mb-3 mx-lg-5 shadow-lg rounded-0 h-100" style="max-height: 1100px; display: flex; flex-direction: column;">
                         <!-- Image -->
                         {% if media is not null %}
                             {% set url = '/assets/images/' ~ media.media %}
-                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
-
+                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
                         {% else  %}
-                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD.png')) }}" class="card-img-top rounded-0" alt="...">
+                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD.png')) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
                         {% endif %}
-                        <div>
 
-                            <!-- Themes -->
-                            <div class="row mx-0 px-0">
-                                <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ actu.themeBackColor }};color: {{ actu.themeTextColor }};">
-                                    {{ actu.category.title }}
-                                </div>
-                            </div>
-
-                            <!-- CARD CONTAINER -->
-                            <div class="card-container">
-                                <!-- Titre -->
-                                <h5 class="card-title my-3 fs-2">
-                                    {{ actu.title }}
-                                </h5>
-                                <!-- CONTENU -->
-                                <div class="card-text fs-4">
-                                    {{ actu.description | raw }}
-                                </div>
-
-                                <!-- Boutons LIRE LA SUITE et lien Billetterie -->
-                                <div class="card-actions px-0 pt-0 d-flex align-items-end">
-                                    <a href="{{ path('fo_actus_detail', { 'title': actu.title, 'category_id': actu.category.id }) }}" class="btn border rounded-0 border-dark fs-3" style="height: 60px">LIRE LA SUITE</a>
-                                    <a href="https://billetterie.lalune.net/">
-                                        <img src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}" alt="...">
-                                    </a>
-                                </div>
+                        <!-- Themes -->
+                        <div class="row mx-0 px-0">
+                            <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ actu.themeBackColor }}; color: {{ actu.themeTextColor }};">
+                                {{ actu.category.title }}
                             </div>
                         </div>
 
+                        <!-- CARD CONTENT -->
+                        <div class="card-container" style="flex: 1;">
+                            <!-- Titre -->
+                            <h5 class="card-title my-3 fs-3" style="font-size: 25px !important;">
+                                {{ actu.title }}
+                            </h5>
+                            <!-- CONTENU -->
+                            <div class="card-text">
+                                {{ actu.description | raw }}
+                            </div>
+                        </div>
+
+                        <!-- CARD ACTIONS -->
+                        <div class="pb-3 px-5 d-flex justify-content-between" style="align-items: flex-end;">
+                            <a href="{{ path('fo_actus_detail', { 'title': actu.title, 'category_id': actu.category.id }) }}" class="btn border rounded-0 border-dark fs-3" style="height: 60px;">LIRE LA SUITE</a>
+                            <a href="https://billetterie.lalune.net/">
+                                <img src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}" alt="..." style="max-height: 60px;">
+                            </a>
+                        </div>
                     </div>
-
                 </div>
-
             {% endfor %}
+
         </div>
     </div>
 

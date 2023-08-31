@@ -15,7 +15,7 @@
             {% set media = article.getMedia(9) %}
             {% if media is not null %}
                 {% set url = '/assets/images/' ~ media.media %}
-                <img src="{{ asset((url)) }}" class="rounded-0 img-fluid" style="width: 100%; height: 100%;" alt="...">
+                <img src="{{ asset((url)) }}" class="rounded-0 img-fluid" style=" height: 100%;" alt="...">
             {% else %}
                 <img src="{{ asset('build/maquette/images/PLACEHOLDER_LUNE.png') }}" class="rounded-0 img-fluid" style="width: 100%; height: 100%;" alt="...">
             {% endif %}

@@ -21,13 +21,6 @@ body {
 .container-lg {
 }
 
-.card-container {
-  padding-left: 40px;
-  padding-right: 40px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-
 
 /* Card */
 .card-actions {
@@ -38,34 +31,34 @@ body {
 }
 
 .card-title {
-  font-size: 40px !important;
+  font-size: 24px !important;
   font-weight: bold !important;
 }
 
 .card-date {
-  font-size: 35px !important;
+  font-size: 24px !important;
   font-weight: bold !important;
 }
 
 .card-subtitle {
-  font-size: 30px !important;
+  font-size: 24px !important;
   font-weight: normal;
 }
 
 .card-hour {
-  font-size: 30px !important;
+  font-size: 20px !important;
 }
 
 
 @media (max-width: 991px) {
   .card-container {
-    padding : 30px 160px 30px 160px !important;
+    padding : 10px 60px 10px 60px !important;
   }
 }
 
 @media (min-width: 992px) {
   .card-container {
-    padding : 20px 40px 20px 40px !important;
+    padding : 0 40px 0 40px !important;
   }
 }
 
@@ -87,7 +80,7 @@ body {
 }
 
 .big-subtitle{
-  font-size: 40px;
+  font-size: 60px;
 }
 
 .big-text-bold{
@@ -149,7 +142,7 @@ body {
 /* Couleur de texte */
 
 .black {
-  color: black;
+  color: black !important;
 }
 
 .white {
@@ -342,3 +335,17 @@ body {
   transition: opacity 0.3s ease-in-out;
   z-index: 1000 !important;
 }
+
+
+/* margin */
+.mx-lg-6 {
+
+}
+
+
+
+.text-decoration-none {
+  text-decoration: none !important;
+  color: black !important;
+}
+
