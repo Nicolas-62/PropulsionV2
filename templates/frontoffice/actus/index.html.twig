@@ -7,6 +7,7 @@
 
         // Récupération des éléments
         const dropDownItems = document.querySelectorAll('.dropdown-select-item');
+        const dropDownItemsLi = document.querySelectorAll('.dropdown-select-item-li');
         const dropDownButton = document.querySelector('.dropdown-select-button');
         const allEventCards = document.querySelectorAll('.category-tous-les-evenements');
 
@@ -38,21 +39,20 @@
 
 {% block body %}
 
-    <!-- VOIR AUSSI -->
     <div class="px-lg-5">
         <div class="row">
             <div class="px-lg-5 pt-5 mb-5 row">
-                <h1 class="col-lg-2 col-md-6 col-sm-12 big-subtitle blue-title" style="margin-left: 20px">{{ page_title | upper }}</h1>
-                <div class="custom-select col-lg-3 col-md-6 col-sm-12 d-flex align-items-end" style="bottom: 17px">
+                <h1 class="col-lg-2 col-md-6 col-sm-6 big-subtitle blue-title">{{ page_title | upper }}</h1>
+                <div class="custom-select col-lg-3 col-md-6 col-sm-6 d-flex align-items-end " style="bottom: 17px">
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle dropdown-toggle-select text-uppercase dropdown-select-button dropdown-select" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Tous les évènements
                         </button>
                         <ul class="dropdown-menu">
-                            <li class="dropdown-select-item-li"><span class="dropdown-select-item text-uppercase">Tous les évènements</span></li>
+                            <div class="dropdown-select-item-li dropdown-select-item text-uppercase w-100">Tous les évènements</div>
 
                             {% for categorie_actu in categories_actu %}
-                                <li class="dropdown-select-item-li"><span class="dropdown-select-item">{{ categorie_actu.title | upper }}</span></li>
+                                <div class="dropdown-select-item-li dropdown-select-item w-100">{{ categorie_actu.title | upper }}</div>
                             {% endfor %}
                         </ul>
                     </div>

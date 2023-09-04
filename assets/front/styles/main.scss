@@ -363,6 +363,7 @@ body {
   cursor: pointer;
   padding: 10px;
   font-size: 30px;
+  min-width: 300px;
 
 }
 
@@ -374,6 +375,7 @@ body {
   background-color: #09b2FF;
   color: white;
   cursor: pointer;
+  width: 300px;
 }
 
 .dropdown-toggle-select:hover {

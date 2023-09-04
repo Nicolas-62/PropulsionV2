@@ -99,10 +99,10 @@
                             Tous les évènements
                         </button>
                         <ul class="dropdown-menu">
-                            <li class="dropdown-select-item-li"><span class="dropdown-select-item text-uppercase">Tous les évènements</span></li>
+                            <div class="dropdown-select-item-li dropdown-select-item text-uppercase w-100">Tous les évènements</div>
 
                             {% for categorie_child_agenda in categories_child_agenda %}
-                                <li class="dropdown-select-item-li"><span class="dropdown-select-item">{{ categorie_child_agenda.title | upper }}</span></li>
+                                <div class="dropdown-select-item-li dropdown-select-item w-100">{{ categorie_child_agenda.title | upper }}</div>
                             {% endfor %}
                         </ul>
                     </div>
