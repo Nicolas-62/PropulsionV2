@@ -173,14 +173,14 @@
             {% for event_actu in event_actus.elements %}
                 {{  event_actu.element.getDatas(locale) }}
 
+
+
                 {% set media3 = event_actu.element.getMedia(4) %}
                 <div class="col-lg-4 col-md-12 pb-lg-5 px-lg-5">
 
                     <!-- Card-Actu -->
-                    <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100 prog">
+                    <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100">
 
-                        <div class="overlay" style="">
-                        </div>
                         {% if media3 is not null and media3 is not empty %}
                             {% set url = '/assets/images/' ~ media3.name  %}
                             <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">

@@ -56,10 +56,11 @@ class ActusController extends FOController
         foreach($events_actus as $event) {
             //dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
         }
+        $categories = $this->entityManager->getRepository(Category::class)->findBy(['category_id'=>4]);
 
 
         $this->data['page_title']  = 'Actus';
-        $this->data['themes_actu'] = array('LA LUNE DES PIRATES', 'CONCERTS','ACTION CULTURELLE','JEUNE PUBLIC', 'SOUTIEN AUX ARTISTES');
+        $this->data['categories_actu'] = $categories;
         $this->data['actu_childs'] = $events_actus;
         $this->data['locale']      = $this->getParameter('locale');
 

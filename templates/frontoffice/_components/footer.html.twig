@@ -43,7 +43,7 @@
                 <div class="col-sm-12 col-md-4 col-lg-2 pb-5 offset-lg-1">
                     <div class="row">
                         <div class="col-11 text-center">
-                            <img class="col-12 img-fluid" style="max-width: 200px" src="/build/maquette/images/FOOTER_ARROW.svg">
+                            <img class="col-12 img-fluid" style="max-width: 100px" src="/build/maquette/images/FOOTER_ARROW.svg">
                             <div class="mt-5">
                                 <b>SCÈNE <br>
                                     DE MUSIQUES <br> ACTUELLES </b><br> 17 Quai Bélu <br> 80000 Amiens
@@ -55,8 +55,8 @@
                 </div>
                 <div class="col-sm-12 col-md-4 col-lg-2 pb-5">
                     <div class="row h-100">
-                        <div class="col-11 text-center">
-                            <img class="img-fluid" style="max-width: 200px" src="/build/maquette/images/FOOTER_BUBBLE.svg">
+                        <div class="col-11 text-center p-4">
+                            <img class="img-fluid" style="max-width: 100px" src="/build/maquette/images/FOOTER_BUBBLE.svg">
                             <div class="mt-5">
                                 NOUS CONTACTER
                             </div>
@@ -68,7 +68,7 @@
                 <div class="col-sm-12 col-md-4 col-lg-2 pb-5">
                     <div class="row h-100">
                         <div class="col-11 text-center">
-                            <img class="img-fluid" style="max-width: 200px" src="/build/maquette/images/FOOTER_CADDIE.svg">
+                            <img class="img-fluid" style="max-width: 100px" src="/build/maquette/images/FOOTER_CADDIE.svg">
                             <div class="mt-5">
                                 VOS COMMANDES
                             </div>
@@ -83,7 +83,7 @@
                         <div class="col-12 text-center">
                             <div class="row">
                                 <div class="col-4">
-                                    <img class="" style="max-width: 200px" src="/build/maquette/images/FOOTER_ENVELOPPE.svg">
+                                    <img class="" style="max-width: 100px" src="/build/maquette/images/FOOTER_ENVELOPPE.svg">
                                 </div>
                             </div>
                             <div class="row mt-5">
@@ -127,15 +127,24 @@
 <!-- PARTENAIRES ET SPONSORS -->
 <div class="pt-5 bg-grey px-0 mx-0">
     <div class="row px-0 mx-0">
-
         {% for sponsor_img in sponsors_img %}
             {% set media_footer = sponsor_img.getMedia(11) %}
+            {% if (loop.length - loop.index) > 1 %}
             <div class="col-md-4 col-lg-3 mb-2 text-center">
                 {% if media_footer is not null %}
                     {% set url = '/assets/images/' ~ media_footer.media %}
                     <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="height: 100px; width: 163px" alt="...">
                 {% endif %}
             </div>
+            {% elseif (sponsors_img|length - loop.index0) == 1 %}
+                <div class="col-md-4 col-lg-12 mb-2 text-center">
+                    {% if media_footer is not null %}
+                        {% set url = '/assets/images/' ~ media_footer.media %}
+                        <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="height: 100px; width: 163px" alt="...">
+                    {% endif %}
+                </div>
+            {% endif %}
+
         {% endfor %}
 
     </div>

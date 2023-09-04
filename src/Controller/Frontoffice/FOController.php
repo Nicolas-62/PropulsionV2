@@ -45,7 +45,8 @@ class FOController extends AbstractController
         $this->data['header_partial']     =     '_components/header.html.twig';
         $this->data['footer_partial']     =     '_components/footer.html.twig';
         // HEADER
-        $this->data['btns']               =     $this->btns = array('pic_icon', 'search_icon', 'profile_icon', 'menu_icon');
+        // $this->data['btns']               =     $this->btns = array('pic_icon', 'search_icon', 'profile_icon', 'menu_icon');
+        $this->data['btns']               =     $this->btns = array('pic_icon', 'profile_icon');
         $this->data['menu']               =     array('Agenda' => 'fo_agenda_index','Actus' => 'fo_actus_index','Action Culturelle' => 'fo_actions_index','Soutiens aux artistes' => 'fo_soutiens_index','Infos Pratiques' => 'fo_infos_index');
         // FOOTER
         $this->data['sponsors_img']       =     $this->entityManager->getRepository(Article::class)->findBy(['category' => 23]);

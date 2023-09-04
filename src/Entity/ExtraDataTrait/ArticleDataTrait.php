@@ -25,8 +25,8 @@ trait ArticleDataTrait
     private ?string $description  = '';
     private ?string $content          = '';
     private ?string $subtitle  = '';
-    private ?string $dateEvent  = '';
-    private ?string $heureEvent  = '';
+    private ?\DateTimeImmutable $dateEvent  = null;
+    private ?\DateTimeImmutable $heureEvent  = null;
     private ?string $youtubeLink  = '';
     private ?string $youtubeSecondLink  = '';
     private ?string $facebookLink  = '';
@@ -112,38 +112,6 @@ trait ArticleDataTrait
     public function setSubtitle(?string $subtitle): void
     {
         $this->subtitle = $subtitle;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getDateEvent(): ?string
-    {
-        return $this->dateEvent;
-    }
-
-    /**
-     * @param string|null $dateEvent
-     */
-    public function setDateEvent(?string $dateEvent): void
-    {
-        $this->dateEvent = $dateEvent;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getHeureEvent(): ?string
-    {
-        return $this->heureEvent;
-    }
-
-    /**
-     * @param string|null $heureEvent
-     */
-    public function setHeureEvent(?string $heureEvent): void
-    {
-        $this->heureEvent = $heureEvent;
     }
 
     /**
@@ -419,6 +387,35 @@ trait ArticleDataTrait
     }
 
     // Getters et Setters des champs spécifiques !! A mettre à jour
+    public function getDateEvent(): \DateTimeImmutable
+    {
+        return new $this->dateEvent;
+    }
+
+    public function setDateEvent($dateEvent): void
+    {
+        if($dateEvent instanceof \DateTimeImmutable) {
+            $this->dateEvent = $dateEvent;
+        }
+        else if(is_string($dateEvent)) {
+            $this->dateEvent = new \DateTimeImmutable($dateEvent);
+        }
+    }
+
+    public function getHeureEvent(): ?\DateTimeImmutable
+    {
+        return $this->heureEvent;
+    }
+
+    public function setHeureEvent($heureEvent): void
+    {
+        if($heureEvent instanceof \DateTimeImmutable) {
+            $this->heureEvent = $heureEvent;
+        }
+        else if(is_string($heureEvent)) {
+            $this->heureEvent = new \DateTimeImmutable($heureEvent);
+        }
+    }
 
 
 }

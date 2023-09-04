@@ -403,8 +403,12 @@ class ArticleCrudController extends BoController
     {
         // Récupération de l'article
         $this->entity = $context->getEntity()->getInstance();
+        dump($this->entity);
         // Récupération des datas de l'article
         $this->entity->getDatas($this->locale);
+        dump($this->entity);
+
+
 
         // Si ce n'est pas un sous article, on récupère sa categorie parent
         if($this->entity->getParent() == null)
