@@ -84,22 +84,25 @@
                             <img class="" style="max-height: 100px" src="/build/maquette/images/FOOTER_ENVELOPPE.svg">
                         </div>
                     </div>
-                    <div class="row mt-5">
-                        <div class="col-4">
-                            NEWSLETTER
-                        </div>
-                        <div class="col-7">
-                            <input class="form-control border-0 rounded rounded-0" style="background-color: #FF5D5D; color: white; border-bottom: 1px solid white !important; ::placeholder { color: white; }" type="text" placeholder="Votre e-mail">
+                    <form>
+                        <div class="row mt-5">
+                            <div class="col-4">
+                                NEWSLETTER
+                            </div>
 
-                        </div>
-                        <div class="col-1">
-                            <img class="img-fluid" src="/build/maquette/images/BOUTON_FORM_FOOTER.png">
-                        </div>
+                            <div class="col-7">
+                                <input class="form-control border-0 rounded rounded-0" style="background-color: #FF5D5D; color: white; border-bottom: 1px solid white !important; ::placeholder { color: white; }" type="text" placeholder="Votre e-mail">
 
-                        <div class="col-12 text-start px-sm-5 pb-sm-4">
-                            En indiquant votre adresse email, vous consentez à recevoir nos lettres d'information par voie électronique. Vous pouvez vous désinscrire à tout moment via les liens de désinscription ou en nous contactant. Pour en savoir plus, consultez notre Politique de confidentialité.
+                            </div>
+                            <button type="submit" class="col-1 btn btn-link p-0 m-0 border-0 bg-transparent">
+                                <img class="img-fluid" src="/build/maquette/images/BOUTON_FORM_FOOTER.png" alt="Valider">
+                            </button>
+
+                            <div class="col-12 text-start px-sm-5 pb-sm-4">
+                                En indiquant votre adresse email, vous consentez à recevoir nos lettres d'information par voie électronique. Vous pouvez vous désinscrire à tout moment via les liens de désinscription ou en nous contactant. Pour en savoir plus, consultez notre Politique de confidentialité.
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -164,9 +167,7 @@
             <div class="col-12">
                 <div class="row mx-4 text-center">
                     {% for name, url in mentions %}
-
                         <div class="px-0 {% if loop.index0 < 4 %}col-3{% else %}col-4{% endif %}">
-
                             {% if loop.index0 > 0 and loop.index0 != 4 %} | {% endif %}
                             <a  class="text-decoration-none black" href="{{ url }}">{{ name }}</a>
                         </div>
