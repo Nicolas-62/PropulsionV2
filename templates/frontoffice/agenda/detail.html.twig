@@ -3,10 +3,6 @@
 
 {% block stylesheets %}
     <style>
-        .container-big {
-            padding: 80px;
-        }
-
 
     </style>
 {% endblock %}
@@ -14,12 +10,14 @@
 {% block body %}
     {{ article.getDatas(locale) }}
     <!-- IMAGE DU HAUT -->
-    <div class="row shadow-lg">
-        <div class="col-lg-8 col-md-12 p-0" style="z-index: 500">
+    <div class="row shadow-lg" >
+        <div class="col-lg-8 col-md-12 p-0" style="z-index: 500;max-height: 800px">
             {% set media = article.getMedia(9) %}
             {% if media is not null %}
                 {% set url = '/assets/images/' ~ media.media %}
-                <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                <img src="{{ asset((url)) }}" class="rounded-0 img-fluid" style=" height: 100%;" alt="...">
+            {% else %}
+                <img src="{{ asset('build/maquette/images/PLACEHOLDER_LUNE.png') }}" class="rounded-0 img-fluid" style="width: 100%; height: 100%;" alt="...">
             {% endif %}
 
 
@@ -152,6 +150,7 @@
                 <!-- IMAGE ARTISTE -->
                 {% set media2 = article.getMedia(10) %}
                 {% set media3 = article.getMedia(1) %}
+                {% set media4 = article.getMedia(12) %}
                 {% if media2 is not null %}
                     {% set url = '/assets/images/' ~ media2.media  %}
                     <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
@@ -172,6 +171,21 @@
                 <div class="embed-responsive embed-responsive-16by9">
                     <iframe class="embed-responsive-item w-100" style="height: 860px;" src="{{ article.youtubeLink }}" allowfullscreen></iframe>
                 </div>
+
+                <!-- TEST PHOTO ARRONDIE -->
+                <div>
+                    {% if media4 is not null %}
+
+                        {% set url = '/assets/images/' ~ media4.media  %}
+                        /assets/images/november-ultra-ref-7772-copiedxo-1693822366.png
+                        <img src="{{ asset((url)) }}" class="rounded-circle round-img-header" alt="...">
+                    {% endif %}
+
+
+
+
+                </div>
+
 
                 <!-- PLUS D'INFOS SUR L'ARTISTE -->
                 <div class="row py-5">

@@ -49,7 +49,14 @@
         <div class="col-9 d-block flex-column align-items-start p-0">
             <nav class="navbar navbar-expand-lg col-12 mt-auto">
                 <ul class="navbar-nav w-100 justify-content-end">
-                    <li><img class="img-fluid" src="{{ asset('build/maquette/images/artistes_header.png') }}"></li></li>
+
+                    <a class="text-decoration-none" href="/agenda/12/goldman"><img src="/assets/images/november-ultra-ref-7772-copiedxo-1693822366.png" class="rounded-circle round-img-header" style="z-index:4;" alt="..."></a>
+                    <a class="text-decoration-none" href="/agenda/12/goldman"><img src="/assets/images/november-ultra-ref-7772-copiedxo-1693822366.png" class="rounded-circle round-img-header" style="z-index:3;" alt="..."></a>
+                    <a class="text-decoration-none" href="/agenda/12/goldman"><img src="/assets/images/november-ultra-ref-7772-copiedxo-1693822366.png" class="rounded-circle round-img-header" style="z-index:2;" alt="..."></a>
+                    <a class="text-decoration-none" href="/agenda/12/goldman"><img src="/assets/images/november-ultra-ref-7772-copiedxo-1693822366.png" class="rounded-circle round-img-header" style="z-index:1; margin-right: 10px" alt="..."></a>
+
+
+
                     {% for src in btns %}
                         {% set url = 'build/maquette/images/' %}
                         {% set ext = '.png' %}
@@ -80,28 +87,31 @@
 
 <div class="d-lg-none">
     <div class="row">
-        <div class="col-3">
-            <a href="{{ path('ma_home') }}">
+        <div class="col-6">
+            <a href="{{ path('fo_home_index') }}">
                 <img src="{{ asset('build/maquette/images/LOGO_ACTUEL.png') }}">
             </a>
         </div>
-        <div class="col-9">
+        <div class="col-6">
             <div class="row">
                 <div class="col-8 offset-3 pt-5">
-                    <img src="{{ asset('build/maquette/images/ARTISTES_HEADER_SM.png') }}">
-                </div>
+
+                    <a class="text-decoration-none" href="/agenda/12/goldman"><img src="/assets/images/november-ultra-ref-7772-copiedxo-1693822366.png" class="rounded-circle round-img-header" style="z-index:4;" alt="..."></a>
+                    <a class="text-decoration-none" href="/agenda/12/goldman"><img src="/assets/images/november-ultra-ref-7772-copiedxo-1693822366.png" class="rounded-circle round-img-header" style="z-index:3;" alt="..."></a>
+                    <a class="text-decoration-none" href="/agenda/12/goldman"><img src="/assets/images/november-ultra-ref-7772-copiedxo-1693822366.png" class="rounded-circle round-img-header" style="z-index:2;" alt="..."></a>
+                    <a class="text-decoration-none" href="/agenda/12/goldman"><img src="/assets/images/november-ultra-ref-7772-copiedxo-1693822366.png" class="rounded-circle round-img-header" style="z-index:1; margin-right: 10px" alt="..."></a>                </div>
             </div>
         </div>
-        <div class="col-1"></div>
+        <div class="col-12"></div>
         {% for src in btns %}
-            <div class="col-2">
+            <div class="col-4 text-center">
                 {% set url = 'build/maquette/images/' %}
                 {% set ext = '.png' %}
                 {% set src = url ~ src ~ ext %}
                 <img src="{{ asset(src) }}">
             </div>
         {% endfor %}
-        <div class="col-2">
+        <div class="col-4 text-center">
             <div class="dropdown">
 
                 <button class="btn btn-move-up" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">

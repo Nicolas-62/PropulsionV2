@@ -6,7 +6,7 @@
 
     <!-- ARTISTES ACCOMPAGNES -->
     <div class="p-lg-5">
-        <div class="p-sm-5 p-md-5 p-lg-0">
+        <div class="p-sm-5 p-md-5 p-lg-0 px-lg-5">
             <div class="row">
                 <div class="col-md-6 col-lg-3">
                     <h1 class="pt-4">Artistes Accompagnés</h1>
@@ -32,14 +32,20 @@
                 {{  accomp.element.getDatas(locale) }}
 
                 {% set media = accomp.element.getMedia(4) %}
-                <div class="col-lg-4 col-md-12 pb-lg-3 px-0">
+                <div class="col-lg-4 col-md-12 pb-lg-5 px-5">
+
                     <!-- Card-Actu -->
                     <a class="text-decoration-none" href="{{ path('fo_soutiens_detail', { 'title': accomp.element.title }) }}">
-                        <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100">
+                        <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100 prog">
+
+                            <div class="overlay" style="">
+                            </div>
 
                         {% if media is not null %}
                             {% set url = '/assets/images/' ~ media.media %}
                             <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                        {% else  %}
+                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD.png')) }}" style="max-height:500px; object-fit: cover"  class="card-img-top rounded-0" alt="...">
                         {% endif %}
                         <!-- Themes -->
                         <div class="row m-0 p-0">
@@ -54,7 +60,7 @@
                                 {{ accomp.element.style }}
                             </div>
                         </div>
-                        <div class="card-body pt-0 ">
+                        <div class="card-body py-0 ">
 
                             <div class="row">
                                 <!-- ARTISTE -->
@@ -79,7 +85,7 @@
 
     <!-- AUDITIONS -->
     <div class="p-lg-5 bg-grey">
-        <div class="p-sm-5 p-md-5 p-lg-0">
+        <div class="p-sm-5 p-md-5 py-lg-0 px-lg-5">
             <div class="row">
                 <div class="col-md-6 col-lg-3">
                     <h1 class="pt-4">Auditions</h1>
@@ -107,14 +113,19 @@
                 {{  accomp.element.getDatas(locale) }}
 
                 {% set media2 = accomp.element.getMedia(4) %}
-                <div class="col-lg-4 col-md-12 pb-lg-3 px-0">
+                <div class="col-lg-4 col-md-12 pb-lg-5 px-lg-5">
+
                     <!-- Card-Actu -->
-                    <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100">
+                    <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100 prog">
 
+                        <div class="overlay" style="">
+                        </div>
 
-                        {% if media2 is not null %}
+                        {% if media2 is not null and media2 is not empty %}
                             {% set url = '/assets/images/' ~ media2.name  %}
                             <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                        {% else  %}
+                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD.png')) }}" class="card-img-top rounded-0" style="max-height:500px; object-fit: cover" alt="...">
                         {% endif %}
 
                         <!-- Themes -->
@@ -130,7 +141,7 @@
                                 {{ accomp.element.style }}
                             </div>
                         </div>
-                        <div class="card-body pt-0 ">
+                        <div class="card-body py-0 ">
 
                             <div class="row">
                                 <!-- ARTISTE -->
@@ -154,7 +165,7 @@
 
     <div class="p-lg-5">
         <div class="p-sm-5 p-md-5 p-lg-0">
-            <div class="row">
+            <div class="row px-lg-5">
                 <h1 class="py-4">Evenements Actualités</h1>
             </div>
         </div>
@@ -162,14 +173,19 @@
             {% for event_actu in event_actus.elements %}
                 {{  event_actu.element.getDatas(locale) }}
 
+
+
                 {% set media3 = event_actu.element.getMedia(4) %}
-                <div class="col-lg-4 col-md-12 pb-lg-3 px-0">
+                <div class="col-lg-4 col-md-12 pb-lg-5 px-lg-5">
+
                     <!-- Card-Actu -->
                     <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100">
 
-                        {% if media3 is not null %}
+                        {% if media3 is not null and media3 is not empty %}
                             {% set url = '/assets/images/' ~ media3.name  %}
                             <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                        {% else  %}
+                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD.png')) }}" style="max-height:500px; object-fit: cover"  class="card-img-top rounded-0" alt="...">
                         {% endif %}
                         <!-- Themes -->
                         <div class="row m-0 p-0">
@@ -180,19 +196,20 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        <div class="card-body  ">
+                        <div class="card-body pb-0 ">
 
                             <!-- ARTISTE -->
 
-                            <h2 class="card-title my-3">{{ event_actu.element.title }}</h2>
+                            <h2 class="card-title my-0"><strong>{{ event_actu.element.title }}</strong></h2>
                         </div>
 
                         <div class="container">
                             <div class="row">
                                 <!-- BILLETTERIE -->
-                                <div class="col-3">
+                                <div class="pb-3 px-5 d-flex justify-content-between" style="align-items: flex-end;">
+                                    <a href="" class="btn border rounded-0 border-dark fs-3" style="height: 60px;">LIRE LA SUITE</a>
                                     <a href="https://billetterie.lalune.net/">
-                                        <img src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}" class="card-img-top rounded-0" alt="...">
+                                        <img src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}" alt="..." style="max-height: 60px;">
                                     </a>
                                 </div>
                             </div>

@@ -1,44 +1,4 @@
 
- .card-title {
-   font-size: 40px !important;
-   font-weight: bold !important;
- }
-
-.card-date {
-  font-size: 35px !important;
-  font-weight: bold !important;
-}
-
-.card-subtitle {
-  font-size: 30px !important;
-  font-weight: normal;
-}
-
-.card-hour {
-  font-size: 30px !important;
-}
-
-.date {
-  font-size: 35px !important;
-  font-weight: bold !important;
-}
-
-.hour {
-  font-size: 30px !important;
-}
-
-@media (max-width: 991px) {
-  .card-container {
-    padding : 30px 160px 30px 160px !important;
-  }
-}
-
-@media (min-width: 992px) {
-  .card-container {
-    padding : 20px 40px 20px 40px !important;
-  }
-}
-
 .card-ticketing {
   width: 30px;
   padding-right: 5px;

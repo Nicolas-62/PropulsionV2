@@ -39,6 +39,7 @@ class AgendaController extends FOController
         $cat_agenda_id = 3;
         // Récupération des sous catégories de la catégorie agenda
         $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_agenda_id)->getChildrenIds();
+        $categories = $this->entityManager->getRepository(Category::class)->findBy(['category_id'=>3]);
 
         // Récupération des articles des sous catégories de la catégorie agenda
         $events_agenda = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
@@ -46,9 +47,15 @@ class AgendaController extends FOController
         //TODO : récupérer les thèmes de catégories
         $themes_agenda = array('ATELIERS', 'CONCERTS','JEUNE PUBLIC', 'SOUTIEN AUX ARTISTES');
 
+        $themes_agenda_test = array();
+
+
+        $themes_agenda_test =
+
         $this->data['page_title']    = 'Agenda';
         $this->data['events_agenda'] = $events_agenda;
         $this->data['themes_agenda'] = $themes_agenda;
+        $this->data['categories_child_agenda'] = $categories;
 
         // CONSTANTES GENERALES
         $this->data['locale']           = $this->getParameter('locale');

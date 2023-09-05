@@ -5,11 +5,11 @@
     <!-- Image Vedette LG -->
     {% for event in events_agenda %}
         {% if loop.index0 == 4  %}
-            <div class="container-fluid px-0">
+            <div class="container-fluid px-0" style="">
                 <div class="row">
                     <div class="col-12 px-0 mx-0">
                         <div style="position: relative">
-                            <img class="w-100" src="{{ asset('build/maquette/images/GISCARD.svg') }}">
+                            <img class="w-100" src="{{ asset('build/maquette/images/GISCARD.svg') }}" style="object-fit: cover;max-height: 50vh" alt="...">
                             <div class="position-absolute d-none d-lg-block" style="right: 0; top:25%; width: 25%; background-color: white">
                                 <div class="row mx-0">
                                     <div
@@ -19,7 +19,7 @@
                                         {{ event.category.title }}
                                     </div>
                                     <div class="col-7 theme-2" style="background-color: {{ event.styleBackColor }};color: {{ event.styleTextColor }};" >
-                                        <img class="card-ticketing" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">{{ event.style }}
+                                        <img class="card-ticketing" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}" alt="">{{ event.style }}
                                     </div>
                                 </div>
                                 <div class="card-body card-container" style="line-height: 1.1">
@@ -33,7 +33,7 @@
                                             <div class="card-hour">{{ event.heureEvent }}</div>
                                         </div>
                                         <div class="col-4 d-flex align-items-end">
-                                            <img class="img-fluid" src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}">
+                                            <img class="img-fluid" src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}" alt="">
                                         </div>
                                     </div>
                                 </div>
@@ -88,55 +88,60 @@
     <div class="p-lg-5">
         <div class="row">
             <div class="d-none d-lg-block d-xl-block">
-                <h1 class="pb-5">Programmation <b>à venir</b></h1>
+                <h1 class="pb-5">Programmation <strong>à venir</strong></h1>
             </div>
             {% for event in events_agenda %}
 
                 {% if loop.index0 < 3 %}
                     <div class="col-lg-4 col-md-12 px-0">
                         <!-- Card-Actu -->
-                        <div class="card mb-3  mx-lg-3 shadow-lg rounded-0 h-100 ">
+                        <a class="text-decoration-none" href="{{ path('fo_agenda_detail', { 'title': event.title, 'category_id': event.category.id  }) }}">
 
-                            {% set media = event.getMedia(1) %}
-                            {% if media is not null %}
-                            {% set url = '/assets/images/' ~ media.media %}
-                                <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
-                            {% else  %}
-                                <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD.png')) }}" class="card-img-top rounded-0" alt="...">
-                            {% endif %}
-                            <!-- Themes -->
-                            <div class="row mx-0 px-0">
-                                <div
-                                        class="col-3 theme-1 text-uppercase"
-                                        style="background-color: {{ event.themeBackColor }};color: {{ event.themeTextColor }};"
+                            <div class="card mb-3  mx-lg-5 shadow-lg rounded-0 h-100 prog">
 
-                                >
-                                    {{ event.category.title }}
+                                <div class="overlay" style="">
                                 </div>
-                                <div class="col-9 white theme-2 justify-content-start"  style="background-color: {{ event.styleBackColor }};color: {{ event.styleTextColor }};">
-                                    <img class="card-ticketing" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">{{ event.style }}
-                                </div>
-                            </div>
-                            <div class="card-container" style="line-height: 1.1">
-                                <div class="py-3">
-                                    <!-- ARTISTES -->
-                                    <div class="card-title text-uppercase">{{ event.title }}</div>
-                                    <div class="card-subtitle text-uppercase">{{ event.subtitle }}</div>
-                                </div>
-                                <!-- DATE CONCERT ET HEURE -->
-                                <div class="row pt-4">
-                                    <div class="col-9" style="line-height: 1">
-                                        <div class="card-date">{{ event.dateEvent }}</div>
-                                        <div class="card-hour">{{ event.heureEvent }}</div>
+
+                                {% set media = event.getMedia(1) %}
+                                {% if media is not null %}
+                                {% set url = '/assets/images/' ~ media.media %}
+                                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                                {% else  %}
+                                    <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD.png')) }}" class="card-img-top rounded-0" alt="...">
+                                {% endif %}
+                                <!-- Themes -->
+                                <div class="row mx-0 px-0">
+                                    <div
+                                            class="col-3 theme-1 text-uppercase"
+                                            style="background-color: {{ event.themeBackColor }};color: {{ event.themeTextColor }};"
+
+                                    >
+                                        {{ event.category.title }}
                                     </div>
-                                    <div class="col-2 offset-1">
+                                    <div class="col-9 white theme-2 justify-content-start"  style="background-color: {{ event.styleBackColor }};color: {{ event.styleTextColor }};">
+                                        <img class="card-ticketing" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}" alt="">{{ event.style }}
+                                    </div>
+                                </div>
+                                <div class="card-container black" style="line-height: 1.1">
+                                    <div class="py-3">
+                                        <!-- ARTISTES -->
+                                        <div class="card-title text-uppercase">{{ event.title }}</div>
+                                        <div class="card-subtitle text-uppercase">{{ event.subtitle }}</div>
+                                    </div>
+                                    <!-- DATE CONCERT ET HEURE -->
+
+                                    <div class="d-flex justify-content-between" style="align-items: flex-end;">
+                                        <div>
+                                            <div class="card-date">{{ event.dateEvent }}</div>
+                                            <div class="card-hour">{{ event.heureEvent }}</div>
+                                        </div>
                                         <a href="https://billetterie.lalune.net/">
-                                            <img class="img-fluid" src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}">
+                                            <img src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}" alt="..." style="max-height: 60px;">
                                         </a>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 {% endif %}
             {% endfor %}
@@ -209,13 +214,13 @@
     </div>
 
     <!-- TEST CAROUSEL -->
-    <div id="carouselExample" class="carousel slide">
+    {# <div id="carouselExample"  class="carousel slide p-5">
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <div class="p-5">
                     <div class="card mb-3  mx-lg-3 shadow-lg rounded-0 h-100 ">
 
-                        <img src="{{ asset(('build/maquette/images/SILLYBOYBLUE.png')) }}" class="card-img-top rounded-0" alt="...">
+                        <img src="{{ asset(('build/maquette/images/SILLYBOYBLUE.png')) }}" class="card-img-top rounded-0" style="max-height: 40vh; object-fit: cover" alt="...">
                         <div class=" ">
                             <!-- Themes -->
                             <div class="row mx-0 px-0">
@@ -282,5 +287,5 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
-
+    #}
 {% endblock %}

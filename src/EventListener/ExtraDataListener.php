@@ -76,21 +76,52 @@ class ExtraDataListener implements EventSubscriberInterface
                     // Si la valeur a été modifiée.
                     if($entity->{'get'.ucfirst($field['name'])}() != $datas[$field['name']]->getFieldValue()){
                         // Mise à jour de la valeur.
-                        // CASTING en string pour formatage des booleens.
-                        $datas[$field['name']]->setFieldValue( (string) $entity->{'get'.ucfirst($field['name'])}());
+                        // CASTING en string
+                        //formatage des dates.
+                        if(is_object($entity->{'get'.ucfirst($field['name'])}()) && get_class($entity->{'get'.ucfirst($field['name'])}()) == 'DateTimeImmutable'){
+                            $format = 'Y-m-d H:i:s';
+                            // Si c'est un champs de type Time field
+                            if($field['ea_type'] == 'TimeField'){
+                                $format = 'H:i';
+                            }
+                            $datas[$field['name']]->setFieldValue($entity->{'get'.ucfirst($field['name'])}()->format($format));
+                        }
+                        else{
+                            $datas[$field['name']]->setFieldValue( (string) $entity->{'get'.ucfirst($field['name'])}());
+                        }
                         $datas[$field['name']]->setUpdatedAt(new \DateTimeImmutable());
                         $this->entityManager->persist($datas[$field['name']]);
                     }
+
                 }
                 // Si l'entrée n'existe pas
                 else{
-                    // Création de la data
+
                     $entityData = new $repository();
-                    $entityData
-                        ->setObject($entity)
-                        ->setLanguage($language)
-                        ->setFieldKey( $field['name'] )
-                        ->setFieldValue( (string) $entity->{'get'.ucfirst($field['name'])}() );
+
+                    // Si l'entrée est une date
+                    if(is_object($entity->{'get'.ucfirst($field['name'])}()) && get_class($entity->{'get'.ucfirst($field['name'])}()) == 'DateTimeImmutable'){
+                        $format = 'Y-m-d H:i:s';
+                        // Si c'est un champs de type Time field
+                        if($field['ea_type'] == 'TimeField'){
+                            $format = 'H:i';
+                        }
+                        // Création de la data
+                        $entityData
+                          ->setObject($entity)
+                          ->setLanguage($language)
+                          ->setFieldKey( $field['name'] )
+                          ->setFieldValue( (string) $entity->{'get'.ucfirst($field['name'])}()->format($format));
+                    // Si l'entrée est une string
+                    }else {
+
+                        // Création de la data
+                        $entityData
+                          ->setObject($entity)
+                          ->setLanguage($language)
+                          ->setFieldKey( $field['name'] )
+                          ->setFieldValue( (string) $entity->{'get'.ucfirst($field['name'])}() );
+                    }
                     $this->entityManager->persist($entityData);
                 }
             }// end foreach
