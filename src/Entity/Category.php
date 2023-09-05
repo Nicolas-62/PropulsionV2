@@ -15,7 +15,19 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\Boolean;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Encoder\CsvEncoder;
 
+// Récupération des champs spécifiques à l'instance dans le csv associé.
+$fields = array();
+$filesystem = new Filesystem();
+if($filesystem->exists(__DIR__.'/ExtraFields/CategoryData.csv')){
+    $file = new File(__DIR__.'/ExtraFields/CategoryData.csv');
+    $csvEncoder = new CsvEncoder();
+    $fields = $csvEncoder->decode($file->getContent(), 'array');
+}
+define('CATEGORY_DATA_FIELDS', $fields);
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
 {
@@ -23,9 +35,39 @@ class Category
     // Champs date.
     use TimestampableTrait;
     use ExtraFieldTrait;
-    use CategoryDataTrait;
     use LanguageTrait;
     use MediaTrait;
+
+    // Champs spécifiques !! à synchroniser manuellement avec les champs définis dans le csv
+    // !! Ajouter les getters et les setters également, définir une valeur par défaut.
+    private ?string $titleByLanguage = '';
+    private ?bool $hasCreate = true;
+    private ?bool $hasSubArticle = false;
+    private ?bool $hasDescription = false;
+    private ?bool $hasContent = false;
+    private ?bool $hasSubtitle = false;
+    private ?bool $hasDateEvent = false;
+    private ?bool $hasHeureEvent = false;
+    private ?bool $hasYoutubeLink = false;
+    private ?bool $hasYoutubeSecondLink = false;
+    private ?bool $hasFacebookLink = false;
+    private ?bool $hasInstagramLink = false;
+    private ?bool $hasSiteInternet = false;
+    private ?bool $hasTwitterLink = false;
+    private ?bool $hasCancelled = false;
+    private ?bool $hasReported = false;
+    private ?bool $hasFull = false;
+    private ?bool $hasTicketingLink = false;
+    private ?bool $hasTypeMusic = false;
+    private ?bool $hasOrigin = false;
+    private ?bool $hasStyle = false;
+    private ?bool $hasThemeBackColor = false;
+    private ?bool $hasThemeTextColor = false;
+    private ?bool $hasStyleBackColor = false;
+    private ?bool $hasStyleTextColor = false;
+
+    // Liste des champs supplémentaires spécifiques.
+    private array $extraFields = CATEGORY_DATA_FIELDS;
 
     public function __construct()
     {

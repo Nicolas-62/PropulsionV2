@@ -78,13 +78,9 @@ class ExtraDataListener implements EventSubscriberInterface
                         // Mise à jour de la valeur.
                         // CASTING en string
                         //formatage des dates.
-                        if(is_object($entity->{'get'.ucfirst($field['name'])}()) && get_class($entity->{'get'.ucfirst($field['name'])}()) == 'DateTimeImmutable'){
-                            $format = 'Y-m-d H:i:s';
-                            // Si c'est un champs de type Time field
-                            if($field['ea_type'] == 'TimeField'){
-                                $format = 'H:i';
-                            }
-                            $datas[$field['name']]->setFieldValue($entity->{'get'.ucfirst($field['name'])}()->format($format));
+                        if(str_contains($field['name'], 'date')){
+
+                            $datas[$field['name']]->setFieldValue($entity->{'get'.ucfirst($field['name'])}()->format($field['format']));
                         }
                         else{
                             $datas[$field['name']]->setFieldValue( (string) $entity->{'get'.ucfirst($field['name'])}());
@@ -98,30 +94,17 @@ class ExtraDataListener implements EventSubscriberInterface
                 else{
 
                     $entityData = new $repository();
-
-                    // Si l'entrée est une date
-                    if(is_object($entity->{'get'.ucfirst($field['name'])}()) && get_class($entity->{'get'.ucfirst($field['name'])}()) == 'DateTimeImmutable'){
-                        $format = 'Y-m-d H:i:s';
-                        // Si c'est un champs de type Time field
-                        if($field['ea_type'] == 'TimeField'){
-                            $format = 'H:i';
-                        }
-                        // Création de la data
-                        $entityData
-                          ->setObject($entity)
-                          ->setLanguage($language)
-                          ->setFieldKey( $field['name'] )
-                          ->setFieldValue( (string) $entity->{'get'.ucfirst($field['name'])}()->format($format));
-                    // Si l'entrée est une string
-                    }else {
-
-                        // Création de la data
-                        $entityData
-                          ->setObject($entity)
-                          ->setLanguage($language)
-                          ->setFieldKey( $field['name'] )
-                          ->setFieldValue( (string) $entity->{'get'.ucfirst($field['name'])}() );
+                    // Création de la data
+                    $entityData
+                      ->setObject($entity)
+                      ->setLanguage($language)
+                      ->setFieldKey( $field['name'] );
+                    if(str_contains($field['name'], 'date')) {
+                        $entityData->setFieldValue($entity->{'get' . ucfirst($field['name'])}()->format($field['format']));
+                    }else{
+                        $entityData->setFieldValue( (string) $entity->{'get' . ucfirst($field['name'])}());
                     }
+
                     $this->entityManager->persist($entityData);
                 }
             }// end foreach

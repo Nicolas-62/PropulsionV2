@@ -19,24 +19,65 @@ use Doctrine\ORM\Mapping as ORM;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityBuiltEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Encoder\CsvEncoder;
 
+// Récupération des champs spécifiques à l'instance dans le csv associé.
+$fields = array();
+$filesystem = new Filesystem();
+if($filesystem->exists(__DIR__.'/ExtraFields/ArticleData.csv')){
+    $file = new File(__DIR__.'/ExtraFields/ArticleData.csv');
+    $csvEncoder = new CsvEncoder();
+    $fields = $csvEncoder->decode($file->getContent(), 'array');
+}
+define('ARTICLE_DATA_FIELDS', $fields);
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
+
 class Article
 {
     use CMSTrait;
     // Champs date.
     use TimestampableTrait;
     use ExtraFieldtrait;
-    use ArticleDataTrait;
     use MediaTrait;
     use LanguageTrait;
 
 
+    // Champs spécifiques !! à synchroniser manuellement avec les champs définis dans le csv
+    // !! Ajouter les getters et les setters également, définir une valeur par défaut.
+    private ?string $description  = '';
+    private ?string $content          = '';
+    private ?string $subtitle  = '';
+    private ?string $dateEvent;
+    private ?string $datetimeEvent;
+    private ?string $youtubeLink  = '';
+    private ?string $youtubeSecondLink  = '';
+    private ?string $facebookLink  = '';
+    private ?string $instagramLink  = '';
+    private ?string $siteInternet  = '';
+    private ?string $twitterLink  = '';
+    private ?bool   $cancelled  = false;
+    private ?bool   $reported  = false;
+    private ?bool   $full  = false;
+    private ?string $ticketingLink  = '';
+    private ?string $typeMusic  = '';
+    private ?string $origin  = '';
+    private ?string $style              = '';
+    private ?string $themeBackColor     = '#fa5faa';
+    private ?string $themeTextColor     = '#FFFFFF';
+    private ?string $styleBackColor     = '#000000';
+    private ?string $styleTextColor     = '#FFFFFF';
 
+    // Liste des champs supplémentaires spécifiques.
+    private array $extraFields = ARTICLE_DATA_FIELDS;
 
     public function __construct()
     {
+        foreach($this->extraFields as $extraField){
+            $this->{$extraField['name']} = $extraField['default'];
+        }
         $this->children     = new ArrayCollection();
         $this->onlines      = new ArrayCollection();
         $this->mediaLinks   = new ArrayCollection();

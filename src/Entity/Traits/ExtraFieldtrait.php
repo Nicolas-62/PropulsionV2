@@ -10,8 +10,38 @@ use phpDocumentor\Reflection\Types\Boolean;
 trait ExtraFieldtrait
 {
 
-
-
+    /**
+     * Fonction d'appel des proprités qui n'ont pas de getter/setter.
+     * @param $name
+     * @param $args
+     * @return \DateTimeImmutable|void|null
+     * @throws \Exception
+     */
+    public function __call($name, $args)
+    {
+        // Nom de la proprieté
+        $property = lcfirst(substr($name, 3));
+        if ('get' === substr($name, 0, 3)) {
+            // Si c'est une date
+            if(str_contains($property, 'date')){
+                return new \DateTimeImmutable($this->{$property} ?? null);
+            }else{
+                return $this->{$property} ?? null;
+            }
+        } elseif ('set' === substr($name, 0, 3)) {
+            // Valeur de la proprieté
+            $value = 1 == count($args) ? $args[0] : null;
+            // Si c'est une date
+            if(str_contains($property, 'date')){
+                if(is_string($value)){
+                    $value = new \DateTimeImmutable($value);
+                }
+                $this->{$property} = $value->format($this->getExtraField($property)['format']);
+            }else{
+                $this->{$property} = $value;
+            }
+        }
+    }
 
     /**
      * @return Collection
@@ -79,9 +109,7 @@ trait ExtraFieldtrait
         });
         // Si on a un setter pour le champ renseigné en BDD
         foreach($datas as $data){
-            if(method_exists($this, 'set' . $data->getFieldKey())){
-                $this->{'set' . $data->getFieldKey()}($data->getFieldValue());
-            }
+            $this->{'set' . $data->getFieldKey()}($data->getFieldValue());
         }
     }
 
