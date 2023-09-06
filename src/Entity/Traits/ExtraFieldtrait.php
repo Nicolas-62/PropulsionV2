@@ -11,6 +11,34 @@ trait ExtraFieldtrait
 {
 
     /**
+     * Surchage de la fonction magique __isset pour récupération des champs sans getters et setters par twig
+     * @param $key
+     * @return bool
+     */
+    public function __isset($key){
+        if ( isset($this->$key) ) return true ;
+        return false;
+    }
+
+    /**
+     * Surcharge de la fonction magique __get pour appeler les getters.
+     *
+     * @param $property
+     * @return null
+     */
+    public function __get($property)
+    {
+        // Si on a un getter
+        if(method_exists($this, 'get' . ucfirst($property))) {
+            return $this->{'get' . ucfirst($property)}();
+        // Sinon appel de la methode magique __call
+        }else if(is_callable(array($this, $property))){
+            return $this->{'get' . ucfirst($property)}();
+        }
+        return null;
+    }
+
+    /**
      * Fonction d'appel des proprités qui n'ont pas de getter/setter.
      * @param $name
      * @param $args
