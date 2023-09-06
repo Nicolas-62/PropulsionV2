@@ -35,9 +35,9 @@
                     <div class="col-lg-3 offset-lg-1 col-md-12">
                         <div class="py-5">
                             <p class="fs-1">
-                                <b>{{ actu_test.dateEvent }}</b>
+                                <b>{{ actu_test.dateEvent| date("d/m/Y") }}</b>
                             </p>
-                            <p>{{ actu_test.heureEvent }}</p>
+                            <p>{{ actu_test.heureEvent| date("H:i") }}</p>
                         </div>
                         <div class="row mb-5">
                             <div class="col-6 fs-4">

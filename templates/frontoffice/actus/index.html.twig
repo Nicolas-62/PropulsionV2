@@ -63,15 +63,15 @@
                 {% set media = actu.getMedia(2) %}
                 {% set CategoryTitle = actu.category.title|replace({' ': '-'})|lower %}
 
-                <div class="col-lg-4 col-md-12 pb-lg-5 px-lg-3 category-{{ CategoryTitle }} category-tous-les-evenements">
+                <div class="custom-col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-3 category-{{ CategoryTitle }} category-tous-les-evenements">
                     <!-- Card-Actu -->
-                    <div class="card mb-3 mx-lg-5 shadow-lg rounded-0 h-100" style="max-height: 1100px; display: flex; flex-direction: column;">
+                    <div class="card mb-3 mx-lg-3 shadow-lg rounded-0 h-100" style="max-height: 1100px; display: flex; flex-direction: column;">
                         <!-- Image -->
                         {% if media is not null %}
                             {% set url = '/assets/images/' ~ media.media %}
                             <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
                         {% else  %}
-                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD.png')) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
+                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_HEADER.png')) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
                         {% endif %}
 
                         <!-- Themes -->

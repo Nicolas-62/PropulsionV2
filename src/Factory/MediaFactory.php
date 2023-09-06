@@ -7,6 +7,7 @@ use App\Entity\MediaType;
 use App\Repository\MediaRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
@@ -41,7 +42,7 @@ final class MediaFactory extends ModelFactory
      *
      * @todo inject services if required
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, private ContainerBagInterface $params)
     {
         $this->entityManager  = $entityManager;
         parent::__construct();

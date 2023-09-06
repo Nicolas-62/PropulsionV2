@@ -5,6 +5,7 @@ namespace App\Controller\Frontoffice;
 use App\Entity\Article;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -17,7 +18,7 @@ class ExempleController extends AbstractController
     public EntityManagerInterface $entityManager;
 
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, private ContainerBagInterface $params)
     {
         $this->entityManager  = $entityManager;
     }

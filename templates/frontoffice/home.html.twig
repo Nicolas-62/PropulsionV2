@@ -29,8 +29,8 @@
                                     </div>
                                     <div class="row pt-4">
                                         <div class="col-8" style="line-height: 1">
-                                            <div class="card-date"><b>{{ event.dateEvent }}</b></div>
-                                            <div class="card-hour">{{ event.heureEvent }}</div>
+                                            <div class="card-date"><b>{{ event.dateEvent| date("d/m/Y") }}</b></div>
+                                            <div class="card-hour">{{ event.heureEvent| date("H:i") }}</div>
                                         </div>
                                         <div class="col-4 d-flex align-items-end">
                                             <img class="img-fluid" src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}" alt="">
@@ -70,8 +70,8 @@
                     <!-- DATE CONCERT ET HEURE -->
                     <div class="row pt-4">
                         <div class="col-9" style="line-height: 1">
-                            <div class="card-date">{{ event.dateEvent }}</div>
-                            <div class="card-hour">{{ event.heureEvent }}</div>
+                            <div class="card-date">{{ event.dateEvent| date("d/m/Y") }}</div>
+                            <div class="card-hour">{{ event.heureEvent| date("H:i") }}</div>
                         </div>
                         <div class="col-2 offset-1">
                             <a href="https://billetterie.lalune.net/">
@@ -107,7 +107,7 @@
                                 {% set url = '/assets/images/' ~ media.media %}
                                     <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
                                 {% else  %}
-                                    <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD.png')) }}" class="card-img-top rounded-0" alt="...">
+                                    <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_HEADER.png')) }}" class="card-img-top rounded-0" alt="...">
                                 {% endif %}
                                 <!-- Themes -->
                                 <div class="row mx-0 px-0">
@@ -132,8 +132,8 @@
 
                                     <div class="d-flex justify-content-between" style="align-items: flex-end;">
                                         <div>
-                                            <div class="card-date">{{ event.dateEvent }}</div>
-                                            <div class="card-hour">{{ event.heureEvent }}</div>
+                                            <div class="card-date">{{ event.dateEvent | date("d/m/Y")}}</div>
+                                            <div class="card-hour">{{ event.heureEvent| date("H:i") }}</div>
                                         </div>
                                         <a href="https://billetterie.lalune.net/">
                                             <img src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}" alt="..." style="max-height: 60px;">
@@ -173,8 +173,8 @@
                                     <div class="fs-3">{{ event.description | raw}}</div>
                                     <!-- DATE ET HEURE -->
                                     <div style="line-height: 1">
-                                        <div class="date">{{ event.dateEvent }}</div>
-                                        <div class="hour">{{ event.heureEvent }}</div>
+                                        <div class="date">{{ event.dateEvent| date("d/m/Y") }}</div>
+                                        <div class="hour">{{ event.heureEvent| date("H:i") }}</div>
                                     </div>
                                     <a href="{{ path('fo_actus_detail', { 'title': event.title, 'category_id': event.category.id }) }}" class="btn border rounded-0 border-dark mt-5">LIRE LA SUITE</a>
                                 </div>

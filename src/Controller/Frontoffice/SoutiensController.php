@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,7 +17,7 @@ class SoutiensController extends FOController
 
 
 
-    public function __construct(EntityManagerInterface $entityManager) {
+    public function __construct(EntityManagerInterface $entityManager, private ContainerBagInterface $params) {
         //dump('HomeController');
         // ! Configuration du controller :
 
@@ -28,7 +29,7 @@ class SoutiensController extends FOController
         // Initialisation du controller.
 
         // Appel du constructeur du controller parent
-        parent::__construct($entityManager);
+        parent::__construct($entityManager, $params);
         // Pas de header
         //$this->data['header_partial'] = 'home/header.html.twig';
         //$this->data['header_partial'] = '';

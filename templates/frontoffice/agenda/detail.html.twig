@@ -48,10 +48,13 @@
                 <!-- Date -->
                 <div style="padding-bottom: 20px; padding-top: 20px">
                     <p style="font-size: 40px; font-weight: bold" class="mb-0">
-                        {{ article.dateEvent }}
+                        {{ article.dateEvent| date("d/m/Y") }}
                     </p>
                     <p style="font-size: 30px" class="mt-0">
-                        {{ article.heureEvent }}
+
+                        {% if article.heureEvent is not empty %}
+                            {{ article.heureEvent| date("H:i") }}
+                        {% endif %}
                     </p>
                 </div>
 
@@ -138,7 +141,7 @@
                         <h1>{{ article.typeMusic}}  {% if article.origin != "" %} | {{ article.origin }}{% endif %}</h1>
                     </div>
                     <div class="col-lg-2 col-md-6 d-flex justify-content-end">
-                        <h1 style="font-size: 60px">{{ article.heureEvent }}</h1>
+                        <h1 style="font-size: 60px">{{ article.heureEvent| date('H:i') }}</h1>
                     </div>
                 </div>
 
@@ -298,7 +301,7 @@
                             <h1>{{ child.typeMusic}} {% if child.origin != "" %} | {{ child.origin }}{% endif %}</h1>
                         </div>
                         <div class="col-lg-2 col-md-4 d-flex justify-content-end">
-                            <h1 style="font-size: 60px">{{ child.heureEvent }}</h1>
+                            <h1 style="font-size: 60px">{{ child.heureEvent | date('H:i') }}</h1>
                         </div>
                     </div>
 

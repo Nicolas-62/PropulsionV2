@@ -10,37 +10,31 @@
             <nav class="navbar navbar-expand-lg col-12 mt-auto">
                 <ul class="navbar-nav w-100 justify-content-end pt-3">
 
-                    <li class="nav-item">
-                        <a class="text-decoration-none" href="/agenda/12/goldman">
-                            <img src="/assets/images/november-ultra-ref-7772-copiedxo-1693822366.png" class="rounded-circle round-img-header" style="z-index:4;" alt="...">
-                            <div class="text-center ml-40">November Ultra</div>
-                            <div class="text-center ml-40">12/07</div>
-                        </a>
-                    </li>
+                    {% for event_header in events_header %}
+                        {% set media = event_header.getMedia(12) %}
 
-                    <li class="nav-item">
-                        <a class="text-decoration-none" href="/agenda/12/goldman">
-                            <img src="/assets/images/november-ultra-ref-7772-copiedxo-1693822366.png" class="rounded-circle round-img-header" style="z-index:3;" alt="...">
-                            <div class="text-center ml-40">November Ultra</div>
-                            <div class="text-center ml-40">12/07</div>
-                        </a>
-                    </li>
+                        {% if loop.index < 5 %}
+                            <li class="nav-item">
+                                <a class="text-decoration-none" href="/agenda/{{ event_header.category.id }}/{{ event_header.title }}">
 
-                    <li class="nav-item">
-                        <a class="text-decoration-none" href="/agenda/12/goldman">
-                            <img src="/assets/images/november-ultra-ref-7772-copiedxo-1693822366.png" class="rounded-circle round-img-header" style="z-index:2;" alt="...">
-                            <div class="text-center ml-40">November Ultra</div>
-                            <div class="text-center ml-40">12/07</div>
-                        </a>
-                    </li>
+                                    {% if media is not null %}
+                                        {% set url = '/assets/images/' ~ media.media %}
+                                        <img src="{{ asset((url)) }}" class="rounded-circle round-img-header" style="z-index:{{ 1000 -  loop.index }} !important;" alt="...">
+                                    {% else  %}
+                                        <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_SQUARE.png')) }}" class="rounded-circle round-img-header z-{{ 5 - loop.index}} " style="{% if loop.index == 4 %}margin-right:10px{% endif %}" alt="...">
+                                    {% endif %}
+                                    {% if loop.index < 4 %}
+                                        <div class="text-center ml-40">{{ event_header.title }}</div>
+                                        <div class="text-center ml-40">{{ event_header.dateEvent | date('d/m') }}</div>
+                                    {% else %}
+                                        <div class="text-center" style="margin-right: 10px">{{ event_header.title }}</div>
+                                        <div class="text-center" style="margin-right: 10px">{{ event_header.dateEvent | date('d/m') }}</div>
+                                    {% endif %}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
 
-                    <li class="nav-item">
-                        <a class="text-decoration-none" href="/agenda/12/goldman">
-                            <img src="/assets/images/november-ultra-ref-7772-copiedxo-1693822366.png" class="rounded-circle round-img-header" style="z-index:1; margin-right: 10px" alt="...">
-                            <div class="text-center" style="margin-right:  10px">November Ultra</div>
-                            <div class="text-center" style="margin-right:  10px">12/07</div>
-                        </a>
-                    </li>
 
 
                     {% for src in btns %}
@@ -81,12 +75,24 @@
         <div class="col-6">
             <div class="row">
                 <div class="col-8 offset-3 pt-5">
+                    {% for event_header in events_header %}
+                        {% set media = event_header.getMedia(12) %}
 
-                    <a class="text-decoration-none" href="/agenda/12/goldman"><img src="/assets/images/november-ultra-ref-7772-copiedxo-1693822366.png" class="rounded-circle round-img-header" style="z-index:4;" alt="..."></a>
-                    <a class="text-decoration-none" href="/agenda/12/goldman"><img src="/assets/images/november-ultra-ref-7772-copiedxo-1693822366.png" class="rounded-circle round-img-header" style="z-index:3;" alt="..."></a>
-                    <a class="text-decoration-none" href="/agenda/12/goldman"><img src="/assets/images/november-ultra-ref-7772-copiedxo-1693822366.png" class="rounded-circle round-img-header" style="z-index:2;" alt="..."></a>
-                    <a class="text-decoration-none" href="/agenda/12/goldman"><img src="/assets/images/november-ultra-ref-7772-copiedxo-1693822366.png" class="rounded-circle round-img-header" style="z-index:1; margin-right: 10px" alt="..."></a>                </div>
-            </div>
+                        {% if loop.index < 5 %}
+                                <a class="text-decoration-none" href="/agenda/{{ event_header.category.id }}/{{ event_header.title }}">
+
+                                    {% if media is not null %}
+                                        {% set url = '/assets/images/' ~ media.media %}
+                                        <img src="{{ asset((url)) }}" class="rounded-circle round-img-header" style="z-index:{{  loop.index }}" alt="...">
+                                    {% else  %}
+                                        <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_SQUARE.png')) }}" class="rounded-circle round-img-header" style="z-index:{{  loop.index }};{% if loop.index == 4 %}margin-right:10px{% endif %}" alt="...">
+                                    {% endif %}
+                                </a>
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+            </div>0
         </div>
         <div class="col-12"></div>
         {% for src in btns %}

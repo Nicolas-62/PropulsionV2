@@ -13,6 +13,7 @@ use App\Notification\ContactNotification;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,6 +27,7 @@ class FOController extends AbstractController
 
     public function __construct(
         protected EntityManagerInterface $entityManager,
+        private ContainerBagInterface $params
     )
     {
         //  Configuration du controller :
@@ -46,6 +48,13 @@ class FOController extends AbstractController
         $this->data['footer_partial']     =     '_components/footer.html.twig';
         // HEADER
         // $this->data['btns']               =     $this->btns = array('pic_icon', 'search_icon', 'profile_icon', 'menu_icon');
+        $cat_agenda_id = 3;
+
+        $sous_categorie_ids               =     $this->entityManager->getRepository(Category::class)->find($cat_agenda_id)->getChildrenIds();
+
+        $events_header                    =     $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->params->get('locale'), true, 'dateEvent', 'DESC');
+
+        $this->data['events_header']      =     $events_header;
         $this->data['btns']               =     $this->btns = array('pic_icon', 'profile_icon');
         $this->data['menu']               =     $this->menu = array('Agenda' => 'fo_agenda_index','Actus' => 'fo_actus_index','Action Culturelle' => 'fo_actions_index','Soutiens aux artistes' => 'fo_soutiens_index','Infos Pratiques' => 'fo_infos_index');
         // FOOTER
@@ -125,12 +134,18 @@ class FOController extends AbstractController
 
         $categories = $this->entityManager->getRepository(Article::class)->findBy(['category'=>27]);
 
+        $cat_agenda_id = 3;
+
+        $sous_categorie_ids               =     $this->entityManager->getRepository(Category::class)->find($cat_agenda_id)->getChildrenIds();
+        $events_header                    =     $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->params->get('locale'), true, 'dateEvent', 'DESC');
 
 
         $this->data['header_partial']     =     '_components/header.html.twig';
         $this->data['footer_partial']     =     '_components/footer.html.twig';
+
         // Vue renvoyée.
         return $this->render('frontoffice/institutionnel/mentions.html.twig', [
+          'events_header' => $events_header,
           "header_partial" => '_components/header.html.twig',
           "footer_partial" => '_components/footer.html.twig',
           "btns" => $this->btns,
@@ -141,24 +156,7 @@ class FOController extends AbstractController
         "sponsors_img" => $this->sponsors_img,
           "categories" => $categories,
           "mentions" => $this->mentions,
-          'active_entry' => 'entry1',
-          'infos_contact' => array('JIHANE MILADI' => 'Présidente', 'FRANÇOIS PARMENTIER' => 'Production & Vie Associative','ANTOINE GRILLON' => 'Direction & Programmation', 'VINCENT RISBOURG' => 'Soutien aux artistes', 'SANDRINE DARLOT AYMONE MIHINDOU' => 'Administration
-','MARIE YACHKOURI' => 'Billetterie & Communication', 'MARTIN ROGGEMAN' => 'Régie Générale', 'KHALID MHANNAOUI' => 'Accueil','ANAÏS FRAPSAUCE MARINE SALVAT' => 'Projets Culturels & Publics', 'OLIVIER BIKS/BIBI' => 'Graphisme','JIMMY BOURBIER' => 'Communication', 'LUDO LELEU' => 'Photographe'),
-        'equipe_tech' => array('Emmanuel Héreau', 'Gwennaelle Krier','Illan Lacoudre', 'Jean Maillart', 'Benoit Moritz', 'Grégory Vanheulle', 'Alexandre Verger'),
-        'benevoles' => array('Alexandra', 'Antoine','Arsène', 'Beniamin', 'Bertille', 'Côme', 'Déborah', 'Elena','Elisa', 'Ewan', 'Fanny', 'Francesca', 'Gaëtan', 'Giacomo','Jules Judith', 'Laurent', 'Lisa', 'Lorea', 'Lucile', 'Manon A','Manon P', 'Marine', 'Nahelou', 'Nicolas', 'Perrine', 'Rodolphe','Romain D', 'Romain M', 'Simon', 'Valère', 'Zoé'),
-        'transports' => ['EN TRAIN' => "La gare se trouve à 15 minutes à pied de l'entrée des salles !
-        Avec son positionnement géographique central, Amiens se trouve à 40 minutes d'Arras, 1h05 de Paris, 1h20 de Lille, 1h25 de Rouen, 2h20 de Reims, ou encore à 3h de Bruxelles.", 'EN VOITURE' => "Amiens est au carrefour de grands axes de circulation de niveau européen : A16, A29 et à proximité des autoroutes A1 A2, A26 et A28.
-        Par la voiture également, vous arriverez rapidement aux salles de concerts : 40 minutes depuis Abbeville, 50 minutes depuis Beauvais, 1h20 d'Arras, 1h20 depuis Rouen, 1h30 de Paris et de Lille.", 'PARKING' => "À Amiens, le stationnement est payant dans les rues du centre-ville de 9h à 12h30 et de 14h à 17h30 (gratuité du dimanche au lundi à 14h), et dans les zones résiden- tielles de 9h à 12h30 et de 14h à 19h (gratuité du dimanche au lundi à 14h).
-        Pour mieux préparer votre venue, consultez la carte interactive du stationnement à Amiens.
-        Quitte à prendre la voiture, pensez à l'option covoiturage !
-        Proposez votre trajet ou cherchez-en un sur le site de notre partenaire Mobicoop.", 'À VÉLO' => "Préférez la mobilité douce ! Il est si agréable de se déplacer à vélo à Amiens...
-        Vous n'avez pas de vélo ?
-        Louez-en un avec le service Buscylette ou les Vélam en libre service.
-        Enfin, profitez-en pour faire une belle balade autour du Patrimoine, des Hortillon- nages ou de la nature environnante !", 'EN TRANSPORT EN COMMUN' => "Profitez du réseau de bus Ametis de la ville (en plus, le samedi, les bus sont gra- tuits !), ou encore de leur service de location de vélo !
-        Arrêt de bus à proximité immédiate de l'entrée des salles : Citadelle Montrescu, lignes désservies : N2, N3, 11 et L."],
-        'transports_medias' => ['TRAIN', 'VOITURE', 'PARKING', 'VELO', 'BUS'],
-
-
+          'active_entry' => 'entry1'
         ]);
     }
 

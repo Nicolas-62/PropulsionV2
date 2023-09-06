@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Theme;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,7 +16,7 @@ class ActusController extends FOController
 {
 
 
-    public function __construct(protected EntityManagerInterface $entityManager)
+    public function __construct(protected EntityManagerInterface $entityManager, private ContainerBagInterface $params)
     {
         // ! Configuration du controller :
 
@@ -27,7 +28,7 @@ class ActusController extends FOController
         // Initialisation du controller.
 
         // Appel du constructeur du controller parent
-        parent::__construct($entityManager);
+        parent::__construct($entityManager, $params);
         // ! Configuration de la page :
 
         // Récupération des articles de la category 3 (actus)

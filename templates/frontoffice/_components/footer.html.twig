@@ -116,7 +116,9 @@
             {% set ext = '.png' %}
             {% set src = url ~ src ~ ext %}
             <div class="col-1 {% if loop.index0 == 0 %}offset-5{% endif %}">
-                <img class="img-fluid" src="{{ asset(src) }}">
+                <a href="{{ link }}">
+                    <img class="img-fluid" src="{{ asset(src) }}">
+                </a>
             </div>
         {% endfor %}
     </div>

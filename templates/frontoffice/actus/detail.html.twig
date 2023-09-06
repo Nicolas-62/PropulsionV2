@@ -51,9 +51,9 @@
                     <div class="col-lg-3 offset-lg-1 col-md-12">
                         <div class="py-5">
                             <p class="fs-1">
-                                <b>{{ article.dateEvent }}</b>
+                                <b>{{ article.dateEvent| date("d/m/Y") }}</b>
                             </p>
-                            <p>{{ article.heureEvent }}</p>
+                            <p>{{ article.heureEvent | date("H:i")}}</p>
                         </div>
                         <div class="row mb-5">
                             <div class="col-6 fs-4">
