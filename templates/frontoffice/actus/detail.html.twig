@@ -136,7 +136,7 @@
                                                 <div class="card-text fs-3">{{ actu.content | raw }}</div>
                                             </div>
                                             <!-- Bouton Lien vers l'article -->
-                                            <a href="{{ path('fo_actus_detail', { 'title': actu.title, 'category_id': actu.category.id }) }}" class="fs-3 w-40 btn border border-dark rounded-0 p-3">LIRE LA SUITE</a>
+                                            <a href="{{ path('fo_actus_detail', {'slug': actu.slug}) }}" class="fs-3 w-40 btn border border-dark rounded-0 p-3">LIRE LA SUITE</a>
                                         </div>
                                         <!-- Potentiel lien Billetterie -->
                                     </div>

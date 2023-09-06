@@ -14,15 +14,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/actions/', name: 'fo_actions_')]
 
-class ActionsController extends FOController
+class ActionsController extends LuneController
 {
     public function __construct(EntityManagerInterface $entityManager, private ContainerBagInterface $params) {
         // ! Configuration du controller :
-
-
-        // Identifiants des catégories concernées.
-        $this->category_ids		=		array(46,59,69);
-
 
         // Initialisation du controller.
 

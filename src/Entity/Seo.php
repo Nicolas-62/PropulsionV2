@@ -25,6 +25,9 @@ class Seo
     private ?string $description = null;
 
     #[ORM\Column]
+    private ?array $keywords = array();
+
+    #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\Column]
@@ -52,7 +55,7 @@ class Seo
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
 
@@ -64,7 +67,7 @@ class Seo
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -98,12 +101,23 @@ class Seo
 
   public function __toString(): string
   {
-    return $this->getTitle();
-      if($this->title) {
-          return $this->title;
-      }else{
-          return '';
-      }
+    return 'Seo';
+    //return $this->getTitle();
+
+  }
+
+    /**
+     * Vérifie si la seo a été saisie
+     *
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        if($this->getTitle() == null && $this->getDescription() == null && $this->getKeywords() == null){
+            return true;
+        }else{
+            return false;
+        }
   }
 
 
@@ -145,5 +159,21 @@ class Seo
     public function setLanguage(?Language $language): void
     {
         $this->language = $language;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getKeywords(): ?array
+    {
+        return $this->keywords;
+    }
+
+    /**
+     * @param array|null $keywords
+     */
+    public function setKeywords(?array $keywords): void
+    {
+        $this->keywords = $keywords;
     }
 }

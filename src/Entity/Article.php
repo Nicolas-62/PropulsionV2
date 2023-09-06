@@ -75,9 +75,6 @@ class Article
 
     public function __construct()
     {
-        foreach($this->extraFields as $extraField){
-            $this->{$extraField['name']} = $extraField['default'];
-        }
         $this->children     = new ArrayCollection();
         $this->onlines      = new ArrayCollection();
         $this->mediaLinks   = new ArrayCollection();
@@ -124,6 +121,9 @@ class Article
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Seo::class, cascade: ['remove'])]
     private Collection $seo;
 
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
+
 
     public function getArticleId(): ?int
     {
@@ -137,11 +137,19 @@ class Article
         return $this;
     }
 
+    /**
+     * Ajout la seo uniquement si elle n'est pas vide.
+     *
+     * @param Seo $seo
+     * @return $this
+     */
     public function addSeo(Seo $seo): self
     {
-        if (!$this->Seo->contains($seo)) {
-            $this->seo->add($seo);
-            $seo->setArticle($this);
+        if (!$this->seo->contains($seo)) {
+            if( ! $seo->isEmpty()){
+                $this->seo->add($seo);
+                $seo->setArticle($this);
+            }
         }
 
         return $this;
@@ -304,6 +312,18 @@ class Article
     public function setThemes(Collection $themes): Article
     {
         $this->themes = $themes;
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
         return $this;
     }
 

@@ -164,9 +164,10 @@ Abstract class CMSRepository extends ServiceEntityRepository
      * vérifie sur la catégorie parent de l'article a la SEO d'activé
      *
      * @param Article|Category $entity
-     * @return Seo
+     * @param null $code_langue
+     * @return Seo|null
      */
-    public function getSeo(Article|Category $entity, $code_langue = null): Seo
+    public function getSeo(Article|Category $entity, $code_langue = null): ?Seo
     {
         $seo = $entity->getSeo($code_langue);
         if($seo == null){

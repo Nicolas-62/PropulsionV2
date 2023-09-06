@@ -15,26 +15,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 #[Route('/infos/', name: 'fo_infos_')]
-class InfosPratiquesController extends FOController
+class InfosPratiquesController extends LuneController
 {
 
-    public function __construct(EntityManagerInterface $entityManager, private ContainerBagInterface $params) {
-        //dump('HomeController');
+    public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $params) {
         // ! Configuration du controller :
-
-
-        // Identifiants des catégories concernées.
-        $this->category_ids		=		array(46,59,69);
 
 
         // Initialisation du controller.
 
         // Appel du constructeur du controller parent
         parent::__construct($entityManager, $params);
-        // Pas de header
-        //$this->data['header_partial'] = 'home/header.html.twig';
-        //$this->data['header_partial'] = '';
-        //$this->data['footer_partial'] = '';
+        // Vue liste
         $this->list_partial     =       'infos_pratiques/index.html.twig';
 
     }

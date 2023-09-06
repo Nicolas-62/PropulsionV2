@@ -75,7 +75,7 @@ abstract class BoController extends AbstractCrudController
      *
      * @param AdminContext $context
      */
-    public function deleteUpload(AdminContext $context, AdminUrlGenerator $adminUrlGenerator,)
+    public function deleteUpload(AdminContext $context, AdminUrlGenerator $adminUrlGenerator)
     {
 
         // Récupération du nom du fichier à supprimer.

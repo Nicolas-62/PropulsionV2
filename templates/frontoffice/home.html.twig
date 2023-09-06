@@ -95,7 +95,7 @@
                 {% if loop.index0 < 3 %}
                     <div class="col-lg-4 col-md-12 px-0">
                         <!-- Card-Actu -->
-                        <a class="text-decoration-none" href="{{ path('fo_agenda_detail', { 'title': event.title, 'category_id': event.category.id  }) }}">
+                        <a class="text-decoration-none" href="{{ path('fo_agenda_detail', { 'slug': event.slug }) }}">
 
                             <div class="card mb-3  mx-lg-5 shadow-lg rounded-0 h-100 prog">
 
@@ -176,7 +176,7 @@
                                         <div class="date">{{ event.dateEvent| date("d/m/Y") }}</div>
                                         <div class="hour">{{ event.heureEvent| date("H:i") }}</div>
                                     </div>
-                                    <a href="{{ path('fo_actus_detail', { 'title': event.title, 'category_id': event.category.id }) }}" class="btn border rounded-0 border-dark mt-5">LIRE LA SUITE</a>
+                                    <a href="{{ path('fo_actus_detail', { 'slug': event.slug }) }}" class="btn border rounded-0 border-dark mt-5">LIRE LA SUITE</a>
                                 </div>
                             </div>
                         {% endfor %}

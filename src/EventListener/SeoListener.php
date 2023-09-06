@@ -45,7 +45,6 @@ class SeoListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AfterEntityUpdatedEvent::class => 'edit',
         ];
 
     }

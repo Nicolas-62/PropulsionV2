@@ -95,7 +95,7 @@
 
                         <!-- CARD ACTIONS -->
                         <div class="pb-3 px-5 d-flex justify-content-between" style="align-items: flex-end;">
-                            <a href="{{ path('fo_actus_detail', { 'title': actu.title, 'category_id': actu.category.id }) }}" class="btn border rounded-0 border-dark fs-3" style="height: 60px;">LIRE LA SUITE</a>
+                            <a href="{{ path('fo_actus_detail', { 'slug': actu.slug}) }}" class="btn border rounded-0 border-dark fs-3" style="height: 60px;">LIRE LA SUITE</a>
                             <a href="https://billetterie.lalune.net/">
                                 <img src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}" alt="..." style="max-height: 60px;">
                             </a>

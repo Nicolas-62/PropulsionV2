@@ -336,7 +336,7 @@ class CategoryCrudController extends BoController
         // Si édite un article
         else if (Crud::PAGE_EDIT === $responseParameters->get('pageName')) {
             $responseParameters->set('ancestorKeyName', 'entityId');
-        } else
+        }
 
         $responseParameters->set('searchKeyName', 'entityId');
         // Passage du parent des enfants de la liste affichée.

@@ -1,5 +1,12 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
+
+    # CUSTOM
+    ide: 'phpstorm://open?url=file://%%f&line=%%l'
+    property_access:
+        magic_call: true
+    # END CUSTOM
+
     secret: '%env(APP_SECRET)%'
     #csrf_protection: true
     http_method_override: false
@@ -16,8 +23,7 @@ framework:
     #fragments: true
     php_errors:
         log: true
-    property_access:
-        magic_call: true
+
 
 when@test:
     framework:

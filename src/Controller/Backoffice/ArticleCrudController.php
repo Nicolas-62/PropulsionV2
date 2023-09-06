@@ -9,6 +9,7 @@ use App\Entity\Media;
 use App\Entity\Seo;
 use App\Field\LanguageSelectField;
 use App\Field\MediaSelectField;
+use App\Form\SeoType;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -32,6 +33,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
@@ -110,6 +112,7 @@ class ArticleCrudController extends BoController
         yield IdField::new('id')->hideOnForm()->setPermission('ROLE_DEV');
         yield IntegerField::new('ordre', 'ordre')->hideOnForm();
         yield TextField::new('title','titre')->setColumns(4);
+        yield SlugField::new('slug')->setTargetFieldName('title')->hideOnIndex();
         yield AssociationField::new('children','Enfants')->hideOnForm();
         yield AssociationField::new('category','Categorie')->setColumns(4)->hideOnForm()->formatValue(function($value, $article) {
             // Concatenation du nom de la catégorie avec les noms des catégories parentes.
@@ -217,14 +220,19 @@ class ArticleCrudController extends BoController
                 if($seo == null){
                     $seo = new Seo();
                 }
-                // Création d'un champ avec un vue customisée
-                yield CollectionField::new('seo','Seo')
+                //yield FormField::addPanel('Seo');
+                //yield TextField::new('title','titre')->setColumns(4);
+                yield CollectionField::new('seo', 'SEO')
+                    ->setEntryIsComplex()
+                    ->allowDelete(false)
+                    ->allowAdd(false)
+                    ->renderExpanded()
+                    ->setLabel(false)
                     ->setFormTypeOptions([
-                        // Voir template : seo_edit.html.twig
-                        'block_name' => 'seo_edit',
                         // Passage de la seo dans les champs du formulaire
-                        'data' => ['seo' => $seo]
+                        'data' => ['seo' => $seo],
                     ])
+                    ->setEntryType(SeoType::class)
                 ;
             }
 
@@ -234,6 +242,8 @@ class ArticleCrudController extends BoController
             if($categoryParent != null) {
                 // Récupération des datas de la catégorie.
                 $categoryParent->getDatas($this->locale);
+                yield FormField::addPanel('Contenu');
+
                 // Ajout des champs spécifiques à l'instance définis dans l'entité.
                 foreach ($model->getExtraFields() as $extraField) {
                     $show_field = false;

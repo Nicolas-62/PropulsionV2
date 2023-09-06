@@ -11,30 +11,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/soutiens/', name: 'fo_soutiens_')]
-class SoutiensController extends FOController
+class SoutiensController extends LuneController
 {
 
 
 
 
-    public function __construct(EntityManagerInterface $entityManager, private ContainerBagInterface $params) {
-        //dump('HomeController');
+    public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $params) {
         // ! Configuration du controller :
 
-
         // Identifiants des catégories concernées.
-        $this->category_ids		=		array(1);
-
-
-        // Initialisation du controller.
-
-        // Appel du constructeur du controller parent
+        $this->category_id		=		1;
         parent::__construct($entityManager, $params);
-        // Pas de header
-        //$this->data['header_partial'] = 'home/header.html.twig';
-        //$this->data['header_partial'] = '';
-        //$this->data['footer_partial'] = '';
-        $this->list_partial     =       'soutiens/index.html.twig';
+
 
     }
 
@@ -58,17 +47,10 @@ class SoutiensController extends FOController
 
 
 
-    #[Route('{title}', name: 'detail')]
-    public function detail(string $title): Response
+    #[Route('{slug}', name: 'detail')]
+    public function detail(?Article $article): Response
     {
-        $category                           = $this->entityManager->getRepository(Category::class)->findOneBy(['id' => 7]);
-        $article                            = $this->entityManager->getRepository(Article::class)->findOneBy(['title' => $title, 'category' => $category]);
-        $this->data['detail_partial']       = 'frontoffice/soutiens/detail.html.twig';
-        $this->data['locale']               = $this->getParameter('locale');
-        $this->data['article']              = $article;
-        return $this->render(
-          $this->data['detail_partial'],
-          $this->data);
+        parent::detail($article);
     }
 
 }

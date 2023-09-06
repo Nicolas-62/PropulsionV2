@@ -28,6 +28,29 @@ class Config
     #[ORM\Column]
     private ?\DateTimeImmutable $updated_at = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $seoTitle = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $seoDescription = null;
+
+    #[ORM\Column]
+    private ?array $seoKeywords = array();
+
+
+    /**
+     * Retournes les données SEO du site
+     * @return Seo
+     */
+    public function getSeo(): Seo
+    {
+        $seo = new Seo();
+        $seo->setTitle($this->getSeoTitle());
+        $seo->setDescription($this->getSeoDescription());
+        $seo->setKeywords($this->getSeoKeywords());
+        return $seo;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -98,5 +121,44 @@ class Config
     return 'Configuration du site';
   }
 
+  public function getSeoTitle(): ?string
+  {
+      return $this->seoTitle;
+  }
+
+  public function setSeoTitle(?string $seoTitle): self
+  {
+      $this->seoTitle = $seoTitle;
+
+      return $this;
+  }
+
+  public function getSeoDescription(): ?string
+  {
+      return $this->seoDescription;
+  }
+
+  public function setSeoDescription(?string $seoDescription): self
+  {
+      $this->seoDescription = $seoDescription;
+
+      return $this;
+  }
+
+    /**
+     * @return array|null
+     */
+    public function getSeoKeywords(): ?array
+    {
+        return $this->seoKeywords;
+    }
+
+    /**
+     * @param array|null $seoKeywords
+     */
+    public function setSeoKeywords(?array $seoKeywords): void
+    {
+        $this->seoKeywords = $seoKeywords;
+    }
 
 }

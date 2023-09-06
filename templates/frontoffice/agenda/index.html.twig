@@ -102,7 +102,7 @@
                                     </div>
                                 {% endif %}
 
-                                <a class="text-decoration-none stretched-link" href="{{ path('fo_agenda_detail', { 'title': event.title, 'category_id': event.category.id  }) }}">
+                                <a class="text-decoration-none stretched-link" href="{{ path('fo_agenda_detail', { 'slug': event.slug,}) }}">
                                 {% if media is not null %}
                                     {% set url = '/assets/images/' ~ media.media %}
                                     <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 30vh" alt="...">

@@ -11,90 +11,49 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/agenda/', name: 'fo_agenda_')]
-class AgendaController extends FOController
+class AgendaController extends LuneController
 {
 
-    public function __construct(EntityManagerInterface $entityManager, private ContainerBagInterface $params) {
+    public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $params) {
         // ! Configuration du controller :
-
-
-        // Identifiants des catégories concernées.
-        $this->category_ids		=		array(46,59,69);
-
-
+        $this->category_id  = 3;
         // Initialisation du controller.
 
         // Appel du constructeur du controller parent
         parent::__construct($entityManager, $params);
-        // Pas de header
-        //$this->data['header_partial'] = 'home/header.html.twig';
-        //$this->data['header_partial'] = '';
-        //$this->data['footer_partial'] = '';
-        $this->list_partial     =       'agenda/index.html.twig';
+        // Récupération des sous catégories de la catégorie agenda
+        $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($this->category_id)->getChildrenIds();
+        // Récupération des articles des sous catégories de la catégorie agenda
+        $events_agenda = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $params->get('locale'), true, 'dateEvent', 'ASC');
+        $this->data['events_agenda']        = $events_agenda;
 
     }
 
     #[Route('', name: 'index')]
     public function index(): Response
     {
-        $cat_agenda_id = 3;
-        // Récupération des sous catégories de la catégorie agenda
-        $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_agenda_id)->getChildrenIds();
-        $categories = $this->entityManager->getRepository(Category::class)->findBy(['category_id'=>3]);
 
-        // Récupération des articles des sous catégories de la catégorie agenda
-        $events_agenda = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'ASC');
+        $categories = $this->entityManager->getRepository(Category::class)->findBy(['category_id'=>3]);
+        $this->data['categories_child_agenda'] = $categories;
 
         //TODO : récupérer les thèmes de catégories
         $themes_agenda = array('ATELIERS', 'CONCERTS','JEUNE PUBLIC', 'SOUTIEN AUX ARTISTES');
-
-        $themes_agenda_test = array();
-
-
-        $themes_agenda_test =
-
-        $this->data['page_title']    = 'Agenda';
-        $this->data['events_agenda'] = $events_agenda;
         $this->data['themes_agenda'] = $themes_agenda;
-        $this->data['categories_child_agenda'] = $categories;
-
-        // CONSTANTES GENERALES
-        $this->data['locale']           = $this->getParameter('locale');
-
         return parent::lister();
     }
 
-    #[Route('{category_id}/{title}', name: 'detail')]
-    public function detail(string $title, int $category_id): Response
+    #[Route('{slug}', name: 'detail')]
+    public function detail(?Article $event): Response
     {
-        $cat_agenda_id = 3;
-        // Récupération des sous catégories de la catégorie agenda
-        $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_agenda_id)->getChildrenIds();
-
-        // Récupération des articles des sous catégories de la catégorie agenda
-        $events_agenda = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
-
+        // Récupération des enfants de l'article
+        $this->data['children']             = $this->entityManager->getRepository(Article::class)->findBy(['article_id' => $event->getId()]);
         $cat_actu_id = 4;
         // Récupération des sous catégories de la catégorie actu
         $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_actu_id)->getChildrenIds();
-
         // Récupération des articles des sous catégories de la catégorie actu
         $events_actus = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
-        foreach($events_actus as $event) {
-            //dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
-        }
-
-        $this->data['detail_partial']       = 'frontoffice/agenda/detail.html.twig';
-        $category                           = $this->entityManager->getRepository(Category::class)->findOneBy(['id' => $category_id]);
-        $article                            = $this->entityManager->getRepository(Article::class)->findOneBy(['title' => $title]);
-        $this->data['events_agenda']        = $events_agenda;
-        $this->data['children']             = $this->entityManager->getRepository(Article::class)->findBy(['article_id' => $article->getId()]);
-        $this->data['article']              = $article;
-        $this->data['locale']               = $this->getParameter('locale');
         $this->data['actu_childs']          = $events_actus;
-        return $this->render(
-          $this->data['detail_partial'],
-          $this->data);
+        parent::detail($event);
     }
 
 
