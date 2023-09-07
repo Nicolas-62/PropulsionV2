@@ -38,9 +38,11 @@ class ActionsController extends LuneController
         $cat_actu_id = 4;
         // Récupération des sous catégories de la catégorie actu
         $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_actu_id)->getChildrenIds();
+        dump($sous_categorie_ids);
 
         // Récupération des articles des sous catégories de la catégorie actu
         $events_actus = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
+        dump($events_actus);
         foreach($events_actus as $event) {
             //dump($event->getId().' '.$event->getTitle().' '.$event->getDateEvent());
         }

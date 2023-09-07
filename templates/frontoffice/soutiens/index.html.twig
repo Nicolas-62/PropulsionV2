@@ -9,10 +9,11 @@
         <div class="p-sm-5 p-md-5 p-lg-0 px-lg-5">
             <div class="row">
                 <div class="col-md-6 col-lg-3">
-                    <h1 class="pt-4">Artistes Accompagnés</h1>
+                    <div class="h1 pt-4">Artistes <br> Accompagnés</div>
+
                 </div>
-                <div class="col-md-6 col-lg-3 offset-lg-3">
-                    <h2>Dispositif d’accompagnement de La Lune des Pirates</h2>
+                <div class="col-md-6 col-lg-4 offset-lg-2">
+                    <h2>Dispositif d’accompagnement de<br> La Lune des Pirates</h2>
                 </div>
                 <div class="col-3" style="line-height: 0.7">
                     <p style="font-size: 60px; font-weight: bold">Objectif</p>
@@ -35,7 +36,7 @@
                 <div class="col-lg-4 col-md-12 pb-lg-5 px-5">
 
                     <!-- Card-Actu -->
-                    <a class="text-decoration-none" href="{{ path('fo_soutiens_detail', { 'slug': accomp.element.title }) }}">
+                    <a class="text-decoration-none" href="{{ path('fo_soutiens_detail', { 'slug': accomp.element.slug }) }}">
                         <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100 prog">
 
                             <div class="overlay" style="">
@@ -50,10 +51,7 @@
                         <!-- Themes -->
                         <div class="row m-0 p-0">
                             <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ accomp.element.themeBackColor }};color: {{ accomp.element.themeTextColor }};">
-                                {% set themes = accomp.element.themes %}
-                                {% for theme in themes %}
-                                    {{ theme.name }}
-                                {% endfor %}
+                                Objectif Lune
                             </div>
                             <div class="col-7 theme-2" style="background-color: {{ accomp.element.styleBackColor }};color: {{ accomp.element.styleTextColor }};">
                                 <img class="tiny-icon" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">
@@ -62,7 +60,7 @@
                         </div>
                         <div class="card-body py-0 ">
 
-                            <div class="row">
+                            <div class="row p-3">
                                 <!-- ARTISTE -->
                                 <div class="col-9 d-flex align-items-end">
                                     <h1 class="card-title my-3 fw-bold">
@@ -130,23 +128,20 @@
 
                         <!-- Themes -->
                         <div class="row m-0 p-0">
-                            <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ accomp.element.themeBackColor }};color: {{ accomp.element.themeTextColor }};">
-                                {% set themes = accomp.element.themes %}
-                                {% for theme in themes %}
-                                    {{ theme.name }}
-                                {% endfor %}
+                            <div class="col-4 theme-1 text-uppercase"  style="background-color: {{ accomp.element.themeBackColor }};color: {{ accomp.element.themeTextColor }};">
+                                Les inouïs
                             </div>
-                            <div class="col-7 theme-2 text-uppercase" style="background-color: {{ accomp.element.styleBackColor }};color: {{ accomp.element.styleTextColor }}">
+                            <div class="col-8 theme-2 text-uppercase" style="background-color: {{ accomp.element.styleBackColor }};color: {{ accomp.element.styleTextColor }}">
                                 <img class="tiny-icon" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">
                                 {{ accomp.element.style }}
                             </div>
                         </div>
                         <div class="card-body py-0 ">
 
-                            <div class="row">
+                            <div class="row p-3">
                                 <!-- ARTISTE -->
                                 <div class="col-9 d-flex align-items-end">
-                                    <h1 class="card-title my-3 fw-bold">{{ accomp.element.title }}</h1>
+                                    <h1 class="card-title mt-3 fw-bold">{{ accomp.element.title }}</h1>
                                 </div>
 
                                 <!-- COUP DOEUIL -->
@@ -166,7 +161,7 @@
     <div class="p-lg-5">
         <div class="p-sm-5 p-md-5 p-lg-0">
             <div class="row px-lg-5">
-                <h1 class="py-4">Evenements Actualités</h1>
+                <h1 class="py-4">Evenements<br> Actualités</h1>
             </div>
         </div>
         <div class="row">
@@ -196,7 +191,7 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        <div class="card-body pb-0 ">
+                        <div class="card-body px-5 ">
 
                             <!-- ARTISTE -->
 
@@ -207,10 +202,13 @@
                             <div class="row">
                                 <!-- BILLETTERIE -->
                                 <div class="pb-3 px-5 d-flex justify-content-between" style="align-items: flex-end;">
-                                    <a href="" class="btn border rounded-0 border-dark fs-3" style="height: 60px;">LIRE LA SUITE</a>
-                                    <a href="https://billetterie.lalune.net/">
-                                        <img src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}" alt="..." style="max-height: 60px;">
-                                    </a>
+                                    <a href="" class="btn-read-card">LIRE LA SUITE</a>
+                                    // TODO Mettre la bonne condition
+                                    {% if false %}
+                                        <a href="https://billetterie.lalune.net/">
+                                            <img src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}" alt="..." class="btn-billetterie-card">
+                                        </a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

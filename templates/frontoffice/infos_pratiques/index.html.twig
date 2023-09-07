@@ -100,12 +100,12 @@
 
                     <p class="h3 pt-3 pb-5">Ouverture des bureaux du mardi au vendredi de 14h à 18h</p>
 
-                    <h1 class="">NOUS ECRIRE</h1>
+                    <h1 class="">NOUS ÉCRIRE</h1>
                     <!-- Formulaire -->
                     <form class="h4"  method="post" action="{{ path('fo_infos_contact') }}" >
 
                         <div class="form-group py-2">
-                            <label class="pb-2" for="exampleFormControlSelect1">{{ field_label(form.subject) }}</label>
+                            <label class="pb-2" for="exampleFormControlSelect1">{{ field_label(form.subject) }} (obligatoire)</label>
                             <select class="form-control rounded-0 border-secondary fs-2 select-infos"  name="{{ field_name(form.subject) }}" id="exampleFormControlSelect1">
                                 <option>Sélectionner ...</option>
                                 {% for value, subject in field_choices(form.subject) %}
@@ -116,19 +116,19 @@
                         </div>
 
                         <div class="form-group py-4">
-                            <label class="pb-2" for="mailInput">{{ field_label(form.email) }}</label>
+                            <label class="pb-2" for="mailInput">{{ field_label(form.email) }} (obligatoire)</label>
                             <input type="email" class="form-control rounded-0 border-secondary select-infos"  name="{{ field_name(form.email) }}"  value="{{ field_value(form.email) }}" id="mailInput" aria-describedby="emailHelp">
                             {{ form_errors(form.email) }}
 
                         </div>
                         <div class="form-group py-4">
-                            <label class="pb-2" for="nomInput">{{ field_label(form.name) }}</label>
+                            <label class="pb-2" for="nomInput">{{ field_label(form.name) }} (obligatoire)</label>
                             <input type="text" class="form-control rounded-0 border-secondary select-infos"  name="{{ field_name(form.name) }}" value="{{ field_value(form.email) }}" id="nomInput">
                             {{ form_errors(form.name) }}
 
                         </div>
                         <div class="form-group py-4">
-                            <label class="pb-2" for="messageInput">{{ field_label(form.message) }}</label>
+                            <label class="pb-2" for="messageInput">{{ field_label(form.message) }} (obligatoire)</label>
                             <textarea class="form-control  rounded-0 border-secondary"  name="{{ field_name(form.message) }}" style="min-height: 348px" id="messageInput" rows="3">{{ field_value(form.message) }}</textarea>
                             {{ form_errors(form.message) }}
                         </div>
@@ -214,7 +214,7 @@
                             <img src="{{ asset(('build/maquette/images/la_lune_infos.png')) }}" class="">
 
                         </div>
-                        <div class="col-3 fs-3">
+                        <div class="col-5 fs-3">
 
                             <p>
                                 Scène de Musiques Actuelles
@@ -238,7 +238,7 @@
 
                                 <img src="{{ asset(('build/maquette/images/bureaux_infos.png')) }}" class="">
                             </div>
-                            <div class="col-3 fs-3">
+                            <div class="col-5 fs-3">
                                 <p>
                                     5/1 passage Bélu - 80000 AMIENS
                                 </p>
@@ -252,7 +252,7 @@
                             </div>
 
                         </div>
-                        <p class="h2 pt-2 pb-5">Le point accueil / billetterie est ouvert du mardi au vendredi de 14h à 18h</p>
+                        <p class="h2 pt-4 pb-5">Le point accueil / billetterie est ouvert du mardi au vendredi de 14h à 18h</p>
 
 
                         <h1 class="pt-5">TARIFS</h1>
@@ -260,7 +260,7 @@
 
 
                         <h1 class="pt-5">ABONNEMENT - LA CARTE LUNE - <b>10€</b></h1>
-                        <p class="h2">
+                        <p class="h2 pb-3">
                             Valable 1 an de date à date : des économies dès votre deuxième concert !
                         </p>
 
@@ -283,7 +283,7 @@
                             </div>
                         </div>
 
-                        <p>Abonnez-vous à la billetterie les soirs de concerts ou à la billetterie de La Lune des Pirates ou en ligne en remplissant ce formulaire :</p>
+                        <p class="fs-3">Abonnez-vous à la billetterie les soirs de concerts ou à la billetterie de La Lune des Pirates ou en ligne en remplissant ce formulaire :</p>
 
                         <h1>INFORMATIONS PERSONNELLES</h1>
 
@@ -360,8 +360,8 @@
                                         <input type="tel" class="form-control rounded-0 border-secondary select-infos" id="telInput" placeholder="XX XX XX XX XX">
                                     </div>
                                 </div>
-
-                                <h1>COORDONNEES</h1>
+                                <hr class="py-3">
+                                <h1>COORDONNÉES</h1>
                                 <div class="col-6">
 
                                     <div class="form-group py-4">
@@ -390,7 +390,7 @@
                                         <input type="text" class="form-control rounded-0 border-secondary select-infos" id="lastnameInput">
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-6 pb-3">
 
 
                                     <div class="form-group py-4">
@@ -404,7 +404,7 @@
                                         </select>
                                     </div>
                                 </div>
-
+                                <hr class="py-3">
                                 <!-- NEWSLETTER -->
                                 <div class="form-check py-4 px-1">
                                     <input class="form-check-input  rounded-0 border-secondary" type="checkbox" value="" id="newsCheck">
@@ -590,7 +590,7 @@
                         </div>
                         <!-- Image tarifs -->
                         <div class="col-1">
-
+                            <img src="{{ asset(('build/front/images/TICKET_BILLETTERIE.png')) }}" alt="">
                         </div>
                         <div class="col-11 h2">
                             <p>
@@ -607,7 +607,9 @@
                                 > Soit vous rendre le soir du concert à la billetterie de La Lune des Pirates et présenter votre carte d'étudiante, si le concert n'est pas complet.
                             </p>
                             <p>
-                                * Attention : si vous ne vous présentez pas aux concerts sur les réservations effectuées, nous n'ac- cepterons plus de réservation de votre part.
+                                * Attention : si vous ne vous présentez pas aux concerts sur les réservations effectuées, nous n'accepterons plus de réservation de votre part.
+                            </p>
+                            <p>
                                 ** Du mardi au vendredi de 14h à 18h au 5/1 Passage Bélu 80000 Amiens
                             </p>
                         </div>
@@ -615,34 +617,34 @@
                 </div>
             </div>
         </div>
-        <div class="col-3">
+        <div class="row">
 
-        </div>
-        <div class="col-lg-9 col-md-12">
+            <div class="col-lg-9 offset-lg-3 col-md-12">
 
-            <div class="py-5 px-5 h2">
-                <h1 pb-2>PASS CULTURE</h1>
-                <p class="h2">
-                    Tu as entres 15 et 18 ans ?
-                </p>
-                <p>
-                    Profite de ton pass Culture pour commander tes places de concerts à La Lune !
-                </p>
+                <div class="py-5 px-5 h2">
+                    <h1 pb-2>PASS CULTURE</h1>
+                    <p class="h2">
+                        Tu as entres 15 et 18 ans ?
+                    </p>
+                    <p>
+                        Profite de ton pass Culture pour commander tes places de concerts à La Lune !
+                    </p>
 
-                <div class="row pt-2">
-                    <div class="col-6">
+                    <div class="row pt-2">
+                        <div class="col-6">
 
-                        <img class="img-fluid" src="{{ asset('build/maquette/images/PASS_CULTURE.png') }}" class="">
-                    </div>
-                    <div class="col-6">
+                            <img class="img-fluid" src="{{ asset('build/maquette/images/PASS_CULTURE.png') }}" class="">
+                        </div>
+                        <div class="col-6">
 
-                        <img class="img-fluid" src="{{ asset('build/maquette/images/CAPTCHA_CULTURE.png') }}" class="">
+                            <img class="img-fluid" src="{{ asset('build/maquette/images/CAPTCHA_CULTURE.png') }}" class="">
+                        </div>
+
+
                     </div>
 
 
                 </div>
-
-
             </div>
         </div>
     </div>

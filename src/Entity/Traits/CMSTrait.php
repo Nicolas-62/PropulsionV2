@@ -48,7 +48,7 @@ trait CMSTrait
             return $seo->getLanguage()->getCode() === $code_langue;
         })->first();
 
-        return $seo;
+        return ($seo) ? $seo : null;
     }
 
     public function getId(): ?int

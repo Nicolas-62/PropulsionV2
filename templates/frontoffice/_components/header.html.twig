@@ -14,21 +14,31 @@
                         {% set media = event_header.getMedia(12) %}
 
                         {% if loop.index < 5 %}
-                            <li class="nav-item">
-                                <a class="text-decoration-none" href="/agenda/{{ event_header.category.id }}/{{ event_header.title }}">
-
+                            <li class="nav-item " style="z-index: {{ 1000 - loop.index }}">
+                                <a class="text-decoration-none" href="/agenda/{{ event_header.slug}}
+">
+                                    {% set longueurMax = 15 %}
                                     {% if media is not null %}
                                         {% set url = '/assets/images/' ~ media.media %}
-                                        <img src="{{ asset((url)) }}" class="rounded-circle round-img-header" style="z-index:{{ 1000 -  loop.index }} !important;" alt="...">
+                                        <img src="{{ asset((url)) }}" class="rounded-circle round-img-header" alt="...">
                                     {% else  %}
-                                        <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_SQUARE.png')) }}" class="rounded-circle round-img-header z-{{ 5 - loop.index}} " style="{% if loop.index == 4 %}margin-right:10px{% endif %}" alt="...">
+                                        <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_SQUARE.png')) }}" class="rounded-circle round-img-header " style="{% if loop.index == 4 %}margin-right:10px{% endif %}" alt="...">
                                     {% endif %}
+
                                     {% if loop.index < 4 %}
-                                        <div class="text-center ml-40">{{ event_header.title }}</div>
+                                        {% if event_header.title|length > longueurMax %}
+                                            <div class="text-center ml-40">{{ event_header.title|slice(0, longueurMax) ~ '...' }}</div>
+                                        {% else %}
+                                            <div class="text-center ml-40">{{ event_header.title }}</div>
+                                        {% endif %}
                                         <div class="text-center ml-40">{{ event_header.dateEvent | date('d/m') }}</div>
                                     {% else %}
-                                        <div class="text-center" style="margin-right: 10px">{{ event_header.title }}</div>
-                                        <div class="text-center" style="margin-right: 10px">{{ event_header.dateEvent | date('d/m') }}</div>
+                                        {% if event_header.title|length > longueurMax %}
+                                            <div class="text-center" style="margin-right: 40px">{{ event_header.title|slice(0, longueurMax) ~ '...' }}</div>
+                                        {% else %}
+                                            <div class="text-center" style="margin-right: 40px">{{ event_header.title }}</div>
+                                        {% endif %}
+                                        <div class="text-center" style="margin-right: 40px">{{ event_header.dateEvent | date('d/m') }}</div>
                                     {% endif %}
                                 </a>
                             </li>
@@ -83,9 +93,9 @@
 
                                     {% if media is not null %}
                                         {% set url = '/assets/images/' ~ media.media %}
-                                        <img src="{{ asset((url)) }}" class="rounded-circle round-img-header" style="z-index:{{  loop.index }}" alt="...">
+                                        <img src="{{ asset((url)) }}" class="rounded-circle round-img-header" style="z-index:{{ 1000 +  loop.index }}" alt="...">
                                     {% else  %}
-                                        <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_SQUARE.png')) }}" class="rounded-circle round-img-header" style="z-index:{{  loop.index }};{% if loop.index == 4 %}margin-right:10px{% endif %}" alt="...">
+                                        <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_SQUARE.png')) }}" class="rounded-circle round-img-header" style="z-index:{{ 1000 + loop.index }};{% if loop.index == 4 %}margin-right:10px{% endif %}" alt="...">
                                     {% endif %}
                                 </a>
                         {% endif %}

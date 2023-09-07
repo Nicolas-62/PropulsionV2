@@ -20,7 +20,9 @@
             </div>
             <div class="col-lg-6 col-md-12">
                 <div class="fs-3">{{ article.description | raw }}</div>
-
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ app.request.uri }}" target="_blank" rel="noopener noreferrer">
+                    Partager sur Facebook
+                </a>
                 <div class="fs-3">{{ article.content | raw }}</div>
 
                 <div class="embed-responsive embed-responsive-16by9">

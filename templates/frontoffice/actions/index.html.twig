@@ -8,7 +8,7 @@
             <img src="{{ asset(('build/maquette/images/ACTIONCULTURELLE.png')) }}" class="w-100 mb-5 img-fluid" style="max-height: 600px; object-fit: cover" alt="ACTIONCULTURELLE">
             <div class="pt-4 position-relative">
                 <img src="{{ asset(('build/maquette/images/actu_cadre_1.svg')) }}" class="position-absolute" style="max-height: 100px; top:0; left: 0 !important;" alt="ACTIONCULTURELLE">
-                <div class="row px-5 pt-5">
+                <div class="row pr-5 pt-5" style="padding-left: 80px">
                     <div class="col-lg-10 col-md-12">
                         <!-- Récupération des datas de l'article -->
                         {{ actu_test.getDatas(locale) }}
@@ -21,7 +21,7 @@
                     </div>
                 </div>
             </div>
-            <div class="p-5">
+            <div class="pr-5 py-5" style="padding-left: 80px">
                 <!-- Sous-titre -->
                 <p class="h2">{{ actu_test.subtitle }}</p>
                 <div class="row position-relative">
@@ -35,9 +35,55 @@
                     <div class="col-lg-3 offset-lg-1 col-md-12">
                         <div class="py-5">
                             <p class="fs-1">
-                                <b>{{ actu_test.dateEvent| date("d/m/Y") }}</b>
+                                <b>{% if actu_test.dateEvent|date('D') == 'Mon' %}
+                                        LUN.
+                                    {% elseif actu_test.dateEvent|date('D') == 'Tue' %}
+                                        MAR.
+                                    {% elseif actu_test.dateEvent|date('D') == 'Wed' %}
+                                        MER.
+                                    {% elseif actu_test.dateEvent|date('D') == 'Thu' %}
+                                        JEU.
+                                    {% elseif actu_test.dateEvent|date('D') == 'Fri' %}
+                                        VEN.
+                                    {% elseif actu_test.dateEvent|date('D') == 'Sat' %}
+                                        SAM.
+                                    {% elseif actu_test.dateEvent|date('D') == 'Sun' %}
+                                        DIM.
+                                    {% endif %}
+
+                                    {{ actu_test.dateEvent| date("j") }}
+
+                                    {% if actu_test.dateEvent|date('M') == 'Jan' %}
+                                        JANVIER
+                                    {% elseif actu_test.dateEvent|date('M') == 'Feb' %}
+                                        FÉVRIER
+                                    {% elseif actu_test.dateEvent|date('M') == 'Mar' %}
+                                        MARS
+                                    {% elseif actu_test.dateEvent|date('M') == 'Apr' %}
+                                        AVRIL
+                                    {% elseif actu_test.dateEvent|date('M') == 'May' %}
+                                        MAI
+                                    {% elseif actu_test.dateEvent|date('M') == 'Jun' %}
+                                        JUIN
+                                    {% elseif actu_test.dateEvent|date('M') == 'Jul' %}
+                                        JUILLET
+                                    {% elseif actu_test.dateEvent|date('M') == 'Aug' %}
+                                        AOÛT
+                                    {% elseif actu_test.dateEvent|date('M') == 'Sep' %}
+                                        SEPTEMBRE
+                                    {% elseif actu_test.dateEvent|date('M') == 'Oct' %}
+                                        OCTOBRE
+                                    {% elseif actu_test.dateEvent|date('M') == 'Nov' %}
+                                        NOVEMBRE
+                                    {% elseif actu_test.dateEvent|date('M') == 'Dec' %}
+                                        DÉCEMBRE
+                                    {% endif %}
+                                    {{ actu_test.dateEvent| date("Y") }}
+
+
+                                </b>
                             </p>
-                            <p>{{ actu_test.heureEvent| date("H:i") }}</p>
+                            <p>{{ actu_test.datetimeEvent| date("H:i") }}</p>
                         </div>
                         <div class="row mb-5">
                             <div class="col-6 fs-4">
@@ -78,16 +124,14 @@
 
     {% set counter = 0 %}
     {% for actu in actu_childs %}
-        {% set themes = actu.themes %}
-        {% for theme in themes %}
-            {% if theme.name|upper == "ACTION CULTURELLE" and actu.title|upper != actu_test.title|upper %}
-                {% set counter = counter + 1 %}
-            {% endif %}
-        {% endfor %}
+        {% if actu.category.title|upper == "ACTION CULTURELLE" and actu.title|upper != actu_test.title|upper %}
+            {% set counter = counter + 1 %}
+        {% endif %}
     {% endfor %}
 
     {% if counter>1 %}
     <!-- Voir aussi -->
+
     <div class="bg-grey">
         <div class="p-5">
             {% dump(counter) %}
@@ -95,9 +139,7 @@
             <div class="row">
 
                 {% for actu in actu_childs %}
-                    {% set themes = actu.themes %}
-                    {% for theme in themes %}
-                        {% if theme.name|upper == "ACTION CULTURELLE" and actu.title|upper != actu_test.title|upper %}
+                        {% if actu.category.title|upper == "ACTION CULTURELLE" and actu.title|upper != actu_test.title|upper %}
 
                     <!-- Récupération des datas de l'article -->
                             {{ actu.getDatas(locale) }}
@@ -123,16 +165,15 @@
                                             <!-- Titre -->
                                             <h2 class="card-title pb-3">{{ actu.title }}</h2>
                                             <!-- Contenu -->
-                                            <div class="card-text fs-3">{{ actu.content | raw }}</div>
+                                            <div class="card-text card-actu-text">{{ actu.content | raw }}</div>
                                         </div>
                                         <!-- Bouton Lien vers l'article -->
-                                        <button class="fs-3 w-40 btn border border-dark rounded-0 p-3">LIRE LA SUITE</button>
+                                        <button class="btn-read-card">LIRE LA SUITE</button>
                                     </div>
                                     <!-- Potentiel lien Billetterie -->
                                 </div>
                             </div>
                         {% endif %}
-                    {% endfor %}
                 {% endfor %}
             </div>
         </div>

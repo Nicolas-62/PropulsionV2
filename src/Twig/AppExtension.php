@@ -15,6 +15,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('getName', [$this, 'getName']),
             new TwigFunction('getThumbnailPath', [$this, 'getThumbnailPath']),
             new TwigFunction('const', [$this, 'const']),
+            new TwigFunction('truncateHtml', [$this, 'truncateHtml'])
 
         ];
     }
@@ -38,4 +39,30 @@ class AppExtension extends AbstractExtension
             return '';
         }
     }
+
+    public function truncateHtml($input, $length)
+    {
+        $plainText = strip_tags($input);
+
+        if (mb_strlen($plainText) <= $length) {
+            return $input;
+        }
+
+        $truncatedText = mb_substr($plainText, 0, $length);
+
+        $lastOpenTag = strrpos($truncatedText, '<');
+
+        $lastCloseTag = strrpos($truncatedText, '>');
+
+        if ($lastOpenTag > $lastCloseTag) {
+            $truncatedText = substr($truncatedText, 0, $lastOpenTag);
+        }
+
+        $result = substr($input, 0, mb_strlen($truncatedText));
+
+        return $result;
+
+    }
+
+
 }

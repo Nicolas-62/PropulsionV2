@@ -134,11 +134,14 @@ class FOController extends AbstractController
         if($this->category_id != null){
             // On récupère la categorie
             $category = $this->entityManager->getRepository(Category::class)->find($this->category_id);
-            // On récupère sa SEO
-            $seo = $this->entityManager->getRepository(Category::class)->getSeo($category, $this->getParameter('locale'));
-            // Surcharge de la seo
-            if($seo != null && ! $seo->isEmpty()){
-                $this->data['seo'] = $seo;
+            // Si la catégorie existe
+            if($category != null){
+                // On récupère sa SEO
+                $seo = $this->entityManager->getRepository(Category::class)->getSeo($category, $this->getParameter('locale'));
+                // Surcharge de la seo
+                if($seo != null && ! $seo->isEmpty()){
+                    $this->data['seo'] = $seo;
+                }
             }
         }
         // Pas utilisé pour l'instant

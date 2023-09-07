@@ -28,7 +28,7 @@ class LuneController extends FOController
     )
     {
         //  Configuration du controller :
-        $this->category_id                =     3;              // Identifiant de la catégorie concernée.=  3;
+        $this->category_agenda_id                =     3;              // Identifiant de la catégorie concernée.=  3;
         parent::__construct($entityManager, $params);
 
         // Récupération des infos du header.
@@ -38,7 +38,7 @@ class LuneController extends FOController
     }
 
     public function buildHeader(){
-        $sous_categorie_ids               =     $this->entityManager->getRepository(Category::class)->find($this->category_id)->getChildrenIds();
+        $sous_categorie_ids               =     $this->entityManager->getRepository(Category::class)->find($this->category_agenda_id)->getChildrenIds();
         $events_header                    =     $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->params->get('locale'), true, 'dateEvent', 'DESC');
         $this->data['events_header']      =     $events_header;
         $this->data['btns']               =     $this->btns = array('pic_icon', 'profile_icon');

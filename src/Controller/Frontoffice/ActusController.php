@@ -35,9 +35,8 @@ class ActusController extends LuneController
     public function index(): Response
     {
 
-        $cat_actu_id = 4;
         // Récupération des sous catégories de la catégorie actu
-        $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_actu_id)->getChildrenIds();
+        $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($this->category_id)->getChildrenIds();
 
         // Récupération des articles des sous catégories de la catégorie actu
         $events_actus = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
@@ -55,9 +54,8 @@ class ActusController extends LuneController
     public function detail(?Article $actus): Response
     {
 
-        $cat_actu_id = 4;
         // Récupération des sous catégories de la catégorie actu
-        $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_actu_id)->getChildrenIds();
+        $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($this->category_id)->getChildrenIds();
         // Récupération des articles des sous catégories de la catégorie actu
         $events_actus = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
         $this->data['actu_childs']  = $events_actus;

@@ -11,13 +11,14 @@
     {{ article.getDatas(locale) }}
     <!-- IMAGE DU HAUT -->
     <div class="row shadow-lg" >
-        <div class="col-lg-8 col-md-12 p-0" style="z-index: 500;max-height: 800px">
+        <div class="col-lg-8 col-md-12 p-0" style="">
+            {% set media = article.getMedia(9) %}
             {% set media = article.getMedia(9) %}
             {% if media is not null %}
                 {% set url = '/assets/images/' ~ media.media %}
-                <img src="{{ asset((url)) }}" class="rounded-0 img-fluid" style=" height: 100%;" alt="...">
+                <img src="{{ asset((url)) }}" class="rounded-0 w-100 img-fluid"   alt="...">
             {% else %}
-                <img src="{{ asset('build/maquette/images/PLACEHOLDER_LUNE.png') }}" class="rounded-0 img-fluid" style="width: 100%; height: 100%;" alt="...">
+                <img src="{{ asset(('build/front/images/PLACE_HOLDER_PAYSAGE.jpg')) }}" class="rounded-0 w-100 img-fluid"  alt="...">
             {% endif %}
 
 
@@ -27,7 +28,7 @@
         <!-- BILLETTERIE AU DESSUS DE L'IMAGE -->
         <div class="col-lg-4 col-md-12" style="z-index: 600">
 
-            <div class="col-12">
+            <div class="col-12 pb-3">
                 <div class="row text-center h3">
                     <div
                             class="col-3 theme-1"
@@ -40,7 +41,7 @@
             </div>
             <div class="card-container" >
                 <!-- Titre -->
-                <div class="lh-1">
+                <div class="lh-1 pt-3">
                     <p class="big-title mb-0">{{ article.title }}</p>
                     <p class="big-subtitle mt-0">{{ article.subtitle }}</p>
                 </div>
@@ -48,11 +49,54 @@
                 <!-- Date -->
                 <div style="padding-bottom: 20px; padding-top: 20px">
                     <p style="font-size: 40px; font-weight: bold" class="mb-0">
-                        {{ article.dateEvent| date("d/m/Y") }}
+                        {% if article.dateEvent|date('D') == 'Mon' %}
+                            LUN.
+                        {% elseif article.dateEvent|date('D') == 'Tue' %}
+                            MAR.
+                        {% elseif article.dateEvent|date('D') == 'Wed' %}
+                            MER.
+                        {% elseif article.dateEvent|date('D') == 'Thu' %}
+                            JEU.
+                        {% elseif article.dateEvent|date('D') == 'Fri' %}
+                            VEN.
+                        {% elseif article.dateEvent|date('D') == 'Sat' %}
+                            SAM.
+                        {% elseif article.dateEvent|date('D') == 'Sun' %}
+                            DIM.
+                        {% endif %}
+
+                        {{ article.dateEvent| date("j") }}
+
+                        {% if article.dateEvent|date('M') == 'Jan' %}
+                            JANVIER
+                        {% elseif article.dateEvent|date('M') == 'Feb' %}
+                            FÉVRIER
+                        {% elseif article.dateEvent|date('M') == 'Mar' %}
+                            MARS
+                        {% elseif article.dateEvent|date('M') == 'Apr' %}
+                            AVRIL
+                        {% elseif article.dateEvent|date('M') == 'May' %}
+                            MAI
+                        {% elseif article.dateEvent|date('M') == 'Jun' %}
+                            JUIN
+                        {% elseif article.dateEvent|date('M') == 'Jul' %}
+                            JUILLET
+                        {% elseif article.dateEvent|date('M') == 'Aug' %}
+                            AOÛT
+                        {% elseif article.dateEvent|date('M') == 'Sep' %}
+                            SEPTEMBRE
+                        {% elseif article.dateEvent|date('M') == 'Oct' %}
+                            OCTOBRE
+                        {% elseif article.dateEvent|date('M') == 'Nov' %}
+                            NOVEMBRE
+                        {% elseif article.dateEvent|date('M') == 'Dec' %}
+                            DÉCEMBRE
+                        {% endif %}
+                        {{  article.dateEvent| date("Y") }}
                     </p>
                     <p style="font-size: 30px" class="mt-0">
 
-                        {% if article.heureEvent is not empty %}
+                        {% if article.heureEvent is not empty and article.heureEvent is not null %}
                             {{ article.heureEvent| date("H:i") }}
                         {% endif %}
                     </p>
@@ -98,7 +142,7 @@
 
                     </div>
 
-                    <button class="btn border border-3 rounded-0 border-dark fw-bold px-4">AJOUTER AU PANIER</button>
+                    <button class="btn-read-card">AJOUTER AU PANIER</button>
                 </div>
                 <!-- Cartes Lunes -->
                 <div class="row">
@@ -146,7 +190,7 @@
                 </div>
 
                 <!-- RESUME ARTISTE -->
-                <div class="h2 py-3 lh-lg">
+                <div class="h2 py-3" style="line-height: 1.3">
                     {{ article.description | raw }}
                 </div>
 
@@ -166,7 +210,7 @@
 
 
                 <!-- DESCRIPTION ARTISTE -->
-                <div class="h3 py-5 lh-lg">
+                <div class="h3 py-5" style="line-height: 1.3">
                     {{ article.content | raw }}
                 </div>
 
@@ -192,14 +236,14 @@
 
                 <!-- PLUS D'INFOS SUR L'ARTISTE -->
                 <div class="row py-5">
-                    <div class="col-lg-6 offset-lg-6 col-md-12">
+                    <div class="col-lg-6 offset-lg-4 col-md-12">
                         <div class="row">
-                            <div class="col-lg-6 col-md-12 d-flex align-items-end">
+                            <div class="col-lg-7 col-md-12 d-flex align-items-end">
                                 {% if article.instagramLink != '' or article.twitterLink != '' or article.facebookLink != '' or article.siteInternet != ''  %}
                                     <h2>Plus d'infos sur l'artiste</h2>
                                 {% endif %}
                             </div>
-                            <div class="col-lg-6 col-md-12">
+                            <div class="col-lg-5 col-md-12">
                                 <!-- MEDIAS SOCIAUX -->
                                 <div class="row">
                                     {% if article.instagramLink != '' %}

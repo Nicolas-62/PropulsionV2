@@ -31,7 +31,7 @@ body {
 }
 
 .card-title {
-  font-size: 24px !important;
+  font-size: 30px !important;
   font-weight: bold !important;
 }
 
@@ -60,6 +60,28 @@ body {
   .card-container {
     padding : 0 40px 0 40px !important;
   }
+}
+
+.btn-billetterie-card {
+  max-height: 80px;
+}
+
+.btn-read-card {
+
+  font-size: 1.75rem;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid #343a40;
+  border-radius: 0;
+  height: 50px;
+  background-color: white;
+  text-decoration: none;
+  color: black;
+}
+
+.card-actu-text {
+  font-size: 16px;
 }
 
 /* Police */
