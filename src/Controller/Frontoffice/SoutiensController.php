@@ -14,19 +14,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class SoutiensController extends LuneController
 {
 
-
-
-
     public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $params) {
         // ! Configuration du controller :
 
         // Identifiants des catégories concernées.
         $this->category_id		=		1;
         parent::__construct($entityManager, $params);
-
-
     }
-
 
     #[Route('', name: 'index')]
     public function index(): Response
@@ -45,12 +39,10 @@ class SoutiensController extends LuneController
         return parent::lister();
     }
 
-
-
     #[Route('{slug}', name: 'detail')]
     public function detail(?Article $article): Response
     {
-        parent::detail($article);
+        return parent::detail($article);
     }
 
 }

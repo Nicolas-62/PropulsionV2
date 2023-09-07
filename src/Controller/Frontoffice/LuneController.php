@@ -37,12 +37,6 @@ class LuneController extends FOController
         $this->buildFooter();
     }
 
-//    #[Route('{slug}', name: 'detail')]
-//    public function detail(?Article $article): Response
-//    {
-//        parent::detail($article);
-//    }
-
     public function buildHeader(){
         $sous_categorie_ids               =     $this->entityManager->getRepository(Category::class)->find($this->category_id)->getChildrenIds();
         $events_header                    =     $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->params->get('locale'), true, 'dateEvent', 'DESC');
