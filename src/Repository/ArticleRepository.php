@@ -122,9 +122,11 @@ class ArticleRepository extends CMSRepository
         return $this->createQueryBuilder('a')
             ->where('a.parent = :parent OR a.category = :category')
             ->andWhere('a.slug = :slug')
+            ->andWhere('a.id != :id')
             ->setParameter('parent', $entity->getParent())
             ->setParameter('category', $entity->getCategory())
             ->setParameter('slug', $entity->getSlug())
+            ->setParameter('id', $entity->getId())
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();

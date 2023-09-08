@@ -121,7 +121,7 @@ class Article
     #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'articles')]
     private Collection $themes;
 
-    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Seo::class, cascade: ['remove'])]
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Seo::class, cascade: ['persist','remove'])]
     private Collection $seo;
 
     #[ORM\Column(length: 255)]

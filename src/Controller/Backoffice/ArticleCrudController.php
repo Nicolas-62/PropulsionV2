@@ -228,6 +228,9 @@ class ArticleCrudController extends BoController
                 // Si la seo n'existe pas on retourne un objet vide.
                 if($seo == null){
                     $seo = new Seo();
+                    // On récupère la SEO par son code langue
+                    $language  = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $this->locale]);
+                    $seo->setLanguage($language);
                 }
                 //yield FormField::addPanel('Seo');
                 //yield TextField::new('title','titre')->setColumns(4);
