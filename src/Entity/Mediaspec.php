@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\ErrorTrait;
 use App\Entity\Traits\TimesTampableTrait;
 use App\Repository\MediaspecsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,6 +15,7 @@ class Mediaspec
 
     // Champs date.
     use TimestampableTrait;
+    use ErrorTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

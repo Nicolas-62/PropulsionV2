@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\ErrorTrait;
 use App\Entity\Traits\TimesTampableTrait;
 use App\Repository\MediaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,6 +19,7 @@ class Media
 {
     // Champs date.
     use TimestampableTrait;
+    use ErrorTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

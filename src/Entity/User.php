@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\ErrorTrait;
 use App\Entity\Traits\TimesTampableTrait;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,6 +16,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     // Champs date.
     use TimestampableTrait;
+    use ErrorTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

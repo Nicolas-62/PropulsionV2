@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\ExtraDataTrait\CategoryDataTrait;
 use App\Entity\Traits\CMSTrait;
+use App\Entity\Traits\ErrorTrait;
 use App\Entity\Traits\ExtraDataTrait;
 use App\Entity\Traits\ExtraFieldtrait;
 use App\Entity\Traits\LanguageTrait;
@@ -37,6 +38,7 @@ class Category
     use ExtraFieldTrait;
     use LanguageTrait;
     use MediaTrait;
+    use ErrorTrait;
 
     // Champs spécifiques !! à synchroniser manuellement avec les champs définis dans le csv
     // !! Ajouter les getters et les setters également, définir une valeur par défaut.

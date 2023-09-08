@@ -50,67 +50,69 @@ class ExtraDataListener implements EventSubscriberInterface
 
         // Si on est en édition d'un article.
         if ($entity instanceof Article || $entity instanceof Category) {
-            // Récupération du nom du repository des datas.
-            $repository = "App\\Entity\\" . ucfirst($entity->getClassName()).'Data';
+            // Si l'entité n'est pas en erreur.
+            if (!$entity->hasError()) {
 
-            // Récupération du code langue par défaut.
-            $code_langue = $this->locale;
-            //dump($entity->getLanguage());
-            if($entity->getLanguage() != null && trim($entity->getLanguage()) != ''){
-                // Récupération du code langue.
-                $code_langue = $entity->getLanguage();
+                // Récupération du nom du repository des datas.
+                $repository = "App\\Entity\\" . ucfirst($entity->getClassName()) . 'Data';
+
+                // Récupération du code langue par défaut.
+                $code_langue = $this->locale;
+                //dump($entity->getLanguage());
+                if ($entity->getLanguage() != null && trim($entity->getLanguage()) != '') {
+                    // Récupération du code langue.
+                    $code_langue = $entity->getLanguage();
+                }
+                // Récupération de la langue.
+                $language = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $code_langue]);
+                //dump($language);
+                // Récupération des datas de l'entité.
+                $datas = $this->entityManager->getRepository($repository)->getDatas($entity, $language->getCode());
+
+                // Récupération des noms.
+                $dataNames = array_keys($datas);
+
+                // Pour chaque champ.
+                foreach ($entity->getExtraFields() as $field) {
+                    // Si l'entrée existe déjà.
+                    if (in_array($field['name'], $dataNames)) {
+                        // Si la valeur a été modifiée.
+                        if ($entity->{'get' . ucfirst($field['name'])}() != $datas[$field['name']]->getFieldValue()) {
+                            // Mise à jour de la valeur.
+                            // CASTING en string
+                            //formatage des dates.
+                            if (str_contains($field['name'], 'date')) {
+
+                                $datas[$field['name']]->setFieldValue($entity->{'get' . ucfirst($field['name'])}()->format($field['format']));
+                            } else {
+                                $datas[$field['name']]->setFieldValue((string)$entity->{'get' . ucfirst($field['name'])}());
+                            }
+                            $datas[$field['name']]->setUpdatedAt(new \DateTimeImmutable());
+                            $this->entityManager->persist($datas[$field['name']]);
+                        }
+
+                    } // Si l'entrée n'existe pas
+                    else {
+
+                        $entityData = new $repository();
+                        // Création de la data
+                        $entityData
+                            ->setObject($entity)
+                            ->setLanguage($language)
+                            ->setFieldKey($field['name']);
+                        if (str_contains($field['name'], 'date')) {
+                            $entityData->setFieldValue($entity->{'get' . ucfirst($field['name'])}()->format($field['format']));
+                        } else {
+                            $entityData->setFieldValue((string)$entity->{'get' . ucfirst($field['name'])}());
+                        }
+
+                        $this->entityManager->persist($entityData);
+                    }
+                }// end foreach
+
+                // Sauvegarde des données mise a jour.
+                $this->entityManager->flush();
             }
-            // Récupération de la langue.
-            $language = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $code_langue]);
-            //dump($language);
-            // Récupération des datas de l'entité.
-            $datas = $this->entityManager->getRepository($repository)->getDatas($entity, $language->getCode());
-
-            // Récupération des noms.
-            $dataNames = array_keys($datas);
-
-            // Pour chaque champ.
-            foreach($entity->getExtraFields() as $field){
-                // Si l'entrée existe déjà.
-                if(in_array($field['name'], $dataNames)){
-                    // Si la valeur a été modifiée.
-                    if($entity->{'get'.ucfirst($field['name'])}() != $datas[$field['name']]->getFieldValue()){
-                        // Mise à jour de la valeur.
-                        // CASTING en string
-                        //formatage des dates.
-                        if(str_contains($field['name'], 'date')){
-
-                            $datas[$field['name']]->setFieldValue($entity->{'get'.ucfirst($field['name'])}()->format($field['format']));
-                        }
-                        else{
-                            $datas[$field['name']]->setFieldValue( (string) $entity->{'get'.ucfirst($field['name'])}());
-                        }
-                        $datas[$field['name']]->setUpdatedAt(new \DateTimeImmutable());
-                        $this->entityManager->persist($datas[$field['name']]);
-                    }
-
-                }
-                // Si l'entrée n'existe pas
-                else{
-
-                    $entityData = new $repository();
-                    // Création de la data
-                    $entityData
-                      ->setObject($entity)
-                      ->setLanguage($language)
-                      ->setFieldKey( $field['name'] );
-                    if(str_contains($field['name'], 'date')) {
-                        $entityData->setFieldValue($entity->{'get' . ucfirst($field['name'])}()->format($field['format']));
-                    }else{
-                        $entityData->setFieldValue( (string) $entity->{'get' . ucfirst($field['name'])}());
-                    }
-
-                    $this->entityManager->persist($entityData);
-                }
-            }// end foreach
-
-            // Sauvegarde des données mise a jour.
-            $this->entityManager->flush();
         }// end article
     }
 }

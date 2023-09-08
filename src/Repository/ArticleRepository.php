@@ -9,6 +9,7 @@ use App\Entity\MediaLink;
 use App\Entity\Mediaspec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -108,4 +109,24 @@ class ArticleRepository extends CMSRepository
     }
 
 
+    /**
+     * Récupère l'article ayant le même slug et le même parent ou la même catégorie
+     *
+     * @param Article $entity
+     * @return Article|null
+     * @throws NonUniqueResultException
+     */
+    public function getArticleWithSameSlug(Article $entity): Article|null
+    {
+        // On récupère l'article ayant le même parent et le même slug
+        return $this->createQueryBuilder('a')
+            ->where('a.parent = :parent OR a.category = :category')
+            ->andWhere('a.slug = :slug')
+            ->setParameter('parent', $entity->getParent())
+            ->setParameter('category', $entity->getCategory())
+            ->setParameter('slug', $entity->getSlug())
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

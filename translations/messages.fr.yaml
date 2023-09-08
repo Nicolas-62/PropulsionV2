@@ -51,6 +51,8 @@ content_admin:
     error:
       parent:
         choice: Vous ne pouvez choisir qu'un parent.
+      slug:
+        unique: Le slug "%slug%" est déjà utilisé à %number% reprises.
 
 login:
   signin: Connexion

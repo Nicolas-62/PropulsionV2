@@ -31,7 +31,7 @@ class OnlineListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            BeforeCrudActionEvent::class     => 'editOnline',
+            BeforeCrudActionEvent::class     => ['editOnline', 20],
             AfterEntityPersistedEvent::class => 'initOnline',
         ];
     }
@@ -54,23 +54,26 @@ class OnlineListener implements EventSubscriberInterface
         // Si on en édition
         if($action == "edit"){
             // Si c'est un article ou une catégorie
-            if($entity instanceof  Article || $entity instanceof  Category){
-                // Si on ajoute/enlève en ligne.
-                if($fieldName == 'isOnline') {
-                    // On récupère l'objet Online de la langue courante.
-                    $online = $entity->getOnlineByCodeLangue($this->locale);
-                    // Si il n'existe pas.
-                    if( ! $online){
-                        $online = new Online();
-                        $online->{'set'.ucfirst($entity->getClassName())}($entity);
-                        $online->setLanguage($this->entityManager->getRepository(Language::class)->findOneBy(['code' => $this->locale]));
+            if($entity instanceof  Article || $entity instanceof  Category) {
+                // Si l'entité n'est pas en erreur.
+                if (!$entity->hasError()) {
+                    // Si on ajoute/enlève en ligne.
+                    if ($fieldName == 'isOnline') {
+                        // On récupère l'objet Online de la langue courante.
+                        $online = $entity->getOnlineByCodeLangue($this->locale);
+                        // Si il n'existe pas.
+                        if (!$online) {
+                            $online = new Online();
+                            $online->{'set' . ucfirst($entity->getClassName())}($entity);
+                            $online->setLanguage($this->entityManager->getRepository(Language::class)->findOneBy(['code' => $this->locale]));
+                        }
+                        // On passe la valeur que l'on souhaite mettre à jour
+                        $online->setOnline($newValue);
+                        // On envoie l'objet à la BDD
+                        $this->entityManager->persist($online);
+                        $this->entityManager->flush();
+                        // Si on supprime un média.
                     }
-                    // On passe la valeur que l'on souhaite mettre à jour
-                    $online->setOnline($newValue);
-                    // On envoie l'objet à la BDD
-                    $this->entityManager->persist($online);
-                    $this->entityManager->flush();
-                // Si on supprime un média.
                 }
             }
         }
@@ -89,32 +92,36 @@ class OnlineListener implements EventSubscriberInterface
 
         // Ajouter une ligne à la table online lié à l'article et avec online = 0 pendant la création d'un article
         if ($entity instanceof Article) {
-            $online = new Online();
-            $online->setArticle($entity);
-            $online->setCategory(null);
+            if ( ! $entity->hasError()){
+                $online = new Online();
+                $online->setArticle($entity);
+                $online->setCategory(null);
 
-            $langue = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $this->locale]);
-            $online->setLanguage($langue);
+                $langue = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $this->locale]);
+                $online->setLanguage($langue);
 
 
-            // On passe l'objet à la BDD
-            $this->entityManager->persist($online);
-            $this->entityManager->flush();
+                // On passe l'objet à la BDD
+                $this->entityManager->persist($online);
+                $this->entityManager->flush();
+            }
         }
 
 
         // Ajouter une ligne à la table online lié à la catégorie et avec online = 0 pendant la création d'une catégorie
         if ($entity instanceof Category) {
-            $online = new Online();
-            $online->setArticle(null);
-            $online->setCategory($entity);
-            $langue = $this->entityManager->getRepository(Language::class)->getDefaultLangue();
-            $online->setLanguage($langue);
+            if ( ! $entity->hasError()) {
+                $online = new Online();
+                $online->setArticle(null);
+                $online->setCategory($entity);
+                $langue = $this->entityManager->getRepository(Language::class)->getDefaultLangue();
+                $online->setLanguage($langue);
 
 
-            // On passe l'objet à la BDD
-            $this->entityManager->persist($online);
-            $this->entityManager->flush();
+                // On passe l'objet à la BDD
+                $this->entityManager->persist($online);
+                $this->entityManager->flush();
+            }
         }
     }
 }

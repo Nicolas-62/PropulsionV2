@@ -8,6 +8,10 @@ twig:
         fo: '%app.fo%'
         fo_path: '%app.fo_path%/'
 
+    date:
+        format: 'F j, Y H:i'
+        timezone: 'Europe/Paris'
+
 
 when@test:
     twig:

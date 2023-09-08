@@ -80,16 +80,18 @@ class MediaListener implements EventSubscriberInterface
         // Si l'élément supprimé n'est pas un média
         if (!($entity instanceof Media)){
             return;
-        }
-        // Chargement composant Filesystem
-        $filesystem = new Filesystem();
-
-        // Chemin de l'image
-        $imagepath = Constants::ASSETS_IMG_PATH.$entity->getMedia();
-
-        // Suppression de l'image
-        if($filesystem->exists($imagepath)) {
-            $filesystem->remove($imagepath);
+        }else {
+            // Si le media est défini et non null
+            if($entity->getMedia() != null && trim($entity->getMedia()) != '') {
+                // Chargement composant Filesystem
+                $filesystem = new Filesystem();
+                // Chemin de l'image
+                $imagepath = Constants::ASSETS_IMG_PATH . $entity->getMedia();
+                // Suppression de l'image
+                if ($filesystem->exists($imagepath)) {
+                    $filesystem->remove($imagepath);
+                }
+            }
         }
     }
 
@@ -110,42 +112,44 @@ class MediaListener implements EventSubscriberInterface
 
         // Si c'est un article ou une catégorie.
         if($entity instanceof  Article || $entity instanceof  Category){
+            // Si l'entité n'est pas en erreur.
+            if( ! $entity->hasError()) {
+                // Récupération des mediaspecs qui s'appliquent à l'entité
+                $mediaspecs = $this->entityManager->getRepository($entity::class)->getMediaspecs($entity);
+                // Pour chaque mediaspec
+                foreach ($mediaspecs as $index => $mediaspec) {
 
-            // Récupération des mediaspecs qui s'appliquent à l'entité
-            $mediaspecs = $this->entityManager->getRepository($entity::class)->getMediaspecs($entity);
-            // Pour chaque mediaspec
-            foreach ($mediaspecs as $index => $mediaspec) {
+                    $new_filename = $this->mediaService->getFile(
+                        $this->requestStack->getCurrentRequest()->get('folderId-media' . $index + 1),
+                        $this->requestStack->getCurrentRequest()->get('filename-media' . $index + 1),
+                        $this->requestStack->getCurrentRequest()->get('cropData-media' . $index + 1)
+                    );
+                    // Variable qui va récupérer le média.
+                    $media = null;
+                    // Si un fichier a été déposé a été retrouvé sur le serveur
+                    if ($new_filename != false) {
+                        $media = new Media();
+                        // On associe l'image téléchargée à l'objet média en cours de création.
+                        $media->setMedia($new_filename);
+                        // Todo controler la saisie de la description de l'image
+                        $media->setLegend($this->requestStack->getCurrentRequest()->get('legend-media' . $index + 1));
+                        $this->entityManager->persist($media);
+                    } else {
+                        // Si pas de fichier déposé mais un média existant sélectionné.
+                        if ($entity->{'getMedia' . $index + 11}() != null) {
+                            // On récupère le média.
+                            $media = $this->entityManager->getRepository(Media::class)->findOneBy(['id' => $entity->{'getMedia' . $index + 11}()]);
 
-                $new_filename = $this->mediaService->getFile(
-                    $this->requestStack->getCurrentRequest()->get('folderId-media'.$index+1),
-                    $this->requestStack->getCurrentRequest()->get('filename-media'.$index+1),
-                    $this->requestStack->getCurrentRequest()->get('cropData-media'.$index+1)
-                );
-                // Variable qui va récupérer le média.
-                $media = null;
-                // Si un fichier a été déposé a été retrouvé sur le serveur
-                if($new_filename != false){
-                    $media = new Media();
-                    // On associe l'image téléchargée à l'objet média en cours de création.
-                    $media->setMedia($new_filename);
-                    // Todo controler la saisie de la description de l'image
-                    $media->setLegend($this->requestStack->getCurrentRequest()->get('legend-media'.$index+1));
-                    $this->entityManager->persist($media);
-                }else {
-                    // Si pas de fichier déposé mais un média existant sélectionné.
-                    if ($entity->{'getMedia' . $index + 11}() != null) {
-                        // On récupère le média.
-                        $media = $this->entityManager->getRepository(Media::class)->findOneBy(['id' => $entity->{'getMedia' . $index + 11}()]);
-
+                        }
                     }
-                }
-                // Si un média a été renseigné
-                if ($media != null) {
-                    // On créer un lien entre la mediaspec le media et la publication
-                    $mediaLink = new MediaLink();
-                    $mediaLink->setMediaspec($mediaspec)->setMedia($media)->{'set'.ucfirst($entity->getClassName())}($entity);
-                    // On sauvegarde
-                    $this->entityManager->getRepository(MediaLink::class)->save($mediaLink, true);
+                    // Si un média a été renseigné
+                    if ($media != null) {
+                        // On créer un lien entre la mediaspec le media et la publication
+                        $mediaLink = new MediaLink();
+                        $mediaLink->setMediaspec($mediaspec)->setMedia($media)->{'set' . ucfirst($entity->getClassName())}($entity);
+                        // On sauvegarde
+                        $this->entityManager->getRepository(MediaLink::class)->save($mediaLink, true);
+                    }
                 }
             }
         }

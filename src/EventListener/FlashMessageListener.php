@@ -42,7 +42,12 @@ class FlashMessageListener implements EventSubscriberInterface
     public function flashMessageAfterPersist(AfterEntityPersistedEvent $event): void
     {
         // Les messages flash ne sont pas générés pour les requêtes AJAX
-        if( ! $this->context->getContext()->getRequest()->isXmlHttpRequest()) {
+        if(
+            ! $this->context->getContext()->getRequest()->isXmlHttpRequest() &&
+            $event->getEntityInstance()->hasError() === false
+
+        ) {
+
             $this->session->getFlashBag()->add('success', new TranslatableMessage('content_admin.flash_message.create', [
                 '%name%' => (string)$event->getEntityInstance(),
             ], 'messages'));
@@ -51,7 +56,10 @@ class FlashMessageListener implements EventSubscriberInterface
 
     public function flashMessageAfterUpdate(AfterEntityUpdatedEvent $event): void
     {
-        if( ! $this->context->getContext()->getRequest()->isXmlHttpRequest()) {
+        if(
+            ! $this->context->getContext()->getRequest()->isXmlHttpRequest() &&
+            $event->getEntityInstance()->hasError() === false
+        ) {
             $this->session->getFlashBag()->add('success', new TranslatableMessage('content_admin.flash_message.update', [
                 '%name%' => (string)$event->getEntityInstance(),
             ], 'messages'));
@@ -60,7 +68,10 @@ class FlashMessageListener implements EventSubscriberInterface
 
     public function flashMessageAfterDelete(AfterEntityDeletedEvent $event): void
     {
-        if( ! $this->context->getContext()->getRequest()->isXmlHttpRequest()) {
+        if(
+            ! $this->context->getContext()->getRequest()->isXmlHttpRequest() &&
+            $event->getEntityInstance()->hasError() === false
+        ) {
             $this->session->getFlashBag()->add('success', new TranslatableMessage('content_admin.flash_message.delete', [
                 '%name%' => (string)$event->getEntityInstance(),
             ], 'messages'));

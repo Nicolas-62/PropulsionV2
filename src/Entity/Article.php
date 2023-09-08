@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\ExtraDataTrait\ArticleDataTrait;
 use App\Entity\Traits\CMSTrait;
+use App\Entity\Traits\ErrorTrait;
 use App\Entity\Traits\ExtraDataTrait;
 use App\Entity\Traits\ExtraFieldtrait;
 use App\Entity\Traits\LanguageTrait;
@@ -43,6 +44,7 @@ class Article
     use ExtraFieldtrait;
     use MediaTrait;
     use LanguageTrait;
+    use ErrorTrait;
 
 
     // Champs spécifiques !! à synchroniser manuellement avec les champs définis dans le csv
@@ -321,7 +323,7 @@ class Article
         return $this->slug;
     }
 
-    public function setSlug(string $slug): self
+    public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
 

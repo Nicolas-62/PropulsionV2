@@ -64,35 +64,39 @@ class SeoListener implements EventSubscriberInterface
         $entity = $event->getEntityInstance();
         // Si on est en édition d'un article.
         if ($entity instanceof Article || $entity instanceof Category) {
-            $seo_title       = $this->requestStack->getCurrentRequest()->get('seo_title');
-            $seo_description = $this->requestStack->getCurrentRequest()->get('seo_description');
-            if(
-                isset($seo_title) && trim($seo_title) != '' &&
-                isset($seo_description) && trim($seo_description) != ''
-            ) {
-                $entity_type = strtolower($entity->getClassName());
-                // Récupération du code langue par défaut.
-                $code_langue = $this->locale;
-                // Si un language a été sélectionné.
-                if(trim($entity->getLanguage()) != ''){
-                    // Récupération du code langue.
-                    $code_langue = $entity->getLanguage();
+            // Si l'entité n'est pas en erreur.
+            if (!$entity->hasError()) {
+                // Récupération des données de l'entité.
+                $seo_title = $this->requestStack->getCurrentRequest()->get('seo_title');
+                $seo_description = $this->requestStack->getCurrentRequest()->get('seo_description');
+                if (
+                    isset($seo_title) && trim($seo_title) != '' &&
+                    isset($seo_description) && trim($seo_description) != ''
+                ) {
+                    $entity_type = strtolower($entity->getClassName());
+                    // Récupération du code langue par défaut.
+                    $code_langue = $this->locale;
+                    // Si un language a été sélectionné.
+                    if (trim($entity->getLanguage()) != '') {
+                        // Récupération du code langue.
+                        $code_langue = $entity->getLanguage();
+                    }
+
+                    // Récupération de la langue.
+                    $language = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $code_langue]);
+
+
+                    // Récupération de la seo de l'entité.
+                    $seo = $this->entityManager->getRepository(Seo::class)->findByLanguage($entity, $language);
+                    // Si la seo n'existe pas on la créer
+                    if ($seo == null) {
+                        $seo = new Seo();
+                        $seo->setLanguage($language);
+                        $seo->{'set' . $entity_type}($entity);
+                    }
+                    $seo->setTitle($seo_title)->setDescription($seo_description);
+                    $this->entityManager->getRepository(Seo::class)->save($seo, true);
                 }
-
-                // Récupération de la langue.
-                $language = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $code_langue]);
-
-
-                // Récupération de la seo de l'entité.
-                $seo = $this->entityManager->getRepository(Seo::class)->findByLanguage($entity, $language);
-                // Si la seo n'existe pas on la créer
-                if ($seo == null) {
-                    $seo = new Seo();
-                    $seo->setLanguage($language);
-                    $seo->{'set' . $entity_type}($entity);
-                }
-                $seo->setTitle($seo_title)->setDescription($seo_description);
-                $this->entityManager->getRepository(Seo::class)->save($seo, true);
             }
         }// end article
     }
