@@ -64,47 +64,7 @@
 
                 <div class="custom-col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-3 category-{{ CategoryTitle }} category-tous-les-evenements">
                     <!-- Card-Actu -->
-                    <div class="card mb-3 mx-lg-3 shadow-lg rounded-0 h-100" style="max-height: 1100px; display: flex; flex-direction: column;">
-                        <!-- Image -->
-                        {% if media is not null %}
-                            {% set url = '/assets/images/' ~ media.media %}
-                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
-                        {% else  %}
-                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_HEADER.png')) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
-                        {% endif %}
-
-                        <!-- Themes -->
-                        <div class="row mx-0 px-0">
-                            <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ actu.themeBackColor }}; color: {{ actu.themeTextColor }};">
-                                {{ actu.category.title }}
-                            </div>
-                            {% if actu.style is not null and actu.style is not empty %}
-                                <div class="col-7 white theme-2 justify-content-start" style="background-color: black; }};">
-                                    <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">{{ actu.style }}
-                                </div>
-                            {% endif %}
-                        </div>
-
-                        <!-- CARD CONTENT -->
-                        <div class="card-container" style="flex: 1;">
-                            <!-- Titre -->
-                            <h5 class="card-title my-3 fs-3" style="font-size: 25px !important;">
-                                {{ actu.title }}
-                            </h5>
-                            <!-- CONTENU -->
-                            <div class="card-text">
-                                {{ actu.description|raw }}
-                            </div>
-                        </div>
-
-                        <!-- CARD ACTIONS -->
-                        <div class="card-container mb-3 d-flex justify-content-between" style="align-items: flex-end;">
-                            <a href="{{ path('fo_actus_detail', { 'slug': actu.slug}) }}" class="btn-read-card">LIRE LA SUITE</a>
-                            <a href="https://billetterie.lalune.net/">
-                                <img class="btn-billetterie-card" src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}" alt="...">
-                            </a>
-                        </div>
-                    </div>
+                    {% include 'frontoffice/_components/card.html.twig' with {'event': actu, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': true, 'soutiens': false } %}
                 </div>
             {% endfor %}
 

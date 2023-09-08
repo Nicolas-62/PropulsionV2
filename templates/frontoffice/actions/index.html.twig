@@ -35,51 +35,7 @@
                     <div class="col-lg-3 offset-lg-1 col-md-12">
                         <div class="py-5">
                             <p class="fs-1">
-                                <b>{% if actu_test.dateEvent|date('D') == 'Mon' %}
-                                        LUN.
-                                    {% elseif actu_test.dateEvent|date('D') == 'Tue' %}
-                                        MAR.
-                                    {% elseif actu_test.dateEvent|date('D') == 'Wed' %}
-                                        MER.
-                                    {% elseif actu_test.dateEvent|date('D') == 'Thu' %}
-                                        JEU.
-                                    {% elseif actu_test.dateEvent|date('D') == 'Fri' %}
-                                        VEN.
-                                    {% elseif actu_test.dateEvent|date('D') == 'Sat' %}
-                                        SAM.
-                                    {% elseif actu_test.dateEvent|date('D') == 'Sun' %}
-                                        DIM.
-                                    {% endif %}
-
-                                    {{ actu_test.dateEvent| date("j") }}
-
-                                    {% if actu_test.dateEvent|date('M') == 'Jan' %}
-                                        JANVIER
-                                    {% elseif actu_test.dateEvent|date('M') == 'Feb' %}
-                                        FÉVRIER
-                                    {% elseif actu_test.dateEvent|date('M') == 'Mar' %}
-                                        MARS
-                                    {% elseif actu_test.dateEvent|date('M') == 'Apr' %}
-                                        AVRIL
-                                    {% elseif actu_test.dateEvent|date('M') == 'May' %}
-                                        MAI
-                                    {% elseif actu_test.dateEvent|date('M') == 'Jun' %}
-                                        JUIN
-                                    {% elseif actu_test.dateEvent|date('M') == 'Jul' %}
-                                        JUILLET
-                                    {% elseif actu_test.dateEvent|date('M') == 'Aug' %}
-                                        AOÛT
-                                    {% elseif actu_test.dateEvent|date('M') == 'Sep' %}
-                                        SEPTEMBRE
-                                    {% elseif actu_test.dateEvent|date('M') == 'Oct' %}
-                                        OCTOBRE
-                                    {% elseif actu_test.dateEvent|date('M') == 'Nov' %}
-                                        NOVEMBRE
-                                    {% elseif actu_test.dateEvent|date('M') == 'Dec' %}
-                                        DÉCEMBRE
-                                    {% endif %}
-                                    {{ actu_test.dateEvent| date("Y") }}
-
+                                <b>{{ formatCustomDate(actu_test.dateEvent) }}
 
                                 </b>
                             </p>
@@ -141,37 +97,54 @@
                 {% for actu in actu_childs %}
                         {% if actu.category.title|upper == "ACTION CULTURELLE" and actu.title|upper != actu_test.title|upper %}
 
-                    <!-- Récupération des datas de l'article -->
-                            {{ actu.getDatas(locale) }}
-
                             {% set media = actu.getMedia(2) %}
-                            <div class="col-lg-4 col-md-12 py-2">
+                            {% set CategoryTitle = actu.category.title|replace({' ': '-'})|lower %}
+
+                            <div class="custom-col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-3 category-{{ CategoryTitle }} category-tous-les-evenements">
                                 <!-- Card-Actu -->
-                                <div class="card mb-3 mx-4 shadow-lg rounded-0 h-100">
+                                {% include 'frontoffice/_components/card.html.twig' with {'event': actu, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': true, 'soutiens': false } %}
 
-                                    {% if media is not null %}
-                                        {% set url = '/assets/images/' ~ media.media %}
-                                        <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
-                                    {% endif %}
+{#                                <div class="card mb-3 mx-lg-3 shadow-lg rounded-0 h-100" style="max-height: 1100px; display: flex; flex-direction: column;">#}
+{#                                    <!-- Image -->#}
+{#                                    {% if media is not null %}#}
+{#                                        {% set url = '/assets/images/' ~ media.media %}#}
+{#                                        <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">#}
+{#                                    {% else  %}#}
+{#                                        <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_HEADER.png')) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">#}
+{#                                    {% endif %}#}
 
-                                    <div class="row m-0">
-                                        <!-- Themes -->
-                                        <div class="col-5 theme-1"  style="background-color: {{ actu.themeBackColor }};color: {{ actu.themeTextColor }};">
-                                            ACTION CULTURELLE
-                                        </div>
-                                    </div>
-                                    <div class="p-5">
-                                        <div class=" pb-5">
-                                            <!-- Titre -->
-                                            <h2 class="card-title pb-3">{{ actu.title }}</h2>
-                                            <!-- Contenu -->
-                                            <div class="card-text card-actu-text">{{ actu.content | raw }}</div>
-                                        </div>
-                                        <!-- Bouton Lien vers l'article -->
-                                        <button class="btn-read-card">LIRE LA SUITE</button>
-                                    </div>
-                                    <!-- Potentiel lien Billetterie -->
-                                </div>
+{#                                    <!-- Themes -->#}
+{#                                    <div class="row mx-0 px-0">#}
+{#                                        <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ actu.themeBackColor }}; color: {{ actu.themeTextColor }};">#}
+{#                                            {{ actu.category.title }}#}
+{#                                        </div>#}
+{#                                        {% if actu.style is not null and actu.style is not empty %}#}
+{#                                            <div class="col-7 white theme-2 justify-content-start" style="background-color: black; }};">#}
+{#                                                <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">{{ actu.style }}#}
+{#                                            </div>#}
+{#                                        {% endif %}#}
+{#                                    </div>#}
+
+{#                                    <!-- CARD CONTENT -->#}
+{#                                    <div class="card-container" style="flex: 1;">#}
+{#                                        <!-- Titre -->#}
+{#                                        <h5 class="card-title my-3 fs-3" style="font-size: 25px !important;">#}
+{#                                            {{ actu.title }}#}
+{#                                        </h5>#}
+{#                                        <!-- CONTENU -->#}
+{#                                        <div class="card-text">#}
+{#                                            {{ actu.description|raw }}#}
+{#                                        </div>#}
+{#                                    </div>#}
+
+{#                                    <!-- CARD ACTIONS -->#}
+{#                                    <div class="card-container mb-3 d-flex justify-content-between" style="align-items: flex-end;">#}
+{#                                        <a href="{{ path('fo_actus_detail', { 'slug': actu.slug}) }}" class="btn-read-card">LIRE LA SUITE</a>#}
+{#                                        <a href="https://billetterie.lalune.net/">#}
+{#                                            <img class="btn-billetterie-card" src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}" alt="...">#}
+{#                                        </a>#}
+{#                                    </div>#}
+{#                                </div>#}
                             </div>
                         {% endif %}
                 {% endfor %}

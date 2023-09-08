@@ -52,6 +52,7 @@ class Article
     private ?string $subtitle  = '';
     private ?string $dateEvent;
     private ?string $datetimeEvent;
+    private ?string $datetimeEndEvent;
     private ?string $youtubeLink  = '';
     private ?string $youtubeSecondLink  = '';
     private ?string $facebookLink  = '';

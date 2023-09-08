@@ -5,6 +5,7 @@ namespace App\Twig;
 use App\Constants\Constants;
 use App\Entity\Media;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class AppExtension extends AbstractExtension
@@ -15,7 +16,9 @@ class AppExtension extends AbstractExtension
             new TwigFunction('getName', [$this, 'getName']),
             new TwigFunction('getThumbnailPath', [$this, 'getThumbnailPath']),
             new TwigFunction('const', [$this, 'const']),
-            new TwigFunction('truncateHtml', [$this, 'truncateHtml'])
+            new TwigFunction('truncateHtml', [$this, 'truncateHtml']),
+            new TwigFunction('formatCustomDate', [$this, 'formatCustomDate']),
+
 
         ];
     }
@@ -63,6 +66,40 @@ class AppExtension extends AbstractExtension
         return $result;
 
     }
+
+
+    public function formatCustomDate($date)
+    {
+        $dayOfWeek = [
+          'Mon' => 'LUN.',
+          'Tue' => 'MAR.',
+          'Wed' => 'MER.',
+          'Thu' => 'JEU.',
+          'Fri' => 'VEN.',
+          'Sat' => 'SAM.',
+          'Sun' => 'DIM.',
+        ];
+
+        $monthNames = [
+          'Jan' => 'JANVIER',
+          'Feb' => 'FÉVRIER',
+          'Mar' => 'MARS',
+          'Apr' => 'AVRIL',
+          'May' => 'MAI',
+          'Jun' => 'JUIN',
+          'Jul' => 'JUILLET',
+          'Aug' => 'AOÛT',
+          'Sep' => 'SEPTEMBRE',
+          'Oct' => 'OCTOBRE',
+          'Nov' => 'NOVEMBRE',
+          'Dec' => 'DÉCEMBRE',
+        ];
+
+        $formattedDate = $dayOfWeek[$date->format('D')].' '.$date->format('j').' '.$monthNames[$date->format('M')].' '.$date->format('Y');
+
+        return strtoupper($formattedDate);
+    }
+
 
 
 }

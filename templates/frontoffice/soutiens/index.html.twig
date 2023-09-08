@@ -36,46 +36,48 @@
                 <div class="col-lg-4 col-md-12 pb-lg-5 px-5">
 
                     <!-- Card-Actu -->
-                    <a class="text-decoration-none" href="{{ path('fo_soutiens_detail', { 'slug': accomp.element.slug }) }}">
-                        <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100 prog">
+                    {% include 'frontoffice/_components/card.html.twig' with {'event': accomp.element, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true } %}
 
-                            <div class="overlay" style="">
-                            </div>
+{#                    <a class="text-decoration-none" href="{{ path('fo_soutiens_detail', { 'slug': accomp.element.slug }) }}">#}
+{#                        <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100 prog">#}
 
-                        {% if media is not null %}
-                            {% set url = '/assets/images/' ~ media.media %}
-                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
-                        {% else  %}
-                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_HEADER.png')) }}" style="max-height:500px; object-fit: cover"  class="card-img-top rounded-0" alt="...">
-                        {% endif %}
-                        <!-- Themes -->
-                        <div class="row m-0 p-0">
-                            <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ accomp.element.themeBackColor }};color: {{ accomp.element.themeTextColor }};">
-                                Objectif Lune
-                            </div>
-                            <div class="col-7 theme-2" style="background-color: {{ accomp.element.styleBackColor }};color: {{ accomp.element.styleTextColor }};">
-                                <img class="tiny-icon" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">
-                                {{ accomp.element.style }}
-                            </div>
-                        </div>
-                        <div class="card-body py-0 ">
+{#                            <div class="overlay" style="">#}
+{#                            </div>#}
 
-                            <div class="row p-3">
-                                <!-- ARTISTE -->
-                                <div class="col-9 d-flex align-items-end">
-                                    <h1 class="card-title my-3 fw-bold">
-                                        {{ accomp.element.title }}
-                                    </h1>
-                                </div>
+{#                        {% if media is not null %}#}
+{#                            {% set url = '/assets/images/' ~ media.media %}#}
+{#                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">#}
+{#                        {% else  %}#}
+{#                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_HEADER.png')) }}" style="max-height:500px; object-fit: cover"  class="card-img-top rounded-0" alt="...">#}
+{#                        {% endif %}#}
+{#                        <!-- Themes -->#}
+{#                        <div class="row m-0 p-0">#}
+{#                            <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ accomp.element.themeBackColor }};color: {{ accomp.element.themeTextColor }};">#}
+{#                                Objectif Lune#}
+{#                            </div>#}
+{#                            <div class="col-7 theme-2" style="background-color: {{ accomp.element.styleBackColor }};color: {{ accomp.element.styleTextColor }};">#}
+{#                                <img class="tiny-icon" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">#}
+{#                                {{ accomp.element.style }}#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="card-body py-0 ">#}
 
-                                <!-- COUP DOEUIL -->
-                                <div class="col-3">
-                                    <img src="{{ asset(('build/maquette/images/COUPDOEUIL.png')) }}" class="card-img-top rounded-0" alt="...">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </a>
+{#                            <div class="row p-3">#}
+{#                                <!-- ARTISTE -->#}
+{#                                <div class="col-9 d-flex align-items-end">#}
+{#                                    <h1 class="card-title my-3 fw-bold">#}
+{#                                        {{ accomp.element.title }}#}
+{#                                    </h1>#}
+{#                                </div>#}
+
+{#                                <!-- COUP DOEUIL -->#}
+{#                                <div class="col-3">#}
+{#                                    <img src="{{ asset(('build/maquette/images/COUPDOEUIL.png')) }}" class="card-img-top rounded-0" alt="...">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    </a>#}
                 </div>
             {% endfor %}
         </div>
@@ -110,47 +112,49 @@
             {% for accomp in auditions.elements %}
                 {{  accomp.element.getDatas(locale) }}
 
-                {% set media2 = accomp.element.getMedia(4) %}
+                {% set media = accomp.element.getMedia(4) %}
                 <div class="col-lg-4 col-md-12 pb-lg-5 px-lg-5">
 
                     <!-- Card-Actu -->
-                    <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100 prog">
+                    {% include 'frontoffice/_components/card.html.twig' with {'event': accomp.element, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true } %}
 
-                        <div class="overlay" style="">
-                        </div>
+{#                    <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100 prog">#}
 
-                        {% if media2 is not null and media2 is not empty %}
-                            {% set url = '/assets/images/' ~ media2.name  %}
-                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
-                        {% else  %}
-                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_HEADER.png')) }}" class="card-img-top rounded-0" style="max-height:500px; object-fit: cover" alt="...">
-                        {% endif %}
+{#                        <div class="overlay" style="">#}
+{#                        </div>#}
 
-                        <!-- Themes -->
-                        <div class="row m-0 p-0">
-                            <div class="col-4 theme-1 text-uppercase"  style="background-color: {{ accomp.element.themeBackColor }};color: {{ accomp.element.themeTextColor }};">
-                                Les inouïs
-                            </div>
-                            <div class="col-8 theme-2 text-uppercase" style="background-color: {{ accomp.element.styleBackColor }};color: {{ accomp.element.styleTextColor }}">
-                                <img class="tiny-icon" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">
-                                {{ accomp.element.style }}
-                            </div>
-                        </div>
-                        <div class="card-body py-0 ">
+{#                        {% if media2 is not null and media2 is not empty %}#}
+{#                            {% set url = '/assets/images/' ~ media2.name  %}#}
+{#                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">#}
+{#                        {% else  %}#}
+{#                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_HEADER.png')) }}" class="card-img-top rounded-0" style="max-height:500px; object-fit: cover" alt="...">#}
+{#                        {% endif %}#}
 
-                            <div class="row p-3">
-                                <!-- ARTISTE -->
-                                <div class="col-9 d-flex align-items-end">
-                                    <h1 class="card-title mt-3 fw-bold">{{ accomp.element.title }}</h1>
-                                </div>
+{#                        <!-- Themes -->#}
+{#                        <div class="row m-0 p-0">#}
+{#                            <div class="col-4 theme-1 text-uppercase"  style="background-color: {{ accomp.element.themeBackColor }};color: {{ accomp.element.themeTextColor }};">#}
+{#                                Les inouïs#}
+{#                            </div>#}
+{#                            <div class="col-8 theme-2 text-uppercase" style="background-color: {{ accomp.element.styleBackColor }};color: {{ accomp.element.styleTextColor }}">#}
+{#                                <img class="tiny-icon" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">#}
+{#                                {{ accomp.element.style }}#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="card-body py-0 ">#}
 
-                                <!-- COUP DOEUIL -->
-                                <div class="col-3">
-                                    <img src="{{ asset(('build/maquette/images/COUPDOEUIL.png')) }}" class="card-img-top rounded-0" alt="...">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+{#                            <div class="row p-3">#}
+{#                                <!-- ARTISTE -->#}
+{#                                <div class="col-9 d-flex align-items-end">#}
+{#                                    <h1 class="card-title mt-3 fw-bold">{{ accomp.element.title }}</h1>#}
+{#                                </div>#}
+
+{#                                <!-- COUP DOEUIL -->#}
+{#                                <div class="col-3">#}
+{#                                    <img src="{{ asset(('build/maquette/images/COUPDOEUIL.png')) }}" class="card-img-top rounded-0" alt="...">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
                 </div>
             {% endfor %}
         </div>
@@ -170,49 +174,51 @@
 
 
 
-                {% set media3 = event_actu.element.getMedia(4) %}
+                {% set media = event_actu.element.getMedia(4) %}
                 <div class="col-lg-4 col-md-12 pb-lg-5 px-lg-5">
 
                     <!-- Card-Actu -->
-                    <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100">
+                    {% include 'frontoffice/_components/card.html.twig' with {'event': event_actu.element, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': false, 'soutiens': false } %}
 
-                        {% if media3 is not null and media3 is not empty %}
-                            {% set url = '/assets/images/' ~ media3.name  %}
-                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
-                        {% else  %}
-                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_HEADER.png')) }}" style="max-height:500px; object-fit: cover"  class="card-img-top rounded-0" alt="...">
-                        {% endif %}
-                        <!-- Themes -->
-                        <div class="row m-0 p-0">
-                            <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ event_actu.element.themeBackColor }};color: {{ event_actu.element.themeTextColor }};">
-                                {% set themes = event_actu.element.themes %}
-                                {% for theme in themes %}
-                                    {{ theme.name }}
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="card-body px-5 ">
+                    {#                    <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100">#}
 
-                            <!-- ARTISTE -->
+{#                        {% if media3 is not null and media3 is not empty %}#}
+{#                            {% set url = '/assets/images/' ~ media3.name  %}#}
+{#                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">#}
+{#                        {% else  %}#}
+{#                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_HEADER.png')) }}" style="max-height:500px; object-fit: cover"  class="card-img-top rounded-0" alt="...">#}
+{#                        {% endif %}#}
+{#                        <!-- Themes -->#}
+{#                        <div class="row m-0 p-0">#}
+{#                            <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ event_actu.element.themeBackColor }};color: {{ event_actu.element.themeTextColor }};">#}
+{#                                {% set themes = event_actu.element.themes %}#}
+{#                                {% for theme in themes %}#}
+{#                                    {{ theme.name }}#}
+{#                                {% endfor %}#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="card-body px-5 ">#}
 
-                            <h2 class="card-title my-0"><strong>{{ event_actu.element.title }}</strong></h2>
-                        </div>
+{#                            <!-- ARTISTE -->#}
 
-                        <div class="container">
-                            <div class="row">
-                                <!-- BILLETTERIE -->
-                                <div class="pb-3 px-5 d-flex justify-content-between" style="align-items: flex-end;">
-                                    <a href="" class="btn-read-card">LIRE LA SUITE</a>
-                                    // TODO Mettre la bonne condition
-                                    {% if false %}
-                                        <a href="https://billetterie.lalune.net/">
-                                            <img src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}" alt="..." class="btn-billetterie-card">
-                                        </a>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+{#                            <h2 class="card-title my-0"><strong>{{ event_actu.element.title }}</strong></h2>#}
+{#                        </div>#}
+
+{#                        <div class="container">#}
+{#                            <div class="row">#}
+{#                                <!-- BILLETTERIE -->#}
+{#                                <div class="pb-3 px-5 d-flex justify-content-between" style="align-items: flex-end;">#}
+{#                                    <a href="" class="btn-read-card">LIRE LA SUITE</a>#}
+{#                                    <!-- TODO Mettre la bonne condition -->#}
+{#                                    {% if false %}#}
+{#                                        <a href="https://billetterie.lalune.net/">#}
+{#                                            <img src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}" alt="..." class="btn-billetterie-card">#}
+{#                                        </a>#}
+{#                                    {% endif %}#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
                 </div>
             {% endfor %}
         </div>

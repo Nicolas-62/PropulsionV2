@@ -2,17 +2,13 @@
 
 
 {% block body %}
-
-
     <!-- Récupération des datas de l'article -->
     {{ article.getDatas(locale) }}
     {% set mediaArticle = article.getMedia(2) %}
-
     <div class="p-5">
         <!-- ARTICLE -->
         <div class="p-5 h2">
             <!-- IMAGE ARTICLE -->
-
             {% if mediaArticle is not null %}
                 {% set url = '/assets/images/' ~ mediaArticle.media  %}
                 <img  src="{{ asset((url)) }}" class="card-img-top rounded-0 mb-5" style="object-fit: cover; max-height: 40vh;" alt="...">
@@ -21,7 +17,6 @@
                 <img src="{{ asset(('build/maquette/images/actu_cadre_1.svg')) }}" class="position-absolute" style="max-height: 100px; top:0; left: 0 !important;" alt="ACTIONCULTURELLE">
                 <div class="row px-5 pt-5" >
                     <div class="col-lg-10 col-md-12" style="padding-left: 50px">
-
                         <!-- Titre -->
                         <h1>{{ article.title }}</h1>
                     </div>
@@ -29,7 +24,6 @@
                         <!-- Thème -->
                         <div class="text-center h2 white" style="background-color: {{ article.themeBackColor }}; min-height: 50px;">
                             <div class="p-1">
-
                                 {% set themeArticle = article.category.title %}
                                 {{ article.category.title }}
                             </div>
@@ -44,14 +38,13 @@
                     <div class="col-md-12 col-lg-8">
                         <!-- Contenu -->
                         {{ article.content | raw }}
-
                         <img src="{{ asset(('build/maquette/images/actu_cadre_2.svg')) }}" class="position-absolute" style="height: 100px; bottom:0; left: 95%;" alt="ACTIONCULTURELLE">
                     </div>
                     <!-- Billetterie -->
                     <div class="col-lg-3 offset-lg-1 col-md-12">
                         <div class="py-5">
                             <p class="fs-1">
-                                <b>{{ article.dateEvent| date("d/m/Y") }}</b>
+                                <b>{{ formatCustomDate(article.dateEvent) }}</b>
                             </p>
                             <p>{{ article.heureEvent | date("H:i")}}</p>
                         </div>
@@ -91,7 +84,6 @@
             </div>
         </div>
     </div>
-
     <!-- Voir aussi -->
     <div class="bg-grey">
         <div class="p-5">
@@ -101,49 +93,18 @@
                 {% for actu in actu_childs %}
                     <!-- DEBUG -->
                     <!-- {{ dump(actu) }} -->
-
                     <!-- Récupération des datas de l'article -->
                     {{ actu.getDatas(locale) }}
                     {% set media = actu.getMedia(2) %}
-
                     {% if actu.title|upper != article.title|upper %}
-
                         {% set themesChild = actu.category.title %}
                             {% if actu.category.title == themeArticle %}
                                 {% set test = test + 1 %}
                                 <div class="col-lg-4 col-md-12 py-2">
                                     <!-- Card-Actu -->
-                                    <div class="card mb-3 mx-4 shadow-lg rounded-0 h-100">
-
-
-                                        {% if media is not null %}
-                                            {% set url = '/assets/images/' ~ media.media %}
-                                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
-                                        {% else %}
-                                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD.png')) }}" class="card-img-top rounded-0" alt="...">
-                                        {% endif %}
-                                        <div class="row m-0">
-                                            <!-- Themes -->
-                                            <div class="col-5 theme-1"  style="background-color: {{ actu.themeBackColor }};color: {{ actu.themeTextColor }};">
-                                                ACTION CULTURELLE
-                                            </div>
-                                        </div>
-                                        <div class="p-5">
-                                            <div class=" pb-5">
-                                                <!-- Titre -->
-                                                <h2 class="card-title pb-3">{{ actu.title }}</h2>
-                                                <!-- Contenu -->
-                                                <div class="card-text fs-3">{{ actu.content | raw }}</div>
-                                            </div>
-                                            <!-- Bouton Lien vers l'article -->
-                                            <a href="{{ path('fo_actus_detail', {'slug': actu.slug}) }}" class="btn-read-card">LIRE LA SUITE</a>
-                                        </div>
-                                        <!-- Potentiel lien Billetterie -->
-                                    </div>
+                                    {% include 'frontoffice/_components/card.html.twig' with {'event': actu, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': true, 'soutiens': false } %}
                                 </div>
-
                             {% endif %}
-
                     {% endif %}
                 {% endfor %}
                 {% if test == 0 %}

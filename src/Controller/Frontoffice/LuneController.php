@@ -51,6 +51,6 @@ class LuneController extends FOController
         $this->data['sponsors_img']       =     $this->sponsors_img = $this->entityManager->getRepository(Article::class)->findBy(['category' => 23]);
         $this->data['medias']             =     $this->medias = array('FOOTER_TEL' => '', 'FOOTER_INSTA' => 'https://www.instagram.com/lalunedespirates/?hl=fr','FOOTER_FACEBOOK' => 'https://www.facebook.com/lalunedespirates/?locale=fr_FR');
         $this->data['sponsors']           =     array('AMIENS_METROPOLE', 'AMIENS', 'SOMME', 'HDF', 'PREFET_HDF', 'CNM', 'SACEM', 'COPIE_PRIVEE', 'CREDIT_MUTUEL', 'FESTIVAL_INDE');
-        $this->data['mentions']           =     $this->mentions = array('Plan du site' => "https://lune.e-systemes.fr/sitemap", 'FAQ' => "https://lune.e-systemes.fr/faq",'Mentions légales' => "https://lune.e-systemes.fr/mentions", 'CGV' => "https://lune.e-systemes.fr/cgv", 'Politique de Confidentialité' => "https://lune.e-systemes.fr/confidentialite", 'Gestion des cookies' => "https://lune.e-systemes.fr/gestioncookies", 'Espace presse' => "https://lune.e-systemes.fr/espacepresse");
+        $this->data['mentions']           =     $this->mentions = array('Plan du site' => "/sitemap", 'FAQ' => "/faq",'Mentions légales' => "/mentions", 'CGV' => "/cgv", 'Politique de Confidentialité' => "/confidentialite", 'Gestion des cookies' => "/gestioncookies", 'Espace presse' => "/espacepresse");
     }
 }
