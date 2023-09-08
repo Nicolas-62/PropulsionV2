@@ -51,7 +51,9 @@
                         {% set url = 'build/maquette/images/' %}
                         {% set ext = '.png' %}
                         {% set src = url ~ src ~ ext %}
-                        <li><img src="{{ asset(src) }}"></li>
+                        <a href="/gallery">
+                            <li><img src="{{ asset(src) }}"></li>
+                        </a>
                     {% endfor %}
                 </ul>
             </nav>

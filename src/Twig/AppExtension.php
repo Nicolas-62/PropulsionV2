@@ -70,34 +70,39 @@ class AppExtension extends AbstractExtension
 
     public function formatCustomDate($date)
     {
-        $dayOfWeek = [
-          'Mon' => 'LUN.',
-          'Tue' => 'MAR.',
-          'Wed' => 'MER.',
-          'Thu' => 'JEU.',
-          'Fri' => 'VEN.',
-          'Sat' => 'SAM.',
-          'Sun' => 'DIM.',
-        ];
+        if($date != null and $date instanceof \DateTimeInterface ) {
 
-        $monthNames = [
-          'Jan' => 'JANVIER',
-          'Feb' => 'FÉVRIER',
-          'Mar' => 'MARS',
-          'Apr' => 'AVRIL',
-          'May' => 'MAI',
-          'Jun' => 'JUIN',
-          'Jul' => 'JUILLET',
-          'Aug' => 'AOÛT',
-          'Sep' => 'SEPTEMBRE',
-          'Oct' => 'OCTOBRE',
-          'Nov' => 'NOVEMBRE',
-          'Dec' => 'DÉCEMBRE',
-        ];
+            $dayOfWeek = [
+              'Mon' => 'LUN.',
+              'Tue' => 'MAR.',
+              'Wed' => 'MER.',
+              'Thu' => 'JEU.',
+              'Fri' => 'VEN.',
+              'Sat' => 'SAM.',
+              'Sun' => 'DIM.',
+            ];
 
-        $formattedDate = $dayOfWeek[$date->format('D')].' '.$date->format('j').' '.$monthNames[$date->format('M')].' '.$date->format('Y');
+            $monthNames = [
+              'Jan' => 'JANVIER',
+              'Feb' => 'FÉVRIER',
+              'Mar' => 'MARS',
+              'Apr' => 'AVRIL',
+              'May' => 'MAI',
+              'Jun' => 'JUIN',
+              'Jul' => 'JUILLET',
+              'Aug' => 'AOÛT',
+              'Sep' => 'SEPTEMBRE',
+              'Oct' => 'OCTOBRE',
+              'Nov' => 'NOVEMBRE',
+              'Dec' => 'DÉCEMBRE',
+            ];
 
-        return strtoupper($formattedDate);
+            $formattedDate = $dayOfWeek[$date->format('D')] . ' ' . $date->format('j') . ' ' . $monthNames[$date->format('M')] . ' ' . $date->format('Y');
+
+            return strtoupper($formattedDate);
+        }else{
+            return '';
+        }
     }
 
 
