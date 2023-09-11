@@ -7,6 +7,8 @@
         <div class="col-lg-8 col-md-12 p-0" style="">
             {% set media = article.getMedia(9) %}
             {% set media = article.getMedia(9) %}
+            {% set category = article.category %}
+            {{ category.getDatas(locale) }}
             {% if media is not null %}
                 {% set url = '/assets/images/' ~ media.media %}
                 <img src="{{ asset((url)) }}" class="rounded-0 w-100 img-fluid"   alt="...">
@@ -20,9 +22,9 @@
                 <div class="row text-center h3">
                     <div
                             class="col-3 theme-1"
-                            style="background-color: {{ article.themeBackColor }};color: {{ article.themeTextColor }};"
+                            style="background-color:{{ article.category.themeBackColor }};color: {{ article.themeTextColor }};"
                     >
-                        CONCERT
+                        {{ category.title|upper }}
                     </div>
                     <div class="col-9 text-uppercase white justify-content-start" style="background-color: black;min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px"><img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">POP FRANçAISE</div>
                 </div>

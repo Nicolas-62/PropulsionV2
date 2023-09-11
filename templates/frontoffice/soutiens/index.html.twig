@@ -20,64 +20,20 @@
                     <p style="font-size: 80px; font-weight: bold">LUNE</p>
                 </div>
             </div>
-            <p class="h3 py-5">
-                Eux, elle, ce sont les artistes que La Lune va accompagner pendant un an, peut-être deux. Ce sont les projets qui ont été choisis pour leur parcours mais aussi pour leurs besoins auxquels nous allons tenter de répondre : structure administrative, besoin de répétitions ou de coaching, soutien à l’enregistrement...
-            </p>
-            <p class="h3 pb-4">
-                8 personnalités pour autant d’univers, que nous tentons de vous faire connaître à travers ces quelques lignes qui, nous l’espérons, vous donneront envie d’aller voir plus loin.
-            </p>
+            <div class="h3 py-4">
+                {{ category_accomp.getDatas(locale) }}
+                {{ category_accomp.description|raw }}
+            </div>
         </div>
 
         <div class="row">
-            {% for accomp in accompagnes.elements %}
-                {{  accomp.element.getDatas(locale) }}
+            {% for accomp in accompagnes %}
+                {{  accomp.getDatas(locale) }}
 
-                {% set media = accomp.element.getMedia(4) %}
+                {% set media = accomp.getMedia(4) %}
                 <div class="col-lg-4 col-md-12 pb-lg-5 px-5">
-
                     <!-- Card-Actu -->
-                    {% include 'frontoffice/_components/card.html.twig' with {'event': accomp.element, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true } %}
-
-{#                    <a class="text-decoration-none" href="{{ path('fo_soutiens_detail', { 'slug': accomp.element.slug }) }}">#}
-{#                        <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100 prog">#}
-
-{#                            <div class="overlay" style="">#}
-{#                            </div>#}
-
-{#                        {% if media is not null %}#}
-{#                            {% set url = '/assets/images/' ~ media.media %}#}
-{#                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">#}
-{#                        {% else  %}#}
-{#                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_HEADER.png')) }}" style="max-height:500px; object-fit: cover"  class="card-img-top rounded-0" alt="...">#}
-{#                        {% endif %}#}
-{#                        <!-- Themes -->#}
-{#                        <div class="row m-0 p-0">#}
-{#                            <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ accomp.element.themeBackColor }};color: {{ accomp.element.themeTextColor }};">#}
-{#                                Objectif Lune#}
-{#                            </div>#}
-{#                            <div class="col-7 theme-2" style="background-color: {{ accomp.element.styleBackColor }};color: {{ accomp.element.styleTextColor }};">#}
-{#                                <img class="tiny-icon" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">#}
-{#                                {{ accomp.element.style }}#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <div class="card-body py-0 ">#}
-
-{#                            <div class="row p-3">#}
-{#                                <!-- ARTISTE -->#}
-{#                                <div class="col-9 d-flex align-items-end">#}
-{#                                    <h1 class="card-title my-3 fw-bold">#}
-{#                                        {{ accomp.element.title }}#}
-{#                                    </h1>#}
-{#                                </div>#}
-
-{#                                <!-- COUP DOEUIL -->#}
-{#                                <div class="col-3">#}
-{#                                    <img src="{{ asset(('build/maquette/images/COUPDOEUIL.png')) }}" class="card-img-top rounded-0" alt="...">#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                    </a>#}
+                    {% include 'frontoffice/_components/card.html.twig' with {'event': accomp, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true } %}
                 </div>
             {% endfor %}
         </div>
@@ -98,63 +54,22 @@
                 </div>
             </div>
 
-            <p class="h3 py-5">
-                Eux, elle, ce sont les artistes que La Lune va accompagner pendant un an, peut-être deux. Ce sont les projets qui ont été choisis pour leur parcours mais aussi pour leurs besoins auxquels nous allons tenter de répondre : structure administrative, besoin de répétitions ou de coaching, soutien à l’enregistrement...
 
-
-            </p>
-            <p class="h3 pb-4">
-                8 personnalités pour autant d’univers, que nous tentons de vous faire connaître à travers ces quelques lignes qui, nous l’espérons, vous donneront envie d’aller voir plus loin.
-            </p>
+            <div class="h3 py-4">
+                {{ category_audition.getDatas(locale) }}
+                {{ category_audition.description|raw }}
+            </div>
         </div>
 
         <div class="row">
-            {% for accomp in auditions.elements %}
-                {{  accomp.element.getDatas(locale) }}
+            {% for accomp in auditions %}
+                {{  accomp.getDatas(locale) }}
 
-                {% set media = accomp.element.getMedia(4) %}
+                {% set media = accomp.getMedia(4) %}
                 <div class="col-lg-4 col-md-12 pb-lg-5 px-lg-5">
 
                     <!-- Card-Actu -->
-                    {% include 'frontoffice/_components/card.html.twig' with {'event': accomp.element, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true } %}
-
-{#                    <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100 prog">#}
-
-{#                        <div class="overlay" style="">#}
-{#                        </div>#}
-
-{#                        {% if media2 is not null and media2 is not empty %}#}
-{#                            {% set url = '/assets/images/' ~ media2.name  %}#}
-{#                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">#}
-{#                        {% else  %}#}
-{#                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_HEADER.png')) }}" class="card-img-top rounded-0" style="max-height:500px; object-fit: cover" alt="...">#}
-{#                        {% endif %}#}
-
-{#                        <!-- Themes -->#}
-{#                        <div class="row m-0 p-0">#}
-{#                            <div class="col-4 theme-1 text-uppercase"  style="background-color: {{ accomp.element.themeBackColor }};color: {{ accomp.element.themeTextColor }};">#}
-{#                                Les inouïs#}
-{#                            </div>#}
-{#                            <div class="col-8 theme-2 text-uppercase" style="background-color: {{ accomp.element.styleBackColor }};color: {{ accomp.element.styleTextColor }}">#}
-{#                                <img class="tiny-icon" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">#}
-{#                                {{ accomp.element.style }}#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <div class="card-body py-0 ">#}
-
-{#                            <div class="row p-3">#}
-{#                                <!-- ARTISTE -->#}
-{#                                <div class="col-9 d-flex align-items-end">#}
-{#                                    <h1 class="card-title mt-3 fw-bold">{{ accomp.element.title }}</h1>#}
-{#                                </div>#}
-
-{#                                <!-- COUP DOEUIL -->#}
-{#                                <div class="col-3">#}
-{#                                    <img src="{{ asset(('build/maquette/images/COUPDOEUIL.png')) }}" class="card-img-top rounded-0" alt="...">#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
+                    {% include 'frontoffice/_components/card.html.twig' with {'event': accomp, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true } %}
                 </div>
             {% endfor %}
         </div>
@@ -168,57 +83,21 @@
                 <h1 class="py-4">Evenements<br> Actualités</h1>
             </div>
         </div>
+
+
+        <div class="h3 py-4">
+            {{ category_event.getDatas(locale) }}
+            {{ category_event.description|raw }}
+        </div>
         <div class="row">
-            {% for event_actu in event_actus.elements %}
-                {{  event_actu.element.getDatas(locale) }}
+            {% for event_actu in event_actus %}
+                {{  event_actu.getDatas(locale) }}
 
-
-
-                {% set media = event_actu.element.getMedia(4) %}
+                {% set media = event_actu.getMedia(4) %}
                 <div class="col-lg-4 col-md-12 pb-lg-5 px-lg-5">
 
                     <!-- Card-Actu -->
-                    {% include 'frontoffice/_components/card.html.twig' with {'event': event_actu.element, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': false, 'soutiens': false } %}
-
-                    {#                    <div class="card mb-lg-3 mx-lg-2 shadow-lg rounded-0 h-100">#}
-
-{#                        {% if media3 is not null and media3 is not empty %}#}
-{#                            {% set url = '/assets/images/' ~ media3.name  %}#}
-{#                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">#}
-{#                        {% else  %}#}
-{#                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_HEADER.png')) }}" style="max-height:500px; object-fit: cover"  class="card-img-top rounded-0" alt="...">#}
-{#                        {% endif %}#}
-{#                        <!-- Themes -->#}
-{#                        <div class="row m-0 p-0">#}
-{#                            <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ event_actu.element.themeBackColor }};color: {{ event_actu.element.themeTextColor }};">#}
-{#                                {% set themes = event_actu.element.themes %}#}
-{#                                {% for theme in themes %}#}
-{#                                    {{ theme.name }}#}
-{#                                {% endfor %}#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <div class="card-body px-5 ">#}
-
-{#                            <!-- ARTISTE -->#}
-
-{#                            <h2 class="card-title my-0"><strong>{{ event_actu.element.title }}</strong></h2>#}
-{#                        </div>#}
-
-{#                        <div class="container">#}
-{#                            <div class="row">#}
-{#                                <!-- BILLETTERIE -->#}
-{#                                <div class="pb-3 px-5 d-flex justify-content-between" style="align-items: flex-end;">#}
-{#                                    <a href="" class="btn-read-card">LIRE LA SUITE</a>#}
-{#                                    <!-- TODO Mettre la bonne condition -->#}
-{#                                    {% if false %}#}
-{#                                        <a href="https://billetterie.lalune.net/">#}
-{#                                            <img src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}" alt="..." class="btn-billetterie-card">#}
-{#                                        </a>#}
-{#                                    {% endif %}#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
+                    {% include 'frontoffice/_components/card.html.twig' with {'event': event_actu, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': false, 'soutiens': false } %}
                 </div>
             {% endfor %}
         </div>

@@ -56,9 +56,10 @@
             <div class="col-lg-3 col-md-12 p-5 menu text-md-center text-sm-center">
                 <div class="row">
                     <div class="col-lg-10 col-md-12">
-                        {% for info_menu, link in infos_menu %}
+                        {% for sous_categorie_infos in sous_categories_infos %}
+                            {{ sous_categorie_infos.getDatas(locale) }}
                             <div class="h1 py-3 menu-item {% if active_entry == 'entry' ~ loop.index %}active{% endif %}" data-entry="entry{{ loop.index }}" onclick="showContent('entry{{ loop.index }}', 'footer{{ loop.index0 }}')">
-                                {{ info_menu | upper}}
+                                {{ sous_categorie_infos.title | upper}}
                             </div>
                             <div id="blue-dot{{ loop.index0 }}" class="blue-dot"></div>
                         {% endfor %}
@@ -79,26 +80,18 @@
                             <img src="{{ asset(('build/maquette/images/arrow_contact.png')) }}" class="">
 
                         </div>
-                        <div class="col-3 h3 pb-5">
 
-                            <p>
-                                Accueil & Bureaux
-                            </p>
-                            <p>
-                                5/1 passage Bélu - 80000 AMIENS
-                            </p>
-                            <p>
-                                Contact : 03 22 97 88 01
-                            </p>
-                            <p>
-                                contact@lalune.net
-                            </p>
+                        <div class="col-3 h3">
+                            {{ cat_contact.getDatas(locale) }}
+                            {{ cat_contact.description | raw }}
                         </div>
                     </div>
 
-                    <h1>HORAIRES</h1>
+                    <div class="fs-3">
 
-                    <p class="h3 pt-3 pb-5">Ouverture des bureaux du mardi au vendredi de 14h à 18h</p>
+                        {{ cat_contact.content | raw }}
+                    </div>
+
 
                     <h1 class="">NOUS ÉCRIRE</h1>
                     <!-- Formulaire -->
@@ -164,41 +157,17 @@
 
                             <img src="{{ asset(('build/maquette/images/point_venir.png')) }}" class="">
                         </div>
+
                         <div class="col-3 h3">
 
-                            <p>
-                                Scène de Musiques Actuelles
-                            </p>
-                            <p>
-                                17 quai Bélu - 80000 AMIENS
-                            </p>
-                            <p>
-                                Contact : 03 22 97 88 01
-                            </p>
-                            <p>
-                                contact@lalune.net
-                            </p>
+
+                                {{ cat_comment_venir.getDatas(locale) }}
+                                {{ cat_comment_venir.description | raw }}
                         </div>
                     </div>
-
-                    <h1>INFOS</h1>
-                    <p class="h3 py-2">
-                        Les horaires indiqués sur le programme et le site sont ceux de l'ouverture des portes. Début des concerts à 21h (sauf cas particuliers).
-                    </p>
-
-                    <p class="h3 py-4">
-                        Tous les concerts sont en placement libre assis et debout.
-                    </p>
-                    <p class="h3 py-4">
-                        L'accès à la salle lors des concerts en entrée libre se fait dans la limite des places disponibles.
-                    </p>
-                    <p class="h3 py-2">
-                        La Lune des Pirates est accessible aux personnes à mobilité réduite, merci de nous prévenir de votre venue par mail ou téléphone.
-                    </p>
-                    <p class="h3 py-2">
-                        Des bouchons d'oreilles sont disponibles qratuitement au bar ainsi que des casques adaptés aux enfants (en échange d'une pièce d'identité).
-                    </p>
-
+                    <div class="fs-3">
+                        {{ cat_comment_venir.content | raw }}
+                    </div>
 
 
 
@@ -207,79 +176,68 @@
                 <!-- TARIFS ET BILLETTERIE -->
 
                 <div id="entry3" class="py-5 px-5 hidden ">
+                    {{ article_adress_billetterie.getDatas(locale) }}
 
                     <div class="row pb-5">
                         <div class="col-lg-2 col-md-3">
-
-                            <img src="{{ asset(('build/maquette/images/la_lune_infos.png')) }}" class="">
+                            {% set media = article_adress_billetterie.getMedia(15) %}
+                            {% if media is not null %}
+                            {% set url = '/assets/images/' ~ media.media %}
+                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
+                            {% endif  %}
 
                         </div>
                         <div class="col-5 fs-3">
 
-                            <p>
-                                Scène de Musiques Actuelles
-                            </p>
-                            <p>
-                                17 quai Bélu - 80000 AMIENS
-                            </p>
-                            <p>
-                                Contact : 03 22 97 88 01
-                            </p>
-                            <p>
-                                contact@lalune.net
-                            </p>
+                            {{ article_adress_billetterie.description | raw }}
                         </div>
                     </div>
 
                     <div>
-                        <h1 class="py-5">POINT ACCUEIL BILLETTERIE & EN LIGNE SANS FRAIS DE LOCATION</h1>
+                        <h1 class="py-5">{{ article_contact_billetterie.getDatas(locale) }}
+
+                            {{ article_contact_billetterie.subtitle  }}
+                        </h1>
+                        {{ article_contact_billetterie.getDatas(locale) }}
+
                         <div class="row">
                             <div class="col-lg-2 col-md-3">
 
-                                <img src="{{ asset(('build/maquette/images/bureaux_infos.png')) }}" class="">
-                            </div>
+
+                                {% set media = article_contact_billetterie.getMedia(15) %}
+                                {% if media is not null %}
+                                    {% set url = '/assets/images/' ~ media.media %}
+                                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
+                                {% endif  %}                            </div>
                             <div class="col-5 fs-3">
-                                <p>
-                                    5/1 passage Bélu - 80000 AMIENS
-                                </p>
-                                <p>
-                                    Contact : 03 22 97 88 01
-                                </p>
-                                <p>
-                                    contact@lalune.net
-                                </p>
+
+                                {{ article_contact_billetterie.description | raw }}
 
                             </div>
 
                         </div>
-                        <p class="h2 pt-4 pb-5">Le point accueil / billetterie est ouvert du mardi au vendredi de 14h à 18h</p>
+                        <div class="h2 pt-4 pb-5">
+                            {{ article_contact_billetterie.content | raw }}
+                        </div>
 
 
-                        <h1 class="pt-5">TARIFS</h1>
-                        <p class="h2">Les tarifs sont indiqués pour chaque spectacle sur le site</p>
-
-
-                        <h1 class="pt-5">ABONNEMENT - LA CARTE LUNE - <b>10€</b></h1>
-                        <p class="h2 pb-3">
-                            Valable 1 an de date à date : des économies dès votre deuxième concert !
-                        </p>
+                        <div class="fs-3">
+                            {{ article_abonnement_billetterie.getDatas(locale) }}
+                            {{ article_abonnement_billetterie.description | raw }}
+                        </div>
 
                         <div class="row pt-4">
                             <div class="col-5">
-
-                                <img class="img-fluid" src="{{ asset('build/maquette/images/PLAY_LUNE.png') }}" class="">
+                                {% set media = article_abonnement_billetterie.getMedia(15) %}
+                                {% if media is not null %}
+                                    {% set url = '/assets/images/' ~ media.media %}
+                                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
+                                {% endif  %}
 
                             </div>
 
                             <div class="col-7 h3">
-                                <p><b>> 3 concerts gratuits / an à La Lune des Pirates</b></p>
-                                <p>&nbsp; (chaque trimestre, un concert est labellisé « Gratuit abonné »)</p>
-                                <p><b>> 5 euros de réduction sur tous les concerts produits par et à La Lune des Pirates</b></p>
-                                <p><b>> Profitez de votre carte au cinéma</b></p>
-                                <p>&nbsp; Présentez votre Carte Lune au Ciné St-Leu et bénéficiez du tarif réduit de 6€ sur toutes les séances.</p>
-                                <p><b>> Profitez de votre carte dans les autres scènes de musiques actuelles de la région !</b></p>
-                                <p>&nbsp; Présentez votre Carte Lune à La Grange à Musique de Creil ou à Ouvre Boite Beauvais et bénéficiez du tarif abonné ou réduit sur tous les concerts proposés par les deux structures.</p>
-
+                                {{ article_abonnement_billetterie.content | raw }}
                             </div>
                         </div>
 
@@ -425,56 +383,18 @@
                 <!-- QUESTIONS -->
 
                 <div id="entry4" class="py-5 px-5 hidden"><div class="accordion accordion-flush" id="accordionFlushExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed fs-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                    Question #1
-                                </button>
-                            </h2>
-                            <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                <div class="accordion-body">Texte de question</div>
+                        {% for question in question_infos %}
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed fs-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{ loop.index }}" aria-expanded="false" aria-controls="flush-collapse-{{ loop.index }}">
+                                        {{ question.title }}
+                                    </button>
+                                </h2>
+                                <div id="flush-collapse-{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body fs-3"> {{ question.description | raw}}</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed fs-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                                    Question #2
-                                </button>
-                            </h2>
-                            <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                <div class="accordion-body">Texte de question</div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed fs-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                                    Question #3
-                                </button>
-                            </h2>
-                            <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                <div class="accordion-body">Texte de question</div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed fs-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
-                                    Question #4
-                                </button>
-                            </h2>
-                            <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                <div class="accordion-body">Texte de question</div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed fs-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
-                                    Question #5
-                                </button>
-                            </h2>
-                            <div id="flush-collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                <div class="accordion-body">Texte de question</div>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
 
 
@@ -501,10 +421,10 @@
                     <div class="row">
                         <div class="col-8">
                             <div class="row">
-                                {% for contact, role in infos_contact %}
+                                {% for contact in contact_contact %}
                                     <div class="col-6 py-2">
-                                        <p class="h2">{{ contact }}</p>
-                                        <p class="h3">{{ role }}</p>
+                                        <p class="h2">{{ contact.title }}</p>
+                                        <div class="h4">{{ contact.description | raw}}</div>
                                     </div>
                                 {% endfor %}
                             </div>
@@ -516,15 +436,16 @@
 
                             <h2>L'ÉQUIPE TECHNIQUE</h2>
                             <p class="h3 pb-5">
-                                {% for membre_tech in equipe_tech %}
-                                    {{ membre_tech }},
+
+                                {% for membre_tech in equipe_tech_contact %}
+                                    {{ membre_tech.title }}{% if loop.index != equipe_tech_contact | length %},{% endif %}
                                 {% endfor %} ...
                             </p>
 
                             <h2 class="pt-5">MERCI AUX BÉNÉVOLES !</h2>
                             <p class="h3">
-                                {% for benevole in benevoles %}
-                                    {{ benevole }},
+                                {% for benevole in benevoles_contact %}
+                                    {{ benevole.title }}{% if loop.index != benevoles_contact | length %},{% endif %}
                                 {% endfor %} ...
                             </p>
                         </div>
@@ -546,25 +467,23 @@
         <div class="py-5 px-5">
             <div class="row">
                 <div class="col-lg-9 col-md-12">
-                    {% for transport, texte in transports %}
+                    {% for article_comment_venir in articles_comment_venir %}
+                        {{ article_comment_venir.getDatas(locale) }}
                         <div class="row">
                             <div class="col-lg-2 offset-lg-4 col-md-3">
+                                {% set media = article_comment_venir.getMedia(13) %}
 
-                                {% set src = 'build/maquette/images/' %}
-                                {% set ext = '.png' %}
-                                {% set src = src ~ transports_medias[loop.index0] ~ ext %}
-                                <img class="img-fluid" src="{{ asset(src) }}" class="">
-
+                                {% if media is not null %}
+                                    {% set url = '/assets/images/' ~ media.media %}
+                                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style=" max-height: 150px;max-width: 150px" alt="...">
+                                {% endif  %}
                             </div>
                             <div class="col-lg-6 col-md-9 py-5">
-                                <h1 class="py-2">{{ transport }}</h1>
-                                <p class="h2">{{ texte }}</p>
+                                <h1 class="py-2">{{ article_comment_venir.title }}</h1>
+                                <div class="fs-3">{{ article_comment_venir.description | raw }}</div>
                             </div>
 
                         </div>
-
-
-
                     {% endfor %}
                 </div>
             </div>
@@ -585,33 +504,23 @@
 
                     <div class="row">
                         <div class="col-12">
-                            <h1>TARIF PASSEPORT VIE ÉTUDIANTE - <b>5 € LE CONCERT</b> </h1>
-                            <p class="h2">À destination des étudiants de l’Université de Picardie Jules Verne et des établissements relevant du CROUS Amiens Picardie.</p>
+                            {{ article_tarif_etudiant_billetterie.getDatas(locale) }}
+                            <div class="h1">{{ article_tarif_etudiant_billetterie.title }}</div>
+                            <div class="h2">{{article_tarif_etudiant_billetterie.description | raw}}</div>
                         </div>
                         <!-- Image tarifs -->
                         <div class="col-1">
-                            <img src="{{ asset(('build/front/images/TICKET_BILLETTERIE.png')) }}" alt="">
+                            {% set media = article_tarif_etudiant_billetterie.getMedia(15) %}
+                            {% if media is not null %}
+                                {% set url = '/assets/images/' ~ media.media %}
+                                <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="max-height: 100px" alt="...">
+                            {% endif  %}
+
+
+
                         </div>
                         <div class="col-11 h2">
-                            <p>
-                                > Tarif de 5.00 € sur l’ensemble des concerts à La Lune des Pirates toute l’année !
-                                Pour bénéficier de ce tarif préférentiel, vous avez 3 options :
-                            </p>
-                            <p>
-                                > Soit nous envoyer un mail à contact@lalune.net afin d'effectuer une réservation en ligne*
-                            </p>
-                            <p>
-                                > Soit vous rendre à la billetterie de La Lune des Pirates**
-                            </p>
-                            <p>
-                                > Soit vous rendre le soir du concert à la billetterie de La Lune des Pirates et présenter votre carte d'étudiante, si le concert n'est pas complet.
-                            </p>
-                            <p>
-                                * Attention : si vous ne vous présentez pas aux concerts sur les réservations effectuées, nous n'accepterons plus de réservation de votre part.
-                            </p>
-                            <p>
-                                ** Du mardi au vendredi de 14h à 18h au 5/1 Passage Bélu 80000 Amiens
-                            </p>
+                            {{article_tarif_etudiant_billetterie.content | raw}}
                         </div>
                     </div>
                 </div>
@@ -620,24 +529,27 @@
         <div class="row">
 
             <div class="col-lg-9 offset-lg-3 col-md-12">
-
+                {{ article_pass_billetterie.getDatas(locale) }}
                 <div class="py-5 px-5 h2">
-                    <h1 pb-2>PASS CULTURE</h1>
-                    <p class="h2">
-                        Tu as entres 15 et 18 ans ?
-                    </p>
-                    <p>
-                        Profite de ton pass Culture pour commander tes places de concerts à La Lune !
-                    </p>
+                    <h1 class="pb-2">{{ article_pass_billetterie.title }}</h1>
+                    <div class="h2">
+                        {{ article_pass_billetterie.description | raw }}
+                    </div>
 
                     <div class="row pt-2">
                         <div class="col-6">
-
-                            <img class="img-fluid" src="{{ asset('build/maquette/images/PASS_CULTURE.png') }}" class="">
+                            {% set media = article_pass_billetterie.getMedia(15) %}
+                            {% if media is not null %}
+                                {% set url = '/assets/images/' ~ media.media %}
+                                <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="max-height: 200px" alt="...">
+                            {% endif  %}
                         </div>
                         <div class="col-6">
-
-                            <img class="img-fluid" src="{{ asset('build/maquette/images/CAPTCHA_CULTURE.png') }}" class="">
+                            {% set media = article_pass_billetterie.getMedia(16) %}
+                            {% if media is not null %}
+                                {% set url = '/assets/images/' ~ media.media %}
+                                <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="max-height: 200px" alt="...">
+                            {% endif  %}
                         </div>
 
 

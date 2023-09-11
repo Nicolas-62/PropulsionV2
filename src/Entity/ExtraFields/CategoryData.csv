@@ -1,5 +1,7 @@
 "name","label","ea_type","list","column","format",
 "titleByLanguage","Titre","TextField","true","3","",
+"description","Description","TextEditorField","false","12",
+"content","Contenu","TextEditorField","false","12",
 "hasCreate","Création/Suppression","BooleanField","false","3","",
 "hasSubArticle","Ajout de sous articles","BooleanField","false","3","",
 "hasDescription","Possède une descrition","BooleanField","false","3","",
@@ -24,3 +26,4 @@
 "hasThemeTextColor","Possède une couleur du texte du thème","BooleanField","false","3","",
 "hasStyleBackColor","Possède une couleur de fond du style","BooleanField","false","3","",
 "hasStyleTextColor","Possède une couleur du texte du style","BooleanField","false","3","",
+"themeBackColor","Couleur de fond du thème","ColorField","false","3","",

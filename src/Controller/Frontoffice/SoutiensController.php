@@ -19,21 +19,37 @@ class SoutiensController extends LuneController
 
         // Identifiants des catégories concernées.
         $this->category_id		=		1;
+
         parent::__construct($entityManager, $params);
+
+        $sous_categorie_ids_event_actus     = $this->entityManager->getRepository(Category::class)->find(9)->getChildrenIds();
+        $event_actus                        = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids_event_actus, $params->get('locale'), true, 'dateEvent', 'ASC');
+        $this->event_actus                  = $event_actus;
+
+
+        $sous_categorie_ids_event_actus     = $this->entityManager->getRepository(Category::class)->find(8)->getChildrenIds();
+        $event_auditions                    = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids_event_actus, $params->get('locale'), true, 'dateEvent', 'ASC');
+        $this->event_auditions              = $event_auditions;
+
+
+        $sous_categorie_ids_event_actus     = $this->entityManager->getRepository(Category::class)->find(7)->getChildrenIds();
+        $event_artistes_accomp              = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids_event_actus, $params->get('locale'), true, 'dateEvent', 'ASC');
+        $this->event_artistes_accomp        = $event_artistes_accomp;
+
     }
 
     #[Route('', name: 'index')]
     public function index(): Response
     {
         $this->data['page_title']           = 'Soutiens aux artistes';
-        $this->data['accompagnes']          = $this->entityManager->getRepository(Category::class)->getGenealogy(7, $this->getParameter('locale'));
+        $this->data['category_accomp']      = $this->entityManager->getRepository(Category::class)->find(7);
+        $this->data['category_audition']    = $this->entityManager->getRepository(Category::class)->find(8);
+        $this->data['category_event']       = $this->entityManager->getRepository(Category::class)->find(9);
+        $this->data['accompagnes']          = $this->event_artistes_accomp;
         $this->data['accompagnes_test2']    = $this->entityManager->getRepository(Category::class)->getArticles(array(7), $this->getParameter('locale'),1);
         $this->data['accompagnes_test']     = $this->entityManager->getRepository(Article::class)->findBy(['category' => '7']);
-        $this->data['accompagnes_medias']   = ['ADAM','JONASKAY','ARYANE','DOUBLE', 'ETIENNE','KAMELECTRIC'];
-        $this->data['auditions']            = $this->entityManager->getRepository(Category::class)->getGenealogy(8, $this->getParameter('locale'));
-        $this->data['auditions_medias']     = ['AMBRE','CASSANDRE','EXAUBABA','LAST'];
-        $this->data['event_actus']          = $this->entityManager->getRepository(Category::class)->getGenealogy(9, $this->getParameter('locale'));
-        $this->data['event_actus_medias']   = ['MUMBLE','APERO','ACTION','MAO'];
+        $this->data['auditions']            = $this->event_auditions;
+        $this->data['event_actus']          = $this->event_actus;
         $this->data['locale']               = $this->getParameter('locale');
 
         return parent::lister();

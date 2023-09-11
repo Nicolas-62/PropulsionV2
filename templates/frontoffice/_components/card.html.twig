@@ -38,12 +38,14 @@
     </div>
     <!-- Themes -->
     <div class="row mx-0 px-0">
-        <div class="col-5 theme-1 text-uppercase"  style="background-color: {{ event.themeBackColor }}; color: {{ event.themeTextColor }};">
+        {% set category = event.category %}
+        {{ category.getDatas(locale) }}
+        <div class="col-5 theme-1 text-uppercase"  style="background-color: {% if category is not null %}{{ category.themeBackColor }};{% endif%} color: {{ event.themeTextColor }};">
             {{ event.category.title }}
         </div>
         {% if event.style is not null and event.style is not empty %}
-            <div class="col-7 white theme-2 justify-content-start" style="background-color: black; }};">
-                <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">{{ event.style }}
+            <div class="col-7 white theme-2 justify-content-start text-uppercase" style="background-color: black; }};">
+                <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}"> {{ event.style }}
             </div>
         {% endif %}
     </div>

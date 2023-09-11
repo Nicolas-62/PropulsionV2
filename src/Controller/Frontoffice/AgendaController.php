@@ -37,8 +37,6 @@ class AgendaController extends LuneController
         $this->data['categories_child_agenda'] = $categories;
 
         //TODO : récupérer les thèmes de catégories
-        $themes_agenda = array('ATELIERS', 'CONCERTS','JEUNE PUBLIC', 'SOUTIEN AUX ARTISTES');
-        $this->data['themes_agenda'] = $themes_agenda;
         return parent::lister();
     }
 

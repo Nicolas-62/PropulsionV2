@@ -2,6 +2,8 @@
 
 namespace App\Controller\Frontoffice;
 
+use App\Entity\Article;
+use App\Entity\Category;
 use App\Entity\Contact;
 use App\Form\ContactType;
 use App\Notification\ContactNotification;
@@ -42,27 +44,25 @@ class InfosPratiquesController extends LuneController
     public function contact(Request $request, ContactNotification $notification): Response
     {
 
-        $this->data['transports'] = ['EN TRAIN' => "La gare se trouve à 15 minutes à pied de l'entrée des salles !
-        Avec son positionnement géographique central, Amiens se trouve à 40 minutes d'Arras, 1h05 de Paris, 1h20 de Lille, 1h25 de Rouen, 2h20 de Reims, ou encore à 3h de Bruxelles.", 'EN VOITURE' => "Amiens est au carrefour de grands axes de circulation de niveau européen : A16, A29 et à proximité des autoroutes A1 A2, A26 et A28.
-        Par la voiture également, vous arriverez rapidement aux salles de concerts : 40 minutes depuis Abbeville, 50 minutes depuis Beauvais, 1h20 d'Arras, 1h20 depuis Rouen, 1h30 de Paris et de Lille.", 'PARKING' => "À Amiens, le stationnement est payant dans les rues du centre-ville de 9h à 12h30 et de 14h à 17h30 (gratuité du dimanche au lundi à 14h), et dans les zones résiden- tielles de 9h à 12h30 et de 14h à 19h (gratuité du dimanche au lundi à 14h).
-        Pour mieux préparer votre venue, consultez la carte interactive du stationnement à Amiens.
-        Quitte à prendre la voiture, pensez à l'option covoiturage !
-        Proposez votre trajet ou cherchez-en un sur le site de notre partenaire Mobicoop.", 'À VÉLO' => "Préférez la mobilité douce ! Il est si agréable de se déplacer à vélo à Amiens...
-        Vous n'avez pas de vélo ?
-        Louez-en un avec le service Buscylette ou les Vélam en libre service.
-        Enfin, profitez-en pour faire une belle balade autour du Patrimoine, des Hortillon- nages ou de la nature environnante !", 'EN TRANSPORT EN COMMUN' => "Profitez du réseau de bus Ametis de la ville (en plus, le samedi, les bus sont gra- tuits !), ou encore de leur service de location de vélo !
-        Arrêt de bus à proximité immédiate de l'entrée des salles : Citadelle Montrescu, lignes désservies : N2, N3, 11 et L."];
-        $this->data['transports_medias'] = ['TRAIN', 'VOITURE', 'PARKING', 'VELO', 'BUS'];
+        $this->data['cat_contact']                             = $this->entityManager->getRepository(Category::class)->find(40);
+        $this->data['cat_comment_venir']                       = $this->entityManager->getRepository(Category::class)->find(41);
+        $this->data['articles_comment_venir']                  = $this->entityManager->getRepository(Category::class)->getArticles(array(41), $this->getParameter('locale'),1);
+        $this->data['benevoles_contact']                       = $this->entityManager->getRepository(Category::class)->getArticles(array(44), $this->getParameter('locale'),1);
+        $this->data['contact_contact']                         = $this->entityManager->getRepository(Category::class)->getArticles(array(45), $this->getParameter('locale'),1);
+        $this->data['equipe_tech_contact']                     = $this->entityManager->getRepository(Category::class)->getArticles(array(46), $this->getParameter('locale'),1);
+        $this->data['question_infos']                          = $this->entityManager->getRepository(Category::class)->getArticles(array(43), $this->getParameter('locale'),1);
+        $this->data['article_contact_billetterie']             = $this->entityManager->getRepository(Article::class)->find(160);
+        $this->data['article_abonnement_billetterie']          = $this->entityManager->getRepository(Article::class)->find(161);
+        $this->data['article_adress_billetterie']              = $this->entityManager->getRepository(Article::class)->find(159);
+        $this->data['article_tarif_etudiant_billetterie']      = $this->entityManager->getRepository(Article::class)->find(162);
+        $this->data['article_pass_billetterie']          = $this->entityManager->getRepository(Article::class)->find(163);
 
-        $this->data['infos_menu'] = array('Nous contacter' => '', 'Comment venir' => '','Tarifs et Billetterie' => '', 'Questions Fréquentes' => '');
-        $this->data['active_entry'] = 'entry1';
-        $this->data['infos_contact'] = array('JIHANE MILADI' => 'Présidente', 'FRANÇOIS PARMENTIER' => 'Production & Vie Associative','ANTOINE GRILLON' => 'Direction & Programmation', 'VINCENT RISBOURG' => 'Soutien aux artistes', 'SANDRINE DARLOT AYMONE MIHINDOU' => 'Administration
-','MARIE YACHKOURI' => 'Billetterie & Communication', 'MARTIN ROGGEMAN' => 'Régie Générale', 'KHALID MHANNAOUI' => 'Accueil','ANAÏS FRAPSAUCE MARINE SALVAT' => 'Projets Culturels & Publics', 'OLIVIER BIKS/BIBI' => 'Graphisme','JIMMY BOURBIER' => 'Communication', 'LUDO LELEU' => 'Photographe');
-        $this->data['equipe_tech'] = array('Emmanuel Héreau', 'Gwennaelle Krier','Illan Lacoudre', 'Jean Maillart', 'Benoit Moritz', 'Grégory Vanheulle', 'Alexandre Verger');
-        $this->data['benevoles'] = array('Alexandra', 'Antoine','Arsène', 'Beniamin', 'Bertille', 'Côme', 'Déborah', 'Elena','Elisa', 'Ewan', 'Fanny', 'Francesca', 'Gaëtan', 'Giacomo','Jules Judith', 'Laurent', 'Lisa', 'Lorea', 'Lucile', 'Manon A','Manon P', 'Marine', 'Nahelou', 'Nicolas', 'Perrine', 'Rodolphe','Romain D', 'Romain M', 'Simon', 'Valère', 'Zoé');
+
+        $this->data['active_entry']                     = 'entry1';
+        $this->data['sous_categories_infos']            = $this->entityManager->getRepository(Category::class)->findBy(['parent' => 39]);
 
         // CONSTANTES GENERALES
-        $this->data['locale']           = $this->getParameter('locale');
+        $this->data['locale']                           = $this->getParameter('locale');
         // Création du formulaire de contact.
         $contact = new Contact();
         $form = $this->createForm(ContactType::class, $contact);

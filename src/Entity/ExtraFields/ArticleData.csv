@@ -19,7 +19,3 @@
 "cancelled","Evenement annulé","BooleanField","false","4","",
 "reported","Reporté","BooleanField","false","4","",
 "full","Complet","BooleanField","false","4","",
-"themeBackColor","Couleur de fond du thème","ColorField","false","3","",
-"themeTextColor","Couleur du texte du thème","ColorField","false","3","",
-"styleBackColor","Couleur de fond du style","ColorField","false","3","",
-"styleTextColor","Couleur du texte du style","ColorField","false","3","",

@@ -35,7 +35,6 @@ class LuneController extends FOController
         $this->buildHeader();
         // Récupération des infos du footer.
         $this->buildFooter();
-        dump('TEST');
 
     }
 
@@ -93,8 +92,7 @@ class LuneController extends FOController
     #[Route('/cgv', name: 'cgv')]
     public function cgv(): Response
     {
-        $this->data['detail_partial']     =     'institutionnel/cgv.html.twig';
-        return $this->detail(null);
+        return $this->render('frontoffice/institutionnel/cgv.html.twig', $this->data);
     }
 
 
@@ -114,6 +112,7 @@ class LuneController extends FOController
     public function faq(): Response
     {
         $this->data["categories"] = $this->entityManager->getRepository(Category::class)->findBy(['category_id'=>27]);
+        $this->data["articles_question"] = $this->entityManager->getRepository(Article::class)->findBy(['category'=>38]);
 
         // Vue renvoyée.
         return $this->render('frontoffice/institutionnel/faq.html.twig', $this->data);
