@@ -46,7 +46,7 @@ class FOController extends AbstractController
         // Nom de la page = nom du controller
         $this->data['page']              = 	$this->page;
         $this->data['page_title']        = 	$this->page;
-        // Nom  des vues
+        // Nom des vues
         $this->list_partial               =     strtolower($this->page) . '/index.html.twig'; 	// Vue de la liste
         $this->detail_partial             =     strtolower($this->page) . '/detail.html.twig'; // Vue du détail
         $this->data['header_partial']     =     '_components/header.html.twig';

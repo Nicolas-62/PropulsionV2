@@ -6,9 +6,9 @@
                 <img class="img-fluid" src="{{ asset('build/maquette/images/LOGO_ACTUEL.png') }}">
             </a>
         </div>
-        <div class="col-9 d-block flex-column align-items-start p-0">
-            <nav class="navbar navbar-expand-lg col-12 mt-auto">
-                <ul class="navbar-nav w-100 justify-content-end pt-3">
+        <div class="col-lg-9 col-md-9 d-block flex-column align-items-start p-0">
+            <nav class="navbar navbar-expand-lg col-12 mt-auto px-lg-5">
+                <ul class="navbar-nav w-100 justify-content-end pt-3 px-lg-5">
 
                     {% for event_header in events_header %}
                         {% set media = event_header.getMedia(12) %}
@@ -91,7 +91,7 @@
                         {% set media = event_header.getMedia(12) %}
 
                         {% if loop.index < 5 %}
-                                <a class="text-decoration-none" href="/agenda/{{ event_header.category.id }}/{{ event_header.title }}">
+                                <a class="text-decoration-none" href="/agenda/{{ event_header.slug }}">
 
                                     {% if media is not null %}
                                         {% set url = '/assets/images/' ~ media.media %}
@@ -104,11 +104,11 @@
                     {% endfor %}
 
                 </div>
-            </div>0
+            </div>
         </div>
         <div class="col-12"></div>
         {% for src in btns %}
-            <div class="col-4 text-center">
+            <div class="col-6 text-center">
                 {% set url = 'build/maquette/images/' %}
                 {% set ext = '.png' %}
                 {% set src = url ~ src ~ ext %}
@@ -129,7 +129,6 @@
                                 <!-- Catégorie du menu -->
                                 <li class="nav-item border-y ps-3">
                                     <div class="round-left nav-link fs-1" href=""><a class="text-decoration-none" style="color: black" href="/home">> ACCUEIL</a></div>
-                                    <div class="round-left nav-link fs-1" href=""><a class="text-decoration-none" style="color: black" href="/programmations">> PROGRAMMATION</a></div>
                                     {% for name, url in menu %}
                                         <div class="round-left nav-link fs-1" href=""><a class="text-decoration-none" style="color: black" href="{{ path(url) }}">> {{ name|upper }}</a></div>
                                     {% endfor %}

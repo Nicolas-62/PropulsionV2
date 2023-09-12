@@ -31,7 +31,7 @@
                 {{  accomp.getDatas(locale) }}
 
                 {% set media = accomp.getMedia(4) %}
-                <div class="col-lg-4 col-md-12 pb-lg-5 px-5">
+                <div class="col-lg-4 col-md-12 pb-lg-5 px-lg-5">
                     <!-- Card-Actu -->
                     {% include 'frontoffice/_components/card.html.twig' with {'event': accomp, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true } %}
                 </div>
