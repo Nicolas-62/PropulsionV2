@@ -19,3 +19,4 @@
 "cancelled","Evenement annulé","BooleanField","false","4","",
 "reported","Reporté","BooleanField","false","4","",
 "full","Complet","BooleanField","false","4","",
+"star","Vedette","BooleanField","false","4","",

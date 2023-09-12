@@ -72,6 +72,8 @@ class Article
     private ?string $themeTextColor     = '#FFFFFF';
     private ?string $styleBackColor     = '#000000';
     private ?string $styleTextColor     = '#FFFFFF';
+    private ?bool   $star  = false;
+
 
     // Liste des champs supplémentaires spécifiques.
     private array $extraFields = ARTICLE_DATA_FIELDS;

@@ -106,7 +106,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-12"></div>
         {% for src in btns %}
             <div class="col-6 text-center">
                 {% set url = 'build/maquette/images/' %}
@@ -115,12 +114,15 @@
                 <img src="{{ asset(src) }}">
             </div>
         {% endfor %}
+        <div class="col-6 text-center">
+
+            <button class="btn btn-move-up" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                <img src="{{ asset('build/maquette/images/MENU_HEADER.png') }}">
+            </button>
+
+        </div>
         <div class="col-4 text-center">
             <div class="dropdown">
-
-                <button class="btn btn-move-up" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                    <img src="{{ asset('build/maquette/images/MENU_HEADER.png') }}">
-                </button>
 
                 <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
                     <div class="offcanvas-body">

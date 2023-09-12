@@ -30,7 +30,9 @@
                                     <div class="row pt-4">
                                         <div class="col-8" style="line-height: 1">
                                             <div class="card-date"><b>{{ formatCustomDate(event.dateEvent) }}</b></div>
-                                            <div class="card-hour">{{ event.heureEvent| date("H:i") }}</div>
+                                            {% if event.datetimeEvent is not empty and event.datetimeEvent is not null %}
+                                                <div class="card-hour">{{ event.datetimeEvent| date("H:i") }}</div>
+                                            {% endif %}
                                         </div>
                                         <div class="col-4 d-flex align-items-end">
                                             <img class="img-fluid" src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}" alt="">
@@ -49,13 +51,13 @@
                 <!-- Themes -->
                 <div class="row">
                     <div
-                            class="col-3 theme-1 text-uppercase"
+                            class="col-5 theme-1 text-uppercase"
                             style="background-color: {{ event.themeBackColor }};color: {{ event.themeTextColor }};"
 
                     >
                         {{ event.category.title }}
                     </div>
-                    <div class="col-9 theme-2  justify-content-start" style="background-color: {{ event.styleBackColor }};color: {{ event.styleTextColor }};"
+                    <div class="col-7 theme-2  justify-content-start" style="background-color: {{ event.styleBackColor }};color: {{ event.styleTextColor }};"
                     >
                         <img class="card-ticketing" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">{{ event.style }}
                     </div>
@@ -70,12 +72,14 @@
                     <!-- DATE CONCERT ET HEURE -->
                     <div class="row pt-4">
                         <div class="col-9" style="line-height: 1">
-                            <div class="card-date">{{ event.dateEvent| date("d/m/Y") }}</div>
-                            <div class="card-hour">{{ event.heureEvent| date("H:i") }}</div>
+                            <div class="card-date">{{ formatCustomDate(event.dateEvent) }}</div>
+                            {% if event.datetimeEvent is not null and event.datetimeEvent is not empty %}
+                                <div class="card-hour">{{ event.datetimeEvent| date("H:i") }}</div>
+                            {% endif %}
                         </div>
                         <div class="col-2 offset-1">
                             <a href="https://billetterie.lalune.net/">
-                                <img class="img-fluid" src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}">
+                                <img class="btn-billetterie-card" src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}">
                             </a>
                         </div>
                     </div>
@@ -95,7 +99,7 @@
                 {% if loop.index0 < 3 %}
                     {% set media = event.getMedia(1) %}
                     {% set CategoryTitle = event.category.title|replace({' ': '-'})|lower %}
-                    <div class="col-lg-4 col-md-12 pb-lg-5 px-lg-3 category-{{ CategoryTitle }} category-tous-les-evenements">
+                    <div class="col-lg-4 col-md-12 pb-lg-5 px-lg-3 px-md-0 category-{{ CategoryTitle }} category-tous-les-evenements">
                         <!-- Card-Actu -->
                         {% include 'frontoffice/_components/card.html.twig' with {'event': event, 'agenda': true, 'showButton': false, 'actu': false, 'billetterie': true, 'soutiens': false } %}
 
@@ -131,7 +135,9 @@
                                         <!-- DATE ET HEURE -->
                                         <div style="line-height: 1" >
                                             <div class="date py-3">{{ formatCustomDate(event.dateEvent) }}</div>
-                                            <div class="hour">{{ event.heureEvent| date("H:i") }}</div>
+                                            {% if event.datetimeEvent is not null and event.datetimeEvent is not empty %}
+                                                <div class="hour">{{ event.datetimeEvent| date("H:i") }}</div>
+                                            {% endif %}
                                         </div>
                                         <a href="{{ path('fo_actus_detail', { 'slug': event.slug }) }}" class="btn border rounded-0 border-dark mt-5">LIRE LA SUITE</a>
                                     </div>

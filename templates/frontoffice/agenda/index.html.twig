@@ -39,7 +39,7 @@
 
     <div class="px-lg-5">
         <div class="row font-primary">
-            <div class="px-lg-5 pt-5 row">
+            <div class="px-lg-5 px-md-5 pt-5 mb-5 row">
                 <h1 class="col-lg-2 px-lg-4 col-md-6 col-sm-12 big-subtitle blue-title">{{ page_title | upper }}</h1>
                 <div class="custom-select col-lg-3 col-md-6 col-sm-12 d-flex align-items-end" style="bottom: 17px">
                     <div class="dropdown">
@@ -58,7 +58,7 @@
             {% for event in events_agenda %}
                 {% set media = event.getMedia(1) %}
                 {% set CategoryTitle = event.category.title|replace({' ': '-'})|lower %}
-                <div class="custom-col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-3 category-{{ CategoryTitle }} category-tous-les-evenements">
+                <div class="custom-col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-3 px-md-0 category-{{ CategoryTitle }} category-tous-les-evenements">
                     <!-- Card-Actu -->
                     {% include 'frontoffice/_components/card.html.twig' with {'event': event, 'agenda': true, 'showButton': false, 'actu': false, 'billetterie': true, 'soutiens': false } %}
                 </div>

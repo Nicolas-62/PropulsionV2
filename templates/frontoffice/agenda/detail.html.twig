@@ -41,8 +41,8 @@
                         {{ formatCustomDate(article.dateEvent) }}
                     </p>
                     <p style="font-size: 30px" class="mt-0">
-                        {% if article.heureEvent is not empty and article.heureEvent is not null %}
-                            {{ article.heureEvent| date("H:i") }}
+                        {% if article.datetimeEvent is not empty and article.datetimeEvent is not null %}
+                            {{ article.datetimeEvent| date("H:i") }}
                         {% endif %}
                     </p>
                 </div>
@@ -118,7 +118,9 @@
                         <h1>{{ article.typeMusic}}  {% if article.origin != "" %} | {{ article.origin }}{% endif %}</h1>
                     </div>
                     <div class="col-lg-2 col-md-6 d-flex justify-content-end">
-                        <h1 style="font-size: 60px">{{ article.heureEvent| date('H:i') }}</h1>
+                        {% if article.datetimeEvent is not null and article.datetimeEvent  is not empty %}
+                            <h1 style="font-size:40px">{{ article.datetimeEvent| date('H:i') }}</h1>
+                        {% endif %}
                     </div>
                 </div>
                 <!-- RESUME ARTISTE -->
@@ -129,13 +131,16 @@
                 {% set media2 = article.getMedia(10) %}
                 {% set media3 = article.getMedia(1) %}
                 {% set media4 = article.getMedia(12) %}
-                {% if media2 is not null %}
-                    {% set url = '/assets/images/' ~ media2.media  %}
-                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
-                {% elseif media3 is not null %}
-                    {% set url = '/assets/images/' ~ media3.media  %}
-                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
-                {% endif %}
+                <div class="p-5">
+                    {% if media2 is not null %}
+
+                        {% set url = '/assets/images/' ~ media2.media  %}
+                        <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                    {% elseif media3 is not null %}
+                        {% set url = '/assets/images/' ~ media3.media  %}
+                        <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                    {% endif %}
+                </div>
                 <!-- DESCRIPTION ARTISTE -->
                 <div class="h3 py-5" style="line-height: 1.3">
                     {{ article.content | raw }}
@@ -218,10 +223,9 @@
             </div>
         </div>
     </div>
-    <!-- CITRON SUCRE -->
+    <!-- DEUXIEME PARTIE -->
     {% for child in children %}
         {{ child.getDatas(locale) }}
-    {{ citron.getDatas(locale) }}
     <div class="bg-grey">
         <div class="p-5">
             <div class="row">
@@ -235,7 +239,7 @@
                             <h1>{{ child.typeMusic}} {% if child.origin != "" %} | {{ child.origin }}{% endif %}</h1>
                         </div>
                         <div class="col-lg-2 col-md-4 d-flex justify-content-end">
-                            <h1 style="font-size: 60px">{{ child.heureEvent | date('H:i') }}</h1>
+                            <h1 style="font-size: 40px">{{ child.datetimeEvent | date('H:i') }}</h1>
                         </div>
                     </div>
                     <!-- DESCRIPTION ARTISTE -->
@@ -244,10 +248,12 @@
                     </div>
                     <!-- Image Artiste -->
                     {% set media3 = child.getMedia(1) %}
-                    {% if media3 is not null %}
-                        {% set url = '/assets/images/' ~ media3.media  %}
-                        <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
-                    {% endif %}
+                    <div class="p-5">
+                        {% if media3 is not null %}
+                            {% set url = '/assets/images/' ~ media3.media  %}
+                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                        {% endif %}
+                    </div>
                     <!-- CONTENT ARTISTE -->
                     <div class="h2 lh-lg">
                         {{ child.content | raw }}

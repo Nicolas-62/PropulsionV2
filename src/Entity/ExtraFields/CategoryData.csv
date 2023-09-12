@@ -22,8 +22,4 @@
 "hasTypeMusic","Possède un type de musique","BooleanField","false","3","",
 "hasOrigin","Possède une origine","BooleanField","false","3","",
 "hasStyle","Possède un style","BooleanField","false","3","",
-"hasThemeBackColor","Possède une couleur de fond du thème","BooleanField","false","3","",
-"hasThemeTextColor","Possède une couleur du texte du thème","BooleanField","false","3","",
-"hasStyleBackColor","Possède une couleur de fond du style","BooleanField","false","3","",
-"hasStyleTextColor","Possède une couleur du texte du style","BooleanField","false","3","",
 "themeBackColor","Couleur de fond du thème","ColorField","false","3","",
