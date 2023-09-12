@@ -4,6 +4,7 @@ namespace App\EventListener;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
@@ -57,6 +58,9 @@ class EntityListener implements EventSubscriberInterface
         $entity = $event->getEntityInstance();
         // Si l'entité est une catégorie ou un article.
         if ($entity instanceof Article) {
+            // Création du slug
+            $slugger = new Slugify();
+            $entity->setSlug($slugger->slugify($entity->getTitle()));
             // Vérification de l'unicité du slug
             $slug = $entity->getSlug();
             // On récupère les articles qui possèdent le même slug avec un numéro à la fin.

@@ -121,7 +121,7 @@ class ArticleCrudController extends BoController
         yield IdField::new('id')->hideOnForm()->setPermission('ROLE_DEV');
         yield IntegerField::new('ordre', 'ordre')->hideOnForm();
         yield TextField::new('title','titre')->setColumns(4);
-        yield SlugField::new('slug', 'Url')->setTargetFieldName('title')->hideOnIndex();
+        //yield SlugField::new('slug', 'Url')->setTargetFieldName('title')->hideOnIndex();
         yield AssociationField::new('children','Enfants')->hideOnForm();
         yield AssociationField::new('category','Categorie')->setColumns(4)->hideOnForm()->formatValue(function($value, $article) {
             // Concatenation du nom de la catégorie avec les noms des catégories parentes.
