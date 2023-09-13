@@ -1,4 +1,4 @@
-framework:
+ framework:
     mailer:
         dsn: '%env(MAILER_DSN)%'
         envelope:
@@ -7,4 +7,3 @@ framework:
 
         headers:
             From: 'Client <no-reply@e-systemes.com>'
-            To:  'nicolas@e-systemes.com'
