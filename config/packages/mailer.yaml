@@ -3,7 +3,5 @@ framework:
         dsn: '%env(MAILER_DSN)%'
         envelope:
             sender: 'no-reply@e-systemes.com'
-            recipients: ['nicolas@e-systemes.com']
-
         headers:
-            From: 'Client <no-reply@e-systemes.com>'
+            From: '%env(SITE)% <no-reply@e-systemes.com>'
