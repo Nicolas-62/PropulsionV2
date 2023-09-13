@@ -2,14 +2,12 @@
 
 namespace App\Entity;
 
-use App\Entity\ExtraDataTrait\ArticleDataTrait;
 use App\Entity\Traits\CMSTrait;
 use App\Entity\Traits\ErrorTrait;
 use App\Entity\Traits\ExtraDataTrait;
 use App\Entity\Traits\ExtraFieldtrait;
 use App\Entity\Traits\LanguageTrait;
 use App\Entity\Traits\MediaTrait;
-use App\Entity\Traits\PreviewTrait;
 use App\Entity\Traits\TimesTampableTrait;
 use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -35,7 +33,6 @@ if($filesystem->exists(__DIR__.'/ExtraFields/ArticleData.csv')){
 define('ARTICLE_DATA_FIELDS', $fields);
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
-
 class Article
 {
     use CMSTrait;

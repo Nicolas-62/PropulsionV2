@@ -6,7 +6,7 @@
 
     <!-- ARTISTES ACCOMPAGNES -->
     <div class="p-lg-5">
-        <div class="p-sm-5 p-md-5 p-lg-0 px-lg-5">
+        <div class="p-sm-5 p-md-5 p-lg-0 px-lg-3">
             <div class="row">
                 <div class="col-md-6 col-lg-3">
                     <div class="h1 pt-4">Artistes <br> Accompagnés</div>
@@ -16,11 +16,11 @@
                     <h2>Dispositif d’accompagnement de<br> La Lune des Pirates</h2>
                 </div>
                 <div class="col-3" style="line-height: 0.7">
-                    <p style="font-size: 60px; font-weight: bold">Objectif</p>
-                    <p style="font-size: 80px; font-weight: bold">LUNE</p>
+                    <p class="objectif-soutiens">Objectif</p>
+                    <p class="lune-soutiens">LUNE</p>
                 </div>
             </div>
-            <div class="h3 py-4">
+            <div class="fs-5 py-4">
                 {{ category_accomp.getDatas(locale) }}
                 {{ category_accomp.description|raw }}
             </div>
@@ -31,7 +31,7 @@
                 {{  accomp.getDatas(locale) }}
 
                 {% set media = accomp.getMedia(4) %}
-                <div class="col-lg-4 col-md-12 pb-lg-5 px-lg-5 px-md-0">
+                <div class="col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-1 px-md-0">
                     <!-- Card-Actu -->
                     {% include 'frontoffice/_components/card.html.twig' with {'event': accomp, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true } %}
                 </div>
@@ -41,7 +41,7 @@
 
     <!-- AUDITIONS -->
     <div class="p-lg-5 bg-grey">
-        <div class="p-sm-5 p-md-5 py-lg-0 px-lg-5">
+        <div class="p-sm-5 p-md-5 py-lg-0 px-lg-3">
             <div class="row">
                 <div class="col-md-6 col-lg-3">
                     <h1 class="pt-4">Auditions</h1>
@@ -50,12 +50,12 @@
                     <h2>Dispositif national de repérage et de sélection de nouveaux talents</h2>
                 </div>
                 <div class="col-3" style="line-height: 40pt">
-                    <p style="font-size: 60px; font-weight: bold">Les inouïs du printemps de Bourges</p>
+                    <p class="objectif-soutiens">Les inouïs du printemps de Bourges</p>
                 </div>
             </div>
 
 
-            <div class="h3 py-4">
+            <div class="fs-5 py-4">
                 {{ category_audition.getDatas(locale) }}
                 {{ category_audition.description|raw }}
             </div>
@@ -66,7 +66,7 @@
                 {{  accomp.getDatas(locale) }}
 
                 {% set media = accomp.getMedia(4) %}
-                <div class="col-lg-4 col-md-12 pb-lg-5 px-lg-5 px-md-0">
+                <div class="col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-1 px-md-0">
 
                     <!-- Card-Actu -->
                     {% include 'frontoffice/_components/card.html.twig' with {'event': accomp, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true } %}
@@ -79,7 +79,7 @@
 
     <div class="p-lg-5">
         <div class="p-sm-5 p-md-5 p-lg-0">
-            <div class="row px-lg-5">
+            <div class="row px-lg-3">
                 <h1 class="py-4">Evenements<br> Actualités</h1>
             </div>
         </div>
@@ -94,7 +94,7 @@
                 {{  event_actu.getDatas(locale) }}
 
                 {% set media = event_actu.getMedia(4) %}
-                <div class="col-lg-4 col-md-12 pb-lg-5 px-lg-5 px-md-0">
+                <div class="col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-1 px-md-0">
 
                     <!-- Card-Actu -->
                     {% include 'frontoffice/_components/card.html.twig' with {'event': event_actu, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': false, 'soutiens': false } %}

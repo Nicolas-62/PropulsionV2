@@ -42,7 +42,7 @@ class LuneController extends FOController
         $sous_categorie_ids               =     $this->entityManager->getRepository(Category::class)->find($this->category_agenda_id)->getChildrenIds();
         $events_header                    =     $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->params->get('locale'), true, 'dateEvent', 'DESC');
         $this->data['events_header']      =     $events_header;
-        $this->data['btns']               =     $this->btns = array('pic_icon');
+        $this->data['btns']               =     $this->btns = array('SEARCH', 'PROFIL', 'COMMANDE');
         $this->data['menu']               =     $this->menu = array('Agenda' => 'fo_agenda_index','Actus' => 'fo_actus_index','Action Culturelle' => 'fo_actions_index','Soutiens aux artistes' => 'fo_soutiens_index','Infos Pratiques' => 'fo_infos_index');
     }
 

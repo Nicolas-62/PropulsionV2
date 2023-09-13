@@ -1,9 +1,9 @@
 <!-- HEADER LG -->
 <div class="d-md-none d-sm-none p-0 m-0 d-lg-block">
     <div class="row">
-        <div class="col-3">
+        <div class="col-3 p-4">
             <a href="{{ path('fo_home_index') }}">
-                <img class="img-fluid" src="{{ asset('build/maquette/images/LOGO_ACTUEL.png') }}">
+                <img class="img-fluid logo-header" src="{{ asset('build/maquette/images/LOGO_HEADER.jpg') }}">
             </a>
         </div>
         <div class="col-lg-9 col-md-9 d-block flex-column align-items-start p-0">
@@ -17,7 +17,7 @@
                             <li class="nav-item " style="z-index: {{ 1000 - loop.index }}">
                                 <a class="text-decoration-none" href="/agenda/{{ event_header.slug}}
 ">
-                                    {% set longueurMax = 15 %}
+                                    {% set longueurMax = 10 %}
                                     {% if media is not null %}
                                         {% set url = '/assets/images/' ~ media.media %}
                                         <img src="{{ asset((url)) }}" class="rounded-circle round-img-header" alt="...">
@@ -27,18 +27,20 @@
 
                                     {% if loop.index < 4 %}
                                         {% if event_header.title|length > longueurMax %}
-                                            <div class="text-center ml-40">{{ event_header.title|slice(0, longueurMax) ~ '...' }}</div>
+
+                                            <div class="text-center ml-15" style="font-size: 12px">{{ event_header.dateEvent | date('d/m') }}</div>
+                                            <div class="text-center ml-15" style="font-size: 12px">{{ event_header.title|slice(0, longueurMax) ~ '...' }}</div>
                                         {% else %}
-                                            <div class="text-center ml-40">{{ event_header.title }}</div>
+                                            <div class="text-center ml-15" style="font-size: 12px">{{ event_header.title }}</div>
                                         {% endif %}
-                                        <div class="text-center ml-40">{{ event_header.dateEvent | date('d/m') }}</div>
                                     {% else %}
                                         {% if event_header.title|length > longueurMax %}
-                                            <div class="text-center" style="margin-right: 40px">{{ event_header.title|slice(0, longueurMax) ~ '...' }}</div>
+
+                                            <div class="text-center" style="margin-right: 40px;font-size: 12px">{{ event_header.dateEvent | date('d/m') }}</div>
+                                            <div class="text-center" style="margin-right: 40px;font-size: 12px">{{ event_header.title|slice(0, longueurMax) ~ '...' }}</div>
                                         {% else %}
-                                            <div class="text-center" style="margin-right: 40px">{{ event_header.title }}</div>
+                                            <div class="text-center" style="margin-right: 40px;font-size: 12px">{{ event_header.title }}</div>
                                         {% endif %}
-                                        <div class="text-center" style="margin-right: 40px">{{ event_header.dateEvent | date('d/m') }}</div>
                                     {% endif %}
                                 </a>
                             </li>
@@ -46,30 +48,34 @@
                     {% endfor %}
 
 
-
+                    <div class="d-flex align-items-center">
                     {% for src in btns %}
-                        {% set url = 'build/maquette/images/' %}
-                        {% set ext = '.png' %}
+                        {% set url = 'build/front/images/' %}
+                        {% set ext = '.jpg' %}
                         {% set src = url ~ src ~ ext %}
-                        <a href="/gallery">
-                            <li><img src="{{ asset(src) }}"></li>
-                        </a>
+                            <a href="/gallery" class="mx-1">
+                                <li><img class="btns-header" src="{{ asset(src) }}"></li>
+                            </a>
                     {% endfor %}
+                    </div>
                 </ul>
             </nav>
             <!-- NAV BAR LG -->
-            <nav class="d-none d-lg-flex block navbar-expand-lg col-12 mb-auto">
-                <div class="row">
-                    <ul class="navbar-nav w-100 justify-content-between nav-md-sm">
-                        {% for name, url in menu %}
-                            <li style="margin-left: 20px;margin-right: 20px"><strong><a class="text-decoration-none black title-nav-lg"  href="{{ path(url) }}">{{ name|upper }}</a></strong></li>
-                            {% if loop.index0 < 4 %}
+            <div class="d-none d-lg-flex block navbar-expand-lg col-12 mb-auto">
+                <div class="row row-cols-auto">
+                {% for name, url in menu %}
+                    <div class="col">
+                        <strong><a class="text-decoration-none black title-nav-lg"  href="{{ path(url) }}">{{ name|upper }}</a></strong>
+
+                    </div>
+                    {% if loop.index0 < 4 %}
+                        <div class="col">
                                 <img class="nav-separator" src="{{ asset('build/maquette/images/separator.png') }}">
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
+                        </div>
+                    {% endif %}
+                {% endfor %}
                 </div>
-            </nav>
+            </div>
         </div>
     </div>
 </div>
@@ -107,17 +113,17 @@
             </div>
         </div>
         {% for src in btns %}
-            <div class="col-6 text-center">
-                {% set url = 'build/maquette/images/' %}
-                {% set ext = '.png' %}
+            <div class="col-2 offset-1 text-center btns-header">
+                {% set url = 'build/front/images/' %}
+                {% set ext = '.jpg' %}
                 {% set src = url ~ src ~ ext %}
                 <img src="{{ asset(src) }}">
             </div>
         {% endfor %}
-        <div class="col-6 text-center">
+        <div class="col-2 offset-1 text-center">
 
-            <button class="btn btn-move-up" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                <img src="{{ asset('build/maquette/images/MENU_HEADER.png') }}">
+            <button class="btn btn-move-up"  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                <img style="max-height: 57px" src="{{ asset('build/maquette/images/MENU_HEADER.png') }}">
             </button>
 
         </div>

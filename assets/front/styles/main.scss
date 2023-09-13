@@ -36,18 +36,9 @@ body {
   font-weight: bold !important;
 }
 
-.card-date {
-  font-size: 24px !important;
-  font-weight: bold !important;
-}
-
 .card-subtitle {
   font-size: 24px !important;
   font-weight: normal;
-}
-
-.card-hour {
-  font-size: 20px !important;
 }
 
 
@@ -64,13 +55,13 @@ body {
 }
 
 .btn-billetterie-card {
-  max-height: 80px;
+  max-height: 50px;
 }
 
 .btn-read-card {
 
-  font-size: 1.75rem;
-  padding: 0.5rem 1rem;
+  font-size: 1.25rem;
+  padding: 0.5rem 0.5rem;
   font-weight: bold;
   text-align: center;
   border: 1px solid #343a40;
@@ -96,7 +87,7 @@ body {
 }
 
 .title-nav-lg {
-  font-size: 32px;
+  font-size: 24px;
 }
 
 /* Taille de texte */
@@ -268,6 +259,7 @@ body {
   background-color: rgba(0, 0, 0, 0.7); /* Couleur rouge avec 50% d'opacité */
   display: flex;
   justify-content: center;
+
 }
 
 .cancelled-text {
@@ -275,16 +267,16 @@ body {
   font-size: 78px;
   font-weight: bold;
   color: white;
-  top: 200px;
+  top: 100px;
 }
 
 /* Thème */
 .theme-1 {
-  min-height: 50px;
+  min-height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: 15px;
   color: white;
 }
 
@@ -292,7 +284,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: start;
-  font-size: 22px;
+  font-size: 14px;
   color: white;
 }
 
@@ -310,7 +302,7 @@ body {
 
 /* Menu */
 .nav-separator {
-  max-height: 50px;
+  max-height: 40px;
 }
 
 .nav-link {
@@ -396,7 +388,7 @@ body {
   color : black;
   background-color: white;
   border-radius: 0;
-  font-size: 30px;
+  font-size: 20px;
 }
 
 .dropdown-select-item-li {
@@ -438,12 +430,12 @@ body {
   padding:5px;
   border: solid 1px #B4B4B4FF;
   background-color: #ffffff;
-  margin-left: -40px;
-  max-height: 150px
+  margin-left: -8px;
+  max-height: 80px
 }
 
-.ml-40 {
-  margin-left: -40px;
+.ml-15 {
+  margin-left: -8px;
 }
 
 
@@ -487,4 +479,75 @@ body {
 
 .z-4 {
   z-index: 4 !important;
+}
+
+/* Header */
+
+.btns-header{
+
+  max-height: 57px;
+  max-width: 57px;
+}
+
+.logo-header{
+
+}
+
+.border-event{
+    border: 1px solid black;
+
+}
+
+.transport-infos{
+  max-height: 80px;
+  max-width: 80px
+}
+
+.tarif-infos {
+  max-height: 60px
+}
+
+.captcha-infos{
+  max-height: 122px;
+}
+
+.pass-culture-infos{
+  max-height: 86px;
+}
+
+.card-vedette-home{
+  right: 0;
+  top:25%;
+  width: 25%;
+  background-color: white;
+}
+
+.img-bruits-lune {
+  max-height: 333px;
+}
+
+.img-lune-spotify {
+  max-height: 215px;
+}
+
+.img-spotify {
+  max-height: 60px;
+}
+
+.objectif-soutiens{
+  font-size: 60px;
+  font-weight: bold;
+}
+
+.lune-soutiens {
+  font-size: 80px;
+  font-weight: bold;
+}
+
+.bottom-17 {
+  bottom: 17px;
+}
+
+.mh-45 {
+  max-height: 45px;
 }

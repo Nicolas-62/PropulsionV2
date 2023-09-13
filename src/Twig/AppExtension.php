@@ -18,6 +18,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('const', [$this, 'const']),
             new TwigFunction('truncateHtml', [$this, 'truncateHtml']),
             new TwigFunction('formatCustomDate', [$this, 'formatCustomDate']),
+            new TwigFunction('formatCustomDateWithoutYears', [$this, 'formatCustomDateWithoutYears']),
 
 
         ];
@@ -98,6 +99,43 @@ class AppExtension extends AbstractExtension
             ];
 
             $formattedDate = $dayOfWeek[$date->format('D')] . ' ' . $date->format('j') . ' ' . $monthNames[$date->format('M')] . ' ' . $date->format('Y');
+
+            return strtoupper($formattedDate);
+        }else{
+            return '';
+        }
+    }
+
+    public function formatCustomDateWithoutYears($date)
+    {
+        if($date != null and $date instanceof \DateTimeInterface ) {
+
+            $dayOfWeek = [
+              'Mon' => 'LUN.',
+              'Tue' => 'MAR.',
+              'Wed' => 'MER.',
+              'Thu' => 'JEU.',
+              'Fri' => 'VEN.',
+              'Sat' => 'SAM.',
+              'Sun' => 'DIM.',
+            ];
+
+            $monthNames = [
+              'Jan' => 'JANVIER',
+              'Feb' => 'FÉVRIER',
+              'Mar' => 'MARS',
+              'Apr' => 'AVRIL',
+              'May' => 'MAI',
+              'Jun' => 'JUIN',
+              'Jul' => 'JUILLET',
+              'Aug' => 'AOÛT',
+              'Sep' => 'SEPTEMBRE',
+              'Oct' => 'OCTOBRE',
+              'Nov' => 'NOVEMBRE',
+              'Dec' => 'DÉCEMBRE',
+            ];
+
+            $formattedDate = $dayOfWeek[$date->format('D')] . ' ' . $date->format('j') . ' ' . $monthNames[$date->format('M')];
 
             return strtoupper($formattedDate);
         }else{

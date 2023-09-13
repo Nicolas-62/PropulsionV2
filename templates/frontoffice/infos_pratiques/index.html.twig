@@ -81,25 +81,25 @@
 
                         </div>
 
-                        <div class="col-3 h3">
+                        <div class="col-5 fs-5 lh-1">
                             {{ cat_contact.getDatas(locale) }}
                             {{ cat_contact.description | raw }}
                         </div>
                     </div>
 
-                    <div class="fs-3">
+                    <div class="fs-5 mt-5">
 
                         {{ cat_contact.content | raw }}
                     </div>
 
 
-                    <h1 class="">NOUS ÉCRIRE</h1>
+                    <div class="h3">NOUS ÉCRIRE</div>
                     <!-- Formulaire -->
-                    <form class="h4"  method="post" action="{{ path('fo_infos_contact') }}" >
+                    <form class="fs-5"  method="post" action="{{ path('fo_infos_contact') }}" >
 
                         <div class="form-group py-2">
                             <label class="pb-2" for="exampleFormControlSelect1">{{ field_label(form.subject) }} (obligatoire)</label>
-                            <select class="form-control rounded-0 border-secondary fs-2 select-infos"  name="{{ field_name(form.subject) }}" id="exampleFormControlSelect1">
+                            <select class="form-control rounded-0 border-secondary fs-5 select-infos"  name="{{ field_name(form.subject) }}" id="exampleFormControlSelect1">
                                 <option>Sélectionner ...</option>
                                 {% for value, subject in field_choices(form.subject) %}
                                     <option value="{{ value }}">{{ subject }}</option>
@@ -137,11 +137,9 @@
                         <div class="py-4">
                             <button type="submit" class="btn border border-secondary rounded-0 p-3 fs-3"><div class="p-2">ENVOYER</div></button>
                         </div>
-                        <p>
+                        <div class="fs-6">
                             En cliquant sur "Envoyer", vous acceptez de fournir les informations permettant qu'une réponse vous soit délivrée et que votre demande soit traitée. En indiquant votre adresse email, et en cochant la ou les cases associées, vous consentez à recevoir nos lettres d'information par voie électronique. Vous pouvez vous désinscrire à tout moment via les liens de désinscription ou en nous contactant.
-
-                        </p>
-                        <p>Pour en savoir plus, consultez notre Politique de confidentialité.</p>
+                            <br>Pour en savoir plus, consultez notre Politique de confidentialité.</div>
                     </form>
                 </div>
 
@@ -158,14 +156,14 @@
                             <img src="{{ asset(('build/maquette/images/point_venir.png')) }}" class="">
                         </div>
 
-                        <div class="col-3 h3">
+                        <div class="col-5 fs-5 mt-5 lh-1">
 
 
                                 {{ cat_comment_venir.getDatas(locale) }}
                                 {{ cat_comment_venir.description | raw }}
                         </div>
                     </div>
-                    <div class="fs-3">
+                    <div class="fs-5">
                         {{ cat_comment_venir.content | raw }}
                     </div>
 
@@ -183,21 +181,20 @@
                             {% set media = article_adress_billetterie.getMedia(15) %}
                             {% if media is not null %}
                             {% set url = '/assets/images/' ~ media.media %}
-                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
+                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0"  alt="...">
                             {% endif  %}
 
                         </div>
-                        <div class="col-5 fs-3">
-
+                        <div class="col-5 fs-5 lh-1">
                             {{ article_adress_billetterie.description | raw }}
                         </div>
                     </div>
 
                     <div>
-                        <h1 class="py-5">{{ article_contact_billetterie.getDatas(locale) }}
+                        <div class="h3 py-5">{{ article_contact_billetterie.getDatas(locale) }}
 
                             {{ article_contact_billetterie.subtitle  }}
-                        </h1>
+                        </div>
                         {{ article_contact_billetterie.getDatas(locale) }}
 
                         <div class="row">
@@ -207,21 +204,21 @@
                                 {% set media = article_contact_billetterie.getMedia(15) %}
                                 {% if media is not null %}
                                     {% set url = '/assets/images/' ~ media.media %}
-                                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
+                                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
                                 {% endif  %}                            </div>
-                            <div class="col-5 fs-3">
+                            <div class="col-5 fs-5 lh-1">
 
                                 {{ article_contact_billetterie.description | raw }}
 
                             </div>
 
                         </div>
-                        <div class="h2 pt-4 pb-5">
+                        <div class="fs-5 pt-5 pb-5">
                             {{ article_contact_billetterie.content | raw }}
                         </div>
 
 
-                        <div class="fs-3">
+                        <div class="fs-5">
                             {{ article_abonnement_billetterie.getDatas(locale) }}
                             {{ article_abonnement_billetterie.description | raw }}
                         </div>
@@ -231,24 +228,24 @@
                                 {% set media = article_abonnement_billetterie.getMedia(15) %}
                                 {% if media is not null %}
                                     {% set url = '/assets/images/' ~ media.media %}
-                                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
+                                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
                                 {% endif  %}
 
                             </div>
 
-                            <div class="col-7 h3">
+                            <div class="col-7 fs-5">
                                 {{ article_abonnement_billetterie.content | raw }}
                             </div>
                         </div>
 
-                        <p class="fs-3">Abonnez-vous à la billetterie les soirs de concerts ou à la billetterie de La Lune des Pirates ou en ligne en remplissant ce formulaire :</p>
+                        <p class="fs-5">Abonnez-vous à la billetterie les soirs de concerts ou à la billetterie de La Lune des Pirates ou en ligne en remplissant ce formulaire :</p>
 
-                        <h1>INFORMATIONS PERSONNELLES</h1>
+                        <div class="h3">INFORMATIONS PERSONNELLES</div>
 
 
                         <!-- FORMULAIRE -->
                         <form>
-                            <div class="row h3">
+                            <div class="row fs-5">
                                 <!-- Abonnement -->
                                 <div class="col-12 ">
 
@@ -319,7 +316,7 @@
                                     </div>
                                 </div>
                                 <hr class="py-3">
-                                <h1>COORDONNÉES</h1>
+                                <div class="h3">COORDONNÉES</div>
                                 <div class="col-6">
 
                                     <div class="form-group py-4">
@@ -372,10 +369,9 @@
                                 </div>
 
                                 <!-- ENVOYER -->
-                                <button type="submit" class="btn border border-secondary rounded-0 py-1 fs-2">ENREGISTRER</button>
+                                <button type="submit" class="btn border border-secondary rounded-0 py-1 fs-3">ENREGISTRER</button>
 
-                                <p class="pt-5">En cliquant sur "Enregistrer", vous acceptez de fournir les informations permettant de procéder à votre achat. En indiquant vos infor- mations personnelles, et en cochant la ou les cases associées, vous consentez à recevoir nos lettres d'information par voie électro- nique. Vous pouvez vous désinscrire à tout moment via les liens de désinscription ou en nous contactant.</p>
-                                <p class="pt-1">Pour en savoir plus, consultez notre Politique de confidentialité et nos conditions générales de vente.</p>
+                                <div class="pt-5 fs-6">En cliquant sur "Enregistrer", vous acceptez de fournir les informations permettant de procéder à votre achat. En indiquant vos infor- mations personnelles, et en cochant la ou les cases associées, vous consentez à recevoir nos lettres d'information par voie électro- nique. Vous pouvez vous désinscrire à tout moment via les liens de désinscription ou en nous contactant. <br>Pour en savoir plus, consultez notre Politique de confidentialité et nos conditions générales de vente.</div>
                             </div>
                         </form>
                     </div>
@@ -386,12 +382,12 @@
                         {% for question in question_infos %}
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed fs-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{ loop.index }}" aria-expanded="false" aria-controls="flush-collapse-{{ loop.index }}">
+                                    <button class="accordion-button collapsed fs-4" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{ loop.index }}" aria-expanded="false" aria-controls="flush-collapse-{{ loop.index }}">
                                         {{ question.title }}
                                     </button>
                                 </h2>
                                 <div id="flush-collapse-{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body fs-3"> {{ question.description | raw}}</div>
+                                    <div class="accordion-body fs-5"> {{ question.description | raw}}</div>
                                 </div>
                             </div>
                         {% endfor %}
@@ -423,8 +419,8 @@
                             <div class="row">
                                 {% for contact in contact_contact %}
                                     <div class="col-6 py-2">
-                                        <p class="h2">{{ contact.title }}</p>
-                                        <div class="h4">{{ contact.description | raw}}</div>
+                                        <p class="h3">{{ contact.title }}</p>
+                                        <div class="fs-5">{{ contact.description | raw}}</div>
                                     </div>
                                 {% endfor %}
                             </div>
@@ -434,16 +430,16 @@
                         <!-- L'équipe technique / Bénévoles -->
                         <div class="col-4">
 
-                            <h2>L'ÉQUIPE TECHNIQUE</h2>
-                            <p class="h3 pb-5">
+                            <div class="h3">L'ÉQUIPE TECHNIQUE</div>
+                            <div class="fs-5 pb-5">
 
                                 {% for membre_tech in equipe_tech_contact %}
                                     {{ membre_tech.title }}{% if loop.index != equipe_tech_contact | length %},{% endif %}
                                 {% endfor %} ...
-                            </p>
+                            </div>
 
-                            <h2 class="pt-5">MERCI AUX BÉNÉVOLES !</h2>
-                            <p class="h3">
+                            <div class="h3 pt-5">MERCI AUX BÉNÉVOLES !</div>
+                            <p class="fs-5">
                                 {% for benevole in benevoles_contact %}
                                     {{ benevole.title }}{% if loop.index != benevoles_contact | length %},{% endif %}
                                 {% endfor %} ...
@@ -475,12 +471,12 @@
 
                                 {% if media is not null %}
                                     {% set url = '/assets/images/' ~ media.media %}
-                                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style=" max-height: 150px;max-width: 150px" alt="...">
+                                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0 transport-infos" alt="...">
                                 {% endif  %}
                             </div>
                             <div class="col-lg-6 col-md-9 py-5">
-                                <h1 class="py-2">{{ article_comment_venir.title }}</h1>
-                                <div class="fs-3">{{ article_comment_venir.description | raw }}</div>
+                                <div class="h3 py-2">{{ article_comment_venir.title }}</div>
+                                <div class="fs-5">{{ article_comment_venir.description | raw }}</div>
                             </div>
 
                         </div>
@@ -505,21 +501,21 @@
                     <div class="row">
                         <div class="col-12">
                             {{ article_tarif_etudiant_billetterie.getDatas(locale) }}
-                            <div class="h1">{{ article_tarif_etudiant_billetterie.title }}</div>
-                            <div class="h2">{{article_tarif_etudiant_billetterie.description | raw}}</div>
+                            <div class="h3">{{ article_tarif_etudiant_billetterie.title }}</div>
+                            <div class="fs-5">{{article_tarif_etudiant_billetterie.description | raw}}</div>
                         </div>
                         <!-- Image tarifs -->
                         <div class="col-1">
                             {% set media = article_tarif_etudiant_billetterie.getMedia(15) %}
                             {% if media is not null %}
                                 {% set url = '/assets/images/' ~ media.media %}
-                                <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="max-height: 100px" alt="...">
+                                <img src="{{ asset((url)) }}" class="card-img-top rounded-0 tarif-infos" alt="...">
                             {% endif  %}
 
 
 
                         </div>
-                        <div class="col-11 h2">
+                        <div class="col-11 fs-5">
                             {{article_tarif_etudiant_billetterie.content | raw}}
                         </div>
                     </div>
@@ -531,8 +527,8 @@
             <div class="col-lg-9 offset-lg-3 col-md-12">
                 {{ article_pass_billetterie.getDatas(locale) }}
                 <div class="py-5 px-5 h2">
-                    <h1 class="pb-2">{{ article_pass_billetterie.title }}</h1>
-                    <div class="h2">
+                    <div class="pb-2 h2">{{ article_pass_billetterie.title }}</div>
+                    <div class="fs-5">
                         {{ article_pass_billetterie.description | raw }}
                     </div>
 
@@ -541,14 +537,14 @@
                             {% set media = article_pass_billetterie.getMedia(15) %}
                             {% if media is not null %}
                                 {% set url = '/assets/images/' ~ media.media %}
-                                <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="max-height: 200px" alt="...">
+                                <img src="{{ asset((url)) }}" class="card-img-top rounded-0 pass-culture-infos"  alt="...">
                             {% endif  %}
                         </div>
                         <div class="col-6">
                             {% set media = article_pass_billetterie.getMedia(16) %}
                             {% if media is not null %}
                                 {% set url = '/assets/images/' ~ media.media %}
-                                <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="max-height: 200px" alt="...">
+                                <img src="{{ asset((url)) }}" class="card-img-top rounded-0 captcha-infos"  alt="...">
                             {% endif  %}
                         </div>
 

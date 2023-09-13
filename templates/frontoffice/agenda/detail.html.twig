@@ -37,26 +37,25 @@
                 </div>
                 <!-- Date -->
                 <div style="padding-bottom: 20px; padding-top: 20px">
-                    <p style="font-size: 40px; font-weight: bold" class="mb-0">
-                        {{ formatCustomDate(article.dateEvent) }}
-                    </p>
-                    <p style="font-size: 30px" class="mt-0">
+                    <div style="font-size: 30px; font-weight: bold" class="mb-0">
+                        {{ formatCustomDate(article.dateEvent) }}<br>
                         {% if article.datetimeEvent is not empty and article.datetimeEvent is not null %}
                             {{ article.datetimeEvent| date("H:i") }}
                         {% endif %}
-                    </p>
+                    </div>
                 </div>
                 <!-- Bouton ajout panier -->
                 <div class="pt-2 pb-5">
                     <div class="row  h3">
                         <div class="col-6">
-                            <p>Tarif normal</p>
-                            <div class="row">
-                                <div class="col-6" style="padding-right: 0px; ">
+                            <div class="fs-5">Tarif normal</div>
+                            <div class="row fs-4">
+                                <div class="col-6 " style="padding-right: 0px; ">
                                     <div class="border border-1 border-dark p-2 w-100" style="background-color: #e6e6e6">12 €</div>
                                 </div>
                                 <div class="col-6" style="padding-left: 0px">
                                     <select class="w-100 p-1">
+                                        <option>0</option>
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -65,13 +64,14 @@
                             </div>
                         </div>
                         <div class="col-6">
-                            <p>Tarif abonné</p>
-                            <div class="row">
+                            <div class="fs-5">Tarif abonné</div>
+                            <div class="row fs-4">
                                 <div class="col-6" style="padding-right: 0px;">
-                                    <div class="border border-1 border-dark p-2 w-100" style="background-color: #e6e6e6">12 €</div>
+                                    <div class="border   border-1 border-dark p-2 w-100" style="background-color: #e6e6e6">12 €</div>
                                 </div>
                                 <div class="col-6" style="padding-left: 0px">
                                     <select class="w-100 p-1">
+                                        <option>0</option>
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -85,22 +85,21 @@
                 <!-- Cartes Lunes -->
                 <div class="row">
                     <div class="col-6">
-                        <img class="" style="max-width: 150px" src="{{ asset('build/maquette/images/LUNE_ABONNE.svg') }}">
-                        <p class="h3">
+                        <img class="" style="max-height: 50px" src="{{ asset('build/maquette/images/LUNE_ABONNE.svg') }}">
+                        <div style="font-size: 14px">
                             Profitez du tarif abonné<br>
                             <b>
                                 avec la carte lune
                             </b>
-                        </p>
+                        </div>
                     </div>
                     <div class="col-6">
-                        <img style="max-width: 150px" src="{{ asset('build/maquette/images/LUNE_PASS_CULTURE.svg') }}">
-                        <p class="h3">
+                        <img style="max-height: 50px" src="{{ asset('build/maquette/images/LUNE_PASS_CULTURE.svg') }}">
+                        <div style="font-size: 14px">
                             Tu as entre 15 et 18 ans ?<br>
-                            <b>
-                                Dispo sur le Pass Culture
-                            </b>
-                        </p>
+                            <b>Dispo sur le Pass Culture</b>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -110,12 +109,12 @@
         <div class="row">
             <div class="col-lg-8 col-md-12">
                 <!-- NOM GROUPE / STYLE / HORAIRE -->
-                <div class="row py-5 align-items-end">
+                <div class="row pt-5 pb-2 align-items-end">
                     <div class="col-lg-6 col-md-12">
-                        <h1 class="big-title">{{ article.title }}</h1>
+                        <div style="font-size: 50px; line-height: 1">{{ article.title }}</div>
                     </div>
                     <div class="col-lg-4 col-md-6">
-                        <h1>{{ article.typeMusic}}  {% if article.origin != "" %} | {{ article.origin }}{% endif %}</h1>
+                        <div class="h4 d-flex align-items-center">{{ article.typeMusic}}  {% if article.origin != "" %} | {{ article.origin }}{% endif %}</div>
                     </div>
                     <div class="col-lg-2 col-md-6 d-flex justify-content-end">
                         {% if article.datetimeEvent is not null and article.datetimeEvent  is not empty %}
@@ -124,14 +123,14 @@
                     </div>
                 </div>
                 <!-- RESUME ARTISTE -->
-                <div class="h2 py-3" style="line-height: 1.3">
+                <div class="fs-5 py-3" style="line-height: 1.3">
                     {{ article.description | raw }}
                 </div>
                 <!-- IMAGE ARTISTE -->
                 {% set media2 = article.getMedia(10) %}
                 {% set media3 = article.getMedia(1) %}
                 {% set media4 = article.getMedia(12) %}
-                <div class="p-5">
+                <div class="">
                     {% if media2 is not null %}
 
                         {% set url = '/assets/images/' ~ media2.media  %}
@@ -142,13 +141,15 @@
                     {% endif %}
                 </div>
                 <!-- DESCRIPTION ARTISTE -->
-                <div class="h3 py-5" style="line-height: 1.3">
+                <div class="fs-5 py-3" style="line-height: 1.3">
                     {{ article.content | raw }}
                 </div>
                 <!-- VIDEO ARTISTE -->
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item w-100" style="height: 860px;" src="{{ article.youtubeLink }}" allowfullscreen></iframe>
-                </div>
+                {% if article.youtubeLink is not null and article.youtubelink is not empty %}
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item w-100" style="height: 860px;" src="{{ article.youtubeLink }}" allowfullscreen></iframe>
+                    </div>
+                {% endif %}
                 <!-- TEST PHOTO ARRONDIE -->
                 <div>
                     {% if media4 is not null %}
@@ -159,34 +160,34 @@
                 </div>
                 <!-- PLUS D'INFOS SUR L'ARTISTE -->
                 <div class="row py-5">
-                    <div class="col-lg-6 offset-lg-4 col-md-12">
-                        <div class="row">
-                            <div class="col-lg-7 col-md-12 d-flex align-items-end">
+                    <div class="col-lg-8 offset-lg-4 col-md-12">
+                        <div class="row justify-content-end">
+                            <div class="col-6 d-flex align-items-end">
                                 {% if article.instagramLink != '' or article.twitterLink != '' or article.facebookLink != '' or article.siteInternet != ''  %}
-                                    <h2>Plus d'infos sur l'artiste</h2>
+                                    <div class="fs-4">Plus d'infos sur l'artiste</div>
                                 {% endif %}
                             </div>
-                            <div class="col-lg-5 col-md-12">
+                            <div class="col-6">
                                 <!-- MEDIAS SOCIAUX -->
                                 <div class="row">
                                     {% if article.instagramLink != '' %}
                                         <div class="col-3">
-                                            <a href="{{ article.instagramLink }}"><img src="{{ asset('build/maquette/images/INSTA_PROGRAMMATION.svg') }}"></a>
+                                            <a href="{{ article.instagramLink }}"><img class="mh-45"  src="{{ asset('build/front/images/PICTURE.svg') }}"></a>
                                         </div>
                                     {% endif %}
                                     {% if article.twitterLink != '' %}
                                         <div class="col-3">
-                                            <a href="{{ article.twitterLink }}"><img src="{{ asset('build/maquette/images/TWITTER_PROGRAMMATION.svg') }}"></a>
+                                            <a href="{{ article.twitterLink }}"><img class="mh-45" src="{{ asset('build/front/images/TWITTER.svg') }}"></a>
                                         </div>
                                     {% endif %}
                                     {% if article.facebookLink != '' %}
                                         <div class="col-3">
-                                            <a href="{{ article.facebookLink }}"><img src="{{ asset('build/maquette/images/FACEBOOK_PROGRAMMATION.svg') }}"></a>
+                                            <a href="{{ article.facebookLink }}"><img class="mh-45" src="{{ asset('build/front/images/FACEBOOK.svg') }}"></a>
                                         </div>
                                     {% endif %}
                                     {% if article.siteInternet != '' %}
                                         <div class="col-3">
-                                            <a href="{{ article.siteInternet }}"><img src="{{ asset('build/maquette/images/INTERNET_PROGRAMMATION.svg') }}"></a>
+                                            <a href="{{ article.siteInternet }}"><img class="mh-45" src="{{ asset('build/front/images/INTERNET.svg') }}"></a>
                                         </div>
                                     {% endif %}
                                 </div>
@@ -199,25 +200,22 @@
                 <div class="p-5">
                     <!-- CARTE LUNE -->
                     <div class="py-5">
-                        <img src="{{ asset('build/maquette/images/CARTE_LUNE_BAS.svg') }}">
-                        <p class="h3">
-                            Concerts Gratuits Abonnés & Réductions
-                        </p>
-                        <p class="h3">
+                        <img style="max-height: 163px " src="{{ asset('build/maquette/images/CARTE_LUNE_BAS.svg') }}">
+                        <div class="fs-5">
+                            Concerts Gratuits Abonnés & Réductions<br>
                             <b> Abonnez-vous !</b>
-                        </p>
+                        </div>
                     </div>
                     <div class="py-5 h3">
-                        <p>
-                            Tu as entre 15 et 18ans ?
-                        </p>
-                        <p>
+
+                        <img style="max-height: 90px" src="{{ asset('build/maquette/images/PASS_CULTURE_BIG.svg') }}">
+                        <div class="fs-5">
+                            Tu as entre 15 et 18ans ?<br>
                             <b>Dispo sur le Pass Culture</b>
-                        </p>
-                        <img src="{{ asset('build/maquette/images/PASS_CULTURE_BIG.svg') }}">
+                        </div>
                     </div>
                     <div class="py-5">
-                        <img src="{{ asset('build/maquette/images/INFOS_PRATIQUES.svg') }}">
+                        <img style="max-height: 150px" src="{{ asset('build/maquette/images/INFOS_PRATIQUES.svg') }}">
                     </div>
                 </div>
             </div>
@@ -231,7 +229,7 @@
             <div class="row">
                 <div class="col-lg-8 col-md-12">
                     <!-- NOM GROUPE / STYLE / HORAIRE -->
-                    <div class="row py-5 align-items-end">
+                    <div class="row py-3 align-items-end">
                         <div class="col-lg-6 col-md-12">
                             <h1 class="big-title">{{ child.title }}</h1>
                         </div>
@@ -243,53 +241,57 @@
                         </div>
                     </div>
                     <!-- DESCRIPTION ARTISTE -->
-                    <div class="h2 lh-lg">
+                    <div class="fs-5">
                         {{ child.description | raw }}
                     </div>
                     <!-- Image Artiste -->
                     {% set media3 = child.getMedia(1) %}
-                    <div class="p-5">
+                    <div class="pt-3">
                         {% if media3 is not null %}
                             {% set url = '/assets/images/' ~ media3.media  %}
                             <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
                         {% endif %}
                     </div>
                     <!-- CONTENT ARTISTE -->
-                    <div class="h2 lh-lg">
+                    <div class="fs-5 pb-3">
                         {{ child.content | raw }}
                     </div>
                     <!-- VIDEO ARTISTE -->
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item w-100" style="height: 860px" src="{{ child.youtubeLink }}" allowfullscreen></iframe>
-                    </div>
+                    {% if child.youtubeLink is not empty and child.youtubeLink is not null %}
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item w-100" style="height: 860px" src="{{ child.youtubeLink }}" allowfullscreen></iframe>
+                        </div>
+                    {% endif %}
                     <!-- PLUS D'INFOS SUR L'ARTISTE -->
                     <div class="row">
-                        <div class="col-lg-6 offset-lg-6 col-md-12 py-5">
+                        <div class="col-lg-8 offset-lg-4 col-md-12 py-5">
                             <div class="row">
-                                <div class="col-lg-6 col-md-12 d-flex align-items-end">
-                                    <h2>Plus d'infos sur l'artiste</h2>
+                                <div class="col-6 d-flex align-items-end">
+                                    {% if child.instagramLink != '' or child.twitterLink != '' or child.facebookLink != '' or child.siteInternet != ''  %}
+                                        <div class="fs-4">Plus d'infos sur l'artiste</div>
+                                    {% endif %}
                                 </div>
-                                <div class="col-lg-6 col-md-12">
+                                <div class="col-6">
                                     <!-- MEDIAS SOCIAUX -->
                                     <div class="row">
                                         {% if child.instagramLink != '' %}
                                             <div class="col-3">
-                                                <a href="{{ child.instagramLink }}"><img src="{{ asset('build/maquette/images/INSTA_PROGRAMMATION.svg') }}"></a>
+                                                <a href="{{ child.instagramLink }}"><img class="mh-45" src="{{ asset('build/front/images/PICTURE.svg') }}"></a>
                                             </div>
                                         {% endif %}
                                         {% if child.twitterLink != '' %}
                                             <div class="col-3">
-                                                <a href="{{ child.twitterLink }}"><img src="{{ asset('build/maquette/images/TWITTER_PROGRAMMATION.svg') }}"></a>
+                                                <a href="{{ child.twitterLink }}"><img class="mh-45" src="{{ asset('build/front/images/TWITTER.svg') }}"></a>
                                             </div>
                                         {% endif %}
                                         {% if child.facebookLink != '' %}
                                             <div class="col-3">
-                                                <a href="{{ child.facebookLink }}"><img src="{{ asset('build/maquette/images/FACEBOOK_PROGRAMMATION.svg') }}"></a>
+                                                <a href="{{ child.facebookLink }}"><img class="mh-45" src="{{ asset('build/front/images/FACEBOOK.svg') }}"></a>
                                             </div>
                                         {% endif %}
                                         {% if child.siteInternet != '' %}
                                             <div class="col-3">
-                                                <a href="{{ child.siteInternet }}"><img src="{{ asset('build/maquette/images/INTERNET_PROGRAMMATION.svg') }}"></a>
+                                                <a href="{{ child.siteInternet }}"><img class="mh-45" src="{{ asset('build/front/images/INTERNET.svg') }}"></a>
                                             </div>
                                         {% endif %}
                                     </div>
@@ -300,7 +302,7 @@
                 </div>
                 <div class="col-lg-4 col-md-12 d-flex align-content-end justify-content-center text-md-center text-lg-start flex-wrap">
                     <div class="p-5">
-                        <div class="py-5" style="width: 500px">
+                        <div class="py-5" style="max-height: 140px; max-width: 266px;min-width: 265px">
                             <img src="{{ asset('build/maquette/images/INFOS_PRATIQUES.svg') }}">
                         </div>
                     </div>

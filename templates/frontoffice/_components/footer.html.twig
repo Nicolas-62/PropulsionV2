@@ -25,10 +25,10 @@
     <!-- LOGOS -->
     <div class="row">
         <div class="col-md-12 col-lg-10">
-            <img class="img-fluid" style="width: 50%" src="{{ asset('build/maquette/images/FOOTER_LUNE.png') }}">
+            <img class="img-fluid" style="max-width: 550px" src="{{ asset('build/maquette/images/FOOTER_LUNE.png') }}">
         </div>
         <div class="d-sm-none d-md-none d-lg-block col-lg-2">
-            <img class="img-fluid" src="{{ asset('build/maquette/images/FOOTER_LOGO.png') }}">
+            <img class="img-fluid" style="max-width: 115px" src="{{ asset('build/maquette/images/FOOTER_LOGO.png') }}">
         </div>
     </div>
 
@@ -36,48 +36,56 @@
 
 
     <!-- BOUTONS FOOTER -->
-    <div class="row text-white">
-        <div class="col-sm-12 col-md-5 col-lg-2 pb-3 offset-lg-1">
+    <!-- BOUTONS FOOTER -->
+    <div class="row text-white mx-2">
+        <div class="col-sm-12 col-md-4 col-lg-2 pb-3 offset-lg-1">
             <div class="row">
                 <div class="col-11 text-center">
-                    <img class="col-12 img-fluid" style="max-height: 100px" src="/build/maquette/images/FOOTER_ARROW.svg">
-                    <div class="mt-5">
+                    <img class="col-12 img-fluid" style="max-height: 70px" src="/build/maquette/images/FOOTER_ARROW.svg">
+                    <div class="mt-3">
                         <b>SCÈNE <br>
                             DE MUSIQUES <br> ACTUELLES </b><br> 17 Quai Bélu <br> 80000 Amiens
                     </div>
                 </div>
 
-
-            </div>
-
-        </div>
-        <div class="col-lg-1 col-md-2">
-            <div class="text-center">
-            <img class="text-center img-fluid" style="max-height: 300px" src="/build/maquette/images/SEPARATOR_FOOTER.svg">
+                <img class="col-1 img-fluid" style="max-height: 300px" src="/build/maquette/images/SEPARATOR_FOOTER.svg">
             </div>
         </div>
-        <div class="col-sm-12 col-md-5 col-lg-2 pb-3">
+        <div class="col-sm-12 col-md-4 col-lg-2 pb-3">
             <div class="row h-100">
-                <div class="col-lg-11 col-md-12 text-center">
-                    <img class="img-fluid" style="max-height: 100px" src="/build/maquette/images/FOOTER_BUBBLE.svg">
-                    <div class="mt-5">
+                <div class="col-11 text-center">
+                    <img class="img-fluid" style="max-height: 68px" src="/build/maquette/images/FOOTER_BUBBLE.svg">
+                    <div class="mt-3">
                         NOUS CONTACTER
                     </div>
                 </div>
-                <img class="col-lg-1  img-fluid d-md-none d-lg-block" style="max-height: 300px" src="/build/maquette/images/SEPARATOR_FOOTER.svg">
+                <img class="col-1 img-fluid" style="max-height: 300px" src="/build/maquette/images/SEPARATOR_FOOTER.svg">
 
             </div>
         </div>
-        <div class="col-md-10 offset-md-1 col-lg-5">
+        <div class="col-sm-12 col-md-4 col-lg-2 pb-3">
+            <div class="row h-100">
+                <div class="col-11 text-center">
+                    <img class="img-fluid" style="max-height: 62px" src="/build/maquette/images/FOOTER_CADDIE.svg">
+                    <div class="mt-3">
+                        VOS COMMANDES
+                    </div>
+                </div>
+                <div class="col-1 d-md-none d-lg-block">
+                    <img class="img-fluid" style="max-height: 300px" src="/build/maquette/images/SEPARATOR_FOOTER.svg">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12  col-lg-5">
             <div class="row">
                 <div class="col-12 text-center">
                     <div class="row">
                         <div class="col-4">
-                            <img class="" style="max-height: 100px" src="/build/maquette/images/FOOTER_ENVELOPPE.svg">
+                            <img class="" style="max-height: 60px" src="/build/maquette/images/FOOTER_ENVELOPPE.svg">
                         </div>
                     </div>
                     <form>
-                        <div class="row mt-5">
+                        <div class="row mt-3">
                             <div class="col-4">
                                 NEWSLETTER
                             </div>
@@ -90,7 +98,7 @@
                                 <img class="img-fluid" src="/build/maquette/images/BOUTON_FORM_FOOTER.png" alt="Valider">
                             </button>
 
-                            <div class="col-12 text-start px-sm-5 pb-sm-4">
+                            <div class="col-12 text-start px-sm-5 pb-sm-4" style="font-size: 14px">
                                 En indiquant votre adresse email, vous consentez à recevoir nos lettres d'information par voie électronique. Vous pouvez vous désinscrire à tout moment via les liens de désinscription ou en nous contactant. Pour en savoir plus, consultez notre Politique de confidentialité.
                             </div>
                         </div>
@@ -119,33 +127,22 @@
 
 <!-- PARTENAIRES ET SPONSORS -->
 <div class="pt-5 bg-grey px-0 mx-0">
-    <div class="row px-0 mx-0">
+    <div class="row row-cols-5 px-0 mx-0">
         {% for sponsor_img in sponsors_img %}
             {% set media_footer = sponsor_img.getMedia(11) %}
-            {% if (loop.length - loop.index) > 1 %}
-            <div class="col-md-4 col-lg-3 mb-2 text-center">
+            <div class="col mb-2 text-center">
                 {% if media_footer is not null %}
                     {% set url = '/assets/images/' ~ media_footer.media %}
                     <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="height: 100px; width: 163px" alt="...">
                 {% endif %}
             </div>
-            {% elseif (sponsors_img|length - loop.index0) == 1 %}
-                <div class="col-md-4 col-lg-12 mb-2 text-center">
-                    {% if media_footer is not null %}
-                        {% set url = '/assets/images/' ~ media_footer.media %}
-                        <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="height: 100px; width: 163px" alt="...">
-                    {% endif %}
-                </div>
-            {% endif %}
-
         {% endfor %}
-
     </div>
 </div>
 
 
 <!-- MENTIONS LEGALES -->
-<div class="bg-grey row fs-4 pt-5 px-0 mx-0">
+<div class="bg-grey row pt-5 px-0 mx-0">
     <!-- LG / XL -->
     <div class="d-lg-flex d-none justify-content-center mb-5">
         {% for name, url in mentions %}
@@ -161,9 +158,11 @@
             <div class="col-12">
                 <div class="row mx-4 text-center">
                     {% for name, url in mentions %}
-                        <div class="px-0 {% if loop.index0 < 4 %}col-3{% else %}col-4{% endif %}">
+                        <div class="px-0 col"  >
+                            <a  class="text-decoration-none black" style="font-size: 16px "  href="{{ url }}">{{ name }}</a>
+                        </div>
+                        <div class="col">
                             {% if loop.index0 > 0 and loop.index0 != 4 %} | {% endif %}
-                            <a  class="text-decoration-none black" href="{{ url }}">{{ name }}</a>
                         </div>
                     {% endfor %}
                 </div>

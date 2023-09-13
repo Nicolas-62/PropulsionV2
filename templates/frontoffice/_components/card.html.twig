@@ -6,12 +6,12 @@
         {% elseif soutiens %}
                 <a class="text-decoration-none stretched-link" href="{{ path('fo_soutiens_detail', { 'slug': event.slug,}) }}">
         {% endif %}
-                {% if media is not null %}
-                {% set url = '/assets/images/' ~ media.media %}
-                <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
-            {% else  %}
-                <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_HEADER.png')) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
-            {% endif %}
+        {% if media is not null %}
+            {% set url = '/assets/images/' ~ media.media %}
+            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
+        {% else  %}
+            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_HEADER.png')) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
+        {% endif %}
 
         {% if agenda or soutiens %}
             </a>
@@ -54,19 +54,19 @@
     <div class="card-container" style="flex: 1;">
         <!-- Titre -->
         {% if agenda or actu %}
-        <div class="card-title my-3 fs-3 mb-0">
-            {{ event.title }}
+        <div class="my-3 fs-4 mb-0" style="line-height: 1">
+            {{ event.title | upper }}
         </div>
         {% endif %}
         <!-- CONTENU -->
         {% if agenda %}
-            <div class="fs-4 card-text">
+            <div class="fs-5 card-text">
                 {{ event.subtitle }}
             </div>
         {% endif %}
         {% if actu %}
             <!-- CONTENU -->
-            <div class="card-text">
+            <div class="card-text pt-2" style="line-height: 1">
                 {{ event.description|raw }}
             </div>
         {% endif %}
@@ -76,11 +76,11 @@
     <div class="card-container mb-3 d-flex justify-content-between" style="align-items: flex-end;">
         {% if agenda %}
             <div class="pb-3 d-flex">
-                <div class="card-date " style="align-self: flex-end;">
+                <div class= "fs-5 " style="align-self: flex-end;">
                     {{ formatCustomDate(event.dateEvent) }}
                 </div>
                 {% if event.dateTimeEvent is not null and event.dateTimeEvent is not empty %}
-                    <div class="card-hour">{{ event.dateTimeEvent| date("H:i") }}</div>
+                    <div class="fs-5">{{ event.dateTimeEvent| date("H:i") }}</div>
                 {% endif %}
             </div>
         {% endif %}
@@ -89,17 +89,17 @@
         {% endif %}
         {% if billetterie %}
             <a href="https://billetterie.lalune.net/">
-                <img class="btn-billetterie-card" src="{{ asset(('build/maquette/images/BILLETTERIE.png')) }}" alt="...">
+                <img class="btn-billetterie-card" src="{{ asset(('build/front/images/LIEN_BILLETTERIE.jpg')) }}" alt="...">
             </a>
         {% endif %}
         {% if soutiens %}
-            <div class="card-title align-self-center">
+            <div class="card-title justify-content-start">
                 {{ event.title }}
             </div>
             <a class="text-decoration-none" href="{{ path('fo_soutiens_detail', { 'slug': event.slug,}) }}">
 
-                <div>
-                    <img src="{{ asset(('build/maquette/images/COUPDOEUIL.png')) }}" class="card-img-top rounded-0" alt="...">
+                <div style="display: flex; justify-content: center; align-items: center;">
+                    <img src="{{ asset(('build/front/images/OEIL.png')) }}" class="card-img-top rounded-0" style="height: 30px" alt="...">
                 </div>
             </a>
         {% endif %}
