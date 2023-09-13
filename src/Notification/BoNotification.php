@@ -35,8 +35,8 @@ class BoNotification {
     {
         // Création du mail
         $message = (new TemplatedEmail())
+            ->to($user->getEmail())
             ->subject("Accès au backoffice de ".$this->params->get('app.site'))
-            ->replyTo($this->params->get('app.admin_email'))
             ->htmlTemplate('frontoffice/emails/password.html.twig')
             // Variables passées dans le contenu du mail.
             ->context([
