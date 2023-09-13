@@ -173,7 +173,11 @@ class UserCrudController extends AbstractCrudController
         // renders the action as a <a> HTML element
         //$returnAction->displayAsLink();
         // associé à l'action index
-        $returnAction->linkToCrudAction('sendAccess');
+        $returnAction->linkToRoute('user_send_access', function (User $user) {
+            return [
+                'hash' => $user->getHash()
+            ];
+        });
         // Action globale disponible en haut à droite du tableau.
         //$returnAction->createAsGlobalAction();
         $returnAction->addCssClass('');
@@ -183,28 +187,4 @@ class UserCrudController extends AbstractCrudController
         $actions->add(Crud::PAGE_INDEX, $returnAction);
         return $actions;
     }
-
-    public function sendAccess( AdminContext $context, BoNotification $notification): RedirectResponse
-    {
-        // Envoi d'un mail à l'utilisateur pour qu'il puisse créer son mot de passe
-        $entity = $context->getEntity()->getInstance();
-        $sent = $notification->sendAcces(
-            $entity,
-            $this->generateUrl(
-                'user_define_password',
-                ['hash' => $entity->getHash()],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            )
-        );
-        // Si le mail a été envoyé
-        if($sent) {
-            $this->addFlash('success', 'Votre email a bien été envoyé');
-        }else{
-            $this->addFlash('error', "Une erreur s'est produite, veuillez renouveler l'operation, si l'erreur persite contactez l'administrateur du site" );
-        }
-        // Redirection vers la liste des utilisateurs
-        return $this->redirect($this->adminUrlGenerator->setAction(Action::INDEX)
-            ->generateUrl());
-    }
-
 }

@@ -2,19 +2,28 @@
 
 namespace App\Controller;
 
+use App\Controller\Backoffice\UserCrudController;
 use App\Entity\User;
 use App\Form\DefinePasswordType;
 use App\Form\RegistrationFormType;
+use App\Notification\BoNotification;
+use App\Repository\UserRepository;
 use App\Security\AppCustomAuthenticator;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -29,6 +38,29 @@ class UserController extends AbstractController
         $this->emailVerifier = $emailVerifier;
     }
 
+    /**
+     * RDD
+     * fonction de génération de hash pour les utilisateurs
+     *
+     * @param EntityManagerInterface $entityManager
+     * @param UserRepository $userRepository
+     * @return Response
+     */
+    #[Route(path: '/users/generateHash', name: 'user_generate_hash')]
+    public function generateHash(EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    {
+        $users = $userRepository->findAll();
+        foreach($users as $user){
+            $user->setHash(md5($user->getEmail()));
+            $entityManager->persist($user);
+        }
+        $entityManager->flush();
+        $this->addFlash('success', 'Les  utilisateurs ont bien un hash');
+
+        return $this->redirectToRoute('bo_home');
+    }
+
+    
     #[Route(path: '/user/login', name: 'user_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -67,6 +99,42 @@ class UserController extends AbstractController
             'site_name' => $this->getParameter('app.site'),
         ]);
     }
+
+    /**
+     * Envoi un mail à l'utilisateur pour qu'il puisse créer son mot de passe.
+     *
+     * @param BoNotification $notification
+     * @return RedirectResponse
+     */
+    #[Route('/user/sendAccess/{hash}', name: 'user_send_access')]
+    public function sendAccess(?User $user, BoNotification $notification, AdminUrlGenerator $adminUrlGenerator): RedirectResponse
+    {
+        // Envoi d'un mail à l'utilisateur pour qu'il puisse créer son mot de passe
+        $sent = $notification->sendAcces(
+            // Utilissateur sélectionné
+            $user,
+            // Lien pour définir le mot de passe
+            $this->generateUrl(
+                'user_define_password',
+                ['hash' => $user->getHash()],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            )
+        );
+        // Si le mail a été envoyé
+        if($sent) {
+            $this->addFlash('success', 'Votre email a bien été envoyé');
+        }else{
+            $this->addFlash('error', "Une erreur s'est produite, veuillez renouveler l'operation, si l'erreur persite contactez l'administrateur du site" );
+        }
+        // Retour à la liste des utilisateurs
+        $url = $adminUrlGenerator
+            ->setController(UserCrudController::class)
+            ->setAction(Crud::PAGE_INDEX)
+            ->generateUrl();
+        // Redirection vers la liste des utilisateurs
+        return $this->redirect($url);
+    }
+
 
 
     #[Route(path: '/user/logout', name: 'user_logout')]

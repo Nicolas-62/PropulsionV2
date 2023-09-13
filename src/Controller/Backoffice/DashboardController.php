@@ -2,6 +2,7 @@
 
 namespace App\Controller\Backoffice;
 
+use App\Controller\UserController;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Config;
@@ -9,6 +10,7 @@ use App\Entity\Media;
 use App\Entity\Mediaspec;
 use App\Entity\Theme;
 use App\Entity\User;
+use App\Notification\BoNotification;
 use App\Service\CacheService;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -20,11 +22,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Exception;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -66,6 +70,43 @@ class DashboardController extends AbstractDashboardController
 
         return $this->redirectToRoute('bo_home');
     }
+
+
+    /**
+     * Envoi un mail à l'utilisateur pour qu'il puisse créer son mot de passe.
+     *
+     * @param BoNotification $notification
+     * @return RedirectResponse
+     */
+    #[Route('/user/sendAccess/{hash}', name: 'user_send_access')]
+    public function sendAccess(?User $user, BoNotification $notification, AdminUrlGenerator $adminUrlGenerator): RedirectResponse
+    {
+        // Envoi d'un mail à l'utilisateur pour qu'il puisse créer son mot de passe
+        $sent = $notification->sendAcces(
+        // Utilissateur sélectionné
+            $user,
+            // Lien pour définir le mot de passe
+            $this->generateUrl(
+                'user_define_password',
+                ['hash' => $user->getHash()],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            )
+        );
+        // Si le mail a été envoyé
+        if($sent) {
+            $this->addFlash('success', 'Votre email a bien été envoyé');
+        }else{
+            $this->addFlash('error', "Une erreur s'est produite, veuillez renouveler l'operation, si l'erreur persite contactez l'administrateur du site" );
+        }
+        // Retour à la liste des utilisateurs
+        $url = $adminUrlGenerator
+            ->setController(UserController::class)
+            ->setAction(Crud::PAGE_INDEX)
+            ->generateUrl();
+        // Redirection vers la liste des utilisateurs
+        return $this->redirect($url);
+    }
+
 
 
     public function clearDir($dossier, $rmdir = false)
