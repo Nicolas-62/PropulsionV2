@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\DefinePasswordType;
 use App\Form\RegistrationFormType;
 use App\Security\AppCustomAuthenticator;
 use App\Security\EmailVerifier;
@@ -41,6 +42,30 @@ class UserController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('user/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+    }
+
+    #[Route('/user/definePassword/{hash}', name: 'user_define_password')]
+    public function definePassword(?User $user, Request $request,  UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager)
+    {
+        $form = $this->createForm(DefinePasswordType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+            $entityManager->persist($user);
+            $entityManager->flush();
+            return $this->redirectToRoute('user_login');
+        }
+
+        return $this->render('user/define_password.html.twig', [
+            'definePasswordForm' => $form->createView(),
+            'site_name' => $this->getParameter('app.site'),
+        ]);
     }
 
 

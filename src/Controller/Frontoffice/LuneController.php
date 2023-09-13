@@ -10,7 +10,7 @@ use App\Entity\Contact;
 use App\Entity\Media;
 use App\Entity\Online;
 use App\Form\ContactType;
-use App\Notification\ContactNotification;
+use App\Notification\BoNotification;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -62,29 +62,6 @@ class LuneController extends FOController
 
         // Vue renvoyée.
         return $this->render('frontoffice/institutionnel/espacepresse.html.twig', $this->data);
-    }
-
-
-
-    #[Route('/contact', name: 'contact')]
-    public function contact(Request $request, ContactNotification $notification): Response
-    {
-        // Création du formulaire de contact
-        $contact = new Contact();
-        $form = $this->createForm(ContactType::class, $contact);
-        // récupération des données soumises
-        $form->handleRequest($request);
-        // Controle des données
-        if($form->isSubmitted() && $form->isValid()){
-            $notification->notify($contact);
-            $this->addFlash('success', 'Votre email a bien été envoyé');
-        }else{
-            $this->addFlash('error', 'Erreur');
-        }
-        // Vue renvoyée.
-        return $this->render('frontoffice/contact/contact.html.twig', [
-          'form'          => $form->createView()
-        ]);
     }
 
 

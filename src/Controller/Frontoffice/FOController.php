@@ -10,7 +10,7 @@ use App\Entity\Contact;
 use App\Entity\Media;
 use App\Entity\Online;
 use App\Form\ContactType;
-use App\Notification\ContactNotification;
+use App\Notification\BoNotification;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;

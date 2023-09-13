@@ -139,7 +139,6 @@ class ArticleCrudController extends BoController
             $parent = $article->getParent();
             if($parent != null) {
                 $value = $parent->getTitle();
-                $ancestors = array();
                 foreach($parent->getAncestors() as $ancestor) {
                     if($ancestor instanceof Article){
                         $value = $ancestor->getTitle() . ' / ' . $value;

@@ -6,6 +6,7 @@ use App\Entity\Media;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\Boolean;
+use function PHPUnit\Framework\isEmpty;
 
 trait ExtraFieldtrait
 {
@@ -50,9 +51,13 @@ trait ExtraFieldtrait
         // Nom de la proprieté
         $property = lcfirst(substr($name, 3));
         if ('get' === substr($name, 0, 3)) {
-            // Si c'est une date
+            // Si c'est une date on retourne null un objet date
             if(str_contains($property, 'date')){
-                return new \DateTimeImmutable($this->{$property} ?? null);
+                // Si le champ est vide
+                if(empty($this->{$property})){
+                    return null;
+                }
+                return new \DateTimeImmutable($this->{$property});
             }else{
                 return $this->{$property} ?? null;
             }
@@ -61,10 +66,16 @@ trait ExtraFieldtrait
             $value = 1 == count($args) ? $args[0] : null;
             // Si c'est une date
             if(str_contains($property, 'date')){
-                if(is_string($value)){
-                    $value = new \DateTimeImmutable($value);
+                // Si le champ est vide
+                if(empty($value)){
+                    $this->{$property} = '';
+                // Sinon on retourne une date formatée sous forme de string
+                }else{
+                    if(is_string($value)) {
+                        $value = new \DateTimeImmutable($value);
+                    }
+                    $this->{$property} = $value->format($this->getExtraField($property)['format']);
                 }
-                $this->{$property} = $value->format($this->getExtraField($property)['format']);
             }else{
                 $this->{$property} = $value;
             }

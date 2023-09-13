@@ -82,8 +82,11 @@ class ExtraDataListener implements EventSubscriberInterface
                             // CASTING en string
                             //formatage des dates.
                             if (str_contains($field['name'], 'date')) {
-
-                                $datas[$field['name']]->setFieldValue($entity->{'get' . ucfirst($field['name'])}()->format($field['format']));
+                                if($entity->{'get' . ucfirst($field['name'])}() != null) {
+                                    $datas[$field['name']]->setFieldValue($entity->{'get' . ucfirst($field['name'])}()->format($field['format']));
+                                }else{
+                                    $datas[$field['name']]->setFieldValue('');
+                                }
                             } else {
                                 $datas[$field['name']]->setFieldValue((string)$entity->{'get' . ucfirst($field['name'])}());
                             }

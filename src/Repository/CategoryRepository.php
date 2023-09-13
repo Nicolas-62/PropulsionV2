@@ -117,6 +117,7 @@ class CategoryRepository extends CMSRepository
             $request->setParameter('languageCode', $code_langue);
             $request->join('data.language', 'language');
         }
+        $request->orderBy('c.title', 'ASC');
         return $request->getQuery()->getResult();
     }
 

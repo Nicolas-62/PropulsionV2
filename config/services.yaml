@@ -9,6 +9,7 @@ parameters:
     # This parameter defines the codes of the locales (languages) enabled in the application
     app_locales: fr|en
     app.site: '%env(SITE)%'
+    app.admin_email: '%env(ADMIN_EMAIL)%'
     app.fo: '%env(FO)%'
     app.fo_path: '%app.fo%/'
     app.asset_img_path: '%env(ASSETS_IMG_PATH)%'

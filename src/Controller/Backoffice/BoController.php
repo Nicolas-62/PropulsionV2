@@ -20,6 +20,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Annotation\Route;
 
 abstract class BoController extends AbstractCrudController
 {
@@ -82,16 +83,20 @@ abstract class BoController extends AbstractCrudController
         $filename = $context->getRequest()->get('filename');
         // Récupération du dossier temporaire.
         $folderId = $context->getRequest()->get('folderId');
-        // Chemin temporaire de l'image
-        $imageBasePath = Constants::ASSETS_UPLOAD_PATH . $folderId . '/';
-        $filesystem = new Filesystem();
-        $filepath = $imageBasePath . $filename;
-        // Si le fichier existe.
-        if($filesystem->exists($filepath)) {
-            // Suppression du fichier.
-            $filesystem->remove($filepath);
-        }else{
-            $response["error"] = "Impossible de supprimer le fichier";
+
+        // Si le nom du dossier et le nom de fichier sont définis.
+        if(trim($filename) != '' && trim($folderId) != '') {
+            // Chemin temporaire de l'image
+            $imageBasePath = Constants::ASSETS_UPLOAD_PATH . $folderId . '/';
+            $filesystem = new Filesystem();
+            $filepath = $imageBasePath . $filename;
+            // Si le fichier existe.
+            if ($filesystem->exists($filepath)) {
+                // Suppression du fichier.
+                $filesystem->remove($filepath);
+            } else {
+                $response["error"] = "Impossible de supprimer le fichier";
+            }
         }
 
         // Récupération de l'id de l'entité
@@ -102,7 +107,7 @@ abstract class BoController extends AbstractCrudController
             $crudAction = Action::NEW;
         }
         $url = $adminUrlGenerator->setAction($crudAction)
-            ->set('entityId', $context->getRequest()->get('entityId'))
+            ->set('entityId', $entityId)
             ->unset('folderId')
             ->generateUrl();
         // Retour
@@ -174,8 +179,5 @@ abstract class BoController extends AbstractCrudController
 
         return $mediaFields;
     }
-
-
-
 
 }

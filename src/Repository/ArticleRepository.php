@@ -74,6 +74,7 @@ class ArticleRepository extends CMSRepository
     {
         // Récupération des articles
         $request = $this->createQueryBuilder('a');
+        $request->orderBy('a.title', 'ASC');
         $articles = new ArrayCollection($request->getQuery()->getResult());
         // Filtre des articles
         return $articles->filter(function($article_choice) use ($article, $code_langue){
