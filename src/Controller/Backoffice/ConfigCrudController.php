@@ -27,7 +27,9 @@ class ConfigCrudController extends AbstractCrudController
     )
     {
         // Page de configuration générale
-        $this->config_url  = $this->adminUrlGenerator->setAction(Action::EDIT)
+        $this->config_url  = $this->adminUrlGenerator
+            ->setController(ConfigCrudController::class)
+            ->setAction(Action::EDIT)
             ->setEntityId(1)
             ->generateUrl();
     }

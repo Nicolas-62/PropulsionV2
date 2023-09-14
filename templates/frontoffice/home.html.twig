@@ -1,6 +1,6 @@
 {# frontoffice/home.html.twig #}
 {% extends 'frontoffice/_components/layout.html.twig' %}
-
+{% block title %}{{ seo.title }}{% endblock %}
 {% block body %}
     <!-- Image Vedette LG -->
     {% for event in events_agenda %}

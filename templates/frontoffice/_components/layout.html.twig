@@ -4,7 +4,11 @@
     <head>
         <meta charset="UTF-8">
         <meta name="robots" content="noindex, nofollow">
-        <title>{% block title %}{{ const('site') }}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}{{ seo.title|capitalize }} - {{ site }}{% endblock %}</title>
+        <meta name="description" content="{% block description %}{{ seo.description }}{% endblock %}">
+        <meta name="keywords" content="{% block keywords %}{{ seo.keywords|join(', ') }}{% endblock %}">
+        <link rel="icon" type="image/png" href="{{ asset('build/front/images/favicon.ico') }}" />
 {#        <!-- Styles -->#}
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
         <link rel="stylesheet" href="{{ asset('build/fo_main_css.css') }}">

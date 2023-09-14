@@ -3,7 +3,9 @@
 namespace App\Controller\Backoffice;
 
 use App\Entity\Article;
+use App\Entity\ArticleData;
 use App\Entity\Category;
+use App\Entity\CategoryData;
 use App\Entity\Language;
 use App\Entity\Seo;
 use App\Field\LanguageSelectField;
@@ -105,7 +107,7 @@ class CategoryCrudController extends BoController
             // Champs de la vue liste
         yield IdField::new("id")->hideOnForm()->setPermission('ROLE_DEV');
         yield IntegerField::new('ordre', 'ordre')->setColumns(6)->hideOnForm();
-        yield TextField::new('title', 'title')->setColumns(6);
+        yield TextField::new('title', 'Nom')->setColumns(6);
         yield AssociationField::new('children','Categories')->hideOnForm();
         yield AssociationField::new('articles', 'Articles')->hideOnForm();
         yield BooleanField::new('isOnline')->hideOnForm();
@@ -151,15 +153,23 @@ class CategoryCrudController extends BoController
                 // Si la seo n'existe pas on retourne un objet vide.
                 if($seo == null){
                     $seo = new Seo();
+                    // On défini la langue pour la seo
+                    $language  = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $this->locale]);
+                    $seo->setLanguage($language);
                 }
-                // Création d'un champ avec un vue customisée
-                yield CollectionField::new('seo','Seo')
+                //yield FormField::addPanel('Seo');
+                //yield TextField::new('title','titre')->setColumns(4);
+                yield CollectionField::new('seo', 'SEO')
+                    ->setEntryIsComplex()
+                    ->allowDelete(false)
+                    ->allowAdd(false)
+                    ->renderExpanded()
+                    ->setLabel(false)
                     ->setFormTypeOptions([
-                        // Voir template : seo_edit.html.twig
-                        'block_name' => 'seo_edit',
                         // Passage de la seo dans les champs du formulaire
-                        'data' => ['seo' => $seo]
+                        'data' => ['seo' => $seo],
                     ])
+                    ->setEntryType(SeoType::class)
                 ;
             }
             // Ajout des champs spécifiques à l'instance définis dans l'entité.
@@ -421,5 +431,15 @@ class CategoryCrudController extends BoController
         return $assets
             ->addWebpackEncoreEntry(Asset::new('bo_category')->ignoreOnIndex())
             ;
+    }
+
+    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        // Si l'article n'a pas de slug défini, on ne le sauvegarde pas.
+        if($entityInstance->hasError()){
+            return;
+        }else {
+            parent::persistEntity($entityManager, $entityInstance);
+        }
     }
 }

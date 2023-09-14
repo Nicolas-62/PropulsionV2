@@ -122,7 +122,7 @@ class Category
     #[ORM\OneToMany(mappedBy: 'object', targetEntity: CategoryData::class, orphanRemoval: true)]
     private Collection $data;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Seo::class, cascade: ['remove'])]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Seo::class, cascade: ['persist','remove'])]
     private Collection $seo;
 
     /**
@@ -269,7 +269,7 @@ class Category
 
     public function addSeo(Seo $seo): self
     {
-        if (!$this->Seo->contains($seo)) {
+        if (!$this->seo->contains($seo)) {
             $this->seo->add($seo);
             $seo->setCategory($this);
         }

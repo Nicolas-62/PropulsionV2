@@ -21,10 +21,10 @@ class Seo
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?array $keywords = array();
 
     #[ORM\Column]
@@ -113,7 +113,7 @@ class Seo
      */
     public function isEmpty()
     {
-        if($this->getTitle() == null && $this->getDescription() == null && $this->getKeywords() == null){
+        if($this->getTitle() == null){
             return true;
         }else{
             return false;

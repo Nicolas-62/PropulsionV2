@@ -96,7 +96,7 @@ class ExtraDataListener implements EventSubscriberInterface
 
                     } // Si l'entrée n'existe pas
                     else {
-
+                        // Extra
                         $entityData = new $repository();
                         // Création de la data
                         $entityData
@@ -104,7 +104,11 @@ class ExtraDataListener implements EventSubscriberInterface
                             ->setLanguage($language)
                             ->setFieldKey($field['name']);
                         if (str_contains($field['name'], 'date')) {
-                            $entityData->setFieldValue($entity->{'get' . ucfirst($field['name'])}()->format($field['format']));
+                            if($entity->{'get' . ucfirst($field['name'])}() != null) {
+                                $entityData->setFieldValue($entity->{'get' . ucfirst($field['name'])}()->format($field['format']));
+                            }else{
+                                $entityData->setFieldValue('');
+                            }
                         } else {
                             $entityData->setFieldValue((string)$entity->{'get' . ucfirst($field['name'])}());
                         }

@@ -3,6 +3,7 @@
 namespace App\Controller\Backoffice;
 
 use App\Entity\Article;
+use App\Entity\ArticleData;
 use App\Entity\Category;
 use App\Entity\Language;
 use App\Entity\Media;
@@ -100,6 +101,28 @@ class ArticleCrudController extends BoController
         if($entityInstance->hasError()){
             return;
         }else {
+            // Récupération de la langue.
+            $language  = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $this->locale]);
+            // Si l'article a de la SEO
+            if($this->entityManager->getRepository(Article::class)->hasSeo($entityInstance)) {
+                // On créer un seo par défaut si il n'existe pas.
+                if ($entityInstance->getSeo() == null) {
+                    $seo = new Seo();
+                    $seo->setTitle($entityInstance->getTitle());
+                    $seo->setLanguage($language);
+                    $entityInstance->addSeo($seo);
+                }
+            }
+            // Extra on créer le titre de l'article à partir du nom de l'article
+            // pour le champs titleByLanguage on le rempli avec le champ title de l'élément
+            $articleData = new ArticleData();
+            $articleData->setObject($entityInstance)
+                ->setLanguage($language)
+                ->setFieldKey('titleByLanguage')
+                ->setFieldValue($entityInstance->getTitle());
+            // Sauvegarde
+            $this->entityManager->persist($articleData);
+
             parent::persistEntity($entityManager, $entityInstance);
         }
     }
@@ -120,7 +143,7 @@ class ArticleCrudController extends BoController
         // Champs communs à plusieurs actions (liste, edition, detail, formulaire...)
         yield IdField::new('id')->hideOnForm()->setPermission('ROLE_DEV');
         yield IntegerField::new('ordre', 'ordre')->hideOnForm();
-        yield TextField::new('title','titre')->setColumns(4);
+        yield TextField::new('title','Nom')->setColumns(4);
         //yield SlugField::new('slug', 'Url')->setTargetFieldName('title')->hideOnIndex();
         yield AssociationField::new('children','Enfants')->hideOnForm();
         yield AssociationField::new('category','Categorie')->setColumns(4)->hideOnForm()->formatValue(function($value, $article) {
@@ -227,7 +250,7 @@ class ArticleCrudController extends BoController
                 // Si la seo n'existe pas on retourne un objet vide.
                 if($seo == null){
                     $seo = new Seo();
-                    // On récupère la SEO par son code langue
+                    // On défini la langue pour la seo
                     $language  = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $this->locale]);
                     $seo->setLanguage($language);
                 }

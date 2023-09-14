@@ -2,12 +2,15 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\ErrorTrait;
 use App\Repository\ConfigRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ConfigRepository::class)]
 class Config
 {
+    use ErrorTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
