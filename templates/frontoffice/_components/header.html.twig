@@ -49,11 +49,11 @@
 
 
                     <div class="d-flex align-items-center">
-                    {% for src in btns %}
+                    {% for src, siteWeb in btns %}
                         {% set url = 'build/front/images/' %}
                         {% set ext = '.jpg' %}
                         {% set src = url ~ src ~ ext %}
-                            <a href="/gallery" class="mx-1">
+                            <a href="{{ siteWeb }}" class="mx-1">
                                 <li><img class="btns-header" src="{{ asset(src) }}"></li>
                             </a>
                     {% endfor %}
@@ -61,19 +61,29 @@
                 </ul>
             </nav>
             <!-- NAV BAR LG -->
-            <div class="d-none d-lg-flex block navbar-expand-lg col-12 mb-auto">
-                <div class="row row-cols-auto">
-                {% for name, url in menu %}
-                    <div class="col">
-                        <strong><a class="text-decoration-none black title-nav-lg"  href="{{ path(url) }}">{{ name|upper }}</a></strong>
+{#            <div class="d-none d-lg-flex block navbar-expand-lg col-12 mb-auto pt-4">#}
+{#                <div class="row row-cols-auto">#}
+{#                {% for name, url in menu %}#}
+{#                    <div class="col">#}
+{#                        <a class="text-decoration-none black fs-4"  href="{{ path(url) }}">{{ name|upper }}</a>#}
 
-                    </div>
-                    {% if loop.index0 < 4 %}
-                        <div class="col">
-                                <img class="nav-separator" src="{{ asset('build/maquette/images/separator.png') }}">
+{#                    </div>#}
+{#                    {% if loop.index0 < 4 %}#}
+{#                        <div class="col">#}
+{#                                <img class="nav-separator" src="{{ asset('build/maquette/images/separator.png') }}">#}
+{#                        </div>#}
+{#                    {% endif %}#}
+{#                {% endfor %}#}
+{#                </div>#}
+{#            </div>#}
+            <div class="d-none d-lg-flex block navbar-expand-lg col-12 mb-auto pt-4">
+                <div class="row  row-cols-auto">
+                    {% for name, url in menu %}
+                        <div class="px-4 col {% if loop.index0 != 0 %} border-dotted-black {% endif %}">
+                            <a class="text-decoration-none black fs-4"  href="{{ path(url) }}">{{ name|upper }}</a>
+
                         </div>
-                    {% endif %}
-                {% endfor %}
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -112,22 +122,24 @@
                 </div>
             </div>
         </div>
-        {% for src in btns %}
-            <div class="col-2 offset-1 text-center btns-header">
+        {% for src, siteWeb in btns %}
+            <div class="col-3 text-center">
                 {% set url = 'build/front/images/' %}
                 {% set ext = '.jpg' %}
                 {% set src = url ~ src ~ ext %}
-                <img src="{{ asset(src) }}">
+                <a href="{{ siteWeb }}" class="mx-1">
+                <img class="btns-header" src="{{ asset(src) }}">
+                </a>
             </div>
         {% endfor %}
-        <div class="col-2 offset-1 text-center">
+        <div class="col-3 text-center">
 
-            <button class="btn btn-move-up"  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                <img style="max-height: 57px" src="{{ asset('build/maquette/images/MENU_HEADER.png') }}">
+            <button class="btn btn-move-up "  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                <img class="btns-header" src="{{ asset('build/maquette/images/MENU_HEADER.png') }}">
             </button>
 
         </div>
-        <div class="col-4 text-center">
+        <div class="col text-center">
             <div class="dropdown">
 
                 <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">

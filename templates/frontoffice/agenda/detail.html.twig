@@ -32,8 +32,8 @@
             <div class="card-container" >
                 <!-- Titre -->
                 <div class="lh-1 pt-3">
-                    <p class="big-title mb-0">{{ article.title }}</p>
-                    <p class="big-subtitle mt-0">{{ article.subtitle }}</p>
+                    <p class="fs-1 mb-0">{{ article.title }}</p>
+                    <p class="fs-2 mt-0">{{ article.subtitle }}</p>
                 </div>
                 <!-- Date -->
                 <div style="padding-bottom: 20px; padding-top: 20px">
@@ -111,14 +111,14 @@
                 <!-- NOM GROUPE / STYLE / HORAIRE -->
                 <div class="row pt-5 pb-2 align-items-end">
                     <div class="col-lg-6 col-md-12">
-                        <div style="font-size: 50px; line-height: 1">{{ article.title }}</div>
+                        <div class="fs-1 lh-1">{{ article.title }}</div>
                     </div>
                     <div class="col-lg-4 col-md-6">
                         <div class="h4 d-flex align-items-center">{{ article.typeMusic}}  {% if article.origin != "" %} | {{ article.origin }}{% endif %}</div>
                     </div>
                     <div class="col-lg-2 col-md-6 d-flex justify-content-end">
                         {% if article.datetimeEvent is not null and article.datetimeEvent  is not empty %}
-                            <h1 style="font-size:40px">{{ article.datetimeEvent| date('H:i') }}</h1>
+                            <div class="fs-2">{{ article.datetimeEvent| date('H:i') }}</div>
                         {% endif %}
                     </div>
                 </div>
@@ -231,13 +231,13 @@
                     <!-- NOM GROUPE / STYLE / HORAIRE -->
                     <div class="row py-3 align-items-end">
                         <div class="col-lg-6 col-md-12">
-                            <h1 class="big-title">{{ child.title }}</h1>
+                            <h1 class="fs-1">{{ child.title }}</h1>
                         </div>
                         <div class="col-lg-4 col-md-8"  >
                             <h1>{{ child.typeMusic}} {% if child.origin != "" %} | {{ child.origin }}{% endif %}</h1>
                         </div>
                         <div class="col-lg-2 col-md-4 d-flex justify-content-end">
-                            <h1 style="font-size: 40px">{{ child.datetimeEvent | date('H:i') }}</h1>
+                            <div class="fs-2">{{ child.datetimeEvent | date('H:i') }}</div>
                         </div>
                     </div>
                     <!-- DESCRIPTION ARTISTE -->

@@ -15,7 +15,7 @@
                         {% set category = actu_test.category %}
                         {{ category.getDatas(locale) }}
                         <!-- Titre -->
-                        <h1>{{ actu_test.title }}</h1>
+                        <div class="h3">{{ actu_test.title }}</div>
                     </div>
                     <div class="col-lg-2 col-md-12">
                         <!-- Thème -->
@@ -25,9 +25,9 @@
             </div>
             <div class="pr-5 py-5" style="padding-left: 80px">
                 <!-- Sous-titre -->
-                <p class="h2">{{ actu_test.subtitle }}</p>
+                <div class="h4">{{ actu_test.subtitle }}</div>
                 <div class="row position-relative">
-                    <div class="col-md-12 col-lg-8">
+                    <div class="col-md-12 col-lg-8 fs-5">
                         <!-- Contenu -->
                         {{ actu_test.content | raw }}
 

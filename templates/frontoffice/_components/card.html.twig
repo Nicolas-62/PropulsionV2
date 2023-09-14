@@ -40,11 +40,11 @@
     <div class="row mx-0 px-0">
         {% set category = event.category %}
         {{ category.getDatas(locale) }}
-        <div class="col-5 theme-1 text-uppercase"  style="background-color: {% if category is not null %}{{ category.themeBackColor }};{% endif%} color: {{ event.themeTextColor }};">
+        <div class="col-5 fs-6 theme-1 text-uppercase"  style="background-color: {% if category is not null %}{{ category.themeBackColor }};{% endif%} color: {{ event.themeTextColor }};">
             {{ event.category.title }}
         </div>
         {% if event.style is not null and event.style is not empty %}
-            <div class="col-7 white theme-2 justify-content-start text-uppercase" style="background-color: black; }};">
+            <div class="col-7 white fs-6 theme-2 justify-content-start text-uppercase" style="background-color: black; }};">
                 <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}"> {{ event.style }}
             </div>
         {% endif %}
@@ -73,14 +73,15 @@
     </div>
 
     <!-- CARD ACTIONS -->
-    <div class="card-container mb-3 d-flex justify-content-between" style="align-items: flex-end;">
+    <div class="card-container mb-3 d-flex justify-content-between align-items-center">
         {% if agenda %}
-            <div class="pb-3 d-flex">
+            <div class="row">
                 <div class= "fs-5 " style="align-self: flex-end;">
                     {{ formatCustomDate(event.dateEvent) }}
                 </div>
-                {% if event.dateTimeEvent is not null and event.dateTimeEvent is not empty %}
-                    <div class="fs-5">{{ event.dateTimeEvent| date("H:i") }}</div>
+                {% dump(event.datetimeEvent) %}
+                {% if event.datetimeEvent is not null and event.datetimeEvent is not empty %}
+                    <div class="fs-5">{{ event.datetimeEvent| date("H:i") }}</div>
                 {% endif %}
             </div>
         {% endif %}
@@ -88,17 +89,23 @@
             <a href="{{ path('fo_actus_detail', { 'slug': event.slug}) }}" class="btn-read-card">LIRE LA SUITE</a>
         {% endif %}
         {% if billetterie %}
-            <a href="https://billetterie.lalune.net/">
-                <img class="btn-billetterie-card" src="{{ asset(('build/front/images/LIEN_BILLETTERIE.jpg')) }}" alt="...">
-            </a>
+            {% if event.ticketingLink is not empty and event.ticketingLink is not null %}
+                <a href="{{ event.ticketingLink }}">
+                    <img class="btn-billetterie-card" src="{{ asset(('build/front/images/LIEN_BILLETTERIE.jpg')) }}" alt="...">
+                </a>
+            {% else %}
+                <a href="https://billetterie.lalune.net/">
+                    <img class="btn-billetterie-card" src="{{ asset(('build/front/images/LIEN_BILLETTERIE.jpg')) }}" alt="...">
+                </a>
+            {% endif %}
         {% endif %}
         {% if soutiens %}
-            <div class="card-title justify-content-start">
+            <div class="fs-2 justify-content-start">
                 {{ event.title }}
             </div>
             <a class="text-decoration-none" href="{{ path('fo_soutiens_detail', { 'slug': event.slug,}) }}">
 
-                <div style="display: flex; justify-content: center; align-items: center;">
+                <div class="">
                     <img src="{{ asset(('build/front/images/OEIL.png')) }}" class="card-img-top rounded-0" style="height: 30px" alt="...">
                 </div>
             </a>

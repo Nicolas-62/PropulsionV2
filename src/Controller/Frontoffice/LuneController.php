@@ -42,16 +42,18 @@ class LuneController extends FOController
         $sous_categorie_ids               =     $this->entityManager->getRepository(Category::class)->find($this->category_agenda_id)->getChildrenIds();
         $events_header                    =     $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->params->get('locale'), true, 'dateEvent', 'DESC');
         $this->data['events_header']      =     $events_header;
-        $this->data['btns']               =     $this->btns = array('SEARCH', 'PROFIL', 'COMMANDE');
+        $this->data['btns']               =     $this->btns = array('SEARCH' => '', 'PROFIL' => 'https://billetterie.lalune.net/identification', 'COMMANDE' => 'https://billetterie.lalune.net/');
         $this->data['menu']               =     $this->menu = array('Agenda' => 'fo_agenda_index','Actus' => 'fo_actus_index','Action Culturelle' => 'fo_actions_index','Soutiens aux artistes' => 'fo_soutiens_index','Infos Pratiques' => 'fo_infos_index');
+        $this->data['lien_billetterie']   =     $this->entityManager->getRepository(Article::class)->find(184);
+        $this->data['lien_billetterie_profil'] = $this->entityManager->getRepository(Article::class)->find(183);
     }
 
     public function buildFooter()
     {
         // FOOTER
         $this->data['sponsors_img']       =     $this->sponsors_img = $this->entityManager->getRepository(Article::class)->findBy(['category' => 23]);
-        $this->data['medias']             =     $this->medias = array('FOOTER_TEL' => '', 'FOOTER_INSTA' => 'https://www.instagram.com/lalunedespirates/?hl=fr','FOOTER_FACEBOOK' => 'https://www.facebook.com/lalunedespirates/?locale=fr_FR');
-        $this->data['mentions']           =     $this->mentions = array('Plan du site' => "/sitemap", 'FAQ' => "/faq",'Mentions légales' => "/mentions", 'CGV' => "/cgv", 'Politique de Confidentialité' => "/gestioncookies", 'Gestion des cookies' => "", 'Espace presse' => "/espacepresse");
+        $this->data['medias']             =     $this->medias = array('FOOTER_TEL' => 'tel:+33322978801', 'FOOTER_INSTA' => 'https://www.instagram.com/lalunedespirates/?hl=fr','FOOTER_FACEBOOK' => 'https://www.facebook.com/lalunedespirates/?locale=fr_FR');
+        $this->data['mentions']           =     $this->mentions = array('Plan du site' => "/sitemap", 'FAQ' => "/faq",'Mentions légales' => "/mentions", 'CGV' => "/cgv", 'Politique de Confidentialité' => "/confidentialite", 'Espace presse' => "/espacepresse");
     }
 
 
@@ -106,20 +108,12 @@ class LuneController extends FOController
     {
 
         // Vue renvoyée.
-        return $this->render('frontoffice/institutionnel/confidentialite.html.twig', $this->data);
-    }
-
-
-    #[Route('/gestioncookies', name: 'cookies')]
-    public function GestionCookies(): Response
-    {
-
         $this->data['categories']          = $this->entityManager->getRepository(Article::class)->findBy(['category'=>28]);
         $this->data['active_entry']        = 'entry1';
 
-        // Vue renvoyée.
-        return $this->render('frontoffice/institutionnel/gestioncookies.html.twig', $this->data);
+        return $this->render('frontoffice/institutionnel/confidentialite.html.twig', $this->data);
     }
+
 }
 
 

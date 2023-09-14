@@ -55,10 +55,10 @@
         <div class="row">
             <div class="col-lg-3 col-md-12 p-5 menu text-md-center text-sm-center">
                 <div class="row">
-                    <div class="col-lg-10 col-md-12">
+                    <div class="col-lg-10 col-md-12 pt-lg-5">
                         {% for sous_categorie_infos in sous_categories_infos %}
                             {{ sous_categorie_infos.getDatas(locale) }}
-                            <div class="h1 py-3 menu-item {% if active_entry == 'entry' ~ loop.index %}active{% endif %}" data-entry="entry{{ loop.index }}" onclick="showContent('entry{{ loop.index }}', 'footer{{ loop.index0 }}')">
+                            <div class="h3 py-3 menu-item {% if active_entry == 'entry' ~ loop.index %}active{% endif %}" data-entry="entry{{ loop.index }}" onclick="showContent('entry{{ loop.index }}', 'footer{{ loop.index0 }}')">
                                 {{ sous_categorie_infos.title | upper}}
                             </div>
                             <div id="blue-dot{{ loop.index0 }}" class="blue-dot"></div>
@@ -97,7 +97,7 @@
                     <!-- Formulaire -->
                     <form class="fs-5"  method="post" action="{{ path('fo_infos_contact') }}" >
 
-                        <div class="form-group py-2">
+                        <div class="form-group">
                             <label class="pb-2" for="exampleFormControlSelect1">{{ field_label(form.subject) }} (obligatoire)</label>
                             <select class="form-control rounded-0 border-secondary fs-5 select-infos"  name="{{ field_name(form.subject) }}" id="exampleFormControlSelect1">
                                 <option>Sélectionner ...</option>
@@ -108,25 +108,25 @@
                             {{ form_errors(form.subject) }}
                         </div>
 
-                        <div class="form-group py-4">
+                        <div class="form-group">
                             <label class="pb-2" for="mailInput">{{ field_label(form.email) }} (obligatoire)</label>
                             <input type="email" class="form-control rounded-0 border-secondary select-infos"  name="{{ field_name(form.email) }}"  value="{{ field_value(form.email) }}" id="mailInput" aria-describedby="emailHelp">
                             {{ form_errors(form.email) }}
 
                         </div>
-                        <div class="form-group py-4">
+                        <div class="form-group">
                             <label class="pb-2" for="nomInput">{{ field_label(form.name) }} (obligatoire)</label>
                             <input type="text" class="form-control rounded-0 border-secondary select-infos"  name="{{ field_name(form.name) }}" value="{{ field_value(form.email) }}" id="nomInput">
                             {{ form_errors(form.name) }}
 
                         </div>
-                        <div class="form-group py-4">
+                        <div class="form-group">
                             <label class="pb-2" for="messageInput">{{ field_label(form.message) }} (obligatoire)</label>
                             <textarea class="form-control  rounded-0 border-secondary"  name="{{ field_name(form.message) }}" style="min-height: 348px" id="messageInput" rows="3">{{ field_value(form.message) }}</textarea>
                             {{ form_errors(form.message) }}
                         </div>
                         <!-- Checkbox -->
-                        <div class="form-check py-4">
+                        <div class="form-check">
                             <input class="form-check-input  rounded-0 border-secondary"  name="{{ field_name(form.getNewsletter) }}" type="checkbox" value="{{ field_value(form.getNewsletter) }}" id="newsCheck">
                             <label class="pb-2" class="form-check-label" for="newsCheck">
                                 {{ field_label(form.getNewsletter) }}
@@ -303,14 +303,14 @@
                                 </div>
                                 <div class="col-6">
 
-                                    <div class="form-group py-4">
+                                    <div class="form-group">
                                         <label for="dateInput">Date de naissance(obligatoire)</label>
                                         <input type="date" class="form-control rounded-0 border-secondary select-infos" id="dateInput">
                                     </div>
                                 </div>
                                 <div class="col-6">
 
-                                    <div class="form-group py-4">
+                                    <div class="form-group">
                                         <label for="telInput">Téléphone (obligatoire)</label>
                                         <input type="tel" class="form-control rounded-0 border-secondary select-infos" id="telInput" placeholder="XX XX XX XX XX">
                                     </div>
@@ -319,28 +319,28 @@
                                 <div class="h3">COORDONNÉES</div>
                                 <div class="col-6">
 
-                                    <div class="form-group py-4">
+                                    <div class="form-group">
                                         <label for="lastnameInput">Adresse (obligatoire)</label>
                                         <input type="text" class="form-control rounded-0 border-secondary select-infos" id="lastnameInput">
                                     </div>
                                 </div>
                                 <div class="col-6">
 
-                                    <div class="form-group py-4">
+                                    <div class="form-group">
                                         <label for="lastnameInput">Adresse 2 (obligatoire)</label>
                                         <input type="text" class="form-control rounded-0 border-secondary select-infos" id="lastnameInput">
                                     </div>
                                 </div>
                                 <div class="col-6">
 
-                                    <div class="form-group py-4">
+                                    <div class="form-group">
                                         <label for="lastnameInput">Code Postal (obligatoire)</label>
                                         <input type="text" class="form-control rounded-0 border-secondary select-infos" id="lastnameInput">
                                     </div>
                                 </div>
                                 <div class="col-6">
 
-                                    <div class="form-group py-4">
+                                    <div class="form-group">
                                         <label for="lastnameInput">Ville (obligatoire)</label>
                                         <input type="text" class="form-control rounded-0 border-secondary select-infos" id="lastnameInput">
                                     </div>
@@ -348,7 +348,7 @@
                                 <div class="col-6 pb-3">
 
 
-                                    <div class="form-group py-4">
+                                    <div class="form-group">
                                         <label for="exampleFormControlSelect1">Pays (obligatoire)</label>
                                         <select class="form-control rounded-0 border-secondary select-infos" id="exampleFormControlSelect1">
                                             <option>Sélectionner ...</option>
