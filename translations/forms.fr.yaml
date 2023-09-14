@@ -1,1 +1,5 @@
-submit: Envoyer
+define-password:
+    not-blank: Le mot de passe ne peut pas être vide.
+    label: Mot de passe
+    confirm-label: Confirmer le mot de passe
+    help: Le mot de passe doit contenir au moins 8 caractères, dont au moins une lettre et un chiffre.

@@ -25,22 +25,18 @@ class DefinePasswordType extends AbstractType
                 'type' => PasswordType::class,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Veuillez saisir un mot de passe',
+                        'message' => 'define-password.not-blank',
                     ]),
                     new Length([
-                        'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'min' => 8,
+                        // Todo faire la traduction
+                        'minMessage' => 'Votre mot de passe doti contenir au moins {{ limit }} caractères',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
                 ],
-//                'options' => [
-//                    'attr' => [
-//                        'type' => 'password'
-//                    ]
-//                ],
-                'first_options' => ['label' => 'Mot de passe'],
-                'second_options' => ['label' => 'Confirmer le mot de passe']
+                'first_options' => ['label' => 'define-password.label', 'help' => 'define-password.help'],
+                'second_options' => ['label' => 'define-password.confirm-label']
             ])
         ;
     }
@@ -49,6 +45,7 @@ class DefinePasswordType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'translation_domain' => 'forms'
         ]);
     }
 }

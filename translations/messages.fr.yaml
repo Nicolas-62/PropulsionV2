@@ -58,6 +58,11 @@ login:
   signin: Connexion
   email: Email
   password: Mot de passe
+  error:
+    bad-credentials: Les informations de connexion sont incorrectes.
+
+define-password:
+  submit: Soumettre
 
 security:
   reset-password: Récupérer le mot de passe

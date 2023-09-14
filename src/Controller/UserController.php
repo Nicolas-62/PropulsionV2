@@ -69,7 +69,7 @@ class UserController extends AbstractController
         }
 
         // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
+        $error = $authenticationUtils->getLastAuthenticationError()?->getMessage();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
@@ -91,12 +91,11 @@ class UserController extends AbstractController
             );
             $entityManager->persist($user);
             $entityManager->flush();
-            return $this->redirectToRoute('user_login');
+            return $this->redirectToRoute('user_logout');
         }
 
         return $this->render('user/define_password.html.twig', [
             'definePasswordForm' => $form->createView(),
-            'site_name' => $this->getParameter('app.site'),
         ]);
     }
 
