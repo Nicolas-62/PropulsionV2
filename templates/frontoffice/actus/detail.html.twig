@@ -97,8 +97,6 @@
             <div class="row">
                 {% set test = 0 %}
                 {% for actu in actu_childs %}
-                    <!-- DEBUG -->
-                    <!-- {{ dump(actu) }} -->
                     <!-- Récupération des datas de l'article -->
                     {{ actu.getDatas(locale) }}
                     {% set media = actu.getMedia(2) %}

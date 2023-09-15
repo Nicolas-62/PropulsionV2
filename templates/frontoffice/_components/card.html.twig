@@ -79,7 +79,6 @@
                 <div class= "fs-5 " style="align-self: flex-end;">
                     {{ formatCustomDate(event.dateEvent) }}
                 </div>
-                {% dump(event.datetimeEvent) %}
                 {% if event.datetimeEvent is not null and event.datetimeEvent is not empty %}
                     <div class="fs-5">{{ event.datetimeEvent| date("H:i") }}</div>
                 {% endif %}
