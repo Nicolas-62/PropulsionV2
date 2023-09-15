@@ -51,37 +51,39 @@
 {% endblock %}
 {% block body %}
 
-    <div class="p-5">
+    <div class="p-lg-5">
         <div class="row">
-            <div class="col-lg-3 col-md-12 p-5 menu text-md-center text-sm-center">
-                <div class="row">
+            <div class="col-lg-3 col-md-12 px-5 py-2 menu text-md-center text-sm-center">
+                <div class="row p-5">
                     <div class="col-lg-10 col-md-12 pt-lg-5">
                         {% for sous_categorie_infos in sous_categories_infos %}
                             {{ sous_categorie_infos.getDatas(locale) }}
-                            <div class="h3 py-3 menu-item {% if active_entry == 'entry' ~ loop.index %}active{% endif %}" data-entry="entry{{ loop.index }}" onclick="showContent('entry{{ loop.index }}', 'footer{{ loop.index0 }}')">
+                            <div class="text-center text-lg-start h3 py-3 menu-item {% if active_entry == 'entry' ~ loop.index %}active{% endif %}" data-entry="entry{{ loop.index }}" onclick="showContent('entry{{ loop.index }}', 'footer{{ loop.index0 }}')">
                                 {{ sous_categorie_infos.title | upper}}
                             </div>
                             <div id="blue-dot{{ loop.index0 }}" class="blue-dot"></div>
                         {% endfor %}
                     </div>
-                    <div class="col-2 d-sm-none d-md-none d-lg-block">
+                    <div class="col-2 d-none d-lg-block">
                         <img src="{{ asset(('build/maquette/images/SOUTIENS_MENU.png')) }}" class="">
                     </div>
                 </div>
             </div>
-
+            <div class="d-lg-none">
+                <hr>
+            </div>
             <!-- Contenu -->
-            <!-- TODO Dynamiser tout cela -->
-            <!--  NOUS CONTACTER -->
             <div class="content col-lg-9 col-md-12">
-                <div id="entry1" class="py-5 px-5" >
+
+                <!--  NOUS CONTACTER -->
+                <div id="entry1" class="py-5 px-2 px-lg-5" >
                     <div class="row">
-                        <div class="col-lg-2 col-md-3">
+                        <div class="col-lg-2 col-md-3 text-center text-lg-start">
                             <img src="{{ asset(('build/maquette/images/arrow_contact.png')) }}" class="">
 
                         </div>
 
-                        <div class="col-5 fs-5 lh-1">
+                        <div class="col-md-9 col-lg-5 fs-5 lh-1 text-center text-lg-start">
                             {{ cat_contact.getDatas(locale) }}
                             {{ cat_contact.description | raw }}
                         </div>
@@ -134,10 +136,10 @@
                         </div>
                         {{ form_row(form._token) }}
                         <!-- Submit -->
-                        <div class="py-4">
+                        <div class="pt-4">
                             <button type="submit" class="btn border border-secondary rounded-0 p-3 fs-3"><div class="p-2">ENVOYER</div></button>
                         </div>
-                        <div class="fs-6">
+                        <div class="fs-6 pb-4">
                             En cliquant sur "Envoyer", vous acceptez de fournir les informations permettant qu'une réponse vous soit délivrée et que votre demande soit traitée. En indiquant votre adresse email, et en cochant la ou les cases associées, vous consentez à recevoir nos lettres d'information par voie électronique. Vous pouvez vous désinscrire à tout moment via les liens de désinscription ou en nous contactant.
                             <br>Pour en savoir plus, consultez notre Politique de confidentialité.</div>
                     </form>
@@ -147,16 +149,16 @@
 
 
                 <!-- COMMENT VENIR -->
-                <div id="entry2"  class="py-5 px-5 hidden">
+                <div id="entry2"  class="py-lg-5 px-2 px-lg-5 hidden">
 
-                    <div class="row">
-                        <div class="col-lg-2 col-md-3">
+                    <div class="row w-100">
+                        <div class="col-lg-2 col-md-12 text-center">
 
 
                             <img src="{{ asset(('build/maquette/images/point_venir.png')) }}" class="">
                         </div>
 
-                        <div class="col-5 fs-5 mt-5 lh-1">
+                        <div class="col-md-12 col-lg-5 fs-5 mt-lg-5 text-center text-lg-start  mb-2 lh-1">
 
 
                                 {{ cat_comment_venir.getDatas(locale) }}
@@ -173,40 +175,40 @@
 
                 <!-- TARIFS ET BILLETTERIE -->
 
-                <div id="entry3" class="py-5 px-5 hidden ">
+                <div id="entry3" class="py-lg-5 px-2 px-lg-5 hidden ">
                     {{ article_adress_billetterie.getDatas(locale) }}
 
                     <div class="row pb-5">
-                        <div class="col-lg-2 col-md-3">
+                        <div class="col-lg-2 col-md-3 text-center text-lg-start pb-2">
                             {% set media = article_adress_billetterie.getMedia(15) %}
                             {% if media is not null %}
                             {% set url = '/assets/images/' ~ media.media %}
-                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0"  alt="...">
+                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0  pb-4 pb-lg-0"  style="max-width: 71px;max-height: 84px" alt="...">
                             {% endif  %}
 
                         </div>
-                        <div class="col-5 fs-5 lh-1">
+                        <div class="col-lg-5 col-md-9 fs-5 lh-1 text-center text-lg-start">
                             {{ article_adress_billetterie.description | raw }}
                         </div>
                     </div>
 
                     <div>
-                        <div class="h3 py-5">{{ article_contact_billetterie.getDatas(locale) }}
+                        <div class="h3 py-lg-5 text-center text-lg-start">{{ article_contact_billetterie.getDatas(locale) }}
 
                             {{ article_contact_billetterie.subtitle  }}
                         </div>
                         {{ article_contact_billetterie.getDatas(locale) }}
 
-                        <div class="row">
+                        <div class="row text-center text-lg-start">
                             <div class="col-lg-2 col-md-3">
 
 
                                 {% set media = article_contact_billetterie.getMedia(15) %}
                                 {% if media is not null %}
                                     {% set url = '/assets/images/' ~ media.media %}
-                                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0 pb-4 pb-lg-0" style="max-height: 80px;max-width: 80px" alt="...">
                                 {% endif  %}                            </div>
-                            <div class="col-5 fs-5 lh-1">
+                            <div class="col-lg-5 col-md-9 fs-5 lh-1">
 
                                 {{ article_contact_billetterie.description | raw }}
 
@@ -371,14 +373,14 @@
                                 <!-- ENVOYER -->
                                 <button type="submit" class="btn border border-secondary rounded-0 py-1 fs-3">ENREGISTRER</button>
 
-                                <div class="pt-5 fs-6">En cliquant sur "Enregistrer", vous acceptez de fournir les informations permettant de procéder à votre achat. En indiquant vos infor- mations personnelles, et en cochant la ou les cases associées, vous consentez à recevoir nos lettres d'information par voie électro- nique. Vous pouvez vous désinscrire à tout moment via les liens de désinscription ou en nous contactant. <br>Pour en savoir plus, consultez notre Politique de confidentialité et nos conditions générales de vente.</div>
+                                <div class="pb-5 fs-6">En cliquant sur "Enregistrer", vous acceptez de fournir les informations permettant de procéder à votre achat. En indiquant vos infor- mations personnelles, et en cochant la ou les cases associées, vous consentez à recevoir nos lettres d'information par voie électro- nique. Vous pouvez vous désinscrire à tout moment via les liens de désinscription ou en nous contactant. <br>Pour en savoir plus, consultez notre Politique de confidentialité et nos conditions générales de vente.</div>
                             </div>
                         </form>
                     </div>
                 </div>
                 <!-- QUESTIONS -->
 
-                <div id="entry4" class="py-5 px-5 hidden"><div class="accordion accordion-flush" id="accordionFlushExample">
+                <div id="entry4" class="py-5 px-lg-5 hidden"><div class="accordion accordion-flush" id="accordionFlushExample">
                         {% for question in question_infos %}
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
@@ -405,7 +407,7 @@
 
     <!-- BAS CONTACT -->
     <div id="footer0" class="bg-grey">
-        <div class="py-5 px-5">
+        <div class="py-5 px-2 px-lg-5">
             <div class="row">
 
                 <!-- Les Pirates -->
@@ -413,12 +415,12 @@
                     <!-- LOGO LUNE DES PIRATES -->
 
 
-                    <h1 class="pb-5"><img src="{{ asset(('build/maquette/images/MINI_LOGO.png')) }}" class="">Les Pirates</h1>
+                    <h1 class="pb-5 text-center text-lg-start "><img src="{{ asset(('build/maquette/images/MINI_LOGO.png')) }}" class="">Les Pirates</h1>
                     <div class="row">
-                        <div class="col-8">
+                        <div class="col-md-12 col-lg-8">
                             <div class="row">
                                 {% for contact in contact_contact %}
-                                    <div class="col-6 py-2">
+                                    <div class="col-md-12 col-lg-6 py-2 text-center text-lg-start">
                                         <p class="h3">{{ contact.title }}</p>
                                         <div class="fs-5">{{ contact.description | raw}}</div>
                                     </div>
@@ -428,22 +430,23 @@
 
 
                         <!-- L'équipe technique / Bénévoles -->
-                        <div class="col-4">
+                        <div class="col-md-12 col-lg-4 pt-5 pt-lg-0 ">
+                            <div class="">
+                                <div class="h3 text-center text-lg-start">L'ÉQUIPE TECHNIQUE</div>
+                                <div class="fs-5 pb-5">
 
-                            <div class="h3">L'ÉQUIPE TECHNIQUE</div>
-                            <div class="fs-5 pb-5">
-
-                                {% for membre_tech in equipe_tech_contact %}
-                                    {{ membre_tech.title }}{% if loop.index != equipe_tech_contact | length %},{% endif %}
-                                {% endfor %} ...
+                                    {% for membre_tech in equipe_tech_contact %}
+                                        {{ membre_tech.title }}{% if loop.index != equipe_tech_contact | length %},{% endif %}
+                                    {% endfor %} ...
+                                </div>
                             </div>
-
-                            <div class="h3 pt-5">MERCI AUX BÉNÉVOLES !</div>
+                            <div class="h3 pt-5 text-center text-lg-start">MERCI AUX BÉNÉVOLES !</div>
                             <p class="fs-5">
                                 {% for benevole in benevoles_contact %}
                                     {{ benevole.title }}{% if loop.index != benevoles_contact | length %},{% endif %}
                                 {% endfor %} ...
                             </p>
+
                         </div>
                     </div>
 
@@ -460,13 +463,13 @@
 
     <!-- BAS COMMENT VENIR -->
     <div id="footer1" class="hidden bg-grey">
-        <div class="py-5 px-5">
+        <div class="py-5 px-2 px-lg-5">
             <div class="row">
                 <div class="col-lg-9 col-md-12">
                     {% for article_comment_venir in articles_comment_venir %}
                         {{ article_comment_venir.getDatas(locale) }}
                         <div class="row">
-                            <div class="col-lg-2 offset-lg-4 col-md-3">
+                            <div class="col-lg-2 offset-lg-4 col-md-3 text-center">
                                 {% set media = article_comment_venir.getMedia(13) %}
 
                                 {% if media is not null %}
@@ -475,7 +478,7 @@
                                 {% endif  %}
                             </div>
                             <div class="col-lg-6 col-md-9 py-5">
-                                <div class="h3 py-2">{{ article_comment_venir.title }}</div>
+                                <div class="h3 fw-bold py-2">{{ article_comment_venir.title }}</div>
                                 <div class="fs-5">{{ article_comment_venir.description | raw }}</div>
                             </div>
 
@@ -491,7 +494,7 @@
 
     <!-- BILLETTERIE BAS -->
     <div id="footer2" class="hidden">
-        <div class="py-5 px-5 bg-grey">
+        <div class="py-5 px-2 px-md-2 px-lg-5 bg-grey">
             <div class="row">
                 <div class="col-3">
 
@@ -526,7 +529,7 @@
 
             <div class="col-lg-9 offset-lg-3 col-md-12">
                 {{ article_pass_billetterie.getDatas(locale) }}
-                <div class="py-5 px-5 h2">
+                <div class="py-5 px-2 px-lg-5 h2">
                     <div class="pb-2 h2">{{ article_pass_billetterie.title }}</div>
                     <div class="fs-5">
                         {{ article_pass_billetterie.description | raw }}

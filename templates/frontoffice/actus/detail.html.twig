@@ -5,9 +5,9 @@
     <!-- Récupération des datas de l'article -->
     {{ article.getDatas(locale) }}
     {% set mediaArticle = article.getMedia(2) %}
-    <div class="p-5">
+    <div class="p-lg-5">
         <!-- ARTICLE -->
-        <div class="p-5 h2">
+        <div class="p-lg-5 h2">
             <!-- IMAGE ARTICLE -->
             {% if mediaArticle is not null %}
                 {% set url = '/assets/images/' ~ mediaArticle.media  %}
@@ -92,9 +92,9 @@
     </div>
     <!-- Voir aussi -->
     <div class="bg-grey">
-        <div class="p-5">
-            <h1 class="pb-5">Voir aussi >> >> >></h1>
-            <div class="row">
+        <div class="p-lg-5 ">
+            <h1>Voir aussi >> >> >></h1>
+            <div class="row p-2 ">
                 {% set test = 0 %}
                 {% for actu in actu_childs %}
                     <!-- Récupération des datas de l'article -->

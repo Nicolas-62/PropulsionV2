@@ -1,5 +1,5 @@
 <!-- HEADER LG -->
-<div class="d-md-none d-sm-none p-0 m-0 d-lg-block">
+<div class="d-none d-lg-block p-0 m-0">
     <div class="row">
         <div class="col-3 p-4">
             <a href="{{ path('fo_home_index') }}">
@@ -15,8 +15,7 @@
 
                         {% if loop.index < 5 %}
                             <li class="nav-item " style="z-index: {{ 1000 - loop.index }}">
-                                <a class="text-decoration-none" href="/agenda/{{ event_header.slug}}
-">
+                                <a class="text-decoration-none" href="/agenda/{{ event_header.slug}}">
                                     {% set longueurMax = 10 %}
                                     {% if media is not null %}
                                         {% set url = '/assets/images/' ~ media.media %}
@@ -51,8 +50,7 @@
                     <div class="d-flex align-items-center">
                     {% for src, siteWeb in btns %}
                         {% set url = 'build/front/images/' %}
-                        {% set ext = '.jpg' %}
-                        {% set src = url ~ src ~ ext %}
+                        {% set src = url ~ src %}
                             <a href="{{ siteWeb }}" class="mx-1">
                                 <li><img class="btns-header" src="{{ asset(src) }}"></li>
                             </a>
@@ -97,36 +95,38 @@
     <div class="row">
         <div class="col-6">
             <a href="{{ path('fo_home_index') }}">
-                <img src="{{ asset('build/maquette/images/LOGO_ACTUEL.png') }}">
+                <img style="max-width: 100%" src="{{ asset('build/maquette/images/LOGO_ACTUEL.png') }}">
             </a>
         </div>
         <div class="col-6">
             <div class="row">
-                <div class="col-8 offset-3 pt-5">
-                    {% for event_header in events_header %}
-                        {% set media = event_header.getMedia(12) %}
+                <div class="col-12">
+                    <div class="row pt-3">
+                        {% for event_header in events_header %}
+                            {% set media = event_header.getMedia(12) %}
 
-                        {% if loop.index < 5 %}
-                                <a class="text-decoration-none" href="/agenda/{{ event_header.slug }}">
+                            {% if loop.index < 5 %}
+                                <div class="col-6">
+                                    <a class="text-decoration-none" href="/agenda/{{ event_header.slug }}">
 
-                                    {% if media is not null %}
-                                        {% set url = '/assets/images/' ~ media.media %}
-                                        <img src="{{ asset((url)) }}" class="rounded-circle round-img-header" style="z-index:{{ 1000 +  loop.index }}" alt="...">
-                                    {% else  %}
-                                        <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_SQUARE.png')) }}" class="rounded-circle round-img-header" style="z-index:{{ 1000 + loop.index }};{% if loop.index == 4 %}margin-right:10px{% endif %}" alt="...">
-                                    {% endif %}
-                                </a>
-                        {% endif %}
-                    {% endfor %}
-
+                                        {% if media is not null %}
+                                            {% set url = '/assets/images/' ~ media.media %}
+                                            <img src="{{ asset((url)) }}" class="rounded-circle round-img-header-sm" style="z-index:{{ 1000 +  loop.index }}" alt="...">
+                                        {% else  %}
+                                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_SQUARE.png')) }}" class="rounded-circle round-img-header-sm" style="z-index:{{ 1000 + loop.index }};{% if loop.index == 4 %}margin-right:10px{% endif %}" alt="...">
+                                        {% endif %}
+                                    </a>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
         {% for src, siteWeb in btns %}
             <div class="col-3 text-center">
                 {% set url = 'build/front/images/' %}
-                {% set ext = '.jpg' %}
-                {% set src = url ~ src ~ ext %}
+                {% set src = url ~ src  %}
                 <a href="{{ siteWeb }}" class="mx-1">
                 <img class="btns-header" src="{{ asset(src) }}">
                 </a>

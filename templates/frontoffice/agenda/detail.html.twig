@@ -152,11 +152,6 @@
                 {% endif %}
                 <!-- TEST PHOTO ARRONDIE -->
                 <div>
-                    {% if media4 is not null %}
-                        {% set url = '/assets/images/' ~ media4.media  %}
-                        /assets/images/november-ultra-ref-7772-copiedxo-1693822366.png
-                        <img src="{{ asset((url)) }}" class="rounded-circle round-img-header" alt="...">
-                    {% endif %}
                 </div>
                 <!-- PLUS D'INFOS SUR L'ARTISTE -->
                 <div class="row py-5">
@@ -312,7 +307,8 @@
     </div>
     {% endfor %}
     <!-- A DECOUVRIR -->
-    <div class="card-container">
+    <hr>
+    <div class="p-lg-5">
         <h1 class="pb-5">
             à découvrir >> >> >>
         </h1>

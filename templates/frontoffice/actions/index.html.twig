@@ -1,14 +1,14 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
 
 {% block body %}
-    <div class="p-5">
+    <div class=" pr-md-3 p-lg-5">
         <!-- ARTICLE -->
-        <div class="p-5 h2">
+        <div class="p-lg-5 h2">
             <!-- IMAGE ARTICLE -->
             <img src="{{ asset(('build/maquette/images/ACTIONCULTURELLE.png')) }}" class="w-100 mb-5 img-fluid" style="max-height: 600px; object-fit: cover" alt="ACTIONCULTURELLE">
             <div class="pt-4 position-relative">
-                <img src="{{ asset(('build/maquette/images/actu_cadre_1.svg')) }}" class="position-absolute" style="max-height: 100px; top:0; left: 0 !important;" alt="ACTIONCULTURELLE">
-                <div class="row pr-5 pt-5" style="padding-left: 80px">
+                <img src="{{ asset(('build/maquette/images/actu_cadre_1.svg')) }}" class="position-absolute" style="max-height: 50px; top:0; left: 0 !important;" alt="ACTIONCULTURELLE">
+                <div class="row pt-5 p-custom-actus">
                     <div class="col-lg-10 col-md-12">
                         <!-- Récupération des datas de l'article -->
                         {{ actu_test.getDatas(locale) }}
@@ -23,7 +23,7 @@
                     </div>
                 </div>
             </div>
-            <div class="pr-5 py-5" style="padding-left: 80px">
+            <div class="pr-lg-5 py-5 p-custom-actus" >
                 <!-- Sous-titre -->
                 <div class="h4">{{ actu_test.subtitle }}</div>
                 <div class="row position-relative">
@@ -31,7 +31,7 @@
                         <!-- Contenu -->
                         {{ actu_test.content | raw }}
 
-                        <img src="{{ asset(('build/maquette/images/actu_cadre_2.svg')) }}" class="position-absolute" style="height: 100px; bottom:0; left: 95%;" alt="ACTIONCULTURELLE">
+                        <img src="{{ asset(('build/maquette/images/actu_cadre_2.svg')) }}" class="position-absolute" style="height: 50px; bottom:-60px; right: 10px;" alt="ACTIONCULTURELLE">
                     </div>
                     <!-- Billetterie -->
                     <div class="col-lg-3 offset-lg-1 col-md-12">
@@ -91,7 +91,7 @@
     <!-- Voir aussi -->
 
     <div class="bg-grey">
-        <div class="p-5">
+        <div class="p-lg-5">
             <h1 class="pb-5">Voir aussi >> >> >></h1>
             <div class="row">
 
