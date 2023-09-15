@@ -31,7 +31,7 @@
                 {{  accomp.getDatas(locale) }}
 
                 {% set media = accomp.getMedia(4) %}
-                <div class="col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-1 px-md-0">
+                <div class="custom-col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-1 px-md-0">
                     <!-- Card-Actu -->
                     {% include 'frontoffice/_components/card.html.twig' with {'event': accomp, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true } %}
                 </div>
@@ -66,7 +66,7 @@
                 {{  accomp.getDatas(locale) }}
 
                 {% set media = accomp.getMedia(4) %}
-                <div class="col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-1 px-md-0">
+                <div class="custom-col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-1 px-md-0">
 
                     <!-- Card-Actu -->
                     {% include 'frontoffice/_components/card.html.twig' with {'event': accomp, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true } %}
@@ -94,7 +94,7 @@
                 {{  event_actu.getDatas(locale) }}
 
                 {% set media = event_actu.getMedia(4) %}
-                <div class="col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-1 px-md-0">
+                <div class="custom-col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-1 px-md-0">
 
                     <!-- Card-Actu -->
                     {% include 'frontoffice/_components/card.html.twig' with {'event': event_actu, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': false, 'soutiens': false } %}
