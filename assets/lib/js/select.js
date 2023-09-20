@@ -4,12 +4,13 @@ console.info("welcome to select.js");
 
 (function() {'use strict';
 function formatState (option) {
-    console.log(option)
+    // DEBUG
+    // console.log(option)
     let url = $(option.element).attr('data-thumbnail-path');
     if (!option.id) {
         return option.text;
     }
-    var $option = $(
+    let $option = $(
         '<span><img src="' + url + '" class="image-icon" /> ' + option.text + '</span>'
     );
     return $option;

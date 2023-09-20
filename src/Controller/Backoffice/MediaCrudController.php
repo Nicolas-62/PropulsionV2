@@ -3,7 +3,9 @@
 namespace App\Controller\Backoffice;
 
 
-use App\Field\MediaUploadField;
+use App\Entity\Article;
+use App\Entity\MediaType;
+use App\Field\ImageUploadField;
 
 use App\Service\MediaService;
 use App\Entity\Media;
@@ -22,6 +24,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
+use EasyCorp\Bundle\EasyAdminBundle\Field\HiddenField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -33,73 +36,83 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Mime\MimeTypes;
+use Twig\Environment;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 use function PHPUnit\Framework\throwException;
 
-/**
- * @method UploadedFile move()
- */
+
 class MediaCrudController extends BoController
 {
+    // Nom du type de média, utilisé pour nommage des templates
+    public string $bo_model_name      =   '';
+    public string $bo_models_name     =   '';
+    // Nom du type de média dans l'interface
+    public string $model_label        =   '';
+    public string $models_label       =   '';
+    // Nom du type de fichier associé au média (pdf, image, video, ...)
+    public string $model_type_label   =   '';
+    // Extensions acceptées
+    public array $acceptedExtensions  =   [];
 
+    // Intilisés dans le constructeur:
+
+    // Type de fichier accepté par le média
+    public MediaType $mediaType;
+    // Types de fichiers acceptés
+    public array $acceptedFileTypes   =   [];
 
     public function __construct(
         // Repository EasyAdmin
-        private EntityRepository $entityRepository
+        private EntityRepository $entityRepository,
+        private Environment $twig,
+        private EntityManagerInterface $entityManager
     )
     {
+        // Récupération des types mime en fonction des extensions acceptées.
+        $mimeTypes = new MimeTypes();
+        foreach($this->acceptedExtensions as $extension){
+            foreach($mimeTypes->getMimeTypes($extension) as $mimetype){
+                $this->acceptedFileTypes[] = $mimetype;
+            }
+        }
+        // Récupération du type de média
+        $this->mediaType = $this->entityManager->getRepository(MediaType::class)->findOneBy(['label' => $this->model_type_label]);
+
         // Appel du constructeur du controller parent
         parent::__construct();
     }
+
+    /**
+     * Retourne le nom de l'entité gérée par ce controleur.
+     *
+     * @return string
+     */
     public static function getEntityFqcn(): string
     {
         return Media::class;
     }
 
     /**
-     * Configure les champs à afficher dans les interfaces.
+     * Fourni à la vue les variables dont elle a besoin pour fonctionner.
      *
-     * @param string $pageName
-     * @return iterable
+     * @param KeyValueStore $responseParameters
+     * @return KeyValueStore
      */
-    public function configureFields(string $pageName): iterable
+    public function configureResponseParameters(KeyValueStore $responseParameters): KeyValueStore
     {
-        yield IdField::new('id')->hideOnForm()->setPermission('ROLE_DEV');
-        // Nom du média.
-        yield TextField::new('getName', 'nom')->onlyOnIndex();
-        yield TextField::new('legend', 'description');
-// TEST VICHUPLOAD BUNDLE
-//        yield ImageField::new('media', 'Image')
-//            ->onlyOnIndex()
-//            ->setBasePath('/assets/dyn-upload');
-//        yield MediaUploadField::new('mediaFile', 'Image')
-//            ->onlyOnForms()
-//            ->setFormType(VichImageType::class);
+        // Si édite un article
+        if (Crud::PAGE_EDIT === $responseParameters->get('pageName')
+            || Crud::PAGE_NEW === $responseParameters->get('pageName')
+        ) {
+            // Passage des types de fichiers acceptés
+            // !! Passage en global pour que le champ de formulaire puisse y accéder !!
+            $this->twig->addGlobal('acceptedFileTypes', $this->acceptedFileTypes);
+            $this->twig->addGlobal('acceptedExtensions', $this->acceptedExtensions);
 
-        // Vignette du média dans la liste des médias.
-        yield MediaUploadField::new('media', 'Image')->onlyOnIndex();
-        yield DateField::new('created_at','création')->hideOnForm();
-        yield DateField::new('updated_at','dernière édition')->hideOnForm();
-
-        // FORMULAIRE
-
-        // Champ personnalisé d'upload du média
-        $mediaField = Field::new('media', 'Image')
-            ->onlyOnForms()
-            ->setRequired(true)
-            ->setFormTypeOptions([
-                'block_name' => 'media_edit',
-            ])
-        ;
-
-        // Si le média existe déjà.
-        if(Crud::PAGE_EDIT === $pageName) {
-            // On personnalise la vue, on affiche l'image.
-            $mediaField->setDisabled();
         }
 
-        yield $mediaField;
-
+        return parent::configureResponseParameters($responseParameters);
     }
 
 
@@ -107,7 +120,6 @@ class MediaCrudController extends BoController
      * Renvoi vers le formulaire d'édition du media
      *
      * @param AdminContext $context
-     * @return KeyValueStore|RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function edit(AdminContext $context)
     {
@@ -124,7 +136,7 @@ class MediaCrudController extends BoController
      */
     public function createEntity(string $entityFqcn)
     {
-        $media = new Media();
+        $media = new $entityFqcn();
         $media->setCreatedAt( new \DateTimeImmutable() );
         $media->setUpdatedAt( new \DateTimeImmutable() );
 
@@ -159,17 +171,17 @@ class MediaCrudController extends BoController
     {
         return $crud
             // ...
-            ->setEntityLabelInPlural('Medias')
+            ->setEntityLabelInPlural(ucfirst($this->models_label))
+            ->setEntityLabelInSingular(ucfirst($this->model_label))
             // Titre de la page et nom de la liste affichée
-            ->setHelp('index', 'Liste des médias')
+            ->setHelp('index', 'Liste des '.$this->models_label)
             // Template personnalisé
-            ->overrideTemplate('crud/index', 'backoffice/media/medias.html.twig')
-
+            ->overrideTemplate('crud/index', 'backoffice/'.$this->bo_model_name.'/'.$this->bo_models_name.'.html.twig')
             // Pagination
             ->setPaginatorPageSize(12)
             ->setPaginatorRangeSize(4)
             // Personnalisation du formulaire
-            ->setFormThemes(['backoffice/media/media_edit.html.twig', '@EasyAdmin/crud/form_theme.html.twig'])
+            ->setFormThemes(['backoffice/'.$this->bo_model_name.'/'.$this->bo_model_name.'_edit.html.twig', '@EasyAdmin/crud/form_theme.html.twig'])
             // Actions sur la liste visible (par défaut cachées dans un dropdown)
             ->showEntityActionsInlined()
             ;
@@ -191,22 +203,10 @@ class MediaCrudController extends BoController
     {
         // Surcharge du bouton de suppression du média, vérification si il est lié à des publications
         $actions->update(Crud::PAGE_INDEX,'delete', function(Action $action){
-            return $action->setTemplatePath('backoffice/media/delete_action.html.twig');
+            return $action->setTemplatePath('backoffice/'.$this->bo_model_name.'/delete_action.html.twig');
         });
 
         return $actions;
-    }
-
-
-    /**
-     * Définie les assets nécessaires pour le controleur de médias.
-     * @param Assets $assets
-     * @return Assets
-     */
-    public function configureAssets(Assets $assets): Assets
-    {
-        return $assets
-            ->addWebpackEncoreEntry('bo_medias');
     }
 
     /**
@@ -222,6 +222,10 @@ class MediaCrudController extends BoController
     {
         // récupération des articles.
         $response = $this->entityRepository->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
+        $response->join('entity.mediaType', 'mediaType');
+        // On filtre les médias par type
+        $response->andWhere('mediaType.label = :type');
+        $response->setParameter('type', $this->model_type_label);
 
         // Si pas d'ordre
         if($searchDto->getSort() == [])
@@ -232,4 +236,37 @@ class MediaCrudController extends BoController
         return $response;
     }
 
+    /**
+     * Configure les champs à afficher dans les interfaces.
+     *
+     * @param string $pageName
+     * @return iterable
+     */
+    public function configureFields(string $pageName): iterable
+    {
+        yield IdField::new('id')->hideOnForm()->setPermission('ROLE_DEV');
+        // Nom du média.
+        yield TextField::new('getName', 'nom')->onlyOnIndex();
+        yield TextField::new('legend', 'description')->setEmptyData('');
+        // Vignette du média dans la liste des médias.
+        yield ImageUploadField::new('thumbnail', $this->model_label)->onlyOnIndex();
+        yield DateField::new('created_at','création')->hideOnForm();
+        yield DateField::new('updated_at','dernière édition')->hideOnForm();
+
+        // FORMULAIRE
+        // Champ personnalisé d'upload du média
+        $mediaField = Field::new($this->getModelName(), $this->model_label)
+            ->onlyOnForms()
+            ->setRequired(true)
+            ->setFormTypeOptions([
+                'block_name' => $this->bo_model_name.'_edit',
+            ])
+        ;
+        // Si le média existe déjà.
+        if(Crud::PAGE_EDIT === $pageName) {
+            // On personnalise la vue, on affiche l'image.
+            $mediaField->setDisabled();
+        }
+        yield $mediaField;
+    }
 }

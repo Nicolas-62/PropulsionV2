@@ -59,6 +59,11 @@ class Mediaspec
         $this->updated_at = new \DateTimeImmutable();
     }
 
+    /**
+     * Methode nessecaire pour appel des elements dans un sélecteur de formulaire.
+     *
+     * @return string
+     */
     public function __toString(): string
     {
         if($this->name) {

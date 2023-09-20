@@ -205,10 +205,15 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Tous les articles', 'fas fa-newspaper', Article::class),
             MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Article::class)->setAction(Crud::PAGE_NEW),
         ]);
-        // Liste des médias.
-        yield MenuItem::subMenu('Medias', 'fas fa-image')->setSubItems([
-            MenuItem::linkToCrud('Tous les medias', 'fa-regular fa-image', Media::class),
-            MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Media::class)->setAction(Crud::PAGE_NEW),
+        // Liste des images.
+        yield MenuItem::subMenu('Images', 'fas fa-image')->setSubItems([
+            MenuItem::linkToCrud('Toutes les images', 'fa-regular fa-image', Media::class)->setController(PictureCrudController::class),
+            MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Media::class)->setController(PictureCrudController::class)->setAction(Crud::PAGE_NEW),
+        ]);
+        // Liste des fichiers.
+        yield MenuItem::subMenu('Fichiers', 'fas fa-file')->setSubItems([
+            MenuItem::linkToCrud('Tous les fichiers', 'fa-regular fa-file', Media::class)->setController(FileCrudController::class),
+            MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Media::class)->setController(FileCrudController::class)->setAction(Crud::PAGE_NEW),
         ]);
         // Liste des thèmes.
         yield MenuItem::subMenu('Thèmes', 'fas fa-volcano')->setSubItems([

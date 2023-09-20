@@ -80,5 +80,51 @@ class MediaLinkRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
             ;
     }
+    /**
+     * Retourne la liste des médias de type pdf que l'on peut associer à une entité (article/catégorie)
+     *
+     * @return array
+     */
+    public function getAllFilesForChoices(Article|Category $entity = null): array
+    {
+        $request = $this->createQueryBuilder('m');
 
+        if(isset($entity)) {
+            $request->andWhere('m.'.strtolower($entity->getClassName()).' = :entity');
+            $request->setParameter('entity', $entity);
+        }
+        // On récupère les medias de type pdf
+
+        $links = $request->join('m.media', 'media')
+        ->join('media.mediaType', 'mediaType')
+        ->andWhere('mediaType.label = :label')
+        ->setParameter('label', 'pdf')
+        ->getQuery()->getResult();
+        dump($links);
+        $datas = [];
+        foreach($links as $link){
+            $datas[$link->getMedia()->getMedia()] = $link->getId();
+        }
+
+        return $datas;
+    }
+
+
+
+
+    /**
+     * Supprime les liens avec les medias de type fichier d'une entité
+     *
+     * @param Article|Category $entity
+     * @return void
+     */
+    public function removeFileMediaLinks(Article|Category $entity): void
+    {
+        $mediaLinks = $this->findBy([strtolower($entity->getClassName()) => $entity]);
+        foreach($mediaLinks as $mediaLink){
+            if($mediaLink->getMedia()->getMediaType()->getLabel() == 'pdf'){
+                $this->remove($mediaLink);
+            }
+        }
+    }
 }

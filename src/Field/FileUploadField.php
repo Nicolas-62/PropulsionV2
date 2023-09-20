@@ -8,7 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use Symfony\Component\Filesystem\Filesystem;
 
-class MediaUploadField  implements FieldInterface
+class FileUploadField  implements FieldInterface
 {
     use FieldTrait;
 
@@ -33,6 +33,8 @@ class MediaUploadField  implements FieldInterface
             ->setUploadedFileNamePattern('[name]_[randomhash].[extension]')
             ->setRequired(false)
         );
+
+
     }
 
     // TEST VICHUPLOAD BUNDLE

@@ -8,6 +8,7 @@ use App\Entity\Category;
 use App\Entity\Language;
 use App\Entity\Media;
 use App\Entity\MediaLink;
+use App\Entity\MediaType;
 use App\Entity\Online;
 use App\Service\MediaService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,7 +31,7 @@ class MediaListener implements EventSubscriberInterface
     public function __construct(
         private EntityManagerInterface $entityManager,
         private RequestStack $requestStack,
-                // Gestionnaire d'entité Symfony
+        // Gestionnaire d'entité Symfony
         private MediaService $mediaService
     )
     {
@@ -52,9 +53,10 @@ class MediaListener implements EventSubscriberInterface
     }
 
     public function createMedia(BeforeEntityPersistedEvent $event){
+
         $entity = $event->getEntityInstance();
         $new_filename = false;
-        // Si l'élément supprimé n'est pas un média
+        // Si l'élément créé est un média
         if ($entity instanceof Media) {
             $new_filename = $this->mediaService->getFile(
               $this->requestStack->getCurrentRequest()->get('folderId-media'),
@@ -62,10 +64,12 @@ class MediaListener implements EventSubscriberInterface
               $this->requestStack->getCurrentRequest()->get('cropData-media')
             );
         }
+
         // Si un fichier a été déposé a été retrouvé sur le serveur
         if ($new_filename !== false) {
             // On associe l'image téléchargée à l'objet média en cours de création.
-            $entity->setMedia($new_filename);
+            $entity->setMedia( $new_filename );
+            $entity->setMediaType( $this->entityManager->getRepository(MediaType::class)->findOneByFiletype($new_filename) );
         }
     }
 
@@ -91,6 +95,12 @@ class MediaListener implements EventSubscriberInterface
                 if ($filesystem->exists($imagepath)) {
                     $filesystem->remove($imagepath);
                 }
+                // Chemin de la vignette
+                $thumbpath = Constants::ASSETS_IMG_PATH . $entity->getThumbnail();
+                // Suppression de la vignette
+                if ($filesystem->exists($thumbpath)) {
+                    $filesystem->remove($thumbpath);
+                }
             }
         }
     }
@@ -99,7 +109,7 @@ class MediaListener implements EventSubscriberInterface
 
 
     /**
-     * Permet de faire des actions après la modification d'une entité
+     * Créer et/ou associe un média à un article/une catégorie
      *
      * @param AfterEntityUpdatedEvent $event
      * @return void
@@ -131,6 +141,8 @@ class MediaListener implements EventSubscriberInterface
                         $media = new Media();
                         // On associe l'image téléchargée à l'objet média en cours de création.
                         $media->setMedia($new_filename);
+                        $media->setMediaType( $this->entityManager->getRepository(MediaType::class)->findOneByFiletype($new_filename) );
+
                         // Todo controler la saisie de la description de l'image
                         $media->setLegend($this->requestStack->getCurrentRequest()->get('legend-media' . $index + 1));
                         $this->entityManager->persist($media);

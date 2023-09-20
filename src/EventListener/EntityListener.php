@@ -4,6 +4,8 @@ namespace App\EventListener;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\Media;
+use App\Entity\MediaLink;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
@@ -42,8 +44,9 @@ class EntityListener implements EventSubscriberInterface
     {
         // On défini le parent avant de définir le slug
         return [
-            BeforeEntityUpdatedEvent::class => [['defineParent', 1], ['defineSLug', 0]],
+            BeforeEntityUpdatedEvent::class => [['defineParent', 1], ['defineSLug', 0], ['linkFiles', 0]],
             BeforeEntityPersistedEvent::class => [['defineParent', 10], ['defineSLug', 9]],
+
         ];
     }
 
@@ -53,7 +56,8 @@ class EntityListener implements EventSubscriberInterface
      * @param BeforeEntityUpdatedEvent|BeforeEntityPersistedEvent $event
      * @return void
      */
-    public function defineSLug(BeforeEntityUpdatedEvent|BeforeEntityPersistedEvent $event){
+    public function defineSLug(BeforeEntityUpdatedEvent|BeforeEntityPersistedEvent $event): void
+    {
         // Récupération de l'entité.
         $entity = $event->getEntityInstance();
         // Si l'entité est une catégorie ou un article.
@@ -93,13 +97,40 @@ class EntityListener implements EventSubscriberInterface
             }
         }
     }
+
+
+    /**
+     * Associe les fichiers à l'entité
+     *
+     * @return void
+     */
+    public function linkFiles(BeforeEntityUpdatedEvent $event): void
+    {
+        // Récupération de l'entité.
+        $entity = $event->getEntityInstance();
+
+        // Si l'entité est un article ou une catégorie
+        if ($entity instanceof Article || $entity instanceof Category) {
+            // Si l'entité n'est pas en erreur.
+            if (!$entity->hasError()) {
+                // On supprime les liens avec des fichiers
+                $this->entityManager->getRepository(MediaLink::class)->removeFileMediaLinks($entity);
+                // Récupération des fichiers choisis dans le formulaire multiple
+                // Pour chaque fichier
+                foreach ($entity->getMediaLinks() as $mediaLink) {
+                    $mediaLink->{'set'.$entity->getClassName()}($entity);
+                }
+            }
+        }
+    }
+
     /**
      * Controle le choix d'un article parent ou d'une catégorie
      *
      * @param BeforeEntityUpdatedEvent|BeforeEntityPersistedEvent $event
      * @return void
      */
-    public function defineParent(BeforeEntityUpdatedEvent|BeforeEntityPersistedEvent $event)
+    public function defineParent(BeforeEntityUpdatedEvent|BeforeEntityPersistedEvent $event): void
     {
         // Récupération de l'entité.
         $entity = $event->getEntityInstance();

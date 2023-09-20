@@ -160,6 +160,11 @@ class Category
         return $this->category_id;
     }
 
+    /**
+     * Methode nessecaire pour appel des elements dans un sélecteur de formulaire.
+     *
+     * @return string
+     */
     public function __toString(): string
     {
         if($this->title) {

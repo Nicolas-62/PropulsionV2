@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\MediaType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @extends ServiceEntityRepository<MediaType>
@@ -38,6 +39,19 @@ class MediasTypesRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+
+    public function findOneByFiletype($filename): ?MediaType
+    {
+        $file  = new File($filename, false);
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.filetype LIKE :extension')
+            ->setParameter('extension', '%'.$file->getExtension().'%' )
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
 
 //    /**
 //     * @return MediaType[] Returns an array of MediaType objects

@@ -109,7 +109,11 @@ class Article
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Online::class, cascade: ['remove'])]
     private Collection $onlines;
 
-    #[ORM\OneToMany(mappedBy: 'article', targetEntity: MediaLink::class, cascade: ['remove'])]
+
+    /**
+     * @var Collection|ArrayCollection
+     */
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: MediaLink::class, cascade: ['persist','remove'])]
     private Collection $mediaLinks;
 
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Mediaspec::class)]
@@ -182,6 +186,11 @@ class Article
         return $this;
     }
 
+    /**
+     * Methode nessecaire pour appel des elements dans un sélecteur de formulaire.
+     *
+     * @return string
+     */
     public function __toString(): string
     {
         if($this->title) {
@@ -228,17 +237,29 @@ class Article
         return $this->mediaLinks;
     }
 
-
-
     public function addMediaLink(MediaLink $mediaLink): self
     {
+        $addLink = true;
         foreach($this->getMediaLinks() as $mediaLinked){
-            if($mediaLinked->getMediaspec()->getId() == $mediaLink ->getMediaspec()->getId()){
-               $this->removeMediaLink($mediaLinked);
+            // Si pour une mediaspec donnée on associe un nouveau media, on supprime l'ancien.
+            if($mediaLinked->getMediaspec() != null){
+                if($mediaLinked->getMediaspec()->getId() == $mediaLink ->getMediaspec()->getId()) {
+                    $this->removeMediaLink($mediaLinked);
+                }
+            }else{
+                // Si pour c'est un lien sans media spec
+                if($mediaLinked->getMedia() != null){
+                    // Si le lien exsite déjà, on ajoute pas le lien
+                    if($mediaLinked->getMedia()->getId() == $mediaLink->getMedia()->getId()) {
+                        $addLink = false;
+                    }
+                }
             }
         }
-        $this->mediaLinks->add($mediaLink);
-        $mediaLink->setArticle($this);
+        if($addLink) {
+            $this->mediaLinks->add($mediaLink);
+            $mediaLink->setArticle($this);
+        }
         return $this;
     }
 

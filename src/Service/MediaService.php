@@ -26,9 +26,12 @@ class MediaService{
 
 
     /**
-     * @param $folderId
-     * @param $filename
-     * @param $imgBase64
+     * Ecrase le fichier uploadé par l'utilisateur par l'image envoyé en base64 par le plugin cropper.js cas échéant,
+     * déplace le fichier du dossier d'upload vers la médiathèque.
+     *
+     * @param $folderId : nom dossier temporaire d'upload
+     * @param $filename : nom du fichier temporaire d'upload
+     * @param $imgBase64 : image croppée en base64
      * @return string
      */
     public function getFile($folderId, $filename, $imgBase64 = null): string
@@ -56,19 +59,31 @@ class MediaService{
                 }
                 // Infos de l'image
                 $file = new File($imageTmpPath);
+                // Identifiant unique du fichier
+                $uniqueId = time();
                 // On ajoute un identifiant unique au nom de l'image.
-                $new_filename = $this->toolbox->url_compliant($file->getBasename('.' . $file->getExtension())).'-'.time().'.'.$file->guessExtension();
-                // Chemin de destination
-                $imagePath = Constants::ASSETS_IMG_PATH .$new_filename;
+                $new_basename = $this->toolbox->url_compliant($file->getBasename('.' . $file->getExtension())).'-'.$uniqueId;
+                $new_filename = $new_basename.'.'.$file->guessExtension();
+                // Si c'est un pdf
+                if($file->getMimeType() == 'application/pdf') {
+                    // On recherche la vignette du pdf.
+                    $thumb_filename = pathinfo($file->getBasename('.' . $file->getExtension()), PATHINFO_FILENAME) . '.jpg';
+                    // Si elle existe
+                    if($filesystem->exists($tmpPath . $thumb_filename)){
+                        // On ajoute un identifiant unique au nom de l'image.
+                        $new_thumb_filename = $new_basename.'.jpg';
+                        // On déplace la vignette du pdf
+                        $filesystem->rename($tmpPath . $thumb_filename, Constants::ASSETS_IMG_PATH . $new_thumb_filename);
+                    }
+                }
+
                 // Si on arrive à le déplacer dans la médiatheque.
-                $filesystem->rename($imageTmpPath, $imagePath);
+                $filesystem->rename($imageTmpPath, Constants::ASSETS_IMG_PATH .$new_filename);
                 // On supprime le dossier temporaire.
                 $filesystem->remove($tmpPath);
             }
         }
         return $new_filename;
     }
-
-
 
 }

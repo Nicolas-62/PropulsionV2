@@ -29,11 +29,16 @@ class Media
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $media = null;
 
+    private ?string $thumbnail = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $legend = null;
 
     #[ORM\OneToMany(mappedBy: 'media', targetEntity: MediaLink::class, cascade: ['remove'])]
     private Collection $mediaLinks;
+
+    #[ORM\ManyToOne]
+    private ?mediaType $mediaType = null;
 
 // TEST VICHUPLOAD BUNDLE
 //    #[Assert\Image(mimeTypes: ['image/jpeg'])]
@@ -87,6 +92,11 @@ class Media
         return $this;
     }
 
+    /**
+     * Methode nessecaire pour appel des elements dans un formulaire.
+     *
+     * @return string
+     */
     public function __toString(): string
     {
         if($this->legend) {
@@ -125,11 +135,21 @@ class Media
 
         return $this;
     }
+
+
+    /**
+     * Retourne  le nom de fichier sans l'unique id.
+     * @return string
+     */
     public function getName(): string
     {
         return $this->getNameOf($this->getMedia());
     }
 
+    /**
+     * Retourne  le nom de fichier passé en parametre sans l'unique id.
+     * @return string
+     */
     public static function getNameOf($filename): string
     {
         $filename_explode = explode('-', pathinfo($filename)['filename']);
@@ -151,5 +171,32 @@ class Media
     public function setMedia(?string $media): void
     {
         $this->media = $media;
+    }
+
+    public function getMediaType(): ?mediaType
+    {
+        return $this->mediaType;
+    }
+
+    public function setMediaType(?mediaType $mediaType): self
+    {
+        $this->mediaType = $mediaType;
+
+        return $this;
+    }
+
+    /**
+     * Retourne le nom  du media ou de la vignette du média le cas échéant. (pdf)
+     *
+     * @return string|null
+     */
+    public function getThumbnail(): ?string
+    {
+        $file = new File($this->getMedia(), false);
+        if($file->getExtension() == 'pdf') {
+            return pathinfo($file->getBasename('.' . $file->getExtension()), PATHINFO_FILENAME) . '.jpg';
+        }else{
+            return $this->getMedia();
+        }
     }
 }

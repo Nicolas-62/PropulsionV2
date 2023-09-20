@@ -119,10 +119,15 @@ class Config
         return $this;
     }
 
-  public function __toString(): string
-  {
-    return 'Configuration du site';
-  }
+    /**
+     * Methode nessecaire pour appel des elements dans un sélecteur de formulaire.
+     *
+     * @return string
+     */
+      public function __toString(): string
+      {
+        return 'Configuration du site';
+      }
 
   public function getSeoTitle(): ?string
   {

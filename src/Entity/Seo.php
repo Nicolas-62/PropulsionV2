@@ -98,13 +98,17 @@ class Seo
         return $this;
     }
 
+    /**
+     * Methode nessecaire pour appel des elements dans un sélecteur de formulaire.
+     *
+     * @return string
+     */
+      public function __toString(): string
+      {
+        return 'Seo';
+        //return $this->getTitle();
 
-  public function __toString(): string
-  {
-    return 'Seo';
-    //return $this->getTitle();
-
-  }
+      }
 
     /**
      * Vérifie si la seo a été saisie

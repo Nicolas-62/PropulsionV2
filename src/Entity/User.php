@@ -184,7 +184,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-
+    /**
+     * Methode nessecaire pour appel des elements dans un sélecteur de formulaire.
+     *
+     * @return string
+     */
     public function __toString(): string
     {
         return $this->firstname.' '.$this->lastname;

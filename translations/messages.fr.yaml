@@ -80,4 +80,4 @@ security:
   terms: les conditions d'utilisation
 
 upload:
-  upload-message: 'Glisser / déposer votre fichier ICI : Type de fichiers  .jpg'
+  upload-message: 'Glisser / déposer votre fichier ICI : Type de fichiers : '

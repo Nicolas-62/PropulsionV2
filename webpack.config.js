@@ -40,7 +40,8 @@ Encore
      */
     // BACKOFFICE
     .addEntry('backoffice', './assets/bo/js/main.js')
-    .addEntry('bo_medias',  './assets/bo/js/medias.js')
+    .addEntry('bo_pictures',  './assets/bo/js/pictures.js')
+    .addEntry('bo_files',  './assets/bo/js/files.js')
     .addEntry('bo_articles','./assets/bo/js/articles.js')
     .addEntry('bo_article', './assets/bo/js/article.js')
     .addEntry('bo_category', './assets/bo/js/category.js')

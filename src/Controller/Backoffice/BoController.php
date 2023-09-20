@@ -5,22 +5,25 @@ namespace App\Controller\Backoffice;
 use App\Constants\Constants;
 use App\Entity\Article;
 use App\Entity\Media;
+use App\Entity\MediaLink;
 use App\Field\MediaSelectField;
 use App\Service\Secure;
-use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
-use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
-use http\Client\Response;
+use Spatie\PdfToImage\Pdf;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mime\MimeTypes;
+
 
 abstract class BoController extends AbstractCrudController
 {
@@ -43,26 +46,43 @@ abstract class BoController extends AbstractCrudController
           'folderId' => null,
           'filename' => null,
           'imageSelector' => null,
+           'url' => null,
+           'thumbUrl' => null,
         );
 
-        // Récupération de l'image
+        // Récupération du fichier
         $file = $context->getRequest()->files->get('file');
-
-        // DEBUG
-        //dump($file->isValid());
 
         // Si l'image a été récupérée.
         if(isset($file) && $file->isValid()) {
-            // Dossier temporaire de l'image = chaine alphanumérique de 10 caractères.
-            $folderId = $secureService->random_hash(5);
-            // Chemin temporaire de l'image
-            $imageBasePath = Constants::ASSETS_UPLOAD_PATH . $folderId . '/';
-            // Déplacement de l'image dans le dossier temporaire
-            if($file->move($imageBasePath, $file->getClientOriginalName())){
-                $response["folderId"] = $folderId;
-                $response["filename"] = $file->getClientOriginalName();
-                // Transformation de l'image en base64
-                $response["url"]      =  $context->getRequest()->getBaseUrl() . $imageBasePath . $file->getClientOriginalName();
+            // Dossier temporaire du fichier = chaine alphanumérique de 10 caractères.
+            $folderId       =   $secureService->random_hash(5);
+            // Chemin temporaire du fichier
+            $fileBasePath  =   Constants::ASSETS_UPLOAD_PATH . $folderId . '/';
+            // Nom du fichier
+            $filename       =   $file->getClientOriginalName();
+
+            // Déplacement du fichier dans le dossier temporaire
+            if($file->move($fileBasePath, $filename)){
+
+                // Si le fichier est un pdf
+                $mimeType = new MimeTypes();
+                if($mimeType->guessMimeType($fileBasePath . $filename) == 'application/pdf'){
+                    // Nom de la vignette PDF
+                    $thumb_filename =  pathinfo($filename, PATHINFO_FILENAME) . '.jpg';
+                    // On créer un vignette de la première page du pdf
+                    $pdf = new Pdf($fileBasePath . $filename);
+                    $pdf->saveImage($fileBasePath . $thumb_filename);
+                    // Chemin de la vignette
+                    $response["thumbUrl"] = $context->getRequest()->getBaseUrl() . $fileBasePath . $thumb_filename;
+                }
+
+                $response["folderId"]   =   $folderId;
+                $response["filename"]   =   $filename;
+                $file = new File($fileBasePath . $filename);
+                $response["filesize"]   =   $file->getSize();
+                // Chemin de l'image
+                $response["url"]        =  $context->getRequest()->getBaseUrl() . $fileBasePath . $filename;
             }
         }else{
             $response["error"] = "Impossible de récupérer le fichier";
@@ -85,15 +105,14 @@ abstract class BoController extends AbstractCrudController
         $folderId = $context->getRequest()->get('folderId');
 
         // Si le nom du dossier et le nom de fichier sont définis.
-        if(trim($filename) != '' && trim($folderId) != '') {
+        if(trim($folderId) != '') {
             // Chemin temporaire de l'image
-            $imageBasePath = Constants::ASSETS_UPLOAD_PATH . $folderId . '/';
+            $folderPath = Constants::ASSETS_UPLOAD_PATH . $folderId . '/';
             $filesystem = new Filesystem();
-            $filepath = $imageBasePath . $filename;
             // Si le fichier existe.
-            if ($filesystem->exists($filepath)) {
+            if ($filesystem->exists($folderPath)) {
                 // Suppression du fichier.
-                $filesystem->remove($filepath);
+                $filesystem->remove($folderPath);
             } else {
                 $response["error"] = "Impossible de supprimer le fichier";
             }
@@ -123,6 +142,20 @@ abstract class BoController extends AbstractCrudController
     {
         // Liste des champs à retourner.
         $mediaFields = array();
+        // Ajout d'un onglet pour les fichiers
+        $mediaFields[] = FormField::addTab('Fichiers')
+            ->setIcon('file');
+
+        $mediaFields[] = ChoiceField::new('mediaLinks', 'Fichiers')->setColumns(6)
+            ->setFormTypeOptions([
+                'choices' => $this->entityManager->getRepository(Media::class)->getAllFilesForChoices(),
+                'multiple' => true,
+                //'data' => $this->entityManager->getRepository(MediaLink::class)->getAllFilesForChoices($this->entity),
+                //'data' => array()
+            ])
+        ;
+
+
         // En édition on peut ajouter/enlever des médias.
         // Médiaspecs appliquées à l'entité
         $mediaspecs = $this->entityManager->getRepository($this->getEntityFqcn())->getMediaspecs($this->entity);
@@ -178,6 +211,18 @@ abstract class BoController extends AbstractCrudController
         }
 
         return $mediaFields;
+    }
+
+
+    /**
+     * Retourne le nom du modèle géré par le controleur.
+     * ex : App\Entity\Media => media
+     *
+     * @return string
+     */
+    public  function getModelName(): string
+    {
+        return strtolower( (new \ReflectionClass(Media::class))->getShortName() );
     }
 
 }

@@ -4,8 +4,12 @@ namespace App\Repository;
 
 use App\Entity\Media;
 use App\Entity\MediaLink;
+use App\Entity\MediaType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
+use phpDocumentor\Reflection\Types\Collection;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @extends ServiceEntityRepository<Media>
@@ -55,7 +59,7 @@ class MediaRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne par type d'netité la liste des entitées liées au média
+     * Retourne par type d'entité la liste des entitées liées au média
      *
      * @param Media $media
      * @return array|array[]
@@ -87,6 +91,23 @@ class MediaRepository extends ServiceEntityRepository
             $choices[$media->getMedia()] = $media->getId();
         }
         return $choices;
+    }
+
+    /**
+     * Retourne la liste des médias de type pdf que l'on peut associer à une entité (article/catégorie)
+     *
+     * @return array
+     */
+    public function getAllFilesForChoices(): array
+    {
+        $medias  =  $this->findBy(['mediaType' => 2]);
+        $files =  array();
+        foreach($medias as $media){
+            $mediaLink = new MediaLink();
+            $mediaLink->setMedia($media);
+            $files[$media->getMedia()] = $mediaLink;
+        }
+        return $files;
     }
 
 //    /**

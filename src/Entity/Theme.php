@@ -133,10 +133,15 @@ class Theme
         return $this;
     }
 
-  public function __toString(): string
-  {
-    return $this->getName();
-  }
+    /**
+     * Methode nessecaire pour appel des elements dans un sélecteur de formulaire.
+     *
+     * @return string
+     */
+      public function __toString(): string
+      {
+        return $this->getName();
+      }
 
 
 }

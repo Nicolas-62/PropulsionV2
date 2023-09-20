@@ -182,6 +182,4 @@ Abstract class CMSRepository extends ServiceEntityRepository
         return $seo;
     }
 
-
-
 }

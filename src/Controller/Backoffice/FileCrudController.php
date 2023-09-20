@@ -1,0 +1,74 @@
+<?php
+
+namespace App\Controller\Backoffice;
+
+
+use App\Field\FileUploadField;
+use App\Field\ImageUploadField;
+
+use App\Service\MediaService;
+use App\Entity\Media;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Mime\MimeTypes;
+use Twig\Environment;
+use Vich\UploaderBundle\Form\Type\VichImageType;
+use function PHPUnit\Framework\throwException;
+
+class FileCrudController extends MediaCrudController
+{
+    public array $acceptedExtensions  =   ['pdf'];
+    public array $acceptedFileTypes   =   [];
+    public string $bo_model_name      =   'file';
+    public string $bo_models_name     =   'files';
+    public string $model_label        =   'fichier';
+    public string $models_label       =   'fichiers';
+    public string $model_type_label   =   'pdf';
+
+    public function __construct(
+        // Repository EasyAdmin
+        EntityRepository $entityRepository,
+        Environment $twig,
+        EntityManagerInterface $entityManager
+    )
+    {
+        // Appel du constructeur du controller parent
+        parent::__construct($entityRepository, $twig, $entityManager);
+    }
+
+    /**
+     * Définie les assets nécessaires pour le controleur de médias.
+     * @param Assets $assets
+     * @return Assets
+     */
+    public function configureAssets(Assets $assets): Assets
+    {
+        return $assets
+            ->addWebpackEncoreEntry('bo_files');
+    }
+
+}

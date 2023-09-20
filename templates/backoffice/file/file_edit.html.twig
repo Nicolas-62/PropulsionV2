@@ -1,0 +1,42 @@
+{% block _Media_file_edit_widget %}
+    {% set upload_url = ea_url()
+        .unsetAll()
+        .setController('App\\Controller\\Backoffice\\FileCrudController')
+        .setAction('upload')
+    %}
+    {% set delete_upload_url = ea_url()
+        .unsetAll()
+        .setController('App\\Controller\\Backoffice\\FileCrudController')
+        .setAction('deleteUpload')
+        .set('entityId', ea.entity.primaryKeyValue)
+        .generateUrl()
+    %}
+    {% if ea.crud.currentAction == 'edit' %}
+        <img src="{{ asset(getThumbnailPath(ea.entity.getInstance.thumbnail)) }}" class="img-fluid">
+    {% else %}
+        {# Zone d'upload du nouveau média #}
+        <div class="form-group mb-3">
+            <div
+                class="my-dropzone text-center dropzone "
+                data-upload-url="{{ upload_url }}"
+                data-upload-message="{{ 'upload.upload-message'|trans ~ ' ' ~ acceptedExtensions|join(', ') }}"
+                data-accepted-file-types="{{ acceptedFileTypes|join(',') }}"
+                data-id="{{ form.vars.name }}"
+            >
+            </div>
+            <div class="mt-3 text-end">
+                <a
+                    class="btn btn-delete-upload btn-danger"
+                    id="btn-delete-upload-{{ form.vars.name }}"
+                    href="{{ delete_upload_url }}"
+                    data-href="{{ delete_upload_url }}"
+                >
+                    Supprimer
+                </a>
+            </div>
+        </div>
+        <input type="hidden" name="imageSelector-{{ form.vars.name }}" id="imageSelector-{{ form.vars.name }}" />
+        <input type="hidden" name="folderId-{{ form.vars.name }}" id="folderId-{{ form.vars.name }}" />
+        <input type="hidden" name="filename-{{ form.vars.name }}" id="filename-{{ form.vars.name }}" />
+    {% endif %}
+{% endblock %}

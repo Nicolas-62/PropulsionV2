@@ -2,11 +2,6 @@
 {% extends '@!EasyAdmin/crud/index.html.twig' %}
 
 {% block table_body %}
-    {# CUSTOM : Définition de l'URL d'accès au détail d'une entité #}
-    {% set url = ea_url()
-        .setController('App\\Controller\\Backoffice\\MediaCrudController')
-        .setAction('detail')
-    %}
     {% for entity in entities %}
         {% if entity.isAccessible %}
             <tr data-id="{{ entity.primaryKeyValueAsString }}">
@@ -19,12 +14,8 @@
                 {% endif %}
                 {% for field in entity.fields %}
                     <td data-label="{{ field.label|trans|e('html_attr') }}" class=" {{ field.property == sort_field_name ? 'sorted' }} text-{{ field.textAlign }} {{ field.cssClass }}" dir="{{ ea.i18n.textDirection }}">
-
                         {#  CUSTOM Légende #}
-                        {% if field.property == 'legend' %}
-                        {% else %}
-                            {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
-                        {% endif %}
+                        {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
                     </td>
                 {% endfor %}
 
@@ -90,5 +81,5 @@
 
 {# CUSTOM : modale de suppression du média #}
 {% block delete_form %}
-    {{ include('backoffice/media/_delete_form.html.twig', with_context = false) }}
+    {{ include('backoffice/file/_delete_form.html.twig', with_context = false) }}
 {% endblock delete_form %}
