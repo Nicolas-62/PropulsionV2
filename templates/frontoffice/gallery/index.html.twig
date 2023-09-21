@@ -1,23 +1,78 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
 
 {% block body %}
-<div class="p-5">
-    <div class="row">
-        {% for media in medias_gallery %}
-            <div class="col-4 p-3">
+    <div class="p-5">
+        <div class="row" data-masonry='{"percentPosition": true }'>
+            {% for media in medias_gallery %}
+                <div class="col-md-12 col-lg-3 p-3">
                     {% set url = '/assets/images/' ~ media.media %}
-                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
-            </div>
-        {% endfor %}
+                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="..." id="image{{ loop.index }}">
+                </div>
+            {% endfor %}
+        </div>
     </div>
-</div>
 
+    <!-- La modale -->
+    <div id="myModal" class="modal">
+        <span class="fs-1 close">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
 
+    <script>
+        // Obtenez la référence à la modale et à l'image modale
+        var modal = document.getElementById("myModal");
+        var modalImage = document.getElementById("modalImage");
 
+        // Obtenez une liste de toutes les images
+        var images = document.querySelectorAll('[id^="image"]');
 
+        // Lorsque l'utilisateur clique sur une image, affichez la modale
+        images.forEach(function (image) {
+            image.addEventListener("click", function () {
+                modal.style.display = "block";
+                modalImage.src = this.src;
+                modal.classList.add("fade-in");
+            });
+        });
 
+        // Lorsque l'utilisateur clique sur la croix, fermez la modale
+        modal.getElementsByClassName("close")[0].onclick = function () {
+            modal.style.display = "none";
+        }
 
+        var currentIndex = 0; // Indice de l'image actuellement affichée
 
+        // Fonction pour afficher l'image précédente
+        function showPreviousImage() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                modalImage.src = images[currentIndex].src;
+            }
+        }
 
+        // Fonction pour afficher l'image suivante
+        function showNextImage() {
+            if (currentIndex < images.length - 1) {
+                currentIndex++;
+                modalImage.src = images[currentIndex].src;
+            }
+        }
 
+        // Écouteurs d'événements pour les flèches gauche et droite
+        document.addEventListener("keydown", function (event) {
+            if (modal.style.display === "block") {
+                if (event.key === "ArrowLeft") {
+                    showPreviousImage();
+                } else if (event.key === "ArrowRight") {
+                    showNextImage();
+                }
+            }
+        });
+
+    </script>
 {% endblock %}
+
+
+
+
+
