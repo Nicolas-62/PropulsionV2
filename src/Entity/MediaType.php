@@ -27,6 +27,9 @@ class MediaType
     #[ORM\Column(length: 255)]
     private ?string $filetype = null;
 
+    #[ORM\OneToMany(mappedBy: 'mediaType', targetEntity: Media::class)]
+    private Collection $medias;
+
 
     public function getId(): ?int
     {
@@ -65,5 +68,21 @@ class MediaType
     public function __toString(): string
     {
         return $this->label;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMedias(): Collection
+    {
+        return $this->medias;
+    }
+
+    /**
+     * @param Collection $medias
+     */
+    public function setMedias(Collection $medias): void
+    {
+        $this->medias = $medias;
     }
 }

@@ -134,7 +134,7 @@ Abstract class CMSRepository extends ServiceEntityRepository
     }
 
     /**
-     * vérifie sur la catégorie parent de l'article a la SEO d'activé
+     * vérifie si la catégorie parent de l'article a la SEO d'activé
      *
      * @param Article|Category $entity
      * @return bool
@@ -159,6 +159,34 @@ Abstract class CMSRepository extends ServiceEntityRepository
         // retour
         return false;
     }
+
+    /**
+     * vérifie si la catégorie parent de l'article a les fichiers d'activé
+     *
+     * @param Article|Category $entity
+     * @return bool
+     */
+    public function hasFiles(Article|Category $entity): bool
+    {
+        // Si c'est une catégorie
+        if($entity instanceof Category){
+            return $entity->hasSeo();
+        }
+        // Sinon on cherche dans le ancêtres de l'article
+        else {
+            // On boucle sur les ancêtres de l'article
+            foreach ($entity->getAncestors() as $parent) {
+                // Si c'est une catégorie
+                if ($parent instanceof Category) {
+                    return $parent->hasSeo();
+                }
+            }
+        }
+
+        // retour
+        return false;
+    }
+
 
     /**
      * vérifie sur la catégorie parent de l'article a la SEO d'activé

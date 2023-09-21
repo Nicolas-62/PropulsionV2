@@ -103,9 +103,7 @@ class MediaRepository extends ServiceEntityRepository
         $medias  =  $this->findBy(['mediaType' => 2]);
         $files =  array();
         foreach($medias as $media){
-            $mediaLink = new MediaLink();
-            $mediaLink->setMedia($media);
-            $files[$media->getMedia()] = $mediaLink;
+            $files[$media->getMedia()] = $media->getId();
         }
         return $files;
     }

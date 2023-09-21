@@ -1,4 +1,5 @@
 "name","label","ea_type","list","column","format",
+"hasFiles","Possède des fichiers","BooleanField","false","3","",
 "titleByLanguage","Titre","TextField","true","3","",
 "description","Description","TextEditorField","false","12",
 "content","Contenu","TextEditorField","false","12",

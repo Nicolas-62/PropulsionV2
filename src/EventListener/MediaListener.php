@@ -124,6 +124,27 @@ class MediaListener implements EventSubscriberInterface
         if($entity instanceof  Article || $entity instanceof  Category){
             // Si l'entité n'est pas en erreur.
             if( ! $entity->hasError()) {
+
+                // !! FICHIERS
+                // Suppression des anciens liens avec les fichiers
+                $this->entityManager->getRepository(MediaLink::class)->removeFileMediaLinks($entity);
+                // récupération des ids des medias à associer avec l'entité
+                $mediaLinkIds = $this->requestStack->getCurrentRequest()->get(ucfirst($entity->getClassName()))['mediaLinks'] ?? [];
+                // Pour chaque média à associer
+                foreach($mediaLinkIds as $mediaLinkId){
+                    // Création du lien
+                    $mediaLink = new MediaLink();
+                    // Récupération du média et association
+                    $mediaLink->setMedia($this->entityManager->getRepository(Media::class)->findOneBy(['id' => $mediaLinkId]));
+                    // Association du lien à l'entité
+                    $entity->addMediaLink($mediaLink);
+                    // Association de l'entité au lien
+                    $mediaLink->{'set' . ucfirst($entity->getClassName())}($entity);
+                    // Sauvegarde du lien
+                    $this->entityManager->getRepository(MediaLink::class)->save($mediaLink);
+                }
+
+                // !! IMAGES
                 // Récupération des mediaspecs qui s'appliquent à l'entité
                 $mediaspecs = $this->entityManager->getRepository($entity::class)->getMediaspecs($entity);
                 // Pour chaque mediaspec
@@ -165,6 +186,10 @@ class MediaListener implements EventSubscriberInterface
                 }
             }
         }
+
+
+        // Mise à jour de la base de donnée
+        $this->entityManager->flush();
     }
 
 

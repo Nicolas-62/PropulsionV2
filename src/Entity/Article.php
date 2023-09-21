@@ -72,6 +72,10 @@ class Article
     private ?string $styleTextColor     = '#FFFFFF';
     private ?bool   $star  = false;
 
+    private array $files = array();
+
+
+
 
     // Liste des champs supplémentaires spécifiques.
     private array $extraFields = ARTICLE_DATA_FIELDS;
@@ -229,13 +233,6 @@ class Article
         return $this;
     }
 
-    /**
-     * @return Collection<int, MediaLink>
-     */
-    public function getMediaLinks(): Collection
-    {
-        return $this->mediaLinks;
-    }
 
     public function addMediaLink(MediaLink $mediaLink): self
     {
@@ -349,6 +346,37 @@ class Article
         $this->slug = $slug;
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFiles(): array
+    {
+        $files = array();
+        foreach($this->getMediaLinks() as $mediaLink){
+            if($mediaLink->getMedia() != null && $mediaLink->getMedia()->getMediaType()->getLabel() == 'pdf'){
+                $this->files[] = $mediaLink->getMedia();
+            }
+        }
+        dump($files);
+        return $files;
+    }
+
+    /**
+     * @param array $files
+     */
+    public function setFiles(array $files): void
+    {
+        $this->files = $files;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMediaLinks(): Collection
+    {
+        return $this->mediaLinks;
     }
 
 }

@@ -18,7 +18,7 @@ function formatState (option) {
 
     // When DOM is ready.
     $(document).ready(function() {
-        $('.custom-select').select2({
+        $('#custom-select').select2({
             allowClear: true,
             theme: 'bootstrap-5',
             templateResult: formatState,

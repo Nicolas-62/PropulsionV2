@@ -85,27 +85,25 @@ class MediaLinkRepository extends ServiceEntityRepository
      *
      * @return array
      */
-    public function getAllFilesForChoices(Article|Category $entity = null): array
+    public function getFilesByEntityForChoices(Article|Category $entity ): array
     {
         $request = $this->createQueryBuilder('m');
-
-        if(isset($entity)) {
-            $request->andWhere('m.'.strtolower($entity->getClassName()).' = :entity');
-            $request->setParameter('entity', $entity);
-        }
-        // On récupère les medias de type pdf
-
-        $links = $request->join('m.media', 'media')
-        ->join('media.mediaType', 'mediaType')
-        ->andWhere('mediaType.label = :label')
-        ->setParameter('label', 'pdf')
-        ->getQuery()->getResult();
-        dump($links);
+        $request
+            // Filtre sur l'entité
+            ->andWhere('m.'.strtolower($entity->getClassName()).' = :entity')
+            ->setParameter('entity', $entity)
+            // Filtre sur le type de média
+            ->join('m.media', 'media')
+            ->join('media.mediaType', 'mediaType')
+            ->andWhere('mediaType.label = :label')
+            ->setParameter('label', 'pdf');
+        // Récupération des liens
+        $links = $request->getQuery()->getResult();
         $datas = [];
+        // Formatage des données pour le sélecteur html, format : label => id
         foreach($links as $link){
-            $datas[$link->getMedia()->getMedia()] = $link->getId();
+            $datas[$link->getMedia()->getMedia()] = $link->getMedia()->getId();
         }
-
         return $datas;
     }
 
@@ -120,9 +118,13 @@ class MediaLinkRepository extends ServiceEntityRepository
      */
     public function removeFileMediaLinks(Article|Category $entity): void
     {
+        // Récupération des liens entre l'entité et les medias
         $mediaLinks = $this->findBy([strtolower($entity->getClassName()) => $entity]);
+        // pour chaque lien
         foreach($mediaLinks as $mediaLink){
+            // Si le media est de type fichier
             if($mediaLink->getMedia()->getMediaType()->getLabel() == 'pdf'){
+                // Suppression du lien
                 $this->remove($mediaLink);
             }
         }

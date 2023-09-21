@@ -37,7 +37,7 @@ class Media
     #[ORM\OneToMany(mappedBy: 'media', targetEntity: MediaLink::class, cascade: ['remove'])]
     private Collection $mediaLinks;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: MediaType::class, inversedBy: 'medias')]
     private ?mediaType $mediaType = null;
 
 // TEST VICHUPLOAD BUNDLE

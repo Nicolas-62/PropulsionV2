@@ -515,6 +515,7 @@ class ArticleCrudController extends BoController
                 'backoffice/article/media_edit.html.twig',
                 'backoffice/article/media_delete.html.twig',
                 'backoffice/article/media_select.html.twig',
+                'backoffice/article/file_select.html.twig',
                 'backoffice/article/seo_edit.html.twig',
                 '@EasyAdmin/crud/form_theme.html.twig'
                 ]
