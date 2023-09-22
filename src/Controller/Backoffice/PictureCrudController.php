@@ -33,6 +33,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\MimeTypes;
 use Twig\Environment;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -73,5 +74,36 @@ class PictureCrudController extends MediaCrudController
         return $assets
             ->addWebpackEncoreEntry('bo_pictures');
     }
+
+    /**
+     * Défini les actions supplémentaires disponibles dans la vue
+     *
+     * @param Actions $actions
+     * @return Actions
+     */
+    public function configureActions(Actions $actions): Actions
+    {
+
+//        $selectorPagePicture = Action::new('Ajouter à la Galerie', 'Ajouter à la galerie', 'fa fa-image');
+//        $selectorPagePicture->setCssClass('btn btn-success');
+//        $selectorPagePicture->setHtmlAttributes([]);
+//        $selectorPagePicture->linkToCrudAction('selectorPagePicture');
+//        $selectorPagePicture->createAsGlobalAction();
+//        $actions->add(Crud::PAGE_INDEX, $selectorPagePicture);
+
+
+        return $actions;
+    }
+
+
+    public function selectorPagePicture(){
+// Création d'une instance de Response
+        $response = new Response();
+        $response->setContent('<html><body>Hello, Symfony!</body></html>');
+        $response->setStatusCode(Response::HTTP_OK);
+        $response->headers->set('Content-Type', 'text/html');
+        $response->send();
+    }
+
 
 }

@@ -7,6 +7,7 @@ use App\Entity\ArticleData;
 use App\Entity\Category;
 use App\Entity\Language;
 use App\Entity\Media;
+use App\Entity\Online;
 use App\Entity\Seo;
 use App\Field\LanguageSelectField;
 use App\Field\MediaSelectField;
@@ -42,6 +43,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -64,7 +66,8 @@ class ArticleCrudController extends BoController
         // Repository EasyAdmin
         protected EntityRepository $entityRepository,
         // Code Langue
-        protected string $locale
+        protected string $locale,
+        protected RequestStack $requestStack,
     )
     {
         // Appel du constructeur du controller parent
@@ -167,7 +170,11 @@ class ArticleCrudController extends BoController
                         $value = $ancestor->getTitle() . ' / ' . $value;
                     }
                 }
+            }else{
+                // on affiche rien si pas de parent.
+                $value = '&nbsp;';
             }
+
             return $value;
         });
 
@@ -181,11 +188,11 @@ class ArticleCrudController extends BoController
             // On récupère les articles qui peuvent avoir des sous articles.
             $hasCreateArticles = $this->entityManager->getRepository(Article::class)->getHasSubArticleArticles($this->entity, $this->locale);
             // Article parent
-            yield AssociationField::new('parent', 'Article Parent')->hideOnDetail()->setColumns(3)->hideOnIndex()->setRequired(false)->setFormTypeOptions([
+            yield AssociationField::new('parent', 'Article Parent')->setFormTypeOptionIfNotSet('attr.placeholder', 'Rien')->hideOnDetail()->setColumns(3)->hideOnIndex()->setRequired(false)->setFormTypeOptions([
                 // Article parent associé.
                 'data' => $this->entity?->getParent(),
                 // Choix possibles.
-                'choices' =>$hasCreateArticles
+                'choices' =>$hasCreateArticles,
             ]);
 
             // On récupère les catégories auxquelles on peut associer des articles.
@@ -620,16 +627,51 @@ class ArticleCrudController extends BoController
         $actions->add(Crud::PAGE_INDEX, $returnGlobalAction);
 
 
+
+
+        // Bouton d'envois vers l'article.
+
+
+
+
+        $accessPageAction = Action::new('Accès', 'Voir', 'fa fa-eye');
+        $accessPageAction->linkToRoute('fo_agenda_detail', function (Article $article) {
+                    return [
+                        'slug' => $article->getSlug()
+                    ];
+                });;
+        $accessPageAction->addCssClass(' btn btn-primary');
+        $accessPageAction->displayIf(function (Article $article) {
+            // On récupère la preview en passant par la session.
+            $session        = $this->requestStack->getSession();
+            $preview        = $session->get('preview');
+
+            if( $preview == '1' || $article->isOnline($this->locale)){
+                return true;
+            }else {
+                return false;
+            }
+        });
+        // Ajout des boutons à la liste des actions disponibles.
+        $actions->add(Crud::PAGE_EDIT, $accessPageAction);
+
+
+
+
+
+
+
         // Bouton de retour au détail du parent.
         $returnPageAction = Action::new('return', 'Revenir', 'fa fa-arrow-left');
         $returnPageAction->setTemplatePath('backoffice/actions/return.html.twig');
-        // renders the action as a <a> HTML element
+        // renders action as a <a> HTML element
         $returnPageAction->displayAsLink();
-        // associé à l'action index
+        // associé l'action l'à index
         $returnPageAction->linkToCrudAction('index');
-        $returnPageAction->addCssClass('btn btn-primary');
+        $returnPageAction->addCssClass('btn btn-secondary');
         // Ajout des boutons à la liste des actions disponibles.
         $actions->add(Crud::PAGE_EDIT, $returnPageAction);
+
 
         return $actions;
     }
