@@ -1,0 +1,27 @@
+{% extends 'frontoffice/_components/layout.html.twig' %}
+{% block meta_robots %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+
+{% block body %}
+    {% if event is not null %}
+        <div class="p-5">
+            <div class="text-center h2 pb-5">
+                {{ event.getDatas(locale) }}
+                {{ event.title }}
+            </div>
+            <div class="fs-3 py-3">
+                {{ event.description | raw }}
+            </div>
+            <br>
+            <div class="fs-3">
+                {{ event.content | raw }}
+            </div>
+        </div>
+    {% else %}
+        <div class="p-5 fs-3 text-center">
+            Aucun Article ne correspond à ce hash.
+        </div>
+    {% endif %}
+{% endblock %}

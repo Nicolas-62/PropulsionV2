@@ -3,6 +3,7 @@
 namespace App\EventListener;
 
 use App\Entity\Article;
+use App\Entity\ArticleData;
 use App\Entity\Category;
 use App\Entity\Media;
 use App\Entity\MediaLink;
@@ -44,8 +45,9 @@ class EntityListener implements EventSubscriberInterface
     {
         // On défini le parent avant de définir le slug
         return [
-            BeforeEntityUpdatedEvent::class => [['defineParent', 1], ['defineSLug', 0], ['linkFiles', 0]],
-            BeforeEntityPersistedEvent::class => [['defineParent', 10], ['defineSLug', 9]],
+            BeforeEntityUpdatedEvent::class => [['defineParent', 1], ['defineSLug', 0], ['linkFiles', 0],['defineStar', 0]],
+            BeforeEntityPersistedEvent::class => [['defineParent', 10], ['defineSLug', 9],['generateHash',8],['defineStar', 7]],
+
 
         ];
     }
@@ -162,6 +164,73 @@ class EntityListener implements EventSubscriberInterface
                         '%name%' => (string)$event->getEntityInstance(),
                     ], 'messages'));
                 }
+            }
+        }
+    }
+
+
+    /**
+     * @param BeforeEntityPersistedEvent $event
+     * @return void
+     * @description Permet de générer un hash pour les articles et les catégories
+     */
+    public function generateHash(BeforeEntityPersistedEvent $event): void
+    {
+        $entity = $event->getEntityInstance();
+
+        // Si l'entité est un article ou une catégorie
+        if ($entity instanceof Article || $entity instanceof Category) {
+
+            $hash = $entity->generateHash();
+            $entity->setHash($hash);
+
+            // Si l'entité n'est pas en erreur.
+            if (!$entity->hasError()) {
+
+            }
+        }
+    }
+
+    /**
+     * @param BeforeEntityUpdatedEvent|BeforeEntityPersistedEvent $event
+     * @return void
+     * @description Permet de définir l'article vedette et de supprimer les autres articles vedettes
+     */
+    public function defineStar(BeforeEntityUpdatedEvent|BeforeEntityPersistedEvent $event): void
+    {
+        $entity = $event->getEntityInstance();
+
+        // Si l'entité est un article ou une catégorie
+        if ($entity instanceof Article) {
+            if($entity->getStar()){
+                $vedette = $this->entityManager->getRepository(ArticleData::class)->findBy(['field_key' => 'star','field_value' => true]);
+                $article_ids = [];
+
+                foreach($vedette as $vedette){
+                    $article_ids[] = $vedette->getObject()->getId();
+                }
+
+                foreach ($article_ids as $article_id){
+                    var_dump($entity->getId());
+                    var_dump($article_id);
+                    echo ('<br>');
+                    if($entity->getId() != $article_id)
+                        var_dump($article_id);
+
+                    echo ('<br>');
+                    $article_data = $this->entityManager->getRepository(ArticleData::class)->findOneBy(['object' => $article_id,'field_key' => 'star','field_value' => true]);
+                    $article_data->setFieldValue(false);
+
+                }
+
+
+                $entity->setStar(true);
+
+            }
+
+            // Si l'entité n'est pas en erreur.
+            if (!$entity->hasError()) {
+
             }
         }
     }

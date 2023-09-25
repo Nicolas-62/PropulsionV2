@@ -117,6 +117,7 @@ class CategoryCrudController extends BoController
         yield AssociationField::new('parent','Parent')->hideOnIndex()->setRequired(false);
         yield BooleanField::new('has_seo','has_seo')->hideOnIndex()->setColumns(3);
         yield BooleanField::new('has_theme','has_theme')->hideOnIndex()->setColumns(3);
+        yield BooleanField::new('internal','Page interne')->hideOnIndex()->setColumns(3);
 
         if($pageName === Crud::PAGE_EDIT) {
             // Ajout des champs spécifiques à l'instance définis dans l'entité, pour la partie paramétrage

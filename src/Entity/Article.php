@@ -382,6 +382,17 @@ class Article
         return $this->mediaLinks;
     }
 
+    public function getStar(): ?bool
+    {
+        return $this->star;
+    }
+
+    public function setStar(?bool $star): void
+    {
+        $this->star = $star;
+    }
+
+
 }
 
 

@@ -263,4 +263,10 @@ trait CMSTrait
         return $this;
     }
 
+    public function generateHash(): ?string
+    {
+        $uniqID = bin2hex(random_bytes(13));
+        return $uniqID;
+    }
+
 }

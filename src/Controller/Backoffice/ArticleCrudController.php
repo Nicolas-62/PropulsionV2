@@ -181,6 +181,14 @@ class ArticleCrudController extends BoController
         yield BooleanField::new('isOnline', 'En ligne')->hideOnForm();
         yield DateField::new('created_at','création')->hideOnForm();
         yield DateField::new('updated_at','dernière édition')->hideOnForm();
+        yield TextField::new('hash','')->hideOnForm()->setSortable(false)->renderAsHtml()->setCssClass('')->formatValue(function ($value, $entity) {
+
+
+            $link = 'https://dev-lalune.e-systemes.fr/page/'.$entity->getHash();
+            $url =     '<button class="btn" data-link="' . $link . '" onclick="copierLien(this)">Copier le lien</button>';
+
+            return $url;
+        });
 
         // Champs pour l'édition et la création d'un article.
         if(in_array($pageName, [Crud::PAGE_EDIT, Crud::PAGE_NEW])) {

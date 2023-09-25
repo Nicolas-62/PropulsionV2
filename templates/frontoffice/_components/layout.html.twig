@@ -3,6 +3,9 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        {% block meta_robots %}
+            <meta name="robots" content="noindex, nofollow">
+        {% endblock %}
         <meta name="robots" content="noindex, nofollow">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}{{ seo.title|capitalize }} - {{ site }}{% endblock %}</title>

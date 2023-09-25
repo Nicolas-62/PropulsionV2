@@ -132,4 +132,5 @@ class ArticleRepository extends CMSRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
 }
