@@ -135,6 +135,9 @@ class Article
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $hash = null;
+
 
     public function getArticleId(): ?int
     {

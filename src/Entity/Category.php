@@ -125,6 +125,12 @@ class Category
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Seo::class, cascade: ['persist','remove'])]
     private Collection $seo;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $hash = null;
+
+    #[ORM\Column]
+    private ?bool $internal = null;
+
     /**
      * @return Collection<int, Article>
      */
@@ -314,6 +320,18 @@ class Category
     public function setHasSeo(bool $hasSeo): self
     {
         $this->hasSeo = $hasSeo;
+
+        return $this;
+    }
+
+    public function isInternal(): ?bool
+    {
+        return $this->internal;
+    }
+
+    public function setInternal(bool $internal): self
+    {
+        $this->internal = $internal;
 
         return $this;
     }
