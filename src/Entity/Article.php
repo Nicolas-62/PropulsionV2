@@ -393,6 +393,33 @@ class Article
     }
 
 
+    /**
+     * Récupère le plus grand media pour l'open graph
+     *
+     * @return Media|null
+     * @throws \Exception
+     */
+    public function getMediaForOpenGraph(): ?Media
+    {
+
+        // get a new ArrayIterator
+        $sortedMediaLinks = $this->getMediaLinks()->getIterator();
+
+        // define ordering closure, using preferred comparison method/field
+        $sortedMediaLinks->uasort(function ($first, $second) {
+            return (int) $first->getMediaspec()->getWidth() > (int) $second->getMediaspec()->getWidth() ? 1 : -1;
+        });
+
+        $media = null;
+        foreach($sortedMediaLinks as $mediaLink){
+            if($mediaLink->getMedia() != null && $mediaLink->getMedia()->getMediaType()->getLabel() == 'image'){
+                $media = $mediaLink->getMedia();
+            }
+        }
+        return $media;
+    }
+
+
 }
 
 

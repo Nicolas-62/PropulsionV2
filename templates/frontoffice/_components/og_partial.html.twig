@@ -1,0 +1,54 @@
+{% dump(openGraph) %}
+{% if openGraph.title is defined %}
+    {% if openGraph.title is not null and openGraph.title is not empty %}
+        <meta property="og:title" content="{{ openGraph.title }}">
+    {% endif %}
+{% endif %}
+
+{#{% if openGraph.locale is defined %}#}
+{#    {% if openGraph.locale is not null and openGraph.locale is not empty %}#}
+{#        <meta property="og:locale" content="{{ openGraph.locale }}">#}
+{#    {% endif %}#}
+{#{% endif %}#}
+
+{% if openGraph.url is defined %}
+    {% if openGraph.url is not null and openGraph.url is not empty %}
+        <meta property="og:url" content="{{ openGraph.url }}">
+    {% endif %}
+{% endif %}
+
+{% if openGraph.image is defined %}
+    {% if openGraph.image is not null and openGraph.image is not empty %}
+        <meta property="og:image" content="{{ openGraph.image }}">
+    {% endif %}
+{% endif %}
+
+{% if openGraph.imageWidth is defined %}
+    {% if openGraph.imageWidth is not null and openGraph.imageWidth is not empty %}
+        <meta property="og:image:width" content="{{ openGraph.imageWidth }}">
+    {% endif %}
+{% endif %}
+
+{% if openGraph.imageHeight is defined %}
+    {% if openGraph.imageHeight is not null and openGraph.imageHeight is not empty %}
+        <meta property="og:image:height" content="{{ openGraph.imageHeight }}">
+    {% endif %}
+{% endif %}
+
+{% if openGraph.description is defined %}
+    {% if openGraph.description is not null and openGraph.description is not empty %}
+        <meta property="og:description" content="{{ openGraph.description }}">
+    {% endif %}
+{% endif %}
+
+{% if openGraph.siteName is defined %}
+    {% if openGraph.siteName is not null and openGraph.siteName is not empty %}
+        <meta property="og:site_name" content="{{ openGraph.siteName }}">
+    {% endif %}
+{% endif %}
+
+{% if openGraph.type is defined %}
+    {% if openGraph.type is not null and openGraph.type is not empty %}
+        <meta property="og:type" content="{{ openGraph.type }}">
+    {% endif %}
+{% endif %}

@@ -6,6 +6,9 @@
         {% block meta_robots %}
             <meta name="robots" content="noindex, nofollow">
         {% endblock %}
+        {% block meta_og %}
+            {{ include(fo_path ~ '_components/og_partial.html.twig') }}
+        {% endblock %}
         <meta name="robots" content="noindex, nofollow">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}{{ seo.title|capitalize }} - {{ site }}{% endblock %}</title>
@@ -17,13 +20,11 @@
         <link rel="stylesheet" href="{{ asset('build/fo_main_css.css') }}">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Akshar:wght@300;400;600&family=Roboto:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
-{#        <!-- Scripts -->#}
-{#        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>#}
-{#        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>#}
-{#        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>#}
+        {#        <!-- Scripts -->#}
+        {#        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>#}
+        {#        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>#}
+        {#        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>#}
         {% block stylesheets %}
             {{ include(fo_path ~ '_components/styles.html.twig') }}
         {% endblock %}

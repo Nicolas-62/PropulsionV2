@@ -9,7 +9,10 @@ use App\Entity\Config;
 use App\Entity\Contact;
 use App\Entity\Language;
 use App\Entity\Media;
+use App\Entity\MediaLink;
+use App\Entity\Mediaspec;
 use App\Entity\Online;
+use App\Entity\OpenGraph;
 use App\Entity\Seo;
 use App\Form\ContactType;
 use App\Notification\BoNotification;
@@ -20,6 +23,7 @@ use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -37,7 +41,7 @@ class FOController extends AbstractController
 
     public function __construct(
         protected EntityManagerInterface $entityManager,
-        private ContainerBagInterface $params
+        private ContainerBagInterface $params,
     )
     {
         // Datas passées à la vue.
@@ -120,7 +124,7 @@ class FOController extends AbstractController
      * @return void
      */
     public function buildHeader(){
-        // A SURCHARER
+        // A SURCHARGER
     }
 
     /**
@@ -128,7 +132,73 @@ class FOController extends AbstractController
      * @return void
      */
     public function buildFooter(){
-        // A SURCHARER
+        // A SURCHARGER
+    }
+
+    public function buildOpenGraph(Article|Category $entity = null){
+
+        // On récupère l'url du site depuis le service request
+        $siteUrl = $this->container->get('request_stack')->getCurrentRequest()->getHost();
+
+
+        // A SURCHARGER
+        $openGraph = new OpenGraph();
+
+        // Site
+        $openGraph->setSiteName($this->params->get('app.site'));
+        // Locale
+        $openGraph->setLocale($this->params->get('locale'));
+//         URL
+        $openGraph->setUrl('https://' . $siteUrl);
+
+        // Si on a une entité
+        if($entity !=null) {
+            // Récupération de notre SEO selon la langue
+            $seo = $entity->getSeo($this->params->get('locale'));
+            // Titre
+            if ($entity->getTitle() != null || trim($entity->getTitle()) != '') {
+                $openGraph->setTitle($entity->getTitle());
+            }
+            // Description
+            if ($seo->getDescription() != null || trim($seo->getDescription()) != '') {
+                $openGraph->setDescription($seo->getDescription());
+            }
+            // Image (url image)
+            $media = $entity->getMediaForOpenGraph();
+            // Type
+            $openGraph->setType('article');
+
+            if ($media != null) {
+                $openGraph->setImage('https://' . $siteUrl . '/' . $this->params->get('app.asset_img_path') . $media->getMedia());
+                // Image width
+                // Récupératin du média link pour récupérer la médiaspec
+                $medialink = $this->entityManager->getRepository(MediaLink::class)->findOneBy(['media' => $media->getId()]);
+                $mediaspec = $medialink->getMediaspec();
+                $openGraph->setImageWidth($mediaspec->getWidth());
+
+                // Image height
+                $openGraph->setImageHeight($mediaspec->getHeight());
+            }
+        }
+        // Si on a pas d'entité on récupère la SEO du site
+        else{
+            $defaultSeo = $this->entityManager->getRepository(Config::class)->find(1)->getSeo();
+            // Titre
+            $openGraph->setTitle($defaultSeo->getTitle());
+            // Description
+            $openGraph->setDescription($defaultSeo->getDescription());
+            // Image (url image)
+            $openGraph->setImage('https://' . $siteUrl . '/' . $this->params->get('app.asset_img_path') . 'PLACEHOLDER_OPENGRAPH.png');
+            // Image width
+            $openGraph->setImageWidth(347);
+            // Image height
+            $openGraph->setImageHeight(261);
+            // Type
+            $openGraph->setType('article');
+        }
+
+        //dump($openGraph);
+        return $openGraph;
     }
 
 
@@ -151,6 +221,7 @@ class FOController extends AbstractController
         // Si l'article a de la Seo et qu'elle n'est pas vide, on l'a récupère sinon on récupère la Seo de la catégorie
         if($seo != null &&  ! $seo->isEmpty()){
             $this->data['seo']  =   $seo;
+            $this->data['openGraph'] = $this->buildOpenGraph($article);
         }
         $this->data['article']  =   $article;
 
@@ -174,6 +245,8 @@ class FOController extends AbstractController
                 }
             }
         }
+        $this->data['openGraph'] = $this->buildOpenGraph($category ?? null);
+
         // Pas utilisé pour l'instant
         // Récupération des enfants des catégories concernées.
 //        $this->data['tree'] = array();

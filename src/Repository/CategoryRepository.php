@@ -142,12 +142,12 @@ class CategoryRepository extends CMSRepository
     /**
      * Récupère un média pour une médiapsec donnée
      *
-     * @param Article $entity
+     * @param Category $entity
      * @param Mediaspec $mediaspec_id
      * @return Media|null
      */
-    public function getMedia(Category $entity, Mediaspec $mediaspec): Media|null
+    public function getMedia(Category $entity, Mediaspec $mediaspec = null): Media|null
     {
-        return $this->registry->getRepository(MediaLink::class)->findOneByCategory($entity, $mediaspec)?->getMedia();
+        return $this->registry->getRepository(MediaLink::class)->findOneByEntity($entity, $mediaspec)?->getMedia();
     }
 }

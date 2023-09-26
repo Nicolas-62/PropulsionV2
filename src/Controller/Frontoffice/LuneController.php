@@ -24,7 +24,8 @@ class LuneController extends FOController
 {
     public function __construct(
         protected EntityManagerInterface $entityManager,
-        private ContainerBagInterface $params
+        private ContainerBagInterface $params,
+
     )
     {
         //  Configuration du controller :
@@ -39,13 +40,13 @@ class LuneController extends FOController
     }
 
     public function buildHeader(){
-        $sous_categorie_ids               =     $this->entityManager->getRepository(Category::class)->find($this->category_agenda_id)->getChildrenIds();
-        $events_header                    =     $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->params->get('locale'), true, 'dateEvent', 'DESC');
-        $this->data['events_header']      =     $events_header;
-        $this->data['btns']               =     $this->btns = array('GALLERY.png' => '/gallery', 'PROFIL.jpg' => 'https://billetterie.lalune.net/identification', 'COMMANDE.jpg' => 'https://billetterie.lalune.net/');
-        $this->data['menu']               =     $this->menu = array('Agenda' => 'fo_agenda_index','Actus' => 'fo_actus_index','Action Culturelle' => 'fo_actions_index','Soutiens aux artistes' => 'fo_soutiens_index','Infos Pratiques' => 'fo_infos_index');
-        $this->data['lien_billetterie']   =     $this->entityManager->getRepository(Article::class)->find(184);
-        $this->data['lien_billetterie_profil'] = $this->entityManager->getRepository(Article::class)->find(183);
+        $sous_categorie_ids                     =     $this->entityManager->getRepository(Category::class)->find($this->category_agenda_id)->getChildrenIds();
+        $events_header                          =     $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->params->get('locale'), true, 'dateEvent', 'DESC');
+        $this->data['events_header']            =     $events_header;
+        $this->data['btns']                     =     $this->btns = array('GALLERY.png' => '/gallery', 'PROFIL.jpg' => 'https://billetterie.lalune.net/identification', 'COMMANDE.jpg' => 'https://billetterie.lalune.net/');
+        $this->data['menu']                     =     $this->menu = array('Agenda' => 'fo_agenda_index','Actus' => 'fo_actus_index','Action Culturelle' => 'fo_actions_index','Soutiens aux artistes' => 'fo_soutiens_index','Infos Pratiques' => 'fo_infos_index');
+        $this->data['lien_billetterie']         =     $this->entityManager->getRepository(Article::class)->find(184);
+        $this->data['lien_billetterie_profil']  =     $this->entityManager->getRepository(Article::class)->find(183);
     }
 
     public function buildFooter()

@@ -7,6 +7,7 @@ use App\Entity\Category;
 use App\Entity\Theme;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,7 +17,7 @@ class ActusController extends LuneController
 {
 
 
-    public function __construct(protected EntityManagerInterface $entityManager, ContainerBagInterface $params)
+    public function __construct(protected EntityManagerInterface $entityManager, ContainerBagInterface $params, protected RequestStack $requestStack)
     {
         // ! Configuration du controller :
 
@@ -27,7 +28,7 @@ class ActusController extends LuneController
         // Initialisation du controller.
 
         // Appel du constructeur du controller parent
-        parent::__construct($entityManager, $params);
+        parent::__construct($entityManager, $params, $requestStack);
         // ! Configuration de la page :
     }
 

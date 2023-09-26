@@ -57,29 +57,21 @@ class MediaLinkRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    public function findOneByArticle(Article $article, Mediaspec $mediaspec): ?MediaLink
+
+
+    public function findOneByEntity(Category|Article $entity, Mediaspec $mediaspec = null): ?MediaLink
     {
         return $this->createQueryBuilder('m')
-            ->andWhere('m.mediaspec = :mediaspec')
-            ->andWhere('m.article   = :article')
-            ->setParameter('mediaspec', $mediaspec)
-            ->setParameter('article', $article)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+          ->andWhere('m.mediaspec = :mediaspec')
+          ->andWhere('m.entity   = :entity')
+          ->setParameter('mediaspec', $mediaspec)
+          ->setParameter('entity', $entity)
+          ->getQuery()
+          ->getOneOrNullResult()
+          ;
     }
 
-    public function findOneByCategory(Category $category, Mediaspec $mediaspec): ?MediaLink
-    {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.mediaspec = :mediaspec')
-            ->andWhere('m.category   = :category')
-            ->setParameter('mediaspec', $mediaspec)
-            ->setParameter('category', $category)
-            ->getQuery()
-            ->getOneOrNullResult()
-            ;
-    }
+
     /**
      * Retourne la liste des médias de type pdf que l'on peut associer à une entité (article/catégorie)
      *
