@@ -211,13 +211,7 @@ class EntityListener implements EventSubscriberInterface
                 }
 
                 foreach ($article_ids as $article_id){
-                    var_dump($entity->getId());
-                    var_dump($article_id);
-                    echo ('<br>');
                     if($entity->getId() != $article_id)
-                        var_dump($article_id);
-
-                    echo ('<br>');
                     $article_data = $this->entityManager->getRepository(ArticleData::class)->findOneBy(['object' => $article_id,'field_key' => 'star','field_value' => true]);
                     $article_data->setFieldValue(false);
 

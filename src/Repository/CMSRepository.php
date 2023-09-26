@@ -168,9 +168,10 @@ Abstract class CMSRepository extends ServiceEntityRepository
      */
     public function hasFiles(Article|Category $entity): bool
     {
+
         // Si c'est une catégorie
         if($entity instanceof Category){
-            return $entity->hasSeo();
+            return ( trim($entity->getHasFiles()) != '');
         }
         // Sinon on cherche dans le ancêtres de l'article
         else {
@@ -178,7 +179,7 @@ Abstract class CMSRepository extends ServiceEntityRepository
             foreach ($entity->getAncestors() as $parent) {
                 // Si c'est une catégorie
                 if ($parent instanceof Category) {
-                    return $parent->hasSeo();
+                    return ( trim($parent->getHasFiles()) != '');
                 }
             }
         }

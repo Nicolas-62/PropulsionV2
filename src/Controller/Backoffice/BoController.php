@@ -144,20 +144,21 @@ abstract class BoController extends AbstractCrudController
     {
         // Liste des champs à retourner.
         $mediaFields = array();
-        // Ajout d'un onglet pour les fichiers
-        $mediaFields[] = FormField::addTab('Fichiers')
-            ->setIcon('file');
+        if($this->entityManager->getRepository($this->getEntityFqcn())->hasFiles($this->entity)){
+            // Ajout d'un onglet pour les fichiers
+            $mediaFields[] = FormField::addTab('Fichiers')
+                ->setIcon('file');
 
-        $mediaFields[] = ChoiceField::new('mediaLinks', 'Fichiers')->setColumns(6)
-            ->setFormTypeOptions([
-                'multiple' => true,
-                'choices' => $this->entityManager->getRepository(Media::class)->getAllFilesForChoices(),
-                'data' => $this->entityManager->getRepository(MediaLink::class)->getFilesByEntityForChoices($this->entity),
-                'mapped' => false,
-            ])
-        ;
+            $mediaFields[] = ChoiceField::new('mediaLinks', 'Fichiers')->setColumns(6)
+                ->setFormTypeOptions([
+                    'multiple' => true,
+                    'choices' => $this->entityManager->getRepository(Media::class)->getAllFilesForChoices(),
+                    'data' => $this->entityManager->getRepository(MediaLink::class)->getFilesByEntityForChoices($this->entity),
+                    'mapped' => false,
+                ])
+            ;
 
-
+        }
 
         // En édition on peut ajouter/enlever des médias.
         // Médiaspecs appliquées à l'entité

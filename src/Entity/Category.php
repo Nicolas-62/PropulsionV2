@@ -54,6 +54,7 @@ class Category
     private ?bool $hasYoutubeSecondLink = false;
     private ?bool $hasFacebookLink = false;
     private ?bool $hasInstagramLink = false;
+    private ?bool $hasFiles = false;
     private ?bool $hasSiteInternet = false;
     private ?bool $hasTwitterLink = false;
     private ?bool $hasCancelled = false;

@@ -7,8 +7,10 @@ use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Config;
 use App\Entity\Contact;
+use App\Entity\Language;
 use App\Entity\Media;
 use App\Entity\Online;
+use App\Entity\Seo;
 use App\Form\ContactType;
 use App\Notification\BoNotification;
 use Cocur\Slugify\Slugify;
@@ -60,12 +62,40 @@ class FOController extends AbstractController
         $articles          =     $this->entityManager->getRepository(Article::class)->findAll();
         // Pour chaque article
         foreach($articles as $article) {
-            // création du slug à partir du titre
-            $slugify = new Slugify();
-            $article->setSlug($slugify->slugify($article->getTitle()));
-            // Sauvegarde de l'article
-            $this->entityManager->persist($article);
-            $this->entityManager->flush();
+            // Création d'une Seo, ajout d'un titre
+            if($article->getSeo() == null) {
+                $seo = new Seo();
+                $language  = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $params->get('locale')]);
+                $seo->setLanguage($language);
+                $seo->setTitle($article->getTitle());
+                $seos = new ArrayCollection();
+                $seos->add($seo);
+                $article->setSeo($seos);
+
+                $seo->setArticle($article);
+                $this->entityManager->persist($seo);
+                $this->entityManager->flush();
+            }
+        }
+
+        // Récupération de toutes les catégories
+        $categories          =     $this->entityManager->getRepository(Category::class)->findAll();
+        // Pour chaque article
+        foreach($categories as $category) {
+            // Création d'une Seo, ajout d'un titre
+            if($category->getSeo() == null) {
+                $seo = new Seo();
+                $language  = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $params->get('locale')]);
+                $seo->setLanguage($language);
+                $seo->setDescription(('hey'));
+                $seo->setTitle($category->getTitle());
+                $seos = new ArrayCollection();
+                $seos->add($seo);
+                $category->setSeo($seos);
+                $seo->setCategory($category);
+                $this->entityManager->persist($seo);
+                $this->entityManager->flush();
+            }
         }
     }
 

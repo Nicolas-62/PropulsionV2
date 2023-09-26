@@ -362,7 +362,7 @@ class Article
                 $this->files[] = $mediaLink->getMedia();
             }
         }
-        dump($files);
+//        dump($files);
         return $files;
     }
 
