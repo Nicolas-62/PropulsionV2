@@ -135,7 +135,7 @@ class FOController extends AbstractController
         // A SURCHARGER
     }
 
-    public function buildOpenGraph(Article|Category $entity = null){
+    public function buildOpenGraph(Article|Category $entity = null,$link){
 
         // On récupère l'url du site depuis le service request
         $siteUrl = $this->container->get('request_stack')->getCurrentRequest()->getHost();
@@ -149,7 +149,7 @@ class FOController extends AbstractController
         // Locale
         $openGraph->setLocale($this->params->get('locale'));
 //         URL
-        $openGraph->setUrl('https://' . $siteUrl);
+//        $openGraph->setUrl('https://' . $siteUrl );
 
         // Si on a une entité
         if($entity !=null) {
@@ -169,7 +169,7 @@ class FOController extends AbstractController
             $openGraph->setType('article');
 
             if ($media != null) {
-                $openGraph->setImage('https://' . $siteUrl . '/' . $this->params->get('app.asset_img_path') . $media->getMedia());
+                $openGraph->setImage('https://' . $siteUrl  . '/assets/images/' . $media->getMedia());
                 // Image width
                 // Récupératin du média link pour récupérer la médiaspec
                 $medialink = $this->entityManager->getRepository(MediaLink::class)->findOneBy(['media' => $media->getId()]);
@@ -178,6 +178,9 @@ class FOController extends AbstractController
 
                 // Image height
                 $openGraph->setImageHeight($mediaspec->getHeight());
+            }else {
+                $openGraph->setImage('https://' . $siteUrl . '/build/front/images/PLACEHOLDER_OPENGRAPH.png');
+
             }
         }
         // Si on a pas d'entité on récupère la SEO du site
@@ -188,7 +191,7 @@ class FOController extends AbstractController
             // Description
             $openGraph->setDescription($defaultSeo->getDescription());
             // Image (url image)
-            $openGraph->setImage('https://' . $siteUrl . '/' . $this->params->get('app.asset_img_path') . 'PLACEHOLDER_OPENGRAPH.png');
+            $openGraph->setImage('https://' . $siteUrl . '/build/front/images/PLACEHOLDER_OPENGRAPH.png');
             // Image width
             $openGraph->setImageWidth(347);
             // Image height
@@ -219,11 +222,13 @@ class FOController extends AbstractController
         $seo    =   $this->entityManager->getRepository(Article::class)->getSeo($article, $this->getParameter('locale'));
         // Surcharge de la seo
         // Si l'article a de la Seo et qu'elle n'est pas vide, on l'a récupère sinon on récupère la Seo de la catégorie
+        $link = $this->getParameter('app.fo_path'). $this->detail_partial;
         if($seo != null &&  ! $seo->isEmpty()){
             $this->data['seo']  =   $seo;
-            $this->data['openGraph'] = $this->buildOpenGraph($article);
+            $this->data['openGraph'] = $this->buildOpenGraph( $article , $link );
         }
         $this->data['article']  =   $article;
+        dump($this->getParameter('app.fo_path'). $this->detail_partial);
 
         return $this->render($this->getParameter('app.fo_path'). $this->detail_partial, $this->data);
     }
@@ -245,7 +250,8 @@ class FOController extends AbstractController
                 }
             }
         }
-        $this->data['openGraph'] = $this->buildOpenGraph($category ?? null);
+        $link = $this->getParameter('app.fo_path'). $this->list_partial;
+        $this->data['openGraph'] = $this->buildOpenGraph($category ?? null,$link);
 
         // Pas utilisé pour l'instant
         // Récupération des enfants des catégories concernées.

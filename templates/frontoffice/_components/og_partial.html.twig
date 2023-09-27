@@ -2,6 +2,8 @@
 {% if openGraph.title is defined %}
     {% if openGraph.title is not null and openGraph.title is not empty %}
         <meta property="og:title" content="{{ openGraph.title }}">
+        <meta name="twitter:title" content="{{ openGraph.title }}">
+
     {% endif %}
 {% endif %}
 
@@ -11,15 +13,18 @@
 {#    {% endif %}#}
 {#{% endif %}#}
 
-{% if openGraph.url is defined %}
-    {% if openGraph.url is not null and openGraph.url is not empty %}
-        <meta property="og:url" content="{{ openGraph.url }}">
-    {% endif %}
-{% endif %}
+<meta property="og:url" content="{{ app.request.uri }}">
+<meta property="twitter:url" content="{{ app.request.uri }}">
+{% set domain = app.request.getSchemeAndHttpHost() ~ app.request.getRequestUri() %}
+{% set parts = domain|split('/') %}
+<meta property="twitter:domain" content="{{ parts[2] }}">
+
 
 {% if openGraph.image is defined %}
     {% if openGraph.image is not null and openGraph.image is not empty %}
         <meta property="og:image" content="{{ openGraph.image }}">
+        <meta name="twitter:image" content="{{ openGraph.image }}">
+
     {% endif %}
 {% endif %}
 
@@ -38,6 +43,7 @@
 {% if openGraph.description is defined %}
     {% if openGraph.description is not null and openGraph.description is not empty %}
         <meta property="og:description" content="{{ openGraph.description }}">
+        <meta name="twitter:description" content="{{ openGraph.description }}">
     {% endif %}
 {% endif %}
 

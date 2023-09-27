@@ -61,14 +61,26 @@ class MediaLinkRepository extends ServiceEntityRepository
 
     public function findOneByEntity(Category|Article $entity, Mediaspec $mediaspec = null): ?MediaLink
     {
-        return $this->createQueryBuilder('m')
-          ->andWhere('m.mediaspec = :mediaspec')
-          ->andWhere('m.entity   = :entity')
-          ->setParameter('mediaspec', $mediaspec)
-          ->setParameter('entity', $entity)
-          ->getQuery()
-          ->getOneOrNullResult()
-          ;
+        if($entity instanceof Article) {
+            return $this->createQueryBuilder('m')
+              ->andWhere('m.mediaspec = :mediaspec')
+              ->andWhere('m.article  = :article')
+              ->setParameter('mediaspec', $mediaspec)
+              ->setParameter('article', $entity)
+              ->getQuery()
+              ->getOneOrNullResult();
+        }else{
+            return $this->createQueryBuilder('m')
+              ->andWhere('m.mediaspec = :mediaspec')
+              ->andWhere('m.entity   = :entity')
+              ->setParameter('mediaspec', $mediaspec)
+              ->setParameter('category', $entity)
+              ->getQuery()
+              ->getOneOrNullResult()
+              ;
+        }
+
+
     }
 
 
