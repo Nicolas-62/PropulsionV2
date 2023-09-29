@@ -1,5 +1,82 @@
-{% extends '/frontoffice/_components/layout.html.twig' %}
+{% extends 'frontoffice/_components/layout.html.twig' %}
+
+{% block javascripts %}
+    <script>
+
+        function showContent(entry) {
+            // Cacher tous les contenus
+            let contentDivs = document.getElementsByClassName('content')[0].children;
+            for (let i = 0; i < contentDivs.length; i++) {
+                contentDivs[i].classList.add('hidden');
+            }
+
+            // Afficher le contenu correspondant à l'entrée sélectionnée
+            let selectedContent = document.getElementById(entry);
+            selectedContent.classList.remove('hidden');
+
+            // Move the blue dot to the selected menu item
+            const menuItems = document.getElementsByClassName('menu-item');
+            for (let i = 0; i < menuItems.length; i++) {
+                menuItems[i].classList.remove('active');
+                const blueDot = document.getElementById('blue-dot' + i);
+                blueDot.style.visibility = 'hidden'; // Hide all blue dots first
+            }
+
+            const selectedMenuItem = document.querySelector('.menu-item[data-entry="' + entry + '"]');
+            selectedMenuItem.classList.add('active');
+            const selectedBlueDot = document.getElementById('blue-dot' + selectedMenuItem.dataset.index);
+        }
+
+        // On page load, show "footer0" as the active footer
+        document.addEventListener("DOMContentLoaded", function () {
+            showContent('entry1', 'footer0');
+        });
+    </script>
+{% endblock %}
 {% block body %}
-    <h2>Espace Presse</h2>
+
+    <div class="px-4 p-lg-5 ">
+        <div class="row">
+            <div class="col-lg-3 col-md-12 p-5 menu text-md-center text-sm-center">
+                <div class="row">
+                    <div class="col-lg-10 col-md-12 pt-lg-5">
+                        {% for categorie in categories %}
+                            <div class="text-center text-lg-start h3 py-3 menu-item {% if active_entry == 'entry' ~ loop.index %}active{% endif %}" data-entry="entry{{ loop.index }}" onclick="showContent('entry{{ loop.index }}', 'footer{{ loop.index0 }}')">
+                                {{ categorie.title | upper}}
+                            </div>
+                            <div id="blue-dot{{ loop.index0 }}" class="blue-dot"></div>
+                        {% endfor %}
+                    </div>
+                    <div class="col-2 d-sm-none d-md-none d-lg-block">
+                        <img src="{{ asset(('build/maquette/images/SOUTIENS_MENU.png')) }}" class="d-none d-lg-block">
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-lg-none">
+
+                <hr>
+            </div>
+            <div class="content col-lg-9 col-md-12">
+                {% for categorie in categories %}
+                    <div id="entry{{ loop.index }}" class="py-5 px-lg-5 {% if loop.index > 1 %}hidden{% endif %}" >
+                        <div class="row">
+                            <div class="col-12 text-center pb-5">
+                                {{ categorie.getDatas(locale) }}
+
+                                <div class="h2">{{ categorie.title|upper }}</div>
+                            </div>
+                            <div class="fs-5 p-lg-5">
+                                {{ categorie.content|raw }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+
 
 {% endblock %}

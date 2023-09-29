@@ -380,7 +380,8 @@
                 </div>
                 <!-- QUESTIONS -->
 
-                <div id="entry4" class="py-5 px-lg-5 hidden"><div class="accordion accordion-flush" id="accordionFlushExample">
+                <div id="entry4" class="py-5 px-lg-5 hidden">
+                    <div class="accordion accordion-flush" id="accordionFlushExample">
                         {% for question in question_infos %}
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
@@ -394,10 +395,27 @@
                             </div>
                         {% endfor %}
                     </div>
+                </div>
+                <!-- Qui Sommes nous -->
+                <div id="entry5" class="py-5 px-lg-5 hidden">
+                    {% for article_qui_sommes in articles_qui_sommes %}
+                        {{article_qui_sommes.getDatas(locale) }}
+                        <h3 class="text-center">{{ article_qui_sommes.title }}</h3>
+
+                        <div class="fs-5 p-2 mb-5">
+
+                            {{ article_qui_sommes.description | raw }}
+
+                        </div>
 
 
+
+                    {% endfor %}
 
                 </div>
+
+
+
             </div>
         </div>
     </div>
@@ -561,6 +579,10 @@
     </div>
 
     <div id="footer3" class="hidden">
+
+    </div>
+
+    <div id="footer4" class="hidden">
 
     </div>
 

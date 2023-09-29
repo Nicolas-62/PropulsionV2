@@ -55,7 +55,10 @@ class InfosPratiquesController extends LuneController
         $this->data['article_abonnement_billetterie']          = $this->entityManager->getRepository(Article::class)->find(161);
         $this->data['article_adress_billetterie']              = $this->entityManager->getRepository(Article::class)->find(159);
         $this->data['article_tarif_etudiant_billetterie']      = $this->entityManager->getRepository(Article::class)->find(162);
-        $this->data['article_pass_billetterie']          = $this->entityManager->getRepository(Article::class)->find(163);
+        $this->data['article_pass_billetterie']                = $this->entityManager->getRepository(Article::class)->find(163);
+        $this->data['cat_qui_sommes']                          = $this->entityManager->getRepository(Category::class)->find(49);
+        $this->data['articles_qui_sommes']                     = array_reverse(($this->entityManager->getRepository(Category::class)->getArticles(array(49), $this->getParameter('locale'),1)->toArray()));
+
 
 
         $this->data['active_entry']                     = 'entry1';

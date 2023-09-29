@@ -4,59 +4,82 @@
 {% block body %}
 
     {{  article.getDatas(locale) }}
-    <div class="p-5">
-        <h1 class="text-center mb-5 ">{{ article.title }} {% if article.typeMusic is not empty and article.typeMusic is not null %}- {{ article.typeMusic }} {% endif %}{% if article.origin is not empty and article.origin is not null %}- {{ article.origin }}{% endif %}</h1>
+    <div class="p-2 p-lg-5">
 
 
 
-        <div class="row p-5">
+        <div class="row p-lg-5">
 
             <div class="col-lg-6 col-md-12">
-                <div class="fs-3">{{ article.description | raw }}</div>
+                <div class="d-block d-lg-none">
+                    {% set media = article.getMedia(4) %}
+                    {% if media is not null %}
+                        {% set url = '/assets/images/' ~ media.media %}
+                        <img src="{{ url }}" alt="{{ media.media}}" class="w-100 img-fluid">
+                    {% endif %}
+                </div>
+                <div>
+                    <h1 class="text-center mb-2">{{ article.title }}</h1>
+                    <h3 class="text-center mb-3">{% if article.typeMusic is not empty and article.typeMusic is not null %}{{ article.typeMusic }} {% endif %}{% if article.origin is not empty and article.origin is not null %}- {{ article.origin }}{% endif %}</h3>
+                </div>
+                <div class="row text-center">
+                    {% if article.instagramLink != '' %}
+                        <div class="col">
+                            <a href="{{ article.instagramLink }}"><img class="mh-45"  src="{{ asset('build/front/images/PICTURE.svg') }}"></a>
+                        </div>
+                    {% endif %}
+                    {% if article.twitterLink != '' %}
+                        <div class="col">
+                            <a href="{{ article.twitterLink }}"><img class="mh-45" src="{{ asset('build/front/images/TWITTER.svg') }}"></a>
+                        </div>
+                    {% endif %}
+                    {% if article.facebookLink != '' %}
+                        <div class="col">
+                            <a href="{{ article.facebookLink }}"><img class="mh-45" src="{{ asset('build/front/images/FACEBOOK.svg') }}"></a>
+                        </div>
+                    {% endif %}
+                    {% if article.siteInternet != '' %}
+                        <div class="col">
+                            <a href="{{ article.siteInternet }}"><img class="mh-45" src="{{ asset('build/front/images/INTERNET.svg') }}"></a>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="fs-3 mt-4">{{ article.description | raw }}</div>
+                <div class="mt-5">
+
+                    <div class="fs-3">{{ article.content | raw }}</div>
+
+                </div>
 
 
             </div>
             <div class="col-lg-6 col-md-12">
-                {% set media = article.getMedia(4) %}
-                {% if media is not null %}
-                    {% set url = '/assets/images/' ~ media.media %}
-                    <img src="{{ url }}" alt="{{ media.media}}" class="w-100 img-fluid">
-                {% endif %}
-
-            </div>
-            <div class="col-12 py-5">
-                <div class="fs-3">{{ article.content | raw }}</div>
-
-
-            </div>
-            <div class="col-9">
-
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item w-100" style="height: 860px" src="{{ article.youtubeLink }}" allowfullscreen></iframe>
+                <div class="d-none d-lg-block">
+                    {% set media = article.getMedia(4) %}
+                    {% if media is not null %}
+                        {% set url = '/assets/images/' ~ media.media %}
+                        <img src="{{ url }}" alt="{{ media.media}}" class="w-100 img-fluid">
+                    {% endif %}
                 </div>
-            </div>
-            <div class="col-3">
+                <div class="mt-4">
 
-                <div>
-                    Retrouvez {{ article.title }} sur les réseaux sociaux :
-
-                    <a class="text-decoration-none black" href="{{ article.facebookLink }}">Facebook - </a><a class="text-decoration-none black" href="{{ article.instagramLink }}">Instagram - </a><a class="text-decoration-none black" href="{{ article.twitterLink }}">Twitter</a>
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item w-100" style="height: 100%" src="{{ article.youtubeLink }}" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="mt-4">
                 </div>
                 <div>
-                    Partager cette article :
+                    {% if article.soundcloudLink is not null and article.soundcloudLink is not empty %}
+                        <iframe width="100%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="{{ article.soundcloudLink }}"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/nguvulu-ngola" title="Nguvulu Produções" target="_blank" style="color: #cccccc; text-decoration: none;">Nguvulu Produções</a> · <a href="https://soundcloud.com/nguvulu-ngola/cobra-jonaskay-gsforlife-ft-doryzzy-jonaskay" title="cobra - Jonaskay Gsforlife​ ft  Doryzzy Jonaskay 2015" target="_blank" style="color: #cccccc; text-decoration: none;">cobra - Jonaskay Gsforlife​ ft  Doryzzy Jonaskay 2015</a></div>
+                    {% endif %}
 
-                    <a class="text-decoration-none black" href="https://www.facebook.com/sharer/sharer.php?u={{ app.request.uri }}" target="_blank" rel="noopener noreferrer">
-                        Partager sur Facebook
-                    </a>
-                    <a class="text-decoration-none black" href="https://twitter.com/intent/tweet?url={{ app.request.uri }}" target="_blank" rel="noopener noreferrer">
-                        Partager sur Twitter
-                    </a>
-                    <a class="text-decoration-none black" href="https://api.whatsapp.com/send?text={{ app.request.uri }}" target="_blank" rel="noopener noreferrer">
-                        Partager sur WhatsApp
-                    </a>
-                    <a class="text-decoration-none black" href="mailto:?subject=Check%20this%20out&body={{ app.request.uri }}" target="_blank" rel="noopener noreferrer">
-                        Partager par e-mail
-                    </a>
+                    {% if article.soundcloudSecondLink is not null and article.soundcloudSecondLink is not empty %}
+                        <iframe width="100%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="{{ article.soundcloudSecondLink }}"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/jonaskayguettostar" title="EYAYA" target="_blank" style="color: #cccccc; text-decoration: none;">EYAYA</a> · <a href="https://soundcloud.com/jonaskayguettostar/jonaskay-atetete" title="Jonaskay - Ateteté" target="_blank" style="color: #cccccc; text-decoration: none;">Jonaskay - Ateteté</a></div>
+                    {% endif %}
+                    {% if article.soundcloudThirdLink is not null and article.soundcloudThirdLink is not empty %}
+                        <iframe width="100%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="{{ article.soundcloudThirdLink }}"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/guettostar" title="Angoboyz" target="_blank" style="color: #cccccc; text-decoration: none;">Angoboyz</a> · <a href="https://soundcloud.com/guettostar/guettostar_cobra" title="GUETTO STAR COBRAS(PROD BY DOCTA BIO)" target="_blank" style="color: #cccccc; text-decoration: none;">GUETTO STAR COBRAS(PROD BY DOCTA BIO)</a></div>
+                    {% endif %}
                 </div>
             </div>
         </div>

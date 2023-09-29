@@ -228,7 +228,6 @@ class FOController extends AbstractController
             $this->data['openGraph'] = $this->buildOpenGraph( $article , $link );
         }
         $this->data['article']  =   $article;
-        dump($this->getParameter('app.fo_path'). $this->detail_partial);
 
         return $this->render($this->getParameter('app.fo_path'). $this->detail_partial, $this->data);
     }

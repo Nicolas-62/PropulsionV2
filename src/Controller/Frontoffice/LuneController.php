@@ -63,6 +63,8 @@ class LuneController extends FOController
     #[Route('/espacepresse', name: 'espacepresse')]
     public function Espacepresse(): Response
     {
+        $this->data["categories"] = $this->entityManager->getRepository(Category::class)->findBy(['category_id'=>48]);
+        $this->data['active_entry'] = 'entry1';
 
         // Vue renvoyée.
         return $this->render('frontoffice/institutionnel/espacepresse.html.twig', $this->data);
