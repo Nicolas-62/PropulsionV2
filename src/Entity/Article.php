@@ -243,7 +243,7 @@ class Article
         foreach($this->getMediaLinks() as $mediaLinked){
             // Si pour une mediaspec donnée on associe un nouveau media, on supprime l'ancien.
             if($mediaLinked->getMediaspec() != null){
-                if($mediaLinked->getMediaspec()->getId() == $mediaLink ->getMediaspec()->getId()) {
+                if($mediaLinked->getMediaspec()->getId() == $mediaLink->getMediaspec()?->getId()) {
                     $this->removeMediaLink($mediaLinked);
                 }
             }else{
@@ -352,6 +352,7 @@ class Article
     }
 
     /**
+     * Retourne les medias de type pdf
      * @return array
      */
     public function getFiles(): array
@@ -359,7 +360,7 @@ class Article
         $files = array();
         foreach($this->getMediaLinks() as $mediaLink){
             if($mediaLink->getMedia() != null && $mediaLink->getMedia()->getMediaType()->getLabel() == 'pdf'){
-                $this->files[] = $mediaLink->getMedia();
+                $files[] = $mediaLink->getMedia();
             }
         }
 //        dump($files);
@@ -407,7 +408,7 @@ class Article
 
         // define ordering closure, using preferred comparison method/field
         $sortedMediaLinks->uasort(function ($first, $second) {
-            return (int) $first->getMediaspec()->getWidth() > (int) $second->getMediaspec()->getWidth() ? 1 : -1;
+            return (int) $first->getMediaspec()?->getWidth() > (int) $second->getMediaspec()?->getWidth() ? 1 : -1;
         });
 
         $media = null;

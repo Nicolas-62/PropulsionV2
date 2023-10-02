@@ -228,6 +228,13 @@ class FOController extends AbstractController
             $this->data['openGraph'] = $this->buildOpenGraph( $article , $link );
         }
         $this->data['article']  =   $article;
+        // Fichiers associés à l'article
+        $this->data['files']    =   array();
+        // Si les fichiers sont disponibles pour l'article
+        if($this->entityManager->getRepository(Article::class)->hasFiles($article)){
+            // On récupère les fichiers
+            $this->data['files']    =   $article->getFiles();
+        }
 
         return $this->render($this->getParameter('app.fo_path'). $this->detail_partial, $this->data);
     }

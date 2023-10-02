@@ -193,14 +193,19 @@ trait CMSTrait
     }
 
 
-
+    /**
+     * Récupère un média par sa mediaspec, seul les médias de type image possèdent une mediaspec.
+     *
+     */
     public function getMedia(int $mediaspec_id): ?Media
     {
         $media = null;
         foreach ($this->getMediaLinks() as $mediaLink){
-            if($mediaLink->getMediaspec()->getId() == $mediaspec_id){
+            //
+            if($mediaLink->getMediaspec()?->getId() == $mediaspec_id){
                 $media = $mediaLink->getMedia();
             }
+
         }
         return $media;
     }
