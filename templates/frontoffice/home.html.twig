@@ -115,16 +115,23 @@
             <div class="d-none d-lg-block d-xl-block px-lg-5">
                 <div class="pb-5 h2">Programmation <strong>à venir</strong></div>
             </div>
+            {% set temoin = 0 %}
             {% for event in events_agenda %}
 
-                {% if loop.index0 < 3 %}
-                    {% set media = event.getMedia(1) %}
-                    {% set CategoryTitle = event.category.title|replace({' ': '-'})|lower %}
-                    <div class="col-lg-4 col-md-12 pb-lg-5 px-lg-2 px-md-0 category-{{ CategoryTitle }} category-tous-les-evenements">
-                        <!-- Card-Actu -->
-                        {% include 'frontoffice/_components/card.html.twig' with {'event': event, 'agenda': true, 'showButton': false, 'actu': false, 'billetterie': true, 'soutiens': false } %}
+                {% if loop.index0 > 3 %}
+                    {% if event.dateEvent >  date_today %}
+                        {% set temoin = temoin + 1 %}
+                        {% if temoin < 5 %}
+                        {% set media = event.getMedia(1) %}
+                        {% set CategoryTitle = event.category.title|replace({' ': '-'})|lower %}
+                        <div class="col pb-lg-5 px-lg-2 px-md-0 category-{{ CategoryTitle }} category-tous-les-evenements {% if temoin == 4 %}show-xxl{% endif %}">
+                            <!-- Card-Actu -->
+                            {% include 'frontoffice/_components/card.html.twig' with {'event': event, 'agenda': true, 'showButton': false, 'actu': false, 'billetterie': true, 'soutiens': false } %}
 
-                    </div>                {% endif %}
+                        </div>
+                            {% endif %}
+                    {% endif %}
+                    {% endif %}
             {% endfor %}
         </div>
     </div>

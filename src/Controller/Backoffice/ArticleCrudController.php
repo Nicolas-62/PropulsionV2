@@ -145,7 +145,7 @@ class ArticleCrudController extends BoController
         yield FormField::addTab('Paramètres');
         // Champs communs à plusieurs actions (liste, edition, detail, formulaire...)
         yield IdField::new('id')->hideOnForm()->setPermission('ROLE_DEV');
-        yield IntegerField::new('ordre', 'ordre')->hideOnForm();
+        yield IntegerField::new('ordre', 'ordre');
         yield TextField::new('title','Nom')->setColumns(4);
         //yield SlugField::new('slug', 'Url')->setTargetFieldName('title')->hideOnIndex();
         yield AssociationField::new('children','Enfants')->hideOnForm();

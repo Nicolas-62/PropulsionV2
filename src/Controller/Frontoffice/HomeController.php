@@ -35,8 +35,8 @@ class HomeController extends LuneController
         $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_agenda_id)->getChildrenIds();
 
         // Récupération des articles des sous catégories de la catégorie agenda
-        $events_agenda = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
-
+        $events_agenda = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'ASC');
+        $date_today = new \DateTimeImmutable();
         $cat_actu_id = 4;
         // Récupération des sous catégories de la catégorie actu
         $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_actu_id)->getChildrenIds();
@@ -44,7 +44,7 @@ class HomeController extends LuneController
         // Récupération des articles des sous catégories de la catégorie actu
         $events_actus = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
 
-
+        $this->data['date_today']       = $date_today;
         $this->data['events_actus']     = $events_actus;
         $this->data['events_agenda']    = $events_agenda;
         $this->data['lien_billetterie'] = '';

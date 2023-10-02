@@ -48,9 +48,9 @@ class InfosPratiquesController extends LuneController
         $this->data['cat_comment_venir']                       = $this->entityManager->getRepository(Category::class)->find(41);
         $this->data['articles_comment_venir']                  = $this->entityManager->getRepository(Category::class)->getArticles(array(41), $this->getParameter('locale'),1);
         $this->data['benevoles_contact']                       = $this->entityManager->getRepository(Category::class)->getArticles(array(44), $this->getParameter('locale'),1);
-        $this->data['contact_contact']                         = $this->entityManager->getRepository(Category::class)->getArticles(array(45), $this->getParameter('locale'),1);
-        $this->data['equipe_tech_contact']                     = $this->entityManager->getRepository(Category::class)->getArticles(array(46), $this->getParameter('locale'),1);
-        $this->data['question_infos']                          = $this->entityManager->getRepository(Category::class)->getArticles(array(43), $this->getParameter('locale'),1);
+        $this->data['contact_contact']                         = $this->entityManager->getRepository(Category::class)->getArticles(array(45), $this->getParameter('locale'),1, 'ordre', 'ASC');
+        $this->data['equipe_tech_contact']                     = $this->entityManager->getRepository(Category::class)->getArticles(array(46), $this->getParameter('locale'),1, 'ordre', 'ASC');
+        $this->data['question_infos']                          = $this->entityManager->getRepository(Category::class)->getArticles(array(43), $this->getParameter('locale'),1, 'ordre', 'ASC');
         $this->data['article_contact_billetterie']             = $this->entityManager->getRepository(Article::class)->find(160);
         $this->data['article_abonnement_billetterie']          = $this->entityManager->getRepository(Article::class)->find(161);
         $this->data['article_adress_billetterie']              = $this->entityManager->getRepository(Article::class)->find(159);

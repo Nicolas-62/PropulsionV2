@@ -40,9 +40,9 @@
             <div class="col-lg-3 col-md-12 p-5 menu text-md-center text-sm-center">
                 <div class="row">
                     <div class="col-lg-10 col-md-12 pt-lg-5">
-                        {% for categorie in categories %}
+                        {% for article in articles %}
                             <div class="text-center text-lg-start h3 py-3 menu-item {% if active_entry == 'entry' ~ loop.index %}active{% endif %}" data-entry="entry{{ loop.index }}" onclick="showContent('entry{{ loop.index }}', 'footer{{ loop.index0 }}')">
-                                {{ categorie.title | upper}}
+                                {{ article.title | upper}}
                             </div>
                             <div id="blue-dot{{ loop.index0 }}" class="blue-dot"></div>
                         {% endfor %}
@@ -58,16 +58,16 @@
                 <hr>
             </div>
             <div class="content col-lg-9 col-md-12">
-                {% for categorie in categories %}
+                {% for article in articles %}
                     <div id="entry{{ loop.index }}" class="py-5 px-lg-5 {% if loop.index > 1 %}hidden{% endif %}" >
                         <div class="row">
                             <div class="col-12 text-center pb-5">
-                                {{ categorie.getDatas(locale) }}
+                                {{ article.getDatas(locale) }}
 
-                                <div class="h2">{{ categorie.title|upper }}</div>
+                                <div class="h2">{{ article.title|upper }}</div>
                             </div>
                             <div class="fs-5 p-lg-5">
-                                {{ categorie.content|raw }}
+                                {{ article.content|raw }}
                             </div>
                         </div>
                     </div>

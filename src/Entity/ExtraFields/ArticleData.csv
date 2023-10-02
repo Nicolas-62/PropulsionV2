@@ -4,7 +4,7 @@
 "content","Contenu","TextEditorField","false","12","",
 "subtitle","Sous-titre","TextField","false","12","",
 "dateEvent","Date de l'évènement","DateField","false","3","Y-m-d H:i:s",
-"datetimeEvent","Heure de l'évènement","TimeField","false","3","H:i:s",
+"datetimeEvent","Heure de début de représentation","TimeField","false","3","H:i:s",
 "datetimeEndEvent","Heure de fin de l'évènement","TimeField","false","3","H:i:s",
 "youtubeLink","Lien Youtube","TextField","false","3","",
 "youtubeSecondLink","2ème Lien Youtube","TextField","false","3","",
@@ -23,3 +23,4 @@
 "reported","Reporté","BooleanField","false","4","",
 "full","Complet","BooleanField","false","4","",
 "star","Vedette","BooleanField","false","4","",
+"openingTime","Heure de l'ouverture des portes","TimeField","false","3","H:i:s",

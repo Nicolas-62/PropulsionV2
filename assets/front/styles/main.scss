@@ -371,8 +371,17 @@ body {
     flex: 0 0 25%;
     max-width: 25%;
   }
+
+  .show-xxl {
+    display: block !important;
+  }
 }
 
+@media (max-width: 2200px) {
+  .show-xxl {
+    display: none !important;
+  }
+}
 
 
 /* Header */

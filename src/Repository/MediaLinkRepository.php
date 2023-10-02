@@ -72,7 +72,7 @@ class MediaLinkRepository extends ServiceEntityRepository
         }else{
             return $this->createQueryBuilder('m')
               ->andWhere('m.mediaspec = :mediaspec')
-              ->andWhere('m.entity   = :entity')
+              ->andWhere('m.category   = :category')
               ->setParameter('mediaspec', $mediaspec)
               ->setParameter('category', $entity)
               ->getQuery()
