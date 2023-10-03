@@ -23,4 +23,4 @@
 "reported","Reporté","BooleanField","false","4","",
 "full","Complet","BooleanField","false","4","",
 "star","Vedette","BooleanField","false","4","",
-"openingTime","Heure de l'ouverture des portes","TimeField","false","3","H:i:s",
+"datetimeEventOpening","Heure de l'ouverture des portes","TimeField","false","3","H:i:s",

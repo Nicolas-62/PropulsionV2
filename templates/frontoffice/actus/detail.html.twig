@@ -4,14 +4,14 @@
 {% block body %}
     <!-- Récupération des datas de l'article -->
     {{ article.getDatas(locale) }}
-    {% set mediaArticle = article.getMedia(2) %}
+    {% set mediaArticle = article.getMedia(8) %}
     <div class="p-lg-5">
         <!-- ARTICLE -->
         <div class="p-lg-5 h2">
             <!-- IMAGE ARTICLE -->
             {% if mediaArticle is not null %}
                 {% set url = '/assets/images/' ~ mediaArticle.media  %}
-                <img  src="{{ asset((url)) }}" class="card-img-top rounded-0 mb-5" style="object-fit: cover; max-height: 40vh;" alt="...">
+                <img  src="{{ asset((url)) }}" class="card-img-top rounded-0 mb-5" style="object-fit: cover;" alt="...">
             {% endif %}
             <div class="pt-4 position-relative">
                 <img src="{{ asset(('build/maquette/images/actu_cadre_1.svg')) }}" class="position-absolute" style="max-height: 50px; top:0; left: 0 !important;" alt="ACTIONCULTURELLE">

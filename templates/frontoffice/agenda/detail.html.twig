@@ -5,8 +5,7 @@
     <!-- IMAGE DU HAUT -->
     <div class="row shadow-lg" >
         <div class="col-lg-8 col-md-12 p-0" style="">
-            {% set media = article.getMedia(9) %}
-            {% set media = article.getMedia(9) %}
+            {% set media = article.getMedia(18) %}
             {% set category = article.category %}
             {{ category.getDatas(locale) }}
             {% if media is not null %}
@@ -26,7 +25,7 @@
                     >
                         {{ category.title|upper }}
                     </div>
-                    <div class="col-9 text-uppercase white justify-content-start" style="background-color: black;min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px"><img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">POP FRANçAISE</div>
+                    <div class="col-9 text-uppercase white justify-content-start" style="background-color: black;min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px"><img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">{{ article.style }}</div>
                 </div>
             </div>
             <div class="card-container" >
@@ -40,12 +39,16 @@
                     <div style="font-size: 30px; font-weight: bold" class="mb-0">
                         {{ formatCustomDate(article.dateEvent) }}<br>
                         {% if article.datetimeEvent is not empty and article.datetimeEvent is not null %}
-                            {{ article.datetimeEvent| date("H:i") }}
+                            {{ article.datetimeEvent| date("H:i") }}<br>
+                        {% endif %}
+                        {% if article.dateOpeningTime is not empty and article.openingTime is not null %}
+                            {{ article.dateOpeningTime| date("H:i") }}<br>
                         {% endif %}
                     </div>
                 </div>
                 <!-- Bouton ajout panier -->
-                <div class="pt-2 pb-5">
+                {% if article.dateEvent >  date_yesterday %}
+                    <div class="pt-2 pb-5">
                     <div class="row  h3">
                         <div class="col-6">
                             <div class="fs-5">Tarif normal</div>
@@ -82,6 +85,14 @@
                     </div>
                     <button class="btn-read-card">AJOUTER AU PANIER</button>
                 </div>
+                {% else %}
+                    <div class="pt-2 pb-5 fs-4">
+
+                        Cet évènement est maintenant terminé.
+
+                    </div>
+
+                {% endif %}
                 <!-- Cartes Lunes -->
                 <div class="row">
                     <div class="col-6">

@@ -50,8 +50,34 @@ class AgendaController extends LuneController
         $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_actu_id)->getChildrenIds();
         // Récupération des articles des sous catégories de la catégorie actu
         $events_actus = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
+        $date_today = new \DateTimeImmutable();
+        $date_yesterday = $date_today->modify('-1 day');
+
+        $this->data['date_yesterday']       = $date_yesterday;
         $this->data['actu_childs']          = $events_actus;
         return parent::detail($event);
+    }
+
+
+    #[Route('historic/all', name: 'historic')]
+    public function historic(EntityManagerInterface $entityManager, ContainerBagInterface $params): Response
+    {
+        $this->category_id  = 3;
+        // Initialisation du controller.
+
+        parent::__construct($entityManager, $params);
+        // Appel du constructeur du controller parent
+        // Récupération des sous catégories de la catégorie agenda
+        $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($this->category_id)->getChildrenIds();
+
+        $categories = $this->entityManager->getRepository(Category::class)->findBy(['category_id'=>3]);
+        $events_agenda = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $params->get('locale'), true, 'dateEvent', 'DESC');
+        $this->data['events_agenda']        = $events_agenda;
+        $date_today = new \DateTimeImmutable();
+        $date_yesterday = $date_today->modify('-1 day');
+
+        $this->data['date_yesterday']       = $date_yesterday;
+        return $this->render('frontoffice/agenda/historic.html.twig', $this->data);
     }
 
 

@@ -71,6 +71,7 @@ class Article
     private ?string $styleBackColor     = '#000000';
     private ?string $styleTextColor     = '#FFFFFF';
     private ?bool   $star  = false;
+    private ?string $datetimeEventOpening  = '';
 
     private array $files = array();
 

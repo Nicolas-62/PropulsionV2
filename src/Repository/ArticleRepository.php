@@ -120,17 +120,17 @@ class ArticleRepository extends CMSRepository
     public function getArticleWithSameSlug(Article $entity): Article|null
     {
         // On récupère l'article ayant le même parent et le même slug
-        return $this->createQueryBuilder('a')
-            ->where('a.parent = :parent OR a.category = :category')
-            ->andWhere('a.slug = :slug')
-            ->andWhere('a.id != :id')
-            ->setParameter('parent', $entity->getParent())
-            ->setParameter('category', $entity->getCategory())
+        $query = $this->createQueryBuilder('a')->andWhere('a.slug = :slug');
+
+        if($entity->getId() != null) {
+             $query->andWhere('a.id != :id')->setParameter('id', $entity->getId());
+        }
+        $query->andWhere('a.id != :id')
             ->setParameter('slug', $entity->getSlug())
             ->setParameter('id', $entity->getId())
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult();
+            ->setMaxResults(1);
+
+        return $query->getQuery()->getOneOrNullResult();
     }
 
 }

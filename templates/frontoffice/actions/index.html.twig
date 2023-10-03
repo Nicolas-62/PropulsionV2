@@ -1,114 +1,114 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
+{% block javascripts %}
+    <script>
 
+        function showContent(entry) {
+            // Cacher tous les contenus
+            let contentDivs = document.getElementsByClassName('content')[0].children;
+            for (let i = 0; i < contentDivs.length; i++) {
+                contentDivs[i].classList.add('hidden');
+            }
+
+            // Afficher le contenu correspondant à l'entrée sélectionnée
+            let selectedContent = document.getElementById(entry);
+            selectedContent.classList.remove('hidden');
+
+            // Move the blue dot to the selected menu item
+            const menuItems = document.getElementsByClassName('menu-item');
+            for (let i = 0; i < menuItems.length; i++) {
+                menuItems[i].classList.remove('active');
+                const blueDot = document.getElementById('blue-dot' + i);
+                blueDot.style.visibility = 'hidden'; // Hide all blue dots first
+            }
+
+            const selectedMenuItem = document.querySelector('.menu-item[data-entry="' + entry + '"]');
+            selectedMenuItem.classList.add('active');
+            const selectedBlueDot = document.getElementById('blue-dot' + selectedMenuItem.dataset.index);
+        }
+
+        // On page load, show "footer0" as the active footer
+        document.addEventListener("DOMContentLoaded", function () {
+            showContent('entry1', 'footer0');
+        });
+    </script>
+{% endblock %}
 {% block body %}
+    {{ cat_actu.getDatas(locale) }}
+    {% dump(cat_actu) %}
     <div class=" pr-md-3 p-lg-5">
         <!-- ARTICLE -->
         <div class="p-lg-5 h2">
             <!-- IMAGE ARTICLE -->
             <img src="{{ asset(('build/maquette/images/ACTIONCULTURELLE.png')) }}" class="w-100 mb-5 img-fluid" style="max-height: 600px; object-fit: cover" alt="ACTIONCULTURELLE">
-            <div class="pt-4 position-relative">
-                <img src="{{ asset(('build/maquette/images/actu_cadre_1.svg')) }}" class="position-absolute" style="max-height: 50px; top:0; left: 0 !important;" alt="ACTIONCULTURELLE">
-                <div class="row pt-5 p-custom-actus">
-                    <div class="col-lg-10 col-md-12">
-                        <!-- Récupération des datas de l'article -->
-                        {{ actu_test.getDatas(locale) }}
-                        {% set category = actu_test.category %}
-                        {{ category.getDatas(locale) }}
-                        <!-- Titre -->
-                        <div class="h3">{{ actu_test.title }}</div>
-                    </div>
-                    <div class="col-lg-2 col-md-12">
-                        <!-- Thème -->
-                        <div class="text-center h2 white text-uppercase" style="background-color: {{ category.themeBackColor }}; min-height: 50px;"><div class="p-1">{{ category.title }}</div></div>
-                    </div>
-                </div>
-            </div>
-            <div class="pr-lg-5 py-5 p-custom-actus" >
-                <!-- Sous-titre -->
-                <div class="h4">{{ actu_test.subtitle }}</div>
-                <div class="row position-relative">
-                    <div class="col-md-12 col-lg-8 fs-5">
-                        <!-- Contenu -->
-                        {{ actu_test.content | raw }}
 
-                        <img src="{{ asset(('build/maquette/images/actu_cadre_2.svg')) }}" class="position-absolute" style="height: 50px; bottom:-60px; right: 10px;" alt="ACTIONCULTURELLE">
-                    </div>
-                    <!-- Billetterie -->
-                    <div class="col-lg-3 offset-lg-1 col-md-12">
-                        <div class="py-5">
-                            <p class="fs-1">
-                                <b>{{ formatCustomDate(actu_test.dateEvent) }}
+            <h1 class="col-lg-2 px-lg-1 col-md-6 col-sm-12 fs-1 blue-title"  style="padding-bottom: 10px">{{ page_title | upper }}</h1>
+{#            <p>{{ cat_actu.description | raw }}</p>#}
 
-                                </b>
-                            </p>
-                            <p>{{ actu_test.datetimeEvent| date("H:i") }}</p>
-                        </div>
-                        <div class="row mb-5">
-                            <div class="col-6 fs-4">
-                                Tarif normal
-                            </div>
-                            <div class="col-6 fs-4">
-                                Tarif abonné
-                            </div>
-                            <div class="col-3 h-100" style="padding-right: 0px; ">
-                                <div class="border border-1 border-dark p-2 w-100" style="background-color: #e6e6e6">0 €</div>
-                            </div>
-                            <div class="col-3" style="padding-left: 0px">
-                                <select class="w-100 p-1">
-                                    <option>0</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                </select>
-                            </div>
-                            <div class="col-3" style="padding-right: 0px; ">
-                                <div class="border border-1 border-dark p-2 w-100" style="background-color: #e6e6e6">0 €</div>
-                            </div>
-                            <div class="col-3" style="padding-left: 0px">
-                                <select class="w-100 p-1">
-                                    <option>0</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button class="border rounded-0 btn border-dark fs-2"><div class="p-1">AJOUTER AU PANIER</div></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    {% set counter = 0 %}
-    {% for actu in actu_childs %}
-        {% if actu.category.title|upper == "ACTION CULTURELLE" and actu.title|upper != actu_test.title|upper %}
-            {% set counter = counter + 1 %}
-        {% endif %}
-    {% endfor %}
 
-    {% if counter>1 %}
-    <!-- Voir aussi -->
 
-    <div class="bg-grey">
-        <div class="p-lg-5">
-            <h1 class="pb-5">Voir aussi >> >> >></h1>
             <div class="row">
+                <div class="col-lg-3 col-md-12 p-5 menu text-md-center text-sm-center">
+                    <div class="row">
+                        <div class="col-lg-10 col-md-12 pt-lg-5">
+                            {% for article in articles %}
+                                <div class="text-center text-lg-start h3 py-3 menu-item {% if active_entry == 'entry' ~ loop.index %}active{% endif %}" data-entry="entry{{ loop.index }}" onclick="showContent('entry{{ loop.index }}', 'footer{{ loop.index0 }}')">
+                                    {{ article.title | upper}}
+                                </div>
+                                <div id="blue-dot{{ loop.index0 }}" class="blue-dot"></div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-2 d-sm-none d-md-none d-lg-block">
+                            <img src="{{ asset(('build/maquette/images/SOUTIENS_MENU.png')) }}" class="d-none d-lg-block">
+                        </div>
+                    </div>
+                </div>
 
-                {% for actu in actu_childs %}
-                        {% if actu.category.title|upper == "ACTION CULTURELLE" and actu.title|upper != actu_test.title|upper %}
+                <div class="d-lg-none">
 
-                            {% set media = actu.getMedia(2) %}
-                            {% set CategoryTitle = actu.category.title|replace({' ': '-'})|lower %}
+                    <hr>
+                </div>
+                <div class="content col-lg-9 col-md-12">
+                    {% for article in articles %}
+                        <div id="entry{{ loop.index }}" class="py-5 px-lg-5 {% if loop.index > 1 %}hidden{% endif %}" >
+                            <div class="row">
+                                <div class="col-12 text-center pb-5">
+                                    {{ article.getDatas(locale) }}
 
-                            <div class="custom-col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-3 category-{{ CategoryTitle }} category-tous-les-evenements">
-                                <!-- Card-Actu -->
-                                {% include 'frontoffice/_components/card.html.twig' with {'event': actu, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': true, 'soutiens': false } %}
+                                    <div class="h2">{{ article.title|upper }}</div>
+                                </div>
+                                <div class="fs-5 mb-5">
+                                    {{ article.description|raw }}
+
+
+                                </div>
+                                {% set media = article.getMedia(19) %}
+
+                                {% if media is not null %}
+                                    {% set url = '/assets/images/' ~ media.media %}
+                                    <img src="{{ asset((url)) }}" style="min-width: 100%; min-height: 30vh" class="card-img-top rounded-0 transport-infos w-100" alt="...">
+                                {% endif  %}
+
+
+<br>
+                                <div class="fs-5 mt-5">
+                                    {{ article.content|raw }}
+                                </div>
                             </div>
-                        {% endif %}
-                {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
+
+
+
+
         </div>
+
+
+
+
+
     </div>
-    {% endif %}
+
 {% endblock %}
