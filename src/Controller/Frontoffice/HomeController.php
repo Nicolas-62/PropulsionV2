@@ -45,6 +45,11 @@ class HomeController extends LuneController
         $date_today = new \DateTimeImmutable();
         $date_yesterday = $date_today->modify('-1 day');
 
+
+        //Récupération de la catégorie Agenda pour le placeholder
+        $category_agenda = $this->entityManager->getRepository(Category::class)->find(3);
+
+        $this->data['category_agenda'] = $category_agenda;
         $this->data['date_yesterday']       = $date_yesterday;
         $this->data['events_actus']     = $events_actus;
         $this->data['events_agenda']    = $events_agenda;

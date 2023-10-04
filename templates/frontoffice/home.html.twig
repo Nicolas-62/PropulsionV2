@@ -19,7 +19,11 @@
                                                 {% set url = '/assets/images/' ~ media.media %}
                                                     <img src="{{ asset((url)) }}" class="d-block w-100" alt="...">
                                                 {% else %}
-                                                    <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_HEADER.png')) }}" class="w-100 object-fit-cover" alt="...">
+                                                    {% set mediaCategoryAgenda = category_agenda.getMedia(21) %}
+                                                    {% if mediaCategoryAgenda is not null %}
+                                                        {% set url = 'assets/images/' ~ mediaCategoryAgenda.media %}
+                                                        <img src="{{ asset((url)) }}" class="d-block w-100" alt="...">
+                                                    {% endif %}
                                                 {% endif %}
 
                                             <div class="position-absolute d-none d-lg-block card-vedette-home" >
@@ -167,16 +171,13 @@
                     <h1 class="d-sm-block d-md-block d-lg-none">ÉVÈNEMENTS/ACTUALITÉS</h1>
                     <div class="row"  data-masonry='{"percentPosition": true }'>
                         {% for event in events_actus %}
-                            {% dump(event) %}
                             {% if loop.index0 < 4 %}
                                 <div class="col-lg-6 col-md-12 border-event mb-md-3 mb-lg-0 mb-sm-3 px-0">
 
                                     {% set mediaArticle = event.getMedia(8) %}
                                     {% if mediaArticle is not null %}
                                         {% set url = '/assets/images/' ~ mediaArticle.media %}
-                                        <img src="{{ asset((url)) }}" class="img-fluid" alt="...">
-                                    {% else %}
-                                        <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_HEADER.png')) }}" class="img-fluid" alt="...">
+                                        <img src="{{ asset((url)) }}" class="img-fluid w-100" alt="...">
                                     {% endif %}
                                     <div class="p-4">
                                         <!-- TITRE -->

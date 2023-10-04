@@ -72,6 +72,9 @@ class Article
     private ?string $styleTextColor     = '#FFFFFF';
     private ?bool   $star  = false;
     private ?string $datetimeEventOpening  = '';
+    private ?string $facebookEventLuneLink  = '';
+    private ?string $organizer  = '';
+    private ?string $placement  = '';
 
     private array $files = array();
 

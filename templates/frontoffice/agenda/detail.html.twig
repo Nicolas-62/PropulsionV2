@@ -12,7 +12,11 @@
                 {% set url = '/assets/images/' ~ media.media %}
                 <img src="{{ asset((url)) }}" class="rounded-0 w-100 img-fluid"   alt="...">
             {% else %}
-                <img src="{{ asset(('build/front/images/PLACE_HOLDER_PAYSAGE.jpg')) }}" class="rounded-0 w-100 img-fluid"  alt="...">
+                {% set mediaCategoryAgenda = category_agenda.getMedia(25) %}
+                {% if mediaCategoryAgenda is not null %}
+                    {% set url = 'assets/images/' ~ mediaCategoryAgenda.media %}
+                    <img src="{{ asset((url)) }}" class="d-block w-100" alt="...">
+                {% endif %}
             {% endif %}
         </div>
         <!-- BILLETTERIE AU DESSUS DE L'IMAGE -->
@@ -116,6 +120,27 @@
             </div>
         </div>
     </div>
+
+    <!-- RECAPITULATIF -->
+    {% if (article.facebookEventLuneLink is not empty and article.facebookEventLuneLink is not null) or (article.organizer is not empty and article.organizer is not null) or (article.placement is not empty and article.placement is not null) or (article.datetimeEventOpening is not empty and article.datetimeEventOpening is not null)  %}
+    <div class="pt-3 text-center d-flex justify-content-around text-uppercase">
+        {% if article.facebookEventLuneLink is not empty and article.facebookEventLuneLink is not null %}
+            <p style="display: inline; margin: 0;"><a class="text-decoration-none" href="{{ article.facebookEventLuneLink }}">Évènement Facebook</a></p>
+        {% endif %}
+        {% if article.organizer is not empty and article.organizer is not null %}
+            <p style="display: inline; margin: 0;">Organisateur : {{ article.organizer }}</p>
+        {% endif %}
+        <!-- <p style="display: inline; margin: 0;">Lieu</p>-->
+        {% if article.placement is not empty and article.placement is not null %}
+            <p style="display: inline; margin: 0;">{{ article.placement }}</p>
+        {% endif %}
+        {% if article.datetimeEventOpening is not empty and article.datetimeEventOpening is not null %}
+            <p style="display: inline; margin: 0;">Ouverture des portes : {{ article.datetimeEventOpening | date("H:i") }} </p>
+        {% endif %}
+
+    </div>
+    <hr>
+    {% endif %}
     <!-- DETAIL ARTICLE -->
     <div class="p-5">
         <div class="row">

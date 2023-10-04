@@ -18,7 +18,7 @@ class SoutiensController extends LuneController
         // ! Configuration du controller :
 
         // Identifiants des catégories concernées.
-        $this->category_id		=		1;
+        $this->category_id		=		6;
 
         parent::__construct($entityManager, $params);
 
@@ -41,6 +41,11 @@ class SoutiensController extends LuneController
     #[Route('', name: 'index')]
     public function index(): Response
     {
+        $category_soutiens = $this->entityManager->getRepository(Category::class)->find($this->category_id);
+        $this->data['category_soutiens'] = $category_soutiens;
+
+        $category_actu = $this->entityManager->getRepository(Category::class)->find(4);
+        $this->data['category_actu'] = $category_actu;
         $this->data['page_title']           = 'Soutiens aux artistes';
         $this->data['category_accomp']      = $this->entityManager->getRepository(Category::class)->find(7);
         $this->data['category_audition']    = $this->entityManager->getRepository(Category::class)->find(8);

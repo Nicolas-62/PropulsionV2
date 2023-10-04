@@ -57,6 +57,7 @@
 
                 <hr>
             </div>
+
             <div class="content col-lg-9 col-md-12">
                 {% for article in articles %}
                     <div id="entry{{ loop.index }}" class="py-5 px-lg-5 {% if loop.index > 1 %}hidden{% endif %}" >
@@ -66,8 +67,40 @@
 
                                 <div class="h2">{{ article.title|upper }}</div>
                             </div>
-                            <div class="fs-5 p-lg-5">
+                            <div class="fs-5 mb-5">
+                                {{ article.description|raw }}
+
+
+                            </div>
+                            {% set media = article.getMedia(20) %}
+
+                            {% if media is not null %}
+                                {% set url = '/assets/images/' ~ media.media %}
+                                <img src="{{ asset((url)) }}"  class="card-img-top rounded-0 transport-info object-fit-contain" alt="...">
+                            {% endif  %}
+
+
+                            <br>
+                            <div class="fs-5 mt-5">
                                 {{ article.content|raw }}
+                            </div>
+                            <div>
+                                {% if not article.getFiles is empty %}
+
+                                    <div class="mt-5">
+                                        {% set filesArray = article.getFiles() %}
+                                        {% set arrayLength = filesArray|length %}
+                                        {% if arrayLength > 1 %}
+                                            <h4 class="mb-5">Fichiers liés à l'article : </h4>
+                                        {% elseif arrayLength == 1 %}
+                                            <h4 class="mb-5">Fichier lié à l'article : </h4>
+                                        {% endif %}
+                                        {% for file in article.getFiles() %}
+                                            {% set url_file = '/assets/images/' ~ file.media %}
+                                            <a class="btn-files fs-5" href="{{ url_file }}" role="button">{{ file.legend }}</a>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

@@ -9,8 +9,25 @@
         {% if media is not null %}
             {% set url = '/assets/images/' ~ media.media %}
             <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
-        {% else  %}
-            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_HEADER.png')) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
+        {% elseif agenda %}
+            {% set mediaCategoryAgenda = category_agenda.getMedia(22) %}
+            {% if mediaCategoryAgenda is not null %}
+                {% set url = 'assets/images/' ~ mediaCategoryAgenda.media %}
+                <img src="{{ asset((url)) }}" class="d-block w-100" alt="...">
+            {% endif %}
+        {% elseif actu %}
+            {% set mediaCategoryActu = category_actu.getMedia(23) %}
+            {% if mediaCategoryActu is not null %}
+                {% set url = 'assets/images/' ~ mediaCategoryActu.media %}
+                <img src="{{ asset((url)) }}" class="d-block w-100" alt="...">
+            {% endif %}
+        {% elseif soutiens %}
+
+            {% set mediaCategorySoutiens = category_soutiens.getMedia(24) %}
+            {% if mediaCategorySoutiens is not null %}
+                {% set url = 'assets/images/' ~ mediaCategorySoutiens.media %}
+                <img src="{{ asset((url)) }}" class="d-block w-100" alt="...">
+            {% endif %}
         {% endif %}
 
         {% if agenda or soutiens %}

@@ -43,8 +43,8 @@ class ActusController extends LuneController
         $events_actus = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
 
         $categories = $this->entityManager->getRepository(Category::class)->findBy(['category_id'=>4]);
-
-
+        $category_actu = $this->entityManager->getRepository(Category::class)->find($this->category_id);
+        $this->data['category_actu'] = $category_actu;
         $this->data['categories_actu'] = $categories;
         $this->data['actu_childs'] = $events_actus;
 
