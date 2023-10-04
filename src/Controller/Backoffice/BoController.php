@@ -34,6 +34,17 @@ abstract class BoController extends AbstractCrudController
     {
     }
 
+
+    public function editOrdre(AdminContext $context, AdminUrlGenerator $adminUrlGenerator)
+    {
+        // On récupère l'entité
+        $entity = $this->entityManager->getRepository($this->getEntityFqcn())->find($context->getRequest()->get('entityId'));
+        // On met à jour son ordre
+        $this->entityManager->getRepository($this->getEntityFqcn())->setOrdre($entity, $context->getRequest()->get('direction'));
+        // On redirige vers la liste des entités
+        $url = $adminUrlGenerator->unset('direction')->unset('entityId')->setAction(Action::INDEX)->generateUrl();
+        return $this->redirect($url);
+    }
     /**
      * Enregistre sur le serveur le fichier déposé par l'utilisateur
      *
@@ -60,7 +71,7 @@ abstract class BoController extends AbstractCrudController
             // Dossier temporaire du fichier = chaine alphanumérique de 10 caractères.
             $folderId       =   $secureService->random_hash(5);
             // Chemin temporaire du fichier
-            $fileBasePath  =   Constants::ASSETS_UPLOAD_PATH . $folderId . '/';
+            $fileBasePath  =   Constants::DYN_UPLOAD_PATH . $folderId . '/';
             // Nom du fichier
             $filename       =   $file->getClientOriginalName();
 
@@ -109,7 +120,7 @@ abstract class BoController extends AbstractCrudController
         // Si le nom du dossier et le nom de fichier sont définis.
         if(trim($folderId) != '') {
             // Chemin temporaire de l'image
-            $folderPath = Constants::ASSETS_UPLOAD_PATH . $folderId . '/';
+            $folderPath = Constants::DYN_UPLOAD_PATH . $folderId . '/';
             $filesystem = new Filesystem();
             // Si le fichier existe.
             if ($filesystem->exists($folderPath)) {

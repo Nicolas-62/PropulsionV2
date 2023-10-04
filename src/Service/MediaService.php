@@ -18,7 +18,7 @@ class MediaService{
     )
     {
         // Chemin d'upload des images.
-        $upload_dir = Constants::UPLOAD_PATH . Constants::ASSETS_IMG_PATH;
+        $upload_dir = Constants::PUBLIC_PATH . Constants::DYN_IMG_PATH;
         // Si le dossier n'existe pas on le créer.
         $filesystem = new Filesystem();
         $filesystem->mkdir($this->appKernel->getProjectDir().'/'.$upload_dir);
@@ -40,7 +40,7 @@ class MediaService{
         // Si un fichier a été déposé
         if($folderId != null){
             // Dossier d'upload temporaire.
-            $tmpPath = Constants::ASSETS_UPLOAD_PATH . $folderId . '/';
+            $tmpPath = Constants::DYN_UPLOAD_PATH . $folderId . '/';
             // Chemin du fichier temporaire.
             $imageTmpPath = $tmpPath. '/'.$filename;
             // Si le fichier source existe.
@@ -73,12 +73,12 @@ class MediaService{
                         // On ajoute un identifiant unique au nom de l'image.
                         $new_thumb_filename = $new_basename.'.jpg';
                         // On déplace la vignette du pdf
-                        $filesystem->rename($tmpPath . $thumb_filename, Constants::ASSETS_IMG_PATH . $new_thumb_filename);
+                        $filesystem->rename($tmpPath . $thumb_filename, Constants::DYN_IMG_PATH . $new_thumb_filename);
                     }
                 }
 
                 // Si on arrive à le déplacer dans la médiatheque.
-                $filesystem->rename($imageTmpPath, Constants::ASSETS_IMG_PATH .$new_filename);
+                $filesystem->rename($imageTmpPath, Constants::DYN_IMG_PATH .$new_filename);
                 // On supprime le dossier temporaire.
                 $filesystem->remove($tmpPath);
             }

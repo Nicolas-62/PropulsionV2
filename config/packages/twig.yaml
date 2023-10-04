@@ -4,7 +4,6 @@ twig:
     globals:
         site: '%app.site%'
         upload_path: '%app.upload_path%'
-        img_upload_path: '%app.img_upload_path%'
         fo: '%app.fo%'
         fo_path: '%app.fo_path%/'
 

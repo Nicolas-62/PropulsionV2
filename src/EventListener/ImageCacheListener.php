@@ -18,7 +18,7 @@ class ImageCacheListener {
         // Gestionnaire du cache
         private CacheManager $cacheManager,
         // Chemin des images en cache.
-        private string $asset_img_path
+        private string $dyn_img_path
     )
     {
     }
@@ -33,6 +33,6 @@ class ImageCacheListener {
     public function preRemove(Media $media, LifecycleEventArgs $event): void
     {
         // Suppression des vignettes du cache.
-        $this->cacheManager->remove($this->asset_img_path.$media->getMedia());
+        $this->cacheManager->remove($this->dyn_img_path.$media->getMedia());
     }
 }

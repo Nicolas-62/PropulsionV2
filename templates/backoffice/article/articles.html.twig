@@ -33,9 +33,13 @@
                             </td>
                         {% else %}
                             <td data-label="{{ field.label|trans|e('html_attr') }}" class="{{ field.property == sort_field_name ? 'sorted' }} text-{{ field.textAlign }} {{ field.cssClass }}" dir="{{ ea.i18n.textDirection }}">
-                                <a href="{{ my_url.unsetAll().setController(my_controller).setAction('edit').setEntityId(entity.primaryKeyValue) }}">
-                                    {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
-                                </a>
+                                {% for action in entity.actions %}
+                                    {%  if action.name == 'edit' %}
+                                        <a href="{{ action.linkUrl }}">
+                                            {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
                             </td>
                         {% endif %}
                     {# CUSTOM Pour property 'children'#}

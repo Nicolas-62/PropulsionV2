@@ -1,0 +1,26 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{# this template is used to display Doctrine entity primary keys #}
+<div class="d-flex justify-content-between">
+    <div>
+        <span>{{ field.formattedValue }}</span>&nbsp;
+    </div>
+    <div>
+        <a class="btn btn-secondary btn-sm"
+           href="{{ ea_url()
+            .setController('App\\Controller\\Backoffice\\ArticleCrudController')
+            .setAction('editOrdre').set('direction', 'up').setEntityId(entity.primaryKeyValue)  }}"
+           title="Place précédente"
+        >
+            <i class="fas fa-arrow-up"></i>
+        </a>
+        <a class="btn btn-secondary btn-sm"
+           href="{{ ea_url()
+               .setController('App\\Controller\\Backoffice\\ArticleCrudController')
+               .setAction('editOrdre').set('direction', 'down').setEntityId(entity.primaryKeyValue)  }}"
+           title="Place suivante">
+            <i class="fas fa-arrow-down"></i>
+        </a>
+    </div>
+</div>

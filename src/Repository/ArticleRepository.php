@@ -11,6 +11,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
+use phpDocumentor\Reflection\Types\Boolean;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 
@@ -132,5 +134,65 @@ class ArticleRepository extends CMSRepository
 
         return $query->getQuery()->getOneOrNullResult();
     }
+
+    /**
+     * Modifie l'ordre d'un article
+     * @param Article $entity
+     * @param string $direction
+     * @return int
+     */
+    public function setOrdre(Article $entity, string $direction): int
+    {
+        if($direction == 'up'){
+            if($entity->getOrdre() > 0) {
+                $entity->setOrdre($entity->getOrdre() - 1);
+                // On met à jour l'entité qui possède le même ordre, en lui ajoutant 1
+                $this->createQueryBuilder('a')
+                    ->update()
+                    ->set('a.ordre', 'a.ordre + 1')
+                    ->andWhere('a.ordre = :ordre')
+                    ->andWhere('a.category = :category')
+                    ->setParameter('ordre', $entity->getOrdre())
+                    ->setParameter('category', $entity->getCategory())
+                    ->getQuery()
+                    ->execute();
+                // On persiste l'entité
+                $this->getEntityManager()->persist($entity);
+                $this->getEntityManager()->flush();
+            }
+
+        }else if($direction == 'down'){
+            // On recherche l'entité qui possède l'ordre suivant
+            $next_entity = $this->createQueryBuilder('a')
+                ->andWhere('a.ordre = :ordre')
+                ->andWhere('a.category = :category')
+                ->setParameter('ordre', $entity->getOrdre() + 1)
+                ->setParameter('category', $entity->getCategory())
+                ->getQuery()
+                ->getOneOrNullResult();
+            // Si on a trouvé une entité
+            if($next_entity != null) {
+                // On met à jour l'ordre de l'entité
+                $entity->setOrdre($entity->getOrdre() + 1);
+
+                // On met à jour l'entité qui possède le même ordre, en lui enlevant 1
+                $this->createQueryBuilder('a')
+                    ->update()
+                    ->set('a.ordre', 'a.ordre - 1')
+                    ->andWhere('a.ordre = :ordre')
+                    ->andWhere('a.category = :category')
+                    ->setParameter('ordre', $entity->getOrdre())
+                    ->setParameter('category', $entity->getCategory())
+                    ->getQuery()
+                    ->execute();
+                // On persiste l'entité
+                $this->getEntityManager()->persist($entity);
+                $this->getEntityManager()->flush();
+            }
+        }
+
+        return $entity->getOrdre();
+    }
+
 
 }

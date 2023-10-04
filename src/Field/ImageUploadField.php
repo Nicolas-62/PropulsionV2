@@ -21,9 +21,9 @@ class ImageUploadField  implements FieldInterface
     {
         // ToDo récupérer ces variables autrement
         // Chemin d'accès des images depuis le dossier 'public' de l'application
-        $base_path  = Constants::ASSETS_IMG_PATH;
+        $base_path  = Constants::DYN_IMG_PATH;
         // Chémin d'upload des images.
-        $upload_dir = Constants::UPLOAD_PATH . Constants::ASSETS_IMG_PATH;
+        $upload_dir = Constants::PUBLIC_PATH . Constants::DYN_IMG_PATH;
 
         // Configuration du champ d'upload d'un média.
         return (ImageField::new($propertyName, $label)

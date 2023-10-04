@@ -31,7 +31,7 @@ class AppExtension extends AbstractExtension
 
     public function getThumbnailPath($filename): string
     {
-        return Constants::ASSETS_IMG_PATH.$filename;
+        return Constants::DYN_IMG_PATH.$filename;
     }
 
     public function const(string $value): string

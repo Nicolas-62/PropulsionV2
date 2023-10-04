@@ -62,45 +62,6 @@ class FOController extends AbstractController
         // HEADER
         // Récupération de la SEO du site
         $this->data['seo']                =     $this->entityManager->getRepository(Config::class)->find(1)->getSeo();
-        // Récupération de tous les articles
-        $articles          =     $this->entityManager->getRepository(Article::class)->findAll();
-        // Pour chaque article
-        foreach($articles as $article) {
-            // Création d'une Seo, ajout d'un titre
-            if($article->getSeo() == null) {
-                $seo = new Seo();
-                $language  = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $params->get('locale')]);
-                $seo->setLanguage($language);
-                $seo->setTitle($article->getTitle());
-                $seos = new ArrayCollection();
-                $seos->add($seo);
-                $article->setSeo($seos);
-
-                $seo->setArticle($article);
-                $this->entityManager->persist($seo);
-                $this->entityManager->flush();
-            }
-        }
-
-        // Récupération de toutes les catégories
-        $categories          =     $this->entityManager->getRepository(Category::class)->findAll();
-        // Pour chaque article
-        foreach($categories as $category) {
-            // Création d'une Seo, ajout d'un titre
-            if($category->getSeo() == null) {
-                $seo = new Seo();
-                $language  = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $params->get('locale')]);
-                $seo->setLanguage($language);
-                $seo->setDescription(('hey'));
-                $seo->setTitle($category->getTitle());
-                $seos = new ArrayCollection();
-                $seos->add($seo);
-                $category->setSeo($seos);
-                $seo->setCategory($category);
-                $this->entityManager->persist($seo);
-                $this->entityManager->flush();
-            }
-        }
     }
 
     /**
@@ -145,16 +106,14 @@ class FOController extends AbstractController
         $openGraph = new OpenGraph();
 
         // Site
-        $openGraph->setSiteName($this->params->get('app.site'));
+        $openGraph->setSiteName($this->getParameter('app.site'));
         // Locale
-        $openGraph->setLocale($this->params->get('locale'));
-//         URL
-//        $openGraph->setUrl('https://' . $siteUrl );
+        $openGraph->setLocale($this->getParameter('locale'));
 
         // Si on a une entité
         if($entity !=null) {
             // Récupération de notre SEO selon la langue
-            $seo = $entity->getSeo($this->params->get('locale'));
+            $seo = $entity->getSeo($this->getParameter('locale'));
             // Titre
             if ($entity->getTitle() != null || trim($entity->getTitle()) != '') {
                 $openGraph->setTitle($entity->getTitle());
@@ -163,14 +122,15 @@ class FOController extends AbstractController
             if ($seo->getDescription() != null || trim($seo->getDescription()) != '') {
                 $openGraph->setDescription($seo->getDescription());
             }
-            // Image (url image)
-            $media = $entity->getMediaForOpenGraph();
             // Type
             $openGraph->setType('article');
 
+            // Image (url image)
+            $media = $entity->getMediaForOpenGraph();
+            // Si une image est définie
             if ($media != null) {
-                $openGraph->setImage('https://' . $siteUrl  . '/assets/images/' . $media->getMedia());
-                // Image width
+                // Ajout url de l'image
+                $openGraph->setImage('https://' . $siteUrl  . $this->getParameter('app.dyn_img_path') . $media->getMedia());
                 // Récupératin du média link pour récupérer la médiaspec
                 $medialink = $this->entityManager->getRepository(MediaLink::class)->findOneBy(['media' => $media->getId()]);
                 $mediaspec = $medialink->getMediaspec();
@@ -179,7 +139,7 @@ class FOController extends AbstractController
                 // Image height
                 $openGraph->setImageHeight($mediaspec->getHeight());
             }else {
-                $openGraph->setImage('https://' . $siteUrl . '/build/front/images/PLACEHOLDER_OPENGRAPH.png');
+                $openGraph->setImage('https://' . $siteUrl . $this->getParameter('app.static_img_path') . 'PLACEHOLDER_OPENGRAPH.png');
 
             }
         }
@@ -191,7 +151,7 @@ class FOController extends AbstractController
             // Description
             $openGraph->setDescription($defaultSeo->getDescription());
             // Image (url image)
-            $openGraph->setImage('https://' . $siteUrl . '/build/front/images/PLACEHOLDER_OPENGRAPH.png');
+            $openGraph->setImage('https://' . $siteUrl . $this->getParameter('app.static_img_path') . 'PLACEHOLDER_OPENGRAPH.png');
             // Image width
             $openGraph->setImageWidth(347);
             // Image height

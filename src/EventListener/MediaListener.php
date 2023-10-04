@@ -90,13 +90,13 @@ class MediaListener implements EventSubscriberInterface
                 // Chargement composant Filesystem
                 $filesystem = new Filesystem();
                 // Chemin de l'image
-                $imagepath = Constants::ASSETS_IMG_PATH . $entity->getMedia();
+                $imagepath = Constants::DYN_IMG_PATH . $entity->getMedia();
                 // Suppression de l'image
                 if ($filesystem->exists($imagepath)) {
                     $filesystem->remove($imagepath);
                 }
                 // Chemin de la vignette
-                $thumbpath = Constants::ASSETS_IMG_PATH . $entity->getThumbnail();
+                $thumbpath = Constants::DYN_IMG_PATH . $entity->getThumbnail();
                 // Suppression de la vignette
                 if ($filesystem->exists($thumbpath)) {
                     $filesystem->remove($thumbpath);

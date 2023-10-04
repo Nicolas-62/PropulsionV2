@@ -145,7 +145,13 @@ class ArticleCrudController extends BoController
         yield FormField::addTab('Paramètres');
         // Champs communs à plusieurs actions (liste, edition, detail, formulaire...)
         yield IdField::new('id')->hideOnForm()->setPermission('ROLE_DEV');
-        yield IntegerField::new('ordre', 'ordre');
+        if($this->category != null) {
+            $this->category->getDatas($this->locale);
+            if(method_exists($this->category, 'getHasOrdre') && $this->category->getHasOrdre()){
+                yield BooleanField::new('ordre', 'ordre')->hideOnForm()
+                    ->setTemplatePath('backoffice/field/order.html.twig');
+            }
+        }
         yield TextField::new('title','Nom')->setColumns(4);
         //yield SlugField::new('slug', 'Url')->setTargetFieldName('title')->hideOnIndex();
         yield AssociationField::new('children','Enfants')->hideOnForm();
