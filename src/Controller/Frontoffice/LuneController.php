@@ -65,7 +65,17 @@ class LuneController extends FOController
     {
 
 
-        $this->data['articles'] = $this->entityManager->getRepository(Article::class)->findBy(['category'=>48]);
+        $all_articles = $this->entityManager->getRepository(Article::class)->findBy(['category'=>48]);
+        $articles = array();
+
+        // Vérification si l'article est en ligne
+        foreach($all_articles as $article){
+            if($article->isOnline($this->getParameter('locale'))){
+                $articles[] = $article;
+            }
+        }
+        // Envois des articles à la vue
+        $this->data['articles'] = $articles;
         $this->data['active_entry'] = 'entry1';
 
         // Vue renvoyée.
@@ -84,7 +94,16 @@ class LuneController extends FOController
     public function mentions(): Response
     {
 
-        $this->data['categories'] = $this->entityManager->getRepository(Article::class)->findBy(['category'=>27]);
+        $all_articles = $this->entityManager->getRepository(Article::class)->findBy(['category'=>27]);
+        $articles = array();
+
+        // Vérification si l'article est en ligne
+        foreach($all_articles as $article){
+            if($article->isOnline($this->getParameter('locale'))){
+                $articles[] = $article;
+            }
+        }
+        $this->data['articles'] = $articles;
         $this->data['active_entry'] = 'entry1';
 
 
@@ -96,7 +115,20 @@ class LuneController extends FOController
     public function faq(): Response
     {
         $this->data["categories"] = $this->entityManager->getRepository(Category::class)->findBy(['category_id'=>27]);
-        $this->data["articles_question"] = $this->entityManager->getRepository(Article::class)->findBy(['category'=>38]);
+
+        $all_articles = $this->entityManager->getRepository(Article::class)->findBy(['category'=>38]);
+        $articles = array();
+
+        // Vérification si l'article est en ligne
+        foreach($all_articles as $article){
+            if($article->isOnline($this->getParameter('locale'))){
+                $articles[] = $article;
+            }
+        }
+
+
+
+        $this->data["articles_question"] = $articles;
 
         // Vue renvoyée.
         return $this->render('frontoffice/institutionnel/faq.html.twig', $this->data);
@@ -114,7 +146,17 @@ class LuneController extends FOController
     {
 
         // Vue renvoyée.
-        $this->data['categories']          = $this->entityManager->getRepository(Article::class)->findBy(['category'=>28]);
+        $all_articles = $this->entityManager->getRepository(Article::class)->findBy(['category'=>28]);
+        $articles = array();
+
+        // Vérification si l'article est en ligne
+        foreach($all_articles as $article){
+            if($article->isOnline($this->getParameter('locale'))){
+                $articles[] = $article;
+            }
+        }
+
+        $this->data['articles']          = $articles;
         $this->data['active_entry']        = 'entry1';
 
         return $this->render('frontoffice/institutionnel/confidentialite.html.twig', $this->data);

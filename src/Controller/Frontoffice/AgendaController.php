@@ -44,7 +44,21 @@ class AgendaController extends LuneController
     public function detail(?Article $event): Response
     {
         // Récupération des enfants de l'article
-        $this->data['children']             = $this->entityManager->getRepository(Article::class)->findBy(['article_id' => $event->getId()]);
+        $children = $this->entityManager->getRepository(Article::class)->findBy(['article_id' => $event->getId()]);
+        if(is_array($children) && count($children)){
+        $children[0]->getDatas($this->getParameter('locale'));
+        if($children[0]->isOnline($this->getParameter('locale'))){
+
+            $this->data['children']             = $children;
+        }else{
+            $this->data['children']             = "";
+        }
+        }
+        else{
+            $this->data['children']             = "";
+
+        }
+
         $cat_actu_id = 4;
         // Récupération des sous catégories de la catégorie actu
         $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_actu_id)->getChildrenIds();

@@ -47,6 +47,9 @@ class SoutiensController extends LuneController
         $this->data['category_event']       = $this->entityManager->getRepository(Category::class)->find(9);
         $this->data['accompagnes']          = $this->event_artistes_accomp;
         $this->data['accompagnes_test2']    = $this->entityManager->getRepository(Category::class)->getArticles(array(7), $this->getParameter('locale'),1);
+
+
+
         $this->data['accompagnes_test']     = $this->entityManager->getRepository(Article::class)->findBy(['category' => '7']);
         $this->data['auditions']            = $this->event_auditions;
         $this->data['event_actus']          = $this->event_actus;
