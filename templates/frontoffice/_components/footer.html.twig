@@ -35,7 +35,7 @@
     <!-- BOUTONS FOOTER -->
     <div class="row text-white px-2">
         {% for icone in icones %}
-            <div class="col-4 col-lg-2 pb-3 ">
+            <div class="col-sm ">
                 <div class="row">
                     <div class="col-12 {% if loop.index0 != 0 %}border-dotted-white{% endif%} {% if loop.index0 == 2 %}border-dotted-right-white{% endif%} text-center">
                         <img class="col-12 img-fluid" style="max-height: 70px; max-width: 70px" src="/build/front/images/{{ icone }}">
@@ -53,30 +53,14 @@
                 </div>
             </div>
         {% endfor %}
-        <div class="col-md-12  col-lg-5 ">
+        <div class="col-sm  ">
             <div class="row">
-                <div class="col-12 text-center">
-                    <div class="row">
-                        <div class="col-4 ">
+                <div class="col-12 text-center" id="btn-modal">
                             <img class="" style="max-height: 60px" src="/build/maquette/images/FOOTER_ENVELOPPE.svg">
-                        </div>
-                    </div>
                     <form>
                         <div class="row mt-3">
-                            <div class="col-4">
+                            <div  class="text-center">
                                 NEWSLETTER
-                            </div>
-
-                            <div class="col-7">
-                                <input class="form-control border-0 rounded rounded-0" style="background-color: #FF5D5D; color: white; border-bottom: 1px solid white !important; ::placeholder { color: white; }" type="text" placeholder="Votre e-mail">
-
-                            </div>
-                            <button type="submit" class="col-1 btn btn-link p-0 m-0 border-0 bg-transparent">
-                                <img class="img-fluid" src="/build/maquette/images/BOUTON_FORM_FOOTER.png" alt="Valider">
-                            </button>
-
-                            <div class="col-12 text-start px-sm-5 pb-sm-4" style="font-size: 14px">
-                                En indiquant votre adresse email, vous consentez à recevoir nos lettres d'information par voie électronique. Vous pouvez vous désinscrire à tout moment via les liens de désinscription ou en nous contactant. Pour en savoir plus, consultez notre Politique de confidentialité.
                             </div>
                         </div>
                     </form>
@@ -160,3 +144,28 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <iframe width="540" height="1080" src="https://214477ab.sibforms.com/serve/MUIFALCcK-RCXOxOQk6NSs3MuMvBO7GvwseE6E5j7wRIwaJBTQHcjUKV2tFz5TyDOuAp3qzRcIwlDIMjYGy5Zu9NHcV-5ykxD2pyvEJzXjO_roPHSf0zgx-M30FS0gR4yI1n10MnEQlRl_V1_IVSdGoAk8iVV1dYF-Od0kGa3aDHngBm1e8bgTfBMM-vf9EMLnbepNvmpujo5LIO" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>            </div>
+        </div>
+    </div>
+</div>
+{% block javascripts %}
+
+    <script>
+        // Attendez que le document soit prêt
+        $(document).ready(function() {
+            // Ajoutez un gestionnaire d'événement de clic au bouton
+            $('#btn-modal').click(function() {
+                // Affichez la modal en utilisant jQuery
+                $('#exampleModal').modal('show');
+            });
+        });
+    </script>
+{% endblock %}

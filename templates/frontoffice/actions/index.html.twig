@@ -38,7 +38,15 @@
         <!-- ARTICLE -->
         <div class="p-lg-5 h2">
             <!-- IMAGE ARTICLE -->
-            <img src="{{ asset(('build/maquette/images/ACTIONCULTURELLE.png')) }}" class="w-100 mb-5 img-fluid" style="max-height: 600px; object-fit: cover" alt="ACTIONCULTURELLE">
+
+
+            {% set media = cat_actu.getMedia(26) %}
+            {% if media is not null %}
+            {% set url = '/assets/images/' ~ media.media %}
+
+                <img src="{{ asset((url)) }}" class="rounded-0 w-100 img-fluid"   alt="...">
+            {% endif %}
+
 
             <h1 class="col-lg-2 px-lg-1 col-md-6 col-sm-12 fs-1 blue-title"  style="padding-bottom: 10px">{{ page_title | upper }}</h1>
 {#            <p>{{ cat_actu.description | raw }}</p>#}

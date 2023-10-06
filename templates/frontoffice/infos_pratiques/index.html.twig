@@ -407,7 +407,11 @@
                             {{ article_qui_sommes.description | raw }}
 
                         </div>
+                        <div class="fs-5 p-2 mb-5">
 
+                            {{ article_qui_sommes.content | raw }}
+
+                        </div>
 
 
                     {% endfor %}
@@ -506,7 +510,15 @@
             </div>
         </div>
         <!-- PLAN -->
+        {% set media = cat_comment_venir.getMedia(17) %}
 
+        {% if media is not null %}
+            {% set url = '/assets/images/' ~ media.media %}
+            <a href="https://www.google.com/maps/place/17+Quai+Belu,+80000+Amiens/@49.8965935,2.3044642,18.14z/data=!4m6!3m5!1s0x47e7843770099b73:0x65a4335dc8d72f5b!8m2!3d49.8964876!4d2.3048764!16s%2Fg%2F11cs8245jj?entry=ttu">
+                <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+
+            </a>
+        {% endif  %}
     </div>
 
     <!-- BILLETTERIE BAS -->

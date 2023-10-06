@@ -123,23 +123,23 @@
 
     <!-- RECAPITULATIF -->
     {% if (article.facebookEventLuneLink is not empty and article.facebookEventLuneLink is not null) or (article.organizer is not empty and article.organizer is not null) or (article.placement is not empty and article.placement is not null) or (article.datetimeEventOpening is not empty and article.datetimeEventOpening is not null)  %}
-    <div class="pt-3 text-center d-flex justify-content-around text-uppercase">
-        {% if article.facebookEventLuneLink is not empty and article.facebookEventLuneLink is not null %}
-            <p style="display: inline; margin: 0;"><a class="text-decoration-none" href="{{ article.facebookEventLuneLink }}">Évènement Facebook</a></p>
-        {% endif %}
-        {% if article.organizer is not empty and article.organizer is not null %}
-            <p style="display: inline; margin: 0;">Organisateur : {{ article.organizer }}</p>
-        {% endif %}
-        <!-- <p style="display: inline; margin: 0;">Lieu</p>-->
-        {% if article.placement is not empty and article.placement is not null %}
-            <p style="display: inline; margin: 0;">{{ article.placement }}</p>
-        {% endif %}
-        {% if article.datetimeEventOpening is not empty and article.datetimeEventOpening is not null %}
-            <p style="display: inline; margin: 0;">Ouverture des portes : {{ article.datetimeEventOpening | date("H:i") }} </p>
-        {% endif %}
+        <div class="pt-3 text-center d-flex justify-content-around text-uppercase">
+            {% if article.facebookEventLuneLink is not empty and article.facebookEventLuneLink is not null %}
+                <p style="display: inline; margin: 0;"><a class="text-decoration-none" href="{{ article.facebookEventLuneLink }}">Évènement Facebook</a></p>
+            {% endif %}
+            {% if article.organizer is not empty and article.organizer is not null %}
+                <p style="display: inline; margin: 0;">Organisateur : {{ article.organizer }}</p>
+            {% endif %}
+            <!-- <p style="display: inline; margin: 0;">Lieu</p>-->
+            {% if article.placement is not empty and article.placement is not null %}
+                <p style="display: inline; margin: 0;">{{ article.placement }}</p>
+            {% endif %}
+            {% if article.datetimeEventOpening is not empty and article.datetimeEventOpening is not null %}
+                <p style="display: inline; margin: 0;">Ouverture des portes : {{ article.datetimeEventOpening | date("H:i") }} </p>
+            {% endif %}
 
-    </div>
-    <hr>
+        </div>
+        <hr>
     {% endif %}
     <!-- DETAIL ARTICLE -->
     <div class="p-5">
@@ -192,6 +192,18 @@
                 <div>
                 </div>
                 <!-- PLUS D'INFOS SUR L'ARTISTE -->
+                <div>
+                    {% if article.soundcloudLink is not null and article.soundcloudLink is not empty %}
+                        <iframe width="100%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="{{ article.soundcloudLink }}"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/nguvulu-ngola" title="Nguvulu Produções" target="_blank" style="color: #cccccc; text-decoration: none;">Nguvulu Produções</a> · <a href="https://soundcloud.com/nguvulu-ngola/cobra-jonaskay-gsforlife-ft-doryzzy-jonaskay" title="cobra - Jonaskay Gsforlife​ ft  Doryzzy Jonaskay 2015" target="_blank" style="color: #cccccc; text-decoration: none;">cobra - Jonaskay Gsforlife​ ft  Doryzzy Jonaskay 2015</a></div>
+                    {% endif %}
+
+                    {% if article.soundcloudSecondLink is not null and article.soundcloudSecondLink is not empty %}
+                        <iframe width="100%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="{{ article.soundcloudSecondLink }}"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/jonaskayguettostar" title="EYAYA" target="_blank" style="color: #cccccc; text-decoration: none;">EYAYA</a> · <a href="https://soundcloud.com/jonaskayguettostar/jonaskay-atetete" title="Jonaskay - Ateteté" target="_blank" style="color: #cccccc; text-decoration: none;">Jonaskay - Ateteté</a></div>
+                    {% endif %}
+                    {% if article.soundcloudThirdLink is not null and article.soundcloudThirdLink is not empty %}
+                        <iframe width="100%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="{{ article.soundcloudThirdLink }}"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/guettostar" title="Angoboyz" target="_blank" style="color: #cccccc; text-decoration: none;">Angoboyz</a> · <a href="https://soundcloud.com/guettostar/guettostar_cobra" title="GUETTO STAR COBRAS(PROD BY DOCTA BIO)" target="_blank" style="color: #cccccc; text-decoration: none;">GUETTO STAR COBRAS(PROD BY DOCTA BIO)</a></div>
+                    {% endif %}
+                </div>
                 <div class="row py-5">
                     <div class="col-lg-8 offset-lg-4 col-md-12">
                         <div class="row justify-content-end">
@@ -317,6 +329,18 @@
                         </div>
                     {% endif %}
                     <!-- PLUS D'INFOS SUR L'ARTISTE -->
+                    <div>
+                        {% if child.soundcloudLink is not null and child.soundcloudLink is not empty %}
+                            <iframe width="100%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="{{ child.soundcloudLink }}"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/nguvulu-ngola" title="Nguvulu Produções" target="_blank" style="color: #cccccc; text-decoration: none;">Nguvulu Produções</a> · <a href="https://soundcloud.com/nguvulu-ngola/cobra-jonaskay-gsforlife-ft-doryzzy-jonaskay" title="cobra - Jonaskay Gsforlife​ ft  Doryzzy Jonaskay 2015" target="_blank" style="color: #cccccc; text-decoration: none;">cobra - Jonaskay Gsforlife​ ft  Doryzzy Jonaskay 2015</a></div>
+                        {% endif %}
+
+                        {% if child.soundcloudSecondLink is not null and child.soundcloudSecondLink is not empty %}
+                            <iframe width="100%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="{{ child.soundcloudSecondLink }}"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/jonaskayguettostar" title="EYAYA" target="_blank" style="color: #cccccc; text-decoration: none;">EYAYA</a> · <a href="https://soundcloud.com/jonaskayguettostar/jonaskay-atetete" title="Jonaskay - Ateteté" target="_blank" style="color: #cccccc; text-decoration: none;">Jonaskay - Ateteté</a></div>
+                        {% endif %}
+                        {% if child.soundcloudThirdLink is not null and child.soundcloudThirdLink is not empty %}
+                            <iframe width="100%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="{{ child.soundcloudThirdLink }}"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/guettostar" title="Angoboyz" target="_blank" style="color: #cccccc; text-decoration: none;">Angoboyz</a> · <a href="https://soundcloud.com/guettostar/guettostar_cobra" title="GUETTO STAR COBRAS(PROD BY DOCTA BIO)" target="_blank" style="color: #cccccc; text-decoration: none;">GUETTO STAR COBRAS(PROD BY DOCTA BIO)</a></div>
+                        {% endif %}
+                    </div>
                     <div class="row">
                         <div class="col-lg-8 offset-lg-4 col-md-12 py-5">
                             <div class="row">

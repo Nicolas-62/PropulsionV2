@@ -35,19 +35,21 @@ class ActionsController extends LuneController
     public function index(): Response
     {
 
-        $cat_actu_id = 53;
+        $cat_action_id = 53;
         // Récupération des sous catégories de la catégorie actu
-        $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_actu_id)->getChildrenIds();
+        $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_action_id)->getChildrenIds();
 
         // Récupération des articles des sous catégories de la catégorie actu
         $events_actus = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
 
-        $cat_actu = $this->entityManager->getRepository(Category::class)->find($cat_actu_id);
-        $articles = $this->entityManager->getRepository(Category::class)->getArticles([$cat_actu_id], $this->getParameter('locale'), true, 'dateEvent', 'DESC');
+        $cat_action = $this->entityManager->getRepository(Category::class)->find($cat_action_id);
+        $articles = $this->entityManager->getRepository(Category::class)->getArticles([$cat_action_id], $this->getParameter('locale'), true, 'dateEvent', 'DESC');
+
+
         $this->data['active_entry'] = 'entry1';
 
         $this->data['articles']     = $articles;
-        $this->data['cat_actu']     = $cat_actu;
+        $this->data['cat_actu']     = $cat_action;
         $this->data['page_title']   = 'Action Culturelle';
         $this->data['actu_childs']  = $events_actus;
         $this->data['locale']       = $this->getParameter('locale');
