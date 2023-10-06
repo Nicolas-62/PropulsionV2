@@ -12,7 +12,6 @@ import Cropper from 'cropperjs';
     let dropzone            =   null;
     let dropzoneSelector    =   "div.my-dropzone";
     let $dropzone           =   $(dropzoneSelector);
-
     // Sélecteur principal de la vue.
     let $main               =   $('body');
 
@@ -92,6 +91,8 @@ import Cropper from 'cropperjs';
                     }
                 });
             });
+            // Pour chaque dropzone multiple
+
         }
     });
 })();

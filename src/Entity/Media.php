@@ -7,6 +7,7 @@ use App\Entity\Traits\TimesTampableTrait;
 use App\Repository\MediaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -39,6 +40,9 @@ class Media
 
     #[ORM\ManyToOne(targetEntity: MediaType::class, inversedBy: 'medias')]
     private ?mediaType $mediaType = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $section = 'phototheque';
 
 // TEST VICHUPLOAD BUNDLE
 //    #[Assert\Image(mimeTypes: ['image/jpeg'])]
@@ -198,5 +202,17 @@ class Media
         }else{
             return $this->getMedia();
         }
+    }
+
+    public function getSection(): ?string
+    {
+        return $this->section;
+    }
+
+    public function setSection(?string $section): self
+    {
+        $this->section = $section;
+
+        return $this;
     }
 }

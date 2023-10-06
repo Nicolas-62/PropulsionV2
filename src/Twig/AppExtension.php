@@ -15,6 +15,7 @@ class AppExtension extends AbstractExtension
         return [
             new TwigFunction('getName', [$this, 'getName']),
             new TwigFunction('getThumbnailPath', [$this, 'getThumbnailPath']),
+            new TwigFunction('getGalleryPath', [$this, 'getGalleryPath']),
             new TwigFunction('const', [$this, 'const']),
             new TwigFunction('truncateHtml', [$this, 'truncateHtml']),
             new TwigFunction('formatCustomDate', [$this, 'formatCustomDate']),
@@ -32,6 +33,11 @@ class AppExtension extends AbstractExtension
     public function getThumbnailPath($filename): string
     {
         return Constants::DYN_IMG_PATH.$filename;
+    }
+
+    public function getGalleryPath($filename): string
+    {
+        return Constants::GALLERY_PATH.$filename;
     }
 
     public function const(string $value): string

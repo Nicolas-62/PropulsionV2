@@ -159,7 +159,7 @@ class DashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
             // Titre du backoffice
-            ->setTitle('PropulsionV2')
+            ->setTitle($_ENV['SITE'])
             // Langues supportées.
             ->setLocales(
                 [
@@ -196,47 +196,28 @@ class DashboardController extends AbstractDashboardController
         //yield MenuItem::section('Contenu','fa-solid fa-folder');
 
         // Liste des Catégories.
-        yield MenuItem::subMenu('Categories', 'fas fa-bars')->setSubItems([
-            MenuItem::linkToCrud('Toutes les categories', 'fa-solid fa-bars', Category::class),
-            MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Category::class)->setAction(Crud::PAGE_NEW),
-        ]);
+        yield MenuItem::linkToCrud('Categories', 'fa-solid fa-bars', Category::class);
         // Liste des Articles.
-        yield MenuItem::subMenu('Articles', 'fas fa-newspaper')->setSubItems([
-            MenuItem::linkToCrud('Tous les articles', 'fas fa-newspaper', Article::class),
-            MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Article::class)->setAction(Crud::PAGE_NEW),
-        ]);
+        yield MenuItem::linkToCrud('Articles', 'fas fa-newspaper', Article::class)->setController(ArticleCrudController::class);
+        // Liste des articles de la catégorie galerie.
+        yield MenuItem::linkToCrud('Galerie', 'fa-regular fa-images', Article::class)->setController(GalleryCrudController::class);
         // Liste des images.
-        yield MenuItem::subMenu('Images', 'fas fa-image')->setSubItems([
-            MenuItem::linkToCrud('Toutes les images', 'fa-regular fa-image', Media::class)->setController(PictureCrudController::class),
-            MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Media::class)->setController(PictureCrudController::class)->setAction(Crud::PAGE_NEW),
-        ]);
+        yield MenuItem::linkToCrud('Images', 'fa-regular fa-image', Media::class)->setController(PictureCrudController::class);
         // Liste des fichiers.
-        yield MenuItem::subMenu('Fichiers', 'fas fa-file')->setSubItems([
-            MenuItem::linkToCrud('Tous les fichiers', 'fa-regular fa-file', Media::class)->setController(FileCrudController::class),
-            MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Media::class)->setController(FileCrudController::class)->setAction(Crud::PAGE_NEW),
-        ]);
+        yield MenuItem::linkToCrud('Fichiers', 'fa-regular fa-file', Media::class)->setController(FileCrudController::class);
         // Liste des thèmes.
-        yield MenuItem::subMenu('Thèmes', 'fas fa-volcano')->setSubItems([
-            MenuItem::linkToCrud('Tous les thèmes', 'fa-regular fa-image', Theme::class),
-            MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Theme::class)->setAction(Crud::PAGE_NEW),
-        ]);
+        yield MenuItem::linkToCrud('Thèmes', 'fa-regular fa-image', Theme::class);
+
         // Config.
-        yield
-        MenuItem::linkToCrud('Configuration', 'fas fa-gear', Config::class)->setAction(Crud::PAGE_EDIT)->setEntityId(1);
+        yield MenuItem::linkToCrud('Configuration', 'fas fa-gear', Config::class)->setAction(Crud::PAGE_EDIT)->setEntityId(1);
         if ($this->isGranted('ROLE_ADMIN')) {
 
             if ($this->isGranted('ROLE_DEV')) {
                 // Liste des médiaspecs.
-                yield MenuItem::subMenu('Mediaspecs', 'fas fa-image')->setSubItems([
-                    MenuItem::linkToCrud('Toutes les médiaspecs', 'fa-regular fa-image', Mediaspec::class),
-                    MenuItem::linkToCrud('Ajouter', 'fas fa-plus', Mediaspec::class)->setAction(Crud::PAGE_NEW),
-                ]);
+                yield MenuItem::linkToCrud('Médiaspecs', 'fa-regular fa-image', Mediaspec::class);
             }
             // Liste des utilisateurs.
-            yield MenuItem::subMenu('Utilisateurs', 'fas fa-user')->setSubItems([
-                MenuItem::linkToCrud('Tous les tilisateurs', 'fa-solid fa-user', User::class),
-                MenuItem::linkToCrud('Ajouter', 'fas fa-plus', User::class)->setAction(Crud::PAGE_NEW),
-            ]);
+            yield MenuItem::linkToCrud('Tous les tilisateurs', 'fa-solid fa-user', User::class);
             yield MenuItem::linkToRoute('Preview', 'fa-solid fa-eye', 'bo_toggle_preview')->setBadge($this->session->get('preview') ? "ON" : "OFF");
         }
 

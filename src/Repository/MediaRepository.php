@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Article;
 use App\Entity\Media;
 use App\Entity\MediaLink;
+use App\Entity\Mediaspec;
 use App\Entity\MediaType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -42,6 +44,55 @@ class MediaRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Récupère les photos d'un article de la galerie
+     *
+     * @param Article $entity
+     * @return Mediaspec
+     */
+    public function getPhotos(Article $entity): array
+    {
+        $query = $this->createQueryBuilder('m')
+            ->join('m.mediaLinks', 'mediaLinks')
+            ->where('m.section = :section')
+            ->andWhere('mediaLinks.article = :article')
+            ->setParameter('article', $entity)
+            ->setParameter('section', 'galerie');
+        return $query->getQuery()->getResult();
+    }
+
+
+    /**
+     *  Supprime un média
+     *
+     * @param string $entityId
+     * @param bool $flush
+     * @return bool
+     */
+    public function removeById(string $entityId, bool $flush = false): bool
+    {
+        // Capteur
+        $removed = true;
+        // Récupération du media.
+        $entity = $this->find($entityId);
+
+        if( ! $entity){
+            $removed = false;
+        }
+        // Si on a récupéré le média
+        else {
+            // On le supprime.
+            $this->getEntityManager()->remove(
+                $this->find($entityId)
+            );
+            // Si on met à jour la BDD
+            if ($flush) {
+                $this->getEntityManager()->flush();
+            }
+        }
+        // retour
+        return $removed;
+    }
     /**
      * Supprime un média
      *

@@ -130,7 +130,7 @@ class CategoryCrudController extends BoController
 
             // MEDIAS
             // Ajout des formulaires d'ajout de médias en fonction des mediaspecs qui s'appliquent à l'entité
-            foreach($this->getMediaFields() as $mediaField){
+            foreach($this->getMediaFieldsForForm() as $mediaField){
                 yield $mediaField;
             }
 

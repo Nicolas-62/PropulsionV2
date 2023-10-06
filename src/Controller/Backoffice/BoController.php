@@ -4,6 +4,7 @@ namespace App\Controller\Backoffice;
 
 use App\Constants\Constants;
 use App\Entity\Article;
+use App\Entity\Category;
 use App\Entity\Media;
 use App\Entity\MediaLink;
 use App\Field\MediaSelectField;
@@ -29,6 +30,15 @@ use Symfony\Component\Mime\MimeTypes;
 
 abstract class BoController extends AbstractCrudController
 {
+    // Objet reponse retourné lors des appels Ajax
+    public array $response = array(
+        'error'             => null,
+        'folderId'          => null,
+        'filename'          => null,
+        'url'               => null,
+        'thumbUrl'          => null,
+    );
+
     public function __construct(
     )
     {
@@ -45,6 +55,8 @@ abstract class BoController extends AbstractCrudController
         $url = $adminUrlGenerator->unset('direction')->unset('entityId')->setAction(Action::INDEX)->generateUrl();
         return $this->redirect($url);
     }
+
+
     /**
      * Enregistre sur le serveur le fichier déposé par l'utilisateur
      *
@@ -53,55 +65,55 @@ abstract class BoController extends AbstractCrudController
      */
     public function upload(Secure $secureService, AdminContext $context): JsonResponse
     {
-        // Objet réponse.
-        $response = array(
-          'error' => null,
-          'folderId' => null,
-          'filename' => null,
-          'imageSelector' => null,
-           'url' => null,
-           'thumbUrl' => null,
-        );
 
         // Récupération du fichier
         $file = $context->getRequest()->files->get('file');
-
         // Si l'image a été récupérée.
-        if(isset($file) && $file->isValid()) {
-            // Dossier temporaire du fichier = chaine alphanumérique de 10 caractères.
-            $folderId       =   $secureService->random_hash(5);
-            // Chemin temporaire du fichier
-            $fileBasePath  =   Constants::DYN_UPLOAD_PATH . $folderId . '/';
-            // Nom du fichier
-            $filename       =   $file->getClientOriginalName();
-
-            // Déplacement du fichier dans le dossier temporaire
-            if($file->move($fileBasePath, $filename)){
-
-                // Si le fichier est un pdf
-                $mimeType = new MimeTypes();
-                if($mimeType->guessMimeType($fileBasePath . $filename) == 'application/pdf'){
-                    // Nom de la vignette PDF
-                    $thumb_filename =  pathinfo($filename, PATHINFO_FILENAME) . '.jpg';
-                    // On créer un vignette de la première page du pdf
-                    $pdf = new Pdf($fileBasePath . $filename);
-                    $pdf->saveImage($fileBasePath . $thumb_filename);
-                    // Chemin de la vignette
-                    $response["thumbUrl"] = $context->getRequest()->getBaseUrl() . $fileBasePath . $thumb_filename;
-                }
-
-                $response["folderId"]   =   $folderId;
-                $response["filename"]   =   $filename;
-                $file = new File($fileBasePath . $filename);
-                $response["filesize"]   =   $file->getSize();
-                // Chemin de l'image
-                $response["url"]        =  $context->getRequest()->getBaseUrl() . $fileBasePath . $filename;
+        if(isset($file)){
+            // Récupération du nom de dossier d'upload
+            $folderId = $context->getRequest()->get('folderId');
+            // Si il n'est pas défini on en créer un temporaire
+            if( ! isset($folderId)) {
+                // Dossier temporaire du fichier = chaine alphanumérique de 10 caractères.
+                $folderId       =   $secureService->random_hash(5);
             }
-        }else{
-            $response["error"] = "Impossible de récupérer le fichier";
+
+            if ($file->isValid()) {
+                // Chemin temporaire du fichier
+                $fileBasePath = Constants::DYN_UPLOAD_PATH . $folderId . '/';
+                // Nom du fichier
+                $filename = $file->getClientOriginalName();
+
+                // Déplacement du fichier dans le dossier temporaire
+                if ($file->move($fileBasePath, $filename)) {
+
+                    // Si le fichier est un pdf
+                    $mimeType = new MimeTypes();
+                    if ($mimeType->guessMimeType($fileBasePath . $filename) == 'application/pdf') {
+                        // Nom de la vignette PDF
+                        $thumb_filename = pathinfo($filename, PATHINFO_FILENAME) . '.jpg';
+                        // On créer un vignette de la première page du pdf
+                        $pdf = new Pdf($fileBasePath . $filename);
+                        $pdf->saveImage($fileBasePath . $thumb_filename);
+                        // Chemin de la vignette
+                        $this->response["thumbUrl"] = $context->getRequest()->getBaseUrl() . $fileBasePath . $thumb_filename;
+                    }
+                    // Données renvoyées à la vue
+                    $this->response["folderId"] = $folderId;
+                    $this->response["filename"] = $filename;
+                    $file = new File($fileBasePath . $filename);
+                    $this->response["filesize"] = $file->getSize();
+                    // Chemin de l'image
+                    $this->response["url"] = $context->getRequest()->getBaseUrl() . $fileBasePath . $filename;
+                }
+            } else {
+                $this->response["error"] = "Impossible de récupérer le fichier";
+            }
+
         }
+
         // Retour
-        return new JsonResponse($response);
+        return new JsonResponse($this->response);
     }
 
     /**
@@ -112,6 +124,7 @@ abstract class BoController extends AbstractCrudController
     public function deleteUpload(AdminContext $context, AdminUrlGenerator $adminUrlGenerator)
     {
 
+
         // Récupération du nom du fichier à supprimer.
         $filename = $context->getRequest()->get('filename');
         // Récupération du dossier temporaire.
@@ -119,39 +132,96 @@ abstract class BoController extends AbstractCrudController
 
         // Si le nom du dossier et le nom de fichier sont définis.
         if(trim($folderId) != '') {
-            // Chemin temporaire de l'image
+            // Chemin temporaire du dossier
             $folderPath = Constants::DYN_UPLOAD_PATH . $folderId . '/';
             $filesystem = new Filesystem();
-            // Si le fichier existe.
+            // Si le dossier existe.
             if ($filesystem->exists($folderPath)) {
-                // Suppression du fichier.
-                $filesystem->remove($folderPath);
+                // Si pas de fichier renseigné
+                if( ! $filename) {
+                    // Suppression du dossier.
+                    $filesystem->remove($folderPath);
+                }else{
+                    // Chemin temporaire du fichier
+                    $filePath = $folderPath . $filename;
+                    // Si le fichier existe
+                    if($filesystem->exists($filePath)){
+                        // Suppression du fichier.
+                        $filesystem->remove($filePath);
+                    }else{
+                        $this->response["error"] = "Le fichier n'existe pas";
+                    }
+                }
             } else {
-                $response["error"] = "Impossible de supprimer le fichier";
+                $this->response["error"] = "Le dossier n'existe pas";
+            }
+        }
+        // IF AJAX
+        if( $context->getRequest()->isXmlHttpRequest()){
+            $this->response["filename"] = $filename;
+            $this->response["folderId"] = $folderId;
+            // Retour
+            return new JsonResponse($this->response);
+        }else {
+            // Récupération de l'id de l'entité
+            $entityId = $context->getRequest()->get('entityId');
+            if ($entityId != null) {
+                $crudAction = Action::EDIT;
+            } else {
+                $crudAction = Action::NEW;
+            }
+            $url = $adminUrlGenerator->setAction($crudAction)
+                ->set('entityId', $entityId)
+                ->unset('folderId')
+                ->generateUrl();
+            // Retour
+            return $this->redirect($url);
+        }
+    }
+
+    /**
+     * Construits les champs extra du formulaire d'édition d'un article
+     * @return array
+     */
+    protected function getExtraFieldsForForm(?Category $categoryParent): array
+    {
+        // Entité article.
+        $model = new Article();
+        // Liste des champs à retourner.
+        $extraFields = array();
+        // Si la catégorie parent existe.
+        if($categoryParent != null) {
+            // Récupération des datas de la catégorie.
+            $categoryParent->getDatas($this->locale);
+            $extraFields[] =  FormField::addPanel('Contenu');
+
+            // Ajout des champs spécifiques à l'instance définis dans l'entité.
+            foreach ($model->getExtraFields() as $extraField) {
+                $show_field = false;
+                // si activé depuis la catégorie parent.
+                if(method_exists($categoryParent, 'getHas'.ucfirst($extraField['name'])) ){
+                    if($categoryParent->{'getHas' . ucfirst($extraField['name'])}() ){
+                        $show_field = true;
+                    }
+                }else{
+                    $show_field = true;
+                }
+                // Si on affiche le champ
+                if($show_field){
+                    $extraFields[] = $model->getEasyAdminFieldType($extraField['ea_type'])::new($extraField['name'], $extraField['label'])
+                        ->setColumns((int) $extraField['column']);
+                }
             }
         }
 
-        // Récupération de l'id de l'entité
-        $entityId = $context->getRequest()->get('entityId');
-        if($entityId != null){
-            $crudAction = Action::EDIT;
-        }else{
-            $crudAction = Action::NEW;
-        }
-        $url = $adminUrlGenerator->setAction($crudAction)
-            ->set('entityId', $entityId)
-            ->unset('folderId')
-            ->generateUrl();
-        // Retour
-        return $this->redirect($url);
+        return $extraFields;
     }
 
-
-
     /**
+     * Construit les champs d'ahout de media on fonction des médiaspec qu s'appliquent à l'élément.
      * @return array
      */
-    protected function getMediaFields(): array
+    protected function getMediaFieldsForForm(): array
     {
         // Liste des champs à retourner.
         $mediaFields = array();

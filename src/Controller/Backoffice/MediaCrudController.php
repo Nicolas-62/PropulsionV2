@@ -44,6 +44,8 @@ use function PHPUnit\Framework\throwException;
 
 class MediaCrudController extends BoController
 {
+    // Nom de la section
+    public string $section            =   'phototheque';
     // Nom du type de média, utilisé pour nommage des templates
     public string $bo_model_name      =   '';
     public string $bo_models_name     =   '';
@@ -222,8 +224,12 @@ class MediaCrudController extends BoController
     {
         // récupération des articles.
         $response = $this->entityRepository->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
-        $response->join('entity.mediaType', 'mediaType');
+        // On filtre par la section
+        $response->andWhere('entity.section = :section');
+        $response->setParameter('section', $this->section);
+
         // On filtre les médias par type
+        $response->join('entity.mediaType', 'mediaType');
         $response->andWhere('mediaType.label = :type');
         $response->setParameter('type', $this->model_type_label);
 

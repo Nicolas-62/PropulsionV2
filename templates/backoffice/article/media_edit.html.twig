@@ -12,8 +12,10 @@
             <div
                     class="my-dropzone text-center dropzone "
                     data-upload-url="{{ upload_url }}"
-                    data-upload-message="{{ 'upload.upload-message'|trans }}"
+                    data-upload-message="{{ 'upload.upload-message'|trans ~ ' ' ~ acceptedExtensions|join(', ') }}"
+                    data-accepted-file-types="{{ acceptedFileTypes|join(',') }}"
                     data-id="{{ form.vars.name }}"
+
             >
             </div>
             <div
@@ -55,7 +57,6 @@
                 <input type="text" name="legend-{{ form.vars.name }}" class="form-control">
             </div>
         </div>
-        <input type="hidden" name="imageSelector-{{ form.vars.name }}" id="imageSelector-{{ form.vars.name }}" />
         <input type="hidden" name="folderId-{{ form.vars.name }}" id="folderId-{{ form.vars.name }}" />
         <input type="hidden" name="filename-{{ form.vars.name }}" id="filename-{{ form.vars.name }}" />
         <input type="hidden" name="cropData-{{ form.vars.name }}" id="cropData-{{ form.vars.name }}" />

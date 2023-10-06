@@ -108,6 +108,7 @@ class ArticleRepository extends CMSRepository
      */
     public function getMedia(Article $entity, Mediaspec $mediaspec = null): Media|null
     {
+
         return $this->registry->getRepository(MediaLink::class)->findOneByEntity($entity, $mediaspec)?->getMedia();
     }
 

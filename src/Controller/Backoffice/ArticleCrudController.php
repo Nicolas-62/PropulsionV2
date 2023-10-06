@@ -7,6 +7,7 @@ use App\Entity\ArticleData;
 use App\Entity\Category;
 use App\Entity\Language;
 use App\Entity\Media;
+use App\Entity\MediaType;
 use App\Entity\Online;
 use App\Entity\Seo;
 use App\Field\LanguageSelectField;
@@ -46,15 +47,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Mime\MimeTypes;
+use Twig\Environment;
 
 class ArticleCrudController extends BoController
 {
     // Variables
+    public array $acceptedExtensions  =   ['png', 'jpg', 'jpeg'];
 
     // Article courant
     protected ?Article $entity = null;
     // Categorie parent.
     protected ?Category $category = null;
+
+    // Initialisés dans le constructeur:
+    public array $acceptedFileTypes   =   [];
 
     public function __construct(
         // Services
@@ -70,6 +77,13 @@ class ArticleCrudController extends BoController
         protected RequestStack $requestStack,
     )
     {
+        // Récupération des types mime en fonction des extensions acceptées.
+        $mimeTypes = new MimeTypes();
+        foreach($this->acceptedExtensions as $extension){
+            foreach($mimeTypes->getMimeTypes($extension) as $mimetype){
+                $this->acceptedFileTypes[] = $mimetype;
+            }
+        }
         // Appel du constructeur du controller parent
         parent::__construct();
     }
@@ -145,6 +159,7 @@ class ArticleCrudController extends BoController
         yield FormField::addTab('Paramètres');
         // Champs communs à plusieurs actions (liste, edition, detail, formulaire...)
         yield IdField::new('id')->hideOnForm()->setPermission('ROLE_DEV');
+        // Ordre
         if($this->category != null) {
             $this->category->getDatas($this->locale);
             if(method_exists($this->category, 'getHasOrdre') && $this->category->getHasOrdre()){
@@ -153,7 +168,7 @@ class ArticleCrudController extends BoController
             }
         }
         yield TextField::new('title','Nom')->setColumns(4);
-        //yield SlugField::new('slug', 'Url')->setTargetFieldName('title')->hideOnIndex();
+        // Parents/enfants
         yield AssociationField::new('children','Enfants')->hideOnForm();
         yield AssociationField::new('category','Categorie')->setColumns(4)->hideOnForm()->formatValue(function($value, $article) {
             // Concatenation du nom de la catégorie avec les noms des catégories parentes.
@@ -183,7 +198,7 @@ class ArticleCrudController extends BoController
 
             return $value;
         });
-
+        // Autres vue liste
         yield BooleanField::new('isOnline', 'En ligne')->hideOnForm();
         yield DateField::new('created_at','création')->hideOnForm();
         yield DateField::new('updated_at','dernière édition')->hideOnForm();
@@ -250,7 +265,7 @@ class ArticleCrudController extends BoController
 
             // MEDIAS
             // Ajout des formulaires d'ajout de médias en fonction des mediaspecs qui s'appliquent à l'entité
-            foreach($this->getMediaFields() as $mediaField){
+            foreach($this->getMediaFieldsForForm() as $mediaField){
                 yield $mediaField;
             }
 
@@ -294,39 +309,11 @@ class ArticleCrudController extends BoController
                 ;
             }
 
-
             // EXTRA FIELDS VUE FORM
-            // Si la catégorie parent existe.
-            if($categoryParent != null) {
-                // Récupération des datas de la catégorie.
-                $categoryParent->getDatas($this->locale);
-                yield FormField::addPanel('Contenu');
-
-                // Ajout des champs spécifiques à l'instance définis dans l'entité.
-                foreach ($model->getExtraFields() as $extraField) {
-                    $show_field = false;
-                    // si activé depuis la catégorie parent.
-                    if(method_exists($categoryParent, 'getHas'.ucfirst($extraField['name'])) ){
-                        if($categoryParent->{'getHas' . ucfirst($extraField['name'])}() ){
-                            $show_field = true;
-                        }
-                    }else{
-                        $show_field = true;
-                    }
-                    // Si on affiche le champ
-                    if($show_field){
-                        yield $field = $model->getEasyAdminFieldType($extraField['ea_type'])::new($extraField['name'], $extraField['label'])
-                            ->setColumns((int) $extraField['column']);
-                        // Si le champs est une date
-                        if(str_contains($extraField['name'], 'date')){
-
-                            //$field->setCustomOption('data', $this->entity->{'get'.ucfirst($extraField['name'])}()->format($extraField['format']));
-
-                        }
-                    }
-                }
+            // Ajout des formulaires d'ajout de médias en fonction des mediaspecs qui s'appliquent à l'entité
+            foreach($this->getExtraFieldsForForm($categoryParent) as $extraField){
+                yield $extraField;
             }
-
         }// Fin si PAGE_EDIT
 
         // EXTRA FIELDS VUE LIST
@@ -406,6 +393,10 @@ class ArticleCrudController extends BoController
             $response->andWhere('entity.article_id = :entity_id');
             $response->setParameter('entity_id', $this->entity->getId());
 
+        }else{
+            // On affiche tous les articles sauf ceux de la galerie
+            $response->andWhere('entity.category != :element');
+            $response->setParameter('element', $_ENV['GALLERY_CATEGORY_ID']);
         }
         // Si pas d'ordre
         if($searchDto->getSort() == [])
@@ -536,6 +527,8 @@ class ArticleCrudController extends BoController
             ->overrideTemplate('crud/edit', 'backoffice/article/edit.html.twig')
             // Personnalisation du formulaire
             ->setFormThemes([
+                'backoffice/article/gallery_show.html.twig',
+                'backoffice/article/gallery_edit.html.twig',
                 'backoffice/article/media_edit.html.twig',
                 'backoffice/article/media_delete.html.twig',
                 'backoffice/article/media_select.html.twig',
@@ -617,6 +610,10 @@ class ArticleCrudController extends BoController
         $responseParameters->set('ancestorId', $ancestorId);
         $responseParameters->set('ancestorKeyName', $ancestorKeyName);
         $responseParameters->set('searchKeyName', $searchKeyName);
+
+        $twig = $this->container->get('twig');
+        $twig->addGlobal('acceptedFileTypes', $this->acceptedFileTypes);
+        $twig->addGlobal('acceptedExtensions', $this->acceptedExtensions);
 
         return parent::configureResponseParameters($responseParameters);
     }

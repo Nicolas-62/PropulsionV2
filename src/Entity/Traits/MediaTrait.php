@@ -19,6 +19,44 @@ trait MediaTrait
     private $media12;
     private $media13;
 
+    // Attribut du formulaire d'upload des photos des articles de la categorie galerie.
+    private $galleryMediaUploads;
+
+    // Attribut d'affichage des photos des articles de la catégorie galerie.
+    private $galleryMedias;
+
+    /**
+     * @return mixed
+     */
+    public function getGalleryMediaUploads()
+    {
+        return $this->galleryMediaUploads;
+    }
+
+    /**
+     * @param mixed $galleryMediaUploads
+     */
+    public function setGalleryMediaUploads($galleryMediaUploads): void
+    {
+        $this->galleryMediaUploads = $galleryMediaUploads;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGalleryMedias()
+    {
+        return $this->galleryMedias;
+    }
+
+    /**
+     * @param mixed $galleryMedias
+     */
+    public function setGalleryMedias($galleryMedias): void
+    {
+        $this->galleryMedias = $galleryMedias;
+    }
+
     /**
      * @return mixed
      */

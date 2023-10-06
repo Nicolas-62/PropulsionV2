@@ -116,7 +116,7 @@ class MediaListener implements EventSubscriberInterface
      */
     public function linkMedias(AfterEntityUpdatedEvent $event)
     {
-        //dump('AfterEntityUpdatedEvent : linkMedias');
+        // dump('AfterEntityUpdatedEvent : linkMedias');
         // Récupération de l'entité
         $entity = $event->getEntityInstance();
 
@@ -124,6 +124,33 @@ class MediaListener implements EventSubscriberInterface
         if($entity instanceof  Article || $entity instanceof  Category){
             // Si l'entité n'est pas en erreur.
             if( ! $entity->hasError()) {
+                // SI c'est un article de la galerie
+                if($entity instanceof  Article && $entity->getCategory()->getId() == $_ENV['GALLERY_CATEGORY_ID']){
+                    $new_filenames = $this->mediaService->getFiles(
+                        $this->requestStack->getCurrentRequest()->get('folderId-galleryMediaUploads'),  'gallery/'
+                    );
+                    foreach ($new_filenames as $new_filename) {
+                        if ($new_filename) {
+                            $media = new Media();
+                            // On associe l'image téléchargée à l'objet média en cours de création.
+                            $media->setMedia($new_filename);
+                            $media->setMediaType($this->entityManager->getRepository(MediaType::class)->findOneByFiletype($new_filename));
+                            // On précise la section pour na pas les voir dans la phototheque.
+                            $media->setSection('galerie');
+                            // Todo controler la saisie de la description de l'image
+                            $this->entityManager->persist($media);
+                        }
+                        // Si un média a été renseigné
+                        if (isset($media)) {
+                            // On créer un lien entre la mediaspec le media et la publication
+                            $mediaLink = new MediaLink();
+                            $mediaLink->setMedia($media)->{'set' . ucfirst($entity->getClassName())}($entity);
+                            // On sauvegarde
+                            $this->entityManager->getRepository(MediaLink::class)->save($mediaLink, true);
+                        }
+                    }
+
+                }
 
                 // !! FICHIERS
                 // Suppression des anciens liens avec les fichiers
@@ -153,7 +180,9 @@ class MediaListener implements EventSubscriberInterface
                     $new_filename = $this->mediaService->getFile(
                         $this->requestStack->getCurrentRequest()->get('folderId-media' . $index + 1),
                         $this->requestStack->getCurrentRequest()->get('filename-media' . $index + 1),
-                        $this->requestStack->getCurrentRequest()->get('cropData-media' . $index + 1)
+                        $this->requestStack->getCurrentRequest()->get('cropData-media' . $index + 1),
+                        null,
+                        true
                     );
                     // Variable qui va récupérer le média.
                     $media = null;
