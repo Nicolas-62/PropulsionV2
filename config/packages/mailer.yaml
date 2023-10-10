@@ -3,5 +3,8 @@ framework:
         dsn: '%env(MAILER_DSN)%'
         envelope:
             sender: 'no-reply@e-systemes.com'
+            # Bcc
+            # recipients: ['nicolas@capside.fr']
         headers:
             From: '%env(SITE)% <no-reply@e-systemes.com>'
+            To: '%env(CLIENT_EMAIL)%'

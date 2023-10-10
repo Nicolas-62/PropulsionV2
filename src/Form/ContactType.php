@@ -23,7 +23,7 @@ class ContactType extends AbstractType
                 'choices' => $this->getChoices(),
                 'label' => 'Sujet',
             ])
-            ->add('email', EmailType::class, [
+            ->add('replyTo', EmailType::class, [
                 'label' => 'Email',
             ])
             ->add('name', TextType::class, [
@@ -55,7 +55,7 @@ class ContactType extends AbstractType
      */
     private function getChoices(): array
     {
-        $choices = Contact::SUBJECTS;
+        $choices = Contact::getSubjects();
         $output = [];
         foreach($choices as $value => $choice){
             $output[$choice] = $choice;

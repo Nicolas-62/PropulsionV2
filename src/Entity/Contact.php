@@ -2,24 +2,23 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
 class Contact {
 
     const SUBJECTS = [
-        0 => 'Billetterie',
-        1 => 'Comptabilité',
-        2 => 'Partenariats',
-        3 => 'Presse et communication',
-        4 => 'Projets scolaires, ateliers, actions culturelles',
-        5 => 'Programmation',
-        6 => 'Technique',
+            0 => ['label' => 'Billetterie', 'email' => 'marie.yachkouri@lalune.net'],
+            1 => ['label' => 'Comptabilité', 'email' => 'sandrine.darlot@lalune.net'],
+            2 => ['label' => 'Partenariats', 'email' => 'antoine.grillon@lalune.net'],
+            3 => ['label' => 'Presse et communication', 'email' => 'jimmy.bourbier@lalune.net'],
+            4 => ['label' => 'Projets scolaires, ateliers, actions culturelles', 'email' => ['anais.frapsauce@lalune.net', 'marine.salvat@lalune.net'] ],
+            5 => ['label' => 'Programmation', 'email' => 'antoine.grillon@lalune.net'],
+            6 => ['label' => 'Technique', 'email' => 'antoine.breny@lalune.net'],
     ];
 
     /**
-     * @var string|null
+     * @var string
      */
     #[Assert\Length(
         min: 2,
@@ -28,14 +27,14 @@ class Contact {
 //        maxMessage: 'Your first name cannot be longer than {{ limit }} characters',
     )]
     #[Assert\NotBlank]
-    private $name;
+    private ?string $name = null;
 
     /**
-     * @var string|null
+     * @var string
      */
     #[Assert\NotBlank]
     #[Assert\Email()]
-    private $email;
+    private array|string $email;
 
     /**
      * @var string|null
@@ -44,33 +43,66 @@ class Contact {
         min: 10,
     )]
     #[Assert\NotBlank]
-    private $message;
+    private ?string $message;
 
-    #[Assert\Values(
-        values: Contact::SUBJECTS,
+    #[Assert\Choice(
+        callback: 'getSubjects',
         message: 'Veuillez choisir un sujet valide'
     )]
     #[Assert\NotBlank]
-    private $subject;
+    private string $subject;
+
+
+    private ?string $replyTo = null;
+
+    private string $templatePath = 'frontoffice/emails/contact.html.twig';
 
     /**
      * @var bool|null
      */
-    private $getNewsletter;
+    private ?bool $getNewsletter;
 
-    /**
-     * @return string|null
-     */
-    public function getEmail(): ?string
+
+    public function __construct(){
+        // Email du client par défaut.
+        $this->email = $_ENV['CLIENT_EMAIL'];
+        // MEssage par défaut
+        $this->subject = 'Message en provenance du site - '.$_ENV['SITE'];
+    }
+
+
+    public function getReplyTo(): ?string
+    {
+        return $this->replyTo;
+    }
+
+    public function setReplyTo(string $replyTo): Contact
+    {
+        $this->replyTo = $replyTo;
+        return $this;
+    }
+
+    public function getTemplatePath(): ?string
+    {
+        return $this->templatePath;
+    }
+
+    public function setTemplatePath(?string $templatePath): Contact
+    {
+        $this->templatePath = $templatePath;
+        return $this;
+    }
+
+
+    public function getEmail(): string|array
     {
         return $this->email;
     }
 
     /**
-     * @param string|null $email
      * @return Contact
      */
-    public function setEmail(?string $email): Contact
+    public function setEmail(string|array $email): Contact
     {
         $this->email = $email;
         return $this;
@@ -102,10 +134,42 @@ class Contact {
         return $this->subject;
     }
 
+
     /**
-     * @param mixed $subject
+     * Retourne le label des sujets
+     *
+     * @return array
      */
-    public function setSubject($subject): void
+    public static function getSubjects()
+    {
+        $subjects = array();
+        foreach(Contact::SUBJECTS as $subject){
+            $subjects[] = $subject['label'];
+        }
+        return $subjects;
+    }
+
+    /**
+     * Retourne l'adresse mail en fonction du sujet passé en parametre
+     * @param string $subject_send
+     * @return string|array|false
+     */
+    public static function getEmailBySubjectLabel(string $subject_send): string|array|false
+    {
+        foreach(Contact::SUBJECTS as $subject){
+            if($subject['label'] == $subject_send){
+                return $subject['email'];
+            }
+        }
+        return false;
+    }
+
+
+
+    /**
+     * @param string $subject
+     */
+    public function setSubject(string $subject): void
     {
         $this->subject = $subject;
     }
@@ -113,7 +177,7 @@ class Contact {
     /**
      * @return string|null
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -121,7 +185,7 @@ class Contact {
     /**
      * @param string|null $name
      */
-    public function setName(?string $name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }

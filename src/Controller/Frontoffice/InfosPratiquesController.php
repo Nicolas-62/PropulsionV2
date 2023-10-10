@@ -73,9 +73,16 @@ class InfosPratiquesController extends LuneController
         // Récupération des données du formulaire de contact.
         if($form->isSubmitted()) {
             if ($form->isValid()) {
-                // Envoi du mail
-                $notification->notify($contact);
-                $this->addFlash('success', 'Votre email a bien été envoyé');
+                // Récupération du destinataire en fonction du seujet choisi.
+                $destinataire_emails = Contact::getEmailBySubjectLabel($contact->getSubject());
+                if($destinataire_emails){
+                    $contact->setEmail($destinataire_emails);
+                    // Envoi du mail
+                    $notification->notify($contact);
+                    $this->addFlash('success', 'Votre email a bien été envoyé');
+                }else{
+                    $this->addFlash('error', "Impossible de récupérer l'adresse du destinataire");
+                }
             }else{
                 $this->addFlash('error', 'Formulaire non valide');
             }

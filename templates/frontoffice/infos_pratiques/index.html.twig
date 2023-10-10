@@ -111,14 +111,14 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="pb-2" for="mailInput">{{ field_label(form.email) }} (obligatoire)</label>
-                            <input type="email" class="form-control rounded-0 border-secondary select-infos"  name="{{ field_name(form.email) }}"  value="{{ field_value(form.email) }}" id="mailInput" aria-describedby="emailHelp">
-                            {{ form_errors(form.email) }}
+                            <label class="pb-2" for="mailInput">{{ field_label(form.replyTo) }} (obligatoire)</label>
+                            <input type="email" class="form-control rounded-0 border-secondary select-infos"  name="{{ field_name(form.replyTo) }}"  value="{{ field_value(form.replyTo) }}" id="mailInput" aria-describedby="emailHelp">
+                            {{ form_errors(form.replyTo) }}
 
                         </div>
                         <div class="form-group">
                             <label class="pb-2" for="nomInput">{{ field_label(form.name) }} (obligatoire)</label>
-                            <input type="text" class="form-control rounded-0 border-secondary select-infos"  name="{{ field_name(form.name) }}" value="{{ field_value(form.email) }}" id="nomInput">
+                            <input type="text" class="form-control rounded-0 border-secondary select-infos"  name="{{ field_name(form.name) }}" value="{{ field_value(form.name) }}" id="nomInput">
                             {{ form_errors(form.name) }}
 
                         </div>

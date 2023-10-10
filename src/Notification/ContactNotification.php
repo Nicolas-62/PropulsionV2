@@ -23,9 +23,18 @@ class ContactNotification {
     public function notify(Contact $contact): void
     {
         $message = (new TemplatedEmail())
-            ->subject("Message en provenance du site")
-            ->replyTo($contact->getEmail())
-            ->htmlTemplate('frontoffice/emails/contact.html.twig')
+            ->subject($contact->getSubject());
+            // Si c'est une liste de mails.
+            if(is_array($contact->getEmail())){
+                foreach($contact->getEmail() as $email){
+                    $message->addTo($email);
+                }
+            }else{
+                $message->to($contact->getEmail());
+            }
+            $message
+            ->replyTo($contact->getReplyTo())
+            ->htmlTemplate($contact->getTemplatePath())
             ->context([
                 'contact' => $contact
             ])
