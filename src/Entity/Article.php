@@ -75,6 +75,9 @@ class Article
     private ?string $facebookEventLuneLink  = '';
     private ?string $organizer  = '';
     private ?string $placement  = '';
+    private ?string $price  = '';
+    private ?string $subscriberPrice  = '';
+    private ?string $reducedPrice  = '';
 
     private array $files = array();
 

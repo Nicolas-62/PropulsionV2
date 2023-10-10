@@ -30,6 +30,7 @@ import 'bootstrap'; // adds functions to jQuery
 
 import 'select2';
 import './libs/utilities';
+import './libs/lightBox';
 
 import verge from 'verge';
 $.extend(verge);

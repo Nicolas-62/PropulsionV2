@@ -27,3 +27,6 @@
 "facebookEventLuneLink","Lien Facebook évènement Lune","TextField","false","3","",
 "organizer","Organisateur","TextField","false","3","",
 "placement","Placement","TextField","false","3","",
+"price","Tarif normal","TextField","false","3","",
+"subscriberPrice","Tarif abonné","TextField","false","3","",
+"reducedPrice","Tarif réduit","TextField","false","3","",

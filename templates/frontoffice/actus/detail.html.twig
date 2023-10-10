@@ -84,6 +84,31 @@
 
                             {{ article.content | raw }}
                         </div>
+                        <div>
+                            {% if not article.getFiles is empty %}
+
+                                <div class="mt-5">
+                                    {% set filesArray = article.getFiles() %}
+                                    {% set arrayLength = filesArray|length %}
+                                    {% if arrayLength > 1 %}
+                                        <div class="mb-5">
+                                            Fichiers :
+                                            {% for file in article.getFiles() %}
+                                                {% set url_file = '/assets/images/' ~ file.media %}
+                                                <a class="btn-files fs-5" href="{{ url_file }}" role="button">{{ file.legend }}</a>
+                                            {% endfor %}</div>
+                                    {% elseif arrayLength == 1 %}
+                                        <div class="mb-5">
+                                            Fichier :
+                                            {% for file in article.getFiles() %}
+                                                {% set url_file = '/assets/images/' ~ file.media %}
+                                                <a class="btn-files fs-5" href="{{ url_file }}" role="button">{{ file.legend }}</a>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+
+                                </div>
+                            {% endif %}</div>
                         <div class="mt-5">
                             <!-- VIDEO ARTISTE -->
                             {% if article.youtubeLink is not null  %}
@@ -98,25 +123,6 @@
                             {% endif %}
                         </div>
                         <img src="{{ asset(('build/maquette/images/actu_cadre_2.svg')) }}" class="position-absolute" style="height: 50px; bottom:0; left: 95%;" alt="ACTIONCULTURELLE">
-                    </div>
-                    <!-- Billetterie -->
-                    <div class="col-lg-4  col-md-12">
-                        {% if not article.getFiles is empty %}
-
-                            <div class="mt-5">
-                                {% set filesArray = article.getFiles() %}
-                                {% set arrayLength = filesArray|length %}
-                                {% if arrayLength > 1 %}
-                                    <h4 class="mb-5">Fichiers liés à l'article : </h4>
-                                {% elseif arrayLength == 1 %}
-                                    <h4 class="mb-5">Fichier lié à l'article : </h4>
-                                {% endif %}
-                                {% for file in article.getFiles() %}
-                                    {% set url_file = '/assets/images/' ~ file.media %}
-                                    <a class="btn-files fs-5" href="{{ url_file }}" role="button">{{ file.legend }}</a>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
                     </div>
                 </div>
             </div>

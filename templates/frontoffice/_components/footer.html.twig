@@ -38,17 +38,25 @@
             <div class="col-sm ">
                 <div class="row">
                     <div class="col-12 {% if loop.index0 != 0 %}border-dotted-white{% endif%} {% if loop.index0 == 2 %}border-dotted-right-white{% endif%} text-center">
+                        {% if loop.index0 == 0 %}
+                            <a class="text-decoration-none" style="color: white !important" href="{{ path('fo_infos_contact') }}">
+                        {% elseif loop.index0 == 1 %}
+                            <a class="text-decoration-none" style="color: white !important" href="{{ path('fo_contact_contact') }}">
+                        {% elseif loop.index0 == 2 %}
+                            <a class="text-decoration-none" style="color: white !important" href="https://billetterie.lalune.net/identification">
+                        {% endif %}
                         <img class="col-12 img-fluid" style="max-height: 70px; max-width: 70px" src="/build/front/images/{{ icone }}">
-                        <div class="mt-3">
-                            {% if loop.index0 == 0 %}
-                            <b>SCÈNE <br>
-                                DE MUSIQUES <br> ACTUELLES </b><br> 17 Quai Bélu <br> 80000 Amiens
-                            {% elseif loop.index0 == 1 %}
-                                NOUS CONTACTER
-                            {% else %}
-                                VOS COMMANDES
-                            {% endif %}
-                        </div>
+                            <div class="mt-3">
+                                {% if loop.index0 == 0 %}
+                                <b>SCÈNE <br>
+                                    DE MUSIQUES <br> ACTUELLES </b><br> 17 Quai Bélu <br> 80000 Amiens
+                                {% elseif loop.index0 == 1 %}
+                                    NOUS CONTACTER
+                                {% else %}
+                                    VOS COMMANDES
+                                {% endif %}
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>

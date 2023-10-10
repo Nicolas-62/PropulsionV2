@@ -6,12 +6,12 @@
         <h1 class="text-center">{{ cat.title }}</h1>
 
 
-        <div class="my-5">
+        <div class="my-5 fs-5">
             {{ cat.description | raw }}
         </div>
 
 
-        <div class="mb-5">
+        <div class="mb-5 fs-5">
             {{ cat.content | raw }}
 
         </div>
@@ -20,7 +20,7 @@
         {% for article in articles %}
             {{ article.getDatas(locale) }}
 
-            <div class="mb-5">
+            <div class="mb-5 fs-5">
 
                 {% set media = article.getMedia(31) %}
                 {% if media %}

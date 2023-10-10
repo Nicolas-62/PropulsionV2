@@ -66,31 +66,7 @@ class InfosPratiquesController extends LuneController
 
         // CONSTANTES GENERALES
         $this->data['locale']                           = $this->getParameter('locale');
-        // Création du formulaire de contact.
-        $contact = new Contact();
-        $form = $this->createForm(ContactType::class, $contact);
-        $form->handleRequest($request);
-        // Récupération des données du formulaire de contact.
-        if($form->isSubmitted()) {
-            if ($form->isValid()) {
-                // Récupération du destinataire en fonction du seujet choisi.
-                $destinataire_emails = Contact::getEmailBySubjectLabel($contact->getSubject());
-                if($destinataire_emails){
-                    $contact->setEmail($destinataire_emails);
-                    // Envoi du mail
-                    $notification->notify($contact);
-                    $this->addFlash('success', 'Votre email a bien été envoyé');
-                }else{
-                    $this->addFlash('error', "Impossible de récupérer l'adresse du destinataire");
-                }
-            }else{
-                $this->addFlash('error', 'Formulaire non valide');
-            }
-        }else{
-            //$this->addFlash('error', 'Formulaire non soumis');
-        }
-        // Passage du formulaire à la vue.
-        $this->data['form'] = $form->createView();
+
 
         return parent::lister();
     }

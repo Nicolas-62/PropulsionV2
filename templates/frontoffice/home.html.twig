@@ -2,7 +2,7 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
 {% block title %}{{ seo.title }}{% endblock %}
 {% block body %}
-    <!-- Image Vedette LG -->
+    <!-- Image Vedette - Carroussel -->
             <div class="container-fluid px-0">
                 <div class="row">
                     <div class="col-12 px-0 mx-0">
@@ -11,7 +11,9 @@
                                     <div class="carousel-inner">
 
                                         {% for event in events_agenda %}
-                                        {% if event.star == 1  %}
+
+                                        <a href="agenda/{{ event.slug }}" class="text-decoration-none">
+                                        {% if event.star == 1 and event.dateEvent >  date_yesterday %}
                                         <div class="carousel-item active">
 
                                             {% set media = event.getMedia(9) %}
@@ -59,7 +61,8 @@
                                                             <div class="fs-5">{{ event.dateTimeEvent| date("H:i") }}</div>
                                                         {% endif %}
                                                     </div>
-                                                    <a href="https://billetterie.lalune.net/">
+
+                                                    <a href="{% if event.ticketingLink is not empty %}{{ event.ticketingLink }}{% else %}https://billetterie.lalune.net/{% endif %}">
                                                         <img class="btn-billetterie-card" src="{{ asset(('build/front/images/LIEN_BILLETTERIE.jpg')) }}" alt="...">
                                                     </a>
                                                 </div>
@@ -67,6 +70,7 @@
                                         </div>
                                         {% endif %}
                                         {% endfor %}
+                                        </a>
                                     </div>
                                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
