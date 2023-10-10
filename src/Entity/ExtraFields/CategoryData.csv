@@ -31,3 +31,5 @@
 "hasDatetimeEndEvent","Possède une heure de fin d'évènement","BooleanField","false","3","",
 "themeBackColor","Couleur de fond du thème","ColorField","false","3","",
 "hasOrdre","Possède un ordre","BooleanField","false","3","",
+"hasPublicType","Possède un Type de public","BooleanField","false","3","",
+"publicType","Type de public","TextField","false","3","",

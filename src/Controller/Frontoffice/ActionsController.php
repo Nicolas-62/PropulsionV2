@@ -4,6 +4,7 @@ namespace App\Controller\Frontoffice;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\CategoryData;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
@@ -46,14 +47,36 @@ class ActionsController extends LuneController
         $articles = $this->entityManager->getRepository(Category::class)->getArticles([$cat_action_id], $this->getParameter('locale'), true, 'dateEvent', 'DESC');
 
 
-        $this->data['active_entry'] = 'entry1';
-
-        $this->data['articles']     = $articles;
-        $this->data['cat_actu']     = $cat_action;
-        $this->data['page_title']   = 'Action Culturelle';
-        $this->data['actu_childs']  = $events_actus;
-        $this->data['locale']       = $this->getParameter('locale');
+        $this->data['active_entry']     = 'entry1';
+        $this->data['sous_cat_actions'] = $this->entityManager->getRepository(Category::class)->findBy(['category_id' => $cat_action_id]);
+        $this->data['articles']         = $articles;
+        $this->data['cat_actu']         = $cat_action;
+        $this->data['page_title']       = 'Action Culturelle';
+        $this->data['actu_childs']      = $events_actus;
+        $this->data['locale']           = $this->getParameter('locale');
 
         return parent::lister();
+    }
+
+    #[Route('{title}', name: 'detail')]
+    public function test($title): Response
+    {
+
+
+        // Récupération des sous-catégories de la catégorie actions
+        $cat = $this->entityManager->getRepository(Category::class)->findOneBy(['title' => $title]);
+
+        // Récupération des articles de la catégorie Actions PVE
+        $articles = $this->entityManager->getRepository(Category::class)->getArticles([$cat->getId()], $this->getParameter('locale'), true, 'dateEvent', 'DESC');
+
+
+        // Envois à la vue
+        $this->data['articles']    = $articles;
+        $this->data['cat']                  = $cat;
+
+
+
+        return $this->render('frontoffice/actions/detail.html.twig', $this->data );
+
     }
 }

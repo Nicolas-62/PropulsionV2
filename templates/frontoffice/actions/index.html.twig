@@ -1,37 +1,4 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
-{% block javascripts %}
-    <script>
-
-        function showContent(entry) {
-            // Cacher tous les contenus
-            let contentDivs = document.getElementsByClassName('content')[0].children;
-            for (let i = 0; i < contentDivs.length; i++) {
-                contentDivs[i].classList.add('hidden');
-            }
-
-            // Afficher le contenu correspondant à l'entrée sélectionnée
-            let selectedContent = document.getElementById(entry);
-            selectedContent.classList.remove('hidden');
-
-            // Move the blue dot to the selected menu item
-            const menuItems = document.getElementsByClassName('menu-item');
-            for (let i = 0; i < menuItems.length; i++) {
-                menuItems[i].classList.remove('active');
-                const blueDot = document.getElementById('blue-dot' + i);
-                blueDot.style.visibility = 'hidden'; // Hide all blue dots first
-            }
-
-            const selectedMenuItem = document.querySelector('.menu-item[data-entry="' + entry + '"]');
-            selectedMenuItem.classList.add('active');
-            const selectedBlueDot = document.getElementById('blue-dot' + selectedMenuItem.dataset.index);
-        }
-
-        // On page load, show "footer0" as the active footer
-        document.addEventListener("DOMContentLoaded", function () {
-            showContent('entry1', 'footer0');
-        });
-    </script>
-{% endblock %}
 {% block body %}
     {{ cat_actu.getDatas(locale) }}
     <div class=" pr-md-3 p-lg-5">
@@ -48,66 +15,21 @@
             {% endif %}
 
 
-            <h1 class="col-lg-2 px-lg-1 col-md-6 col-sm-12 fs-1 blue-title"  style="padding-bottom: 10px">{{ page_title | upper }}</h1>
-{#            <p>{{ cat_actu.description | raw }}</p>#}
-
-
+            <h1 class="blue-title py-5"  style="padding-bottom: 10px">{{ page_title | upper }}</h1>
+            <div class="fs-5">{{ cat_actu.description | raw }}</div>
+            <div class="fs-5">{{ cat_actu.content | raw }}</div>
 
 
             <div class="row">
-                <div class="col-lg-3 col-md-12 p-5 menu text-md-center text-sm-center">
-                    <div class="row">
-                        <div class="col-lg-10 col-md-12 pt-lg-5">
-                            {% for article in articles %}
-                                <div class="text-center text-lg-start h3 py-3 menu-item {% if active_entry == 'entry' ~ loop.index %}active{% endif %}" data-entry="entry{{ loop.index }}" onclick="showContent('entry{{ loop.index }}', 'footer{{ loop.index0 }}')">
-                                    {{ article.title | upper}}
-                                </div>
-                                <div id="blue-dot{{ loop.index0 }}" class="blue-dot"></div>
-                            {% endfor %}
-                        </div>
-                        <div class="col-2 d-sm-none d-md-none d-lg-block">
-                            <img src="{{ asset(('build/maquette/images/SOUTIENS_MENU.png')) }}" class="d-none d-lg-block">
-                        </div>
+                {% for sous_cat in sous_cat_actions %}
+                    <div class=" col-lg-4 col-md-12 py-lg-5 px-lg-2 px-md-0">
+                        <!-- Card-Actu -->
+                        {% include 'frontoffice/_components/card.html.twig' with {'event': sous_cat, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : false, 'actions': true } %}
                     </div>
-                </div>
-
-                <div class="d-lg-none">
-
-                    <hr>
-                </div>
-                <div class="content col-lg-9 col-md-12">
-                    {% for article in articles %}
-                        <div id="entry{{ loop.index }}" class="py-5 px-lg-5 {% if loop.index > 1 %}hidden{% endif %}" >
-                            <div class="row">
-                                <div class="col-12 text-center pb-5">
-                                    {{ article.getDatas(locale) }}
-
-                                    <div class="h2">{{ article.title|upper }}</div>
-                                </div>
-                                <div class="fs-5 mb-5">
-                                    {{ article.description|raw }}
 
 
-                                </div>
-                                {% set media = article.getMedia(19) %}
-
-                                {% if media is not null %}
-                                    {% set url = '/assets/images/' ~ media.media %}
-                                    <img src="{{ asset((url)) }}" style="min-width: 100%; min-height: 30vh" class="card-img-top rounded-0 transport-infos w-100" alt="...">
-                                {% endif  %}
-
-
-<br>
-                                <div class="fs-5 mt-5">
-                                    {{ article.content|raw }}
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
+                {% endfor %}
             </div>
-
-
 
 
         </div>

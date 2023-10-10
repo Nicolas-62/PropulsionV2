@@ -64,7 +64,7 @@
 
                 <div class="custom-col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-1 px-md-0 category-{{ CategoryTitle }} category-tous-les-evenements">
                     <!-- Card-Actu -->
-                    {% include 'frontoffice/_components/card.html.twig' with {'event': actu, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': true, 'soutiens': false } %}
+                    {% include 'frontoffice/_components/card.html.twig' with {'event': actu, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': true, 'soutiens': false, 'actions' : false } %}
                 </div>
             {% endfor %}
 

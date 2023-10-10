@@ -1,0 +1,128 @@
+{% extends 'frontoffice/_components/layout.html.twig' %}
+{% block body %}
+    {{ cat.getDatas(locale) }}
+    <div class="p-5">
+
+        <h1 class="text-center">{{ cat.title }}</h1>
+
+
+        <div class="my-5">
+            {{ cat.description | raw }}
+        </div>
+
+
+        <div class="mb-5">
+            {{ cat.content | raw }}
+
+        </div>
+
+
+        {% for article in articles %}
+            {{ article.getDatas(locale) }}
+
+            <div class="mb-5">
+
+                {% set media = article.getMedia(31) %}
+                {% if media %}
+                    {% set url = '/assets/images/' ~ media.media  %}
+                    <div class="mb-5 col">
+                        <img src="{{ asset((url)) }}" alt="{{ media.legend }}" class="img-fluid w-100">
+                    </div>
+                {% endif %}
+                <h2 class="text-center">{{ article.title }}</h2>
+                <div class="row text-center mt-5">
+                    {% if article.instagramLink != '' %}
+                        <div class="col">
+                            <a href="{{ article.instagramLink }}"><img class="mh-45"  src="{{ asset('build/front/images/PICTURE.svg') }}"></a>
+                        </div>
+                    {% endif %}
+                    {% if article.twitterLink != '' %}
+                        <div class="col">
+                            <a href="{{ article.twitterLink }}"><img class="mh-45" src="{{ asset('build/front/images/TWITTER.svg') }}"></a>
+                        </div>
+                    {% endif %}
+                    {% if article.facebookLink != '' %}
+                        <div class="col">
+                            <a href="{{ article.facebookLink }}"><img class="mh-45" src="{{ asset('build/front/images/FACEBOOK.svg') }}"></a>
+                        </div>
+                    {% endif %}
+                    {% if article.siteInternet != '' %}
+                        <div class="col">
+                            <a href="{{ article.siteInternet }}"><img class="mh-45" src="{{ asset('build/front/images/INTERNET.svg') }}"></a>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="my-5">
+                    {{ article.description | raw }}
+                </div>
+
+                <div class="row text-center">
+                    {% set media = article.getMedia(28) %}
+                    {% if media %}
+                        {% set url = '/assets/images/' ~ media.media  %}
+                        <div class="mb-5 col">
+                            <img src="{{ asset((url)) }}" alt="{{ media.legend }}" class="img-fluid">
+                        </div>
+                    {% endif %}
+                    {% set media1 = article.getMedia(29) %}
+                    {% if media %}
+                        {% set url1 = '/assets/images/' ~ media1.media  %}
+                        <div class="mb-5 col">
+                            <img src="{{ asset((url1)) }}" alt="{{ media.legend }}" class="img-fluid">
+                        </div>
+                    {% endif %}
+                    {% set media2 = article.getMedia(30) %}
+                    {% if media %}
+                        {% set url2 = '/assets/images/' ~ media2.media  %}
+                        <div class="mb-5 col">
+                            <img src="{{ asset((url2)) }}" alt="{{ media.legend }}" class="img-fluid">
+                        </div>
+                    {% endif %}
+                </div>
+
+
+                <div>
+                    {{ article.content | raw }}
+                </div>
+
+                <div class="row">
+                    {% if article.youtubeLink %}
+                        <div class="embed-responsive embed-responsive-16by9 col">
+                            <iframe class="embed-responsive-item w-100" style="min-height: 40vh" src="{{ article.youtubeLink }}" allowfullscreen></iframe>
+                        </div>
+                    {% endif %}
+                    {% if article.youtubeSecondLink %}
+                        <div class="embed-responsive embed-responsive-16by9 col">
+                            <iframe class="embed-responsive-item w-100" style="min-height: 40vh" src="{{ article.youtubeSecondLink }}" allowfullscreen></iframe>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="row">
+
+                    {% if not article.getFiles is empty %}
+
+                        <div class="mt-5">
+                            {% set filesArray = article.getFiles() %}
+                            {% set arrayLength = filesArray|length %}
+                            {% if arrayLength > 1 %}
+                                <h4 class="mb-5">Fichiers liés à l'article : </h4>
+                            {% elseif arrayLength == 1 %}
+                                <h4 class="mb-5">Fichier lié à l'article : </h4>
+                            {% endif %}
+                            {% for file in article.getFiles() %}
+                                {% set url_file = '/assets/images/' ~ file.media %}
+                                <a class="btn-files fs-5" href="{{ url_file }}" role="button">{{ file.legend }}</a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+
+                </div>
+
+
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

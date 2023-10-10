@@ -16,8 +16,11 @@
                     <h2>Dispositif d’accompagnement de<br> La Lune des Pirates</h2>
                 </div>
                 <div class="col-3" style="line-height: 0.8">
-                    <p class="objectif-soutiens mb-0">Objectif</p>
-                    <p class="lune-soutiens mb-0">LUNE</p>
+{#                    <p class="objectif-soutiens mb-0">Objectif</p>#}
+{#                    <p class="lune-soutiens mb-0">LUNE</p>#}
+                    <img class="img-fluid" src="{{ asset('build/front/images/Logo_ObjectifLune_NB.png') }}">
+
+
                 </div>
             </div>
             <div class="fs-5 py-4">
@@ -33,7 +36,7 @@
                 {% set media = accomp.getMedia(4) %}
                 <div class="custom-col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-1 px-md-0">
                     <!-- Card-Actu -->
-                    {% include 'frontoffice/_components/card.html.twig' with {'event': accomp, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true } %}
+                    {% include 'frontoffice/_components/card.html.twig' with {'event': accomp, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true, "actions" : false } %}
                 </div>
             {% endfor %}
         </div>
@@ -50,7 +53,9 @@
                     <h2>Dispositif national de repérage et de sélection de nouveaux talents</h2>
                 </div>
                 <div class="col-3" style="line-height: 40pt">
-                    <p class="objectif-soutiens">Les inouïs du printemps de Bourges</p>
+{#                    <p class="objectif-soutiens">Les inouïs du printemps de Bourges</p>#}
+                    <img class="img-fluid" src="{{ asset('build/front/images/Logo_inouis_NB.png') }}">
+
                 </div>
             </div>
 
@@ -69,7 +74,7 @@
                 <div class="custom-col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-1 px-md-0">
 
                     <!-- Card-Actu -->
-                    {% include 'frontoffice/_components/card.html.twig' with {'event': accomp, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true } %}
+                    {% include 'frontoffice/_components/card.html.twig' with {'event': accomp, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true, 'actions': false } %}
                 </div>
             {% endfor %}
         </div>
@@ -97,7 +102,7 @@
                 <div class="custom-col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-1 px-md-0">
 
                     <!-- Card-Actu -->
-                    {% include 'frontoffice/_components/card.html.twig' with {'event': event_actu, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': false, 'soutiens': false } %}
+                    {% include 'frontoffice/_components/card.html.twig' with {'event': event_actu, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': false, 'soutiens': false, 'actions': false } %}
                 </div>
             {% endfor %}
         </div>

@@ -100,8 +100,8 @@
                     <form class="fs-5"  method="post" action="{{ path('fo_infos_contact') }}" >
 
                         <div class="form-group">
-                            <label class="pb-2" for="exampleFormControlSelect1">{{ field_label(form.subject) }} (obligatoire)</label>
-                            <select class="form-control rounded-0 border-secondary fs-5 select-infos"  name="{{ field_name(form.subject) }}" id="exampleFormControlSelect1">
+                            <label class="pb-2" for="select-contact">{{ field_label(form.subject) }} (obligatoire)</label>
+                            <select class="form-control rounded-0 border-secondary fs-5 select-infos"  name="{{ field_name(form.subject) }}" id="contact">
                                 <option>Sélectionner ...</option>
                                 {% for value, subject in field_choices(form.subject) %}
                                     <option value="{{ value }}">{{ subject }}</option>
@@ -252,8 +252,8 @@
                                 <div class="col-12 ">
 
                                     <div class="form-group py-4">
-                                        <label for="exampleFormControlSelect1">Abonnement | Renouvellement (obligatoire)</label>
-                                        <select class="form-control rounded-0 border-secondary select-infos" id="exampleFormControlSelect1">
+                                        <label for="select-billetterie-renouvellement">Abonnement | Renouvellement (obligatoire)</label>
+                                        <select class="form-control rounded-0 border-secondary select-infos" id="select-billetterie-renouvellement">
                                             <option>Sélectionner ...</option>
                                             <option>2</option>
                                             <option>3</option>
@@ -280,8 +280,8 @@
                                 <div class="col-6">
 
                                     <div class="form-group py-4">
-                                        <label for="exampleFormControlSelect1">Genre (obligatoire)</label>
-                                        <select class="form-control rounded-0 border-secondary select-infos" id="exampleFormControlSelect1">
+                                        <label for="select-billetterie-gender">Genre (obligatoire)</label>
+                                        <select class="form-control rounded-0 border-secondary select-infos" id="select-billetterie-gender">
                                             <option>Sélectionner ...</option>
                                             <option>2</option>
                                             <option>3</option>
@@ -293,8 +293,8 @@
                                 <div class="col-6">
 
                                     <div class="form-group py-4">
-                                        <label for="exampleFormControlSelect1">Tarif (obligatoire)</label>
-                                        <select class="form-control rounded-0 border-secondary select-infos" id="exampleFormControlSelect1">
+                                        <label for="select-billetterie-tarif">Tarif (obligatoire)</label>
+                                        <select class="form-control rounded-0 border-secondary select-infos" id="select-billetterie-tarif">
                                             <option>Sélectionner ...</option>
                                             <option>2</option>
                                             <option>3</option>
@@ -351,8 +351,8 @@
 
 
                                     <div class="form-group">
-                                        <label for="exampleFormControlSelect1">Pays (obligatoire)</label>
-                                        <select class="form-control rounded-0 border-secondary select-infos" id="exampleFormControlSelect1">
+                                        <label for="select-billetterie-pays">Pays (obligatoire)</label>
+                                        <select class="form-control rounded-0 border-secondary select-infos" id="select-billetterie-pays">
                                             <option>Sélectionner ...</option>
                                             <option>2</option>
                                             <option>3</option>

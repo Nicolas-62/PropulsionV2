@@ -138,7 +138,7 @@
                                 {% set test = test + 1 %}
                                 <div class="col-lg-4 col-md-12 py-2">
                                     <!-- Card-Actu -->
-                                    {% include 'frontoffice/_components/card.html.twig' with {'event': actu, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': true, 'soutiens': false } %}
+                                    {% include 'frontoffice/_components/card.html.twig' with {'event': actu, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': true, 'soutiens': false, 'actions' : false } %}
                                 </div>
                             {% endif %}
                     {% endif %}

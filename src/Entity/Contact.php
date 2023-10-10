@@ -9,10 +9,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Contact {
 
     const SUBJECTS = [
-        0 => 'Sujet 1',
-        1 => 'Sujet 2',
-        2 => 'Sujet 3',
-        3 => 'Sujet 4'
+        0 => 'Billetterie',
+        1 => 'Comptabilité',
+        2 => 'Partenariats',
+        3 => 'Presse et communication',
+        4 => 'Projets scolaires, ateliers, actions culturelles',
+        5 => 'Programmation',
+        6 => 'Technique',
     ];
 
     /**

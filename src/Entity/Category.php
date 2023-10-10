@@ -75,6 +75,7 @@ class Category
     private ?bool $hasDatetimeEvent = false;
     private ?bool $hasDatetimeEndEvent = false;
     private ?bool $hasOrdre = false;
+    private ?bool $hasPublicType = false;
 
 
     // Liste des champs supplémentaires spécifiques.
