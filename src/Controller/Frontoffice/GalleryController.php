@@ -16,7 +16,7 @@ class GalleryController extends LuneController
     public function index(): Response
     {
 
-        $category_gallery_articles = $this->entityManager->getRepository(Category::class)->find($_ENV['GALLERY_CATEGORY_ID'])->getArticles();
+        $category_gallery_articles = $this->entityManager->getRepository(Category::class)->getArticles([$_ENV['GALLERY_CATEGORY_ID']], $this->getParameter('locale'), true, 'dateEvent', 'DESC');
 
         $array_photos = array();
 

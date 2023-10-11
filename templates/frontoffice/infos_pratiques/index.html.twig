@@ -51,9 +51,9 @@
 {% endblock %}
 {% block body %}
 
-    <div class="p-lg-5">
+    <div class="p-lg-3">
         <div class="row">
-            <div class="col-lg-3 col-md-12 px-5 py-2 menu text-md-center text-sm-center">
+            <div class="col-lg-3 col-md-12 py-2 menu text-md-center text-sm-center">
                 <div class="row p-5">
                     <div class="col-lg-10 col-md-12 pt-lg-5">
                         {% for sous_categorie_infos in sous_categories_infos %}
@@ -230,7 +230,9 @@
                                 {% set media = article_abonnement_billetterie.getMedia(15) %}
                                 {% if media is not null %}
                                     {% set url = '/assets/images/' ~ media.media %}
+                                    <a class="text-decoration-none" href="https://billetterie.lalune.net/abonnements/1652669054a538/renouvellement">
                                     <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                                    </a>
                                 {% endif  %}
 
                             </div>

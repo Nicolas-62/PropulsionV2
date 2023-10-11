@@ -55,6 +55,8 @@ class ActusController extends LuneController
     public function detail(?Article $actus): Response
     {
 
+        $category_actu = $this->entityManager->getRepository(Category::class)->find($this->category_id);
+        $this->data['category_actu'] = $category_actu;
         // Récupération des sous catégories de la catégorie actu
         $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($this->category_id)->getChildrenIds();
         // Récupération des articles des sous catégories de la catégorie actu

@@ -43,7 +43,7 @@ class LuneController extends FOController
 
 
         // Récupération des articles de la galerie
-        $category_gallery_articles = $this->entityManager->getRepository(Category::class)->find($_ENV['GALLERY_CATEGORY_ID'])->getArticles();
+        $category_gallery_articles = $this->entityManager->getRepository(Category::class)->getArticles([$_ENV['GALLERY_CATEGORY_ID']], $this->params->get('locale'), true, 'dateEvent', 'DESC');
         $array_photos = array();
         // Pour chaque article de la galerie
         foreach($category_gallery_articles as $article) {
@@ -61,7 +61,7 @@ class LuneController extends FOController
         $sous_categorie_ids                     =     $this->entityManager->getRepository(Category::class)->find($this->category_agenda_id)->getChildrenIds();
         $events_header                          =     $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->params->get('locale'), true, 'dateEvent', 'DESC');
         $galery = $this->entityManager->getRepository(Category::class)->find($_ENV['GALLERY_CATEGORY_ID']);
-        $this->data['category_gallery_articles'] = $category_gallery_articles;
+        $this->data['category_gallery_articles_header'] = $category_gallery_articles;
         $this->data['array_photos_header']              = $array_photos;
 
         $this->data['events_header']            =     $events_header;

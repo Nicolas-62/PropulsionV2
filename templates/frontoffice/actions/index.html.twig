@@ -14,11 +14,11 @@
                 <img src="{{ asset((url)) }}" class="rounded-0 w-100 img-fluid"   alt="...">
             {% endif %}
 
-
-            <h1 class="blue-title py-5"  style="padding-bottom: 10px">{{ page_title | upper }}</h1>
-            <div class="fs-5">{{ cat_actu.description | raw }}</div>
-            <div class="fs-5">{{ cat_actu.content | raw }}</div>
-
+            <div class="p-3 p-lg-0">
+                <h1 class="blue-title py-5"  style="padding-bottom: 10px">{{ page_title | upper }}</h1>
+                <div class="fs-5">{{ cat_actu.description | raw }}</div>
+                <div class="fs-5">{{ cat_actu.content | raw }}</div>
+            </div>
 
             <div class="row">
                 {% for sous_cat in sous_cat_actions %}

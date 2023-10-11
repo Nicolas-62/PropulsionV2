@@ -111,12 +111,12 @@
                             {% endif %}</div>
                         <div class="mt-5">
                             <!-- VIDEO ARTISTE -->
-                            {% if article.youtubeLink is not null  %}
+                            {% if article.youtubeLink is not null and article.youtubeLink is not empty  %}
                                 <div class="embed-responsive embed-responsive-16by9">
                                     <iframe class="embed-responsive-item w-100" style="height: 860px;" src="{{ article.youtubeLink }}" allowfullscreen></iframe>
                                 </div>
                             {% endif %}
-                            {% if article.youtubeLink2 is not null  %}
+                            {% if article.youtubeLink2 is not null article.youtubeLink is not empty  %}
                                 <div class="embed-responsive embed-responsive-16by9">
                                     <iframe class="embed-responsive-item w-100" style="height: 860px;" src="{{ article.youtubeLink2 }}" allowfullscreen></iframe>
                                 </div>
