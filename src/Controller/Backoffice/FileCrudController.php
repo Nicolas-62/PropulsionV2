@@ -28,8 +28,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -58,6 +61,59 @@ class FileCrudController extends MediaCrudController
     {
         // Appel du constructeur du controller parent
         parent::__construct($entityRepository, $twig, $entityManager);
+    }
+
+    /**
+     * Défini les actions suppélemnetaires disponibles dans la vue
+     *
+     * @param Actions $actions
+     * @return Actions
+     */
+    public function configureActions(Actions $actions): Actions
+    {
+        // Ajout d'un bouton de téléchargement du fichier PDF
+        $dowloadFile = Action::new('downloadFile', 'Télécharger', 'fas fa-download')
+            ->linkToCrudAction('download')
+            ->setHtmlAttributes(['target' => '_blank'])
+            ->setCssClass('text-light')
+        ;
+
+        $actions->add(Crud::PAGE_INDEX, $dowloadFile);
+        return parent::configureActions($actions);
+    }
+
+    /**
+     * Permet le téléchargement du fichier associé au média dont l'id est passé en parametre.
+     *
+     * @param AdminContext $context
+     * @return BinaryFileResponse|RedirectResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function download(AdminContext $context){
+        // On récupère le média
+        $entity = $this->entityManager->getRepository(Media::class)->find($context->getRequest()->get('entityId'));
+        // Si le media existe
+        if($entity != null) {
+            // On construit le chemin du fichier
+            $filepath = $this->getParameter('app.dyn_img_path') . $entity->getMedia();
+            $file = new File($filepath);
+            // Si la fichier existe
+            if($file->isFile()){
+                // Envoi du fichier au navigateur
+                return new BinaryFileResponse($file);
+            }else{
+                $this->addFlash('danger', 'Le fichier est introuvable');
+            }
+        }else{
+            $this->addFlash('danger', 'Le média est introuvable');
+        }
+        // Création de l'url de redirection
+        $url = $this->container->get(AdminUrlGenerator::class)
+            ->setAction(Action::INDEX)
+            ->setEntityId($entity->getId())
+            ->generateUrl();
+        return $this->redirect($url);
     }
 
     /**

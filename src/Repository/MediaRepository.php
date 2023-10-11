@@ -48,7 +48,7 @@ class MediaRepository extends ServiceEntityRepository
      * Récupère les photos d'un article de la galerie
      *
      * @param Article $entity
-     * @return Mediaspec
+     * @return array
      */
     public function getPhotos(Article $entity): array
     {

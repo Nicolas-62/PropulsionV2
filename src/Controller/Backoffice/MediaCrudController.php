@@ -66,9 +66,9 @@ class MediaCrudController extends BoController
 
     public function __construct(
         // Repository EasyAdmin
-        private EntityRepository $entityRepository,
-        private Environment $twig,
-        private EntityManagerInterface $entityManager
+        protected EntityRepository $entityRepository,
+        protected Environment $twig,
+        protected EntityManagerInterface $entityManager
     )
     {
         // Récupération des types mime en fonction des extensions acceptées.
