@@ -1,11 +1,28 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
 
+{% block stylesheets %}
+
+    <style>
+        .image-bot-corner {
+            background: url("../build/front/images/actu_cadre_2.svg") no-repeat;
+            background-size: 50px;
+            background-position: bottom right;
+        }
+
+
+        .image-top-corner {
+            background: url("../build/front/images/actu_cadre_1.svg") no-repeat;
+            background-size: 50px;
+        }
+    </style>
+    <![endif]-->
+{% endblock %}
 
 {% block body %}
     <!-- Récupération des datas de l'article -->
     {{ article.getDatas(locale) }}
     {% set mediaArticle = article.getMedia(8) %}
-    <div class="p-lg-5">
+    <div class="p-lg-5 container-fluid">
         <!-- ARTICLE -->
         <div class="p-lg-5 h2">
             <!-- IMAGE ARTICLE -->
@@ -13,8 +30,8 @@
                 {% set url = '/assets/images/' ~ mediaArticle.media  %}
                 <img  src="{{ asset((url)) }}" class="card-img-top rounded-0 mb-5" style="object-fit: cover;" alt="...">
             {% endif %}
-            <div class="pt-4 position-relative">
-                <img src="{{ asset(('build/maquette/images/actu_cadre_1.svg')) }}" class="position-absolute" style="max-height: 50px; top:0; left: 0 !important;" alt="ACTIONCULTURELLE">
+            <div class="pt-4 position-relative image-top-corner">
+{#                <img src="{{ asset(('build/maquette/images/actu_cadre_1.svg')) }}" class="position-absolute other-browser" alt="ACTIONCULTURELLE">#}
                 <div class="row px-5 pt-5" >
                     <div class="col-lg-10 col-md-12" style="padding-left: 30px">
                         <!-- Titre -->
@@ -54,10 +71,10 @@
                     </div>
                 </div>
             </div>
-            <div class="p-5" >
+            <div class="p-5 image-bot-corner" >
                 <!-- Sous-titre -->
                 <div class="row position-relative "  style="padding-left: 20px">
-                    <div class="col-md-12 col-lg-8 fs-5">
+                    <div class="col-md-12 col-lg-8 fs-5 ">
 
                         <div style="padding-right: 40px" class="pb-5">
                             {{ article.description | raw }}
@@ -122,14 +139,14 @@
                                 </div>
                             {% endif %}
                         </div>
-                        <img src="{{ asset(('build/maquette/images/actu_cadre_2.svg')) }}" class="position-absolute" style="height: 50px; bottom:0; left: 95%;" alt="ACTIONCULTURELLE">
+{#                        <img src="{{ asset(('build/maquette/images/actu_cadre_2.svg')) }}" class="position-absolute" style="height: 50px; bottom:0; left: 95%;" alt="ACTIONCULTURELLE">#}
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- Voir aussi -->
-    <div class="bg-grey">
+    <div class="bg-grey container-fluid">
         <div class="p-lg-5 ">
             <h1>Voir aussi >> >> >></h1>
             <div class="row p-2 ">

@@ -3,7 +3,7 @@
 {% block title %}{{ seo.title }}{% endblock %}
 {% block body %}
     <!-- Image Vedette - Carroussel -->
-            <div class="container-fluid px-0">
+            <div class="container-fluid ">
                 <div class="row">
                     <div class="col-12 px-0 mx-0">
                         <div class="position-relative">
@@ -12,63 +12,63 @@
 
                                         {% for event in events_agenda %}
 
-                                        <a href="agenda/{{ event.slug }}" class="text-decoration-none">
-                                        {% if event.star == 1 and event.dateEvent >  date_yesterday %}
-                                        <div class="carousel-item active">
+                                            <a href="agenda/{{ event.slug }}" class="text-decoration-none">
+                                            {% if event.star == 1 and event.dateEvent >  date_yesterday %}
+                                            <div class="carousel-item active">
 
-                                            {% set media = event.getMedia(9) %}
-                                            {% if media is not null %}
-                                                {% set url = '/assets/images/' ~ media.media %}
-                                                    <img src="{{ asset((url)) }}" class="d-block w-100" alt="...">
-                                                {% else %}
-                                                    {% set mediaCategoryAgenda = category_agenda.getMedia(21) %}
-                                                    {% if mediaCategoryAgenda is not null %}
-                                                        {% set url = 'assets/images/' ~ mediaCategoryAgenda.media %}
+                                                {% set media = event.getMedia(9) %}
+                                                {% if media is not null %}
+                                                    {% set url = '/assets/images/' ~ media.media %}
                                                         <img src="{{ asset((url)) }}" class="d-block w-100" alt="...">
+                                                    {% else %}
+                                                        {% set mediaCategoryAgenda = category_agenda.getMedia(21) %}
+                                                        {% if mediaCategoryAgenda is not null %}
+                                                            {% set url = 'assets/images/' ~ mediaCategoryAgenda.media %}
+                                                            <img src="{{ asset((url)) }}" class="d-block w-100" alt="...">
+                                                        {% endif %}
                                                     {% endif %}
-                                                {% endif %}
 
-                                            <div class="position-absolute d-none d-lg-block card-vedette-home" >
-                                                <div class="row mx-0">
-                                                    <div
-                                                            class="col-5 white theme-1 text-uppercase bg-black"
-                                                    >
-                                                        {{ event.category.title }}
-                                                    </div>
-                                                    {% if event.style is not empty and event.style is not null %}
-                                                        {{ event.category.getDatas(locale) }}
-                                                        <div class="col-7 theme-2" style="background-color: {{ event.category.themeBackColor }}" >
-                                                            <img class="card-ticketing" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}" alt="">{{ event.style }}
+                                                <div class="position-absolute d-none d-lg-block card-vedette-home" >
+                                                    <div class="row mx-0">
+                                                        <div
+                                                                class="col-5 white theme-1 text-uppercase bg-black"
+                                                        >
+                                                            {{ event.category.title }}
                                                         </div>
-                                                    {% endif %}
-                                                </div>
-                                                <div class="p-4">
-                                                    <!-- Titre -->
-                                                    <div class="my-3 fs-3 mb-0 lh-1">
-                                                        {{ event.title }}
-                                                    </div>
-                                                    <!-- CONTENU -->
-                                                    <div class="fs-5 card-text">
-                                                        {{ event.subtitle }}
-                                                    </div>
-                                                </div>
-                                                <div class="p-4 d-flex justify-content-between">
-                                                    <div class="pb-3 d-flex">
-                                                        <div class= "fs-3 ">
-                                                            {{ formatCustomDateWithoutYears(event.dateEvent) }}
-                                                        </div>
-                                                        {% if event.dateTimeEvent is not null and event.dateTimeEvent is not empty %}
-                                                            <div class="fs-5">{{ event.dateTimeEvent| date("H:i") }}</div>
+                                                        {% if event.style is not empty and event.style is not null %}
+                                                            {{ event.category.getDatas(locale) }}
+                                                            <div class="col-7 theme-2" style="background-color: {{ event.category.themeBackColor }}" >
+                                                                <img class="card-ticketing" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}" alt="">{{ event.style }}
+                                                            </div>
                                                         {% endif %}
                                                     </div>
+                                                    <div class="p-4">
+                                                        <!-- Titre -->
+                                                        <div class="my-3 fs-3 mb-0 lh-1">
+                                                            {{ event.title }}
+                                                        </div>
+                                                        <!-- CONTENU -->
+                                                        <div class="fs-5 card-text">
+                                                            {{ event.subtitle }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="p-4 d-flex justify-content-between">
+                                                        <div class="pb-3 d-flex">
+                                                            <div class= "fs-3 ">
+                                                                {{ formatCustomDateWithoutYears(event.dateEvent) }}
+                                                            </div>
+                                                            {% if event.dateTimeEvent is not null and event.dateTimeEvent is not empty %}
+                                                                <div class="fs-5">{{ event.dateTimeEvent| date("H:i") }}</div>
+                                                            {% endif %}
+                                                        </div>
 
-                                                    <a href="{% if event.ticketingLink is not empty %}{{ event.ticketingLink }}{% else %}https://billetterie.lalune.net/{% endif %}">
-                                                        <img class="btn-billetterie-card" src="{{ asset(('build/front/images/LIEN_BILLETTERIE.jpg')) }}" alt="...">
-                                                    </a>
+                                                        <a href="{% if event.ticketingLink is not empty %}{{ event.ticketingLink }}{% else %}https://billetterie.lalune.net/{% endif %}">
+                                                            <img class="btn-billetterie-card" src="{{ asset(('build/front/images/LIEN_BILLETTERIE.jpg')) }}" alt="...">
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        {% endif %}
+                                            {% endif %}
                                         {% endfor %}
                                         </a>
                                     </div>
@@ -135,7 +135,7 @@
 {#            </div>#}
 
     <!-- Programmation à venir -->
-    <div class="p-lg-5">
+    <div class="p-lg-5 container-fluid">
         <div class="row">
             <div class="d-none d-lg-block d-xl-block px-lg-5">
                 <div class="pb-5 h2">Programmation <strong>à venir</strong></div>
@@ -163,6 +163,7 @@
 
 
     <!-- Event / Playlistes -->
+    <div class="container-fluid">
     <div class="px-lg-5 py-5">
 
 
@@ -173,7 +174,7 @@
                 <div class="py-5 px-md-3 px-lg-5 ">
 
                     <h1 class="d-sm-block d-md-block d-lg-none">ÉVÈNEMENTS/ACTUALITÉS</h1>
-                    <div class="row"  data-masonry='{"percentPosition": true }'>
+                    <div class="row-header"  data-masonry='{"percentPosition": true }'>
                         {% for event in events_actus %}
                             {% if loop.index0 < 4 %}
                                 <div class="col-lg-6 col-md-12 border-event mb-md-3 mb-lg-0 mb-sm-3 px-0">
@@ -237,5 +238,5 @@
             </div>
         </div>
     </div>
-
+    </div>
 {% endblock %}

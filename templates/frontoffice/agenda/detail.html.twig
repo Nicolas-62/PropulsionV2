@@ -3,7 +3,7 @@
 {% block body %}
     {{ article.getDatas(locale) }}
     <!-- IMAGE DU HAUT -->
-    <div class="row-header shadow-lg" >
+    <div class="row-header shadow-lg container-fluid" >
         <div class="col-lg-8 col-md-12 p-0" style="">
             {% set media = article.getMedia(18) %}
             {% set category = article.category %}
@@ -116,10 +116,10 @@
             </div>
         </div>
     </div>
-<hr class="my-0">
+    <hr class="my-0">
     <!-- RECAPITULATIF -->
     {% if (article.facebookEventLuneLink is not empty and article.facebookEventLuneLink is not null) or (article.organizer is not empty and article.organizer is not null) or (article.placement is not empty and article.placement is not null) or (article.datetimeEventOpening is not empty and article.datetimeEventOpening is not null)  %}
-        <div class=" text-center d-flex justify-content-around text-uppercase py-2">
+        <div class=" text-center d-flex justify-content-around text-uppercase py-2 container-fluid">
             {% if article.facebookEventLuneLink is not empty and article.facebookEventLuneLink is not null %}
                 <p style="display: inline; margin: 0;"><a class="text-decoration-none" href="{{ article.facebookEventLuneLink }}">Évènement Facebook</a></p>
             {% endif %}
@@ -138,8 +138,8 @@
         <hr class="my-0">
     {% endif %}
     <!-- DETAIL ARTICLE -->
-    <div class="p-2 p-lg-5">
-        <div class="row">
+    <div class="p-2 p-lg-5 container-fluid">
+        <div class="row container-fluid">
             <!-- CONTENU PARTIE GAUCHE-->
             <div class="col-lg-8 col-md-12">
                 <!-- NOM GROUPE / STYLE / HORAIRE -->
@@ -184,9 +184,6 @@
                         <iframe class="embed-responsive-item w-100" style="height: 860px;" src="{{ article.youtubeLink }}" allowfullscreen></iframe>
                     </div>
                 {% endif %}
-                <!-- TEST PHOTO ARRONDIE -->
-                <div>
-                </div>
                 <!-- PLUS D'INFOS SUR L'ARTISTE -->
                 <div>
                     {% if article.soundcloudLink is not null and article.soundcloudLink is not empty %}
@@ -202,64 +199,66 @@
                 </div>
                 <div class="row py-5">
                     <div class="col-lg-12 col-md-12 row">
-
-                            <div class="mb-3 col-lg-12 col-md-12">
-                                {% if not article.getFiles is empty %}
-
-                                    <div class="row ">
-                                        {% set filesArray = article.getFiles() %}
-                                        {% set arrayLength = filesArray|length %}
-                                        {% if arrayLength > 1 %}
-                                            <div class="d-flex">Fichiers : &nbsp;
-                                                {% for file in article.getFiles() %}
-                                                    {% set url_file = '/assets/images/' ~ file.media %}
-                                                    <div class="d-inline">
-                                                        <a class="btn-read-card" href="{{ url_file }}" role="button">{{ file.legend }}</a>
-                                                    </div>
-                                                    &nbsp;
-                                                {% endfor %} </div>
-                                        {% elseif arrayLength == 1 %}
+                        <div class="mb-3 col-lg-12 col-md-12">
+                            {% if not article.getFiles is empty %}
+                                <div class="row ">
+                                    {% set filesArray = article.getFiles() %}
+                                    {% set arrayLength = filesArray|length %}
+                                    {% if arrayLength > 1 %}
+                                        <div class="d-flex">Fichiers : &nbsp;
+                                            {% for file in article.getFiles() %}
+                                                {% set url_file = '/assets/images/' ~ file.media %}
+                                                <div class="d-inline">
+                                                    <a class="btn-read-card" href="{{ url_file }}" role="button">{{ file.legend }}</a>
+                                                </div>
+                                                &nbsp;
+                                            {% endfor %}
+                                        </div>
+                                    {% elseif arrayLength == 1 %}
+                                        <div>
                                             Fichier :
                                                 {% for file in article.getFiles() %}
                                                     {% set url_file = '/assets/images/' ~ file.media %}
                                                         <a class="btn-read-card" href="{{ url_file }}" role="button">{{ file.legend }}</a>
-                                                {% endfor %} </div>
-                                        {% endif %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                            <div class="col-12 col-lg-4  text-center mt-3">
-                                {% if article.instagramLink != '' or article.twitterLink != '' or article.facebookLink != '' or article.siteInternet != ''  %}
-                                    <div class="fs-4">Plus d'infos sur l'artiste</div>
-                                {% endif %}
-                            </div>
-                            <div class="col-12 col-lg-4 text-center text-lg-start">
-                                <!-- MEDIAS SOCIAUX -->
-                                <div class="row text-center">
-                                    {% if article.instagramLink != '' %}
-                                        <div class="col">
-                                            <a href="{{ article.instagramLink }}"><img class="mh-45"  src="{{ asset('build/front/images/PICTURE.svg') }}"></a>
-                                        </div>
-                                    {% endif %}
-                                    {% if article.twitterLink != '' %}
-                                        <div class="col">
-                                            <a href="{{ article.twitterLink }}"><img class="mh-45" src="{{ asset('build/front/images/TWITTER.svg') }}"></a>
-                                        </div>
-                                    {% endif %}
-                                    {% if article.facebookLink != '' %}
-                                        <div class="col">
-                                            <a href="{{ article.facebookLink }}"><img class="mh-45" src="{{ asset('build/front/images/FACEBOOK.svg') }}"></a>
-                                        </div>
-                                    {% endif %}
-                                    {% if article.siteInternet != '' %}
-                                        <div class="col">
-                                            <a href="{{ article.siteInternet }}"><img class="mh-45" src="{{ asset('build/front/images/INTERNET.svg') }}"></a>
+                                                {% endfor %}
                                         </div>
                                     {% endif %}
                                 </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-12 col-lg-4  text-center mt-3">
+                            {% if article.instagramLink != '' or article.twitterLink != '' or article.facebookLink != '' or article.siteInternet != ''  %}
+                                <div class="fs-4">Plus d'infos sur l'artiste</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-12 col-lg-4 text-center text-lg-start">
+                            <!-- MEDIAS SOCIAUX -->
+                            <div class="row text-center">
+                                {% if article.instagramLink != '' %}
+                                    <div class="col">
+                                        <a href="{{ article.instagramLink }}"><img class="mh-45"  src="{{ asset('build/front/images/PICTURE.svg') }}"></a>
+                                    </div>
+                                {% endif %}
+                                {% if article.twitterLink != '' %}
+                                    <div class="col">
+                                        <a href="{{ article.twitterLink }}"><img class="mh-45" src="{{ asset('build/front/images/TWITTER.svg') }}"></a>
+                                    </div>
+                                {% endif %}
+                                {% if article.facebookLink != '' %}
+                                    <div class="col">
+                                        <a href="{{ article.facebookLink }}"><img class="mh-45" src="{{ asset('build/front/images/FACEBOOK.svg') }}"></a>
+                                    </div>
+                                {% endif %}
+                                {% if article.siteInternet != '' %}
+                                    <div class="col">
+                                        <a href="{{ article.siteInternet }}"><img class="mh-45" src="{{ asset('build/front/images/INTERNET.svg') }}"></a>
+                                    </div>
+                                {% endif %}
                             </div>
+                        </div>
                     </div>
                 </div>
+            </div>
             <!-- LIENS ET INFOS PRATIQUES (PARTIE DROITE) -->
             <div class="col-lg-4 col-md-12 d-flex align-content-end justify-content-center flex-wrap text-md-center text-lg-start">
 
@@ -296,7 +295,7 @@
     <!-- DEUXIEME PARTIE -->
     {% for child in children %}
         {{ child.getDatas(locale) }}
-    <div class="bg-grey">
+    <div class="bg-grey container-fluid">
         <div class="p-5">
             <div class="row">
                 <div class="col-lg-8 col-md-12">
@@ -399,7 +398,7 @@
     {% endfor %}
     <!-- A DECOUVRIR -->
     <hr class="my-0">
-    <div class="p-lg-5">
+    <div class="p-lg-5 container-fluid">
         <h1 class="pb-5">
             à découvrir >> >> >>
         </h1>

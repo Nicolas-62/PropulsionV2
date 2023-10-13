@@ -27,39 +27,25 @@
         <div class="col-lg-9 col-md-9 d-block flex-column align-items-start p-0">
             <nav class="navbar navbar-expand-lg col-12 mt-auto px-lg-5">
                 <ul class="navbar-nav w-100 justify-content-end pt-3 px-lg-5">
-                    {% for article in category_gallery_articles_header %}
+                    {% for event_header in category_gallery_articles_header %}
                         {% for media_header_key, media_header_value in array_photos_header %}
-                            {% if article.id == media_header_key %}
+                            {% if event_header.id == media_header_key %}
                                 {% if loop.index < 5 %}
                                     <li class="nav-item " style="z-index: {{ 1000 - loop.index }}">
                                         <a class="text-decoration-none" href="{{ path('gallery') }}">
                                             {% set longueurMax = 10 %}
-                                            {% set media = article.getMedia(32) %}
+                                            {% set url = '/assets/images/gallery/' ~ media_header_value[0].media %}
 
-                                            {% if media %}
-                                                {% set url = '/assets/images/' ~ media.media  %}
+                                                <img src="{{ asset((url)) }}" class=" rounded-circle round-img-header" style="width: 80px;height: 80px; object-fit: cover" alt="...">
+                                                {% if event_header.title|length > longueurMax %}
 
-                                                <img src="{{ asset((url)) }}" class="rounded-circle round-img-header" style="width: 80px;height: 80px" alt="...">
-                                            {% if loop.index < 4 %}
-                                            {% endif %}
-                                                {% if article.title|length > longueurMax %}
-
-                                                    <div class="text-center ml-15" style="font-size: 12px">{{ article.dateEvent | date('d/m') }} </div>
-                                                    <div class="text-center ml-15" style="font-size: 12px">{{ article.title|slice(0, longueurMax) ~ '...' }}</div>
+                                                    <div class="text-center ml-15" style="font-size: 12px">{{ event_header.dateEvent | date('d/m') }} </div>
+                                                    <div class="text-center ml-15" style="font-size: 12px">{{ event_header.title|slice(0, longueurMax) ~ '...' }}</div>
                                                 {% else %}
-                                                    <div class="text-center ml-15" style="font-size: 12px">{{ article.dateEvent | date('d/m') }} </div>
-                                                    <div class="text-center ml-15" style="font-size: 12px">{{ article.title }}</div>
+                                                    <div class="text-center ml-15" style="font-size: 12px">{{ event_header.dateEvent | date('d/m') }} </div>
+                                                    <div class="text-center ml-15" style="font-size: 12px">{{ event_header.title }}</div>
                                                 {% endif %}
-                                            {% else %}
-                                                {% if article.title|length > longueurMax %}
 
-                                                    <div class="text-center" style="margin-right: 40px;font-size: 12px">{{ article.dateEvent | date('d/m') }}</div>
-                                                    <div class="text-center" style="margin-right: 40px;font-size: 12px">{{ article.title|slice(0, longueurMax) ~ '...' }}</div>
-                                                {% else %}
-                                                    <div class="text-center ml-15" style="font-size: 12px">{{ article.dateEvent | date('d/m') }} </div>
-                                                    <div class="text-center" style="margin-right: 40px;font-size: 12px">{{ article.title }}</div>
-                                                {% endif %}
-                                            {% endif %}
                                         </a>
                                     </li>
                                 {% endif %}
@@ -151,7 +137,7 @@
 
 <!-- HEADER MD/SM -->
 
-<div class="d-lg-none">
+<div class="d-lg-none container-fluid">
     <div class="row">
         <div class="col-6">
             <a href="{{ path('fo_home_index') }}">
@@ -162,23 +148,25 @@
             <div class="row">
                 <div class="col-12">
                     <div class="row pt-3">
-                        {% for event_header in category_gallery_articles_header %}
-                            {% set media = event_header.getMedia(32) %}
 
+                        {% for event_header in category_gallery_articles_header %}
+                        {% for media_header_key, media_header_value in array_photos_header %}
+                        {% if event_header.id == media_header_key %}
                             {% if loop.index < 5 %}
                                 <div class="col-6">
                                     <a class="text-decoration-none" href="{{ path('gallery') }}">
+                                        {% set url = '/assets/images/gallery/' ~ media_header_value[0].media %}
 
-                                        {% if media is not null %}
-                                            {% set url = '/assets/images/' ~ media.media %}
-                                            <img src="{{ asset((url)) }}" class="rounded-circle round-img-header-sm" style="z-index:{{ 1000 +  loop.index }}; height: 50px;width: 50px" alt="...">
-                                        {% else  %}
-                                            <img src="{{ asset(('build/front/images/PLACEHOLDER_CARD_SQUARE.png')) }}" class="rounded-circle round-img-header-sm" style="z-index:{{ 1000 + loop.index }};{% if loop.index == 4 %}margin-right:10px{% endif %}; height: 50px;width: 50px" alt="...">
-                                        {% endif %}
+                                            <img src="{{ asset((url)) }}" class="cover rounded-circle round-img-header-sm" style="z-index:{{ 1000 +  loop.index }}; height: 50px;width: 50px" alt="...">
+
                                     </a>
                                 </div>
                             {% endif %}
+                            {% endif %}
+                            {% endfor %}
                         {% endfor %}
+
+
                     </div>
                 </div>
             </div>

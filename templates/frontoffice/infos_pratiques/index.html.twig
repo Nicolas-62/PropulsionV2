@@ -51,7 +51,7 @@
 {% endblock %}
 {% block body %}
 
-    <div class="p-lg-3">
+    <div class="p-lg-3  container-fluid">
         <div class="row">
             <div class="col-lg-3 col-md-12 py-2 menu text-md-center text-sm-center">
                 <div class="row p-5">
@@ -73,7 +73,7 @@
                 <hr>
             </div>
             <!-- Contenu -->
-            <div class="content col-lg-9 col-md-12">
+            <div class="content col-lg-9 col-md-12 container-fluid">
 
                 <!--  NOUS CONTACTER -->
 {#                <div id="entry1" class="py-5 px-2 px-lg-5" >#}
@@ -149,7 +149,7 @@
 
 
                 <!-- COMMENT VENIR -->
-                <div id="entry1"  class="py-lg-5 px-2 px-lg-5 hidden">
+                <div id="entry1"  class="py-lg-5 px-2 px-lg-5 hidden container-fluid">
 
                     <div class="row w-100">
                         <div class="col-lg-2 col-md-12 text-center">
@@ -175,56 +175,44 @@
 
                 <!-- TARIFS ET BILLETTERIE -->
 
-                <div id="entry2" class="py-lg-5 px-2 px-lg-5 hidden ">
+                <div id="entry2" class="py-lg-5 px-2 px-lg-5 hidden  container-fluid">
                     {{ article_adress_billetterie.getDatas(locale) }}
 
                     <div class="row-header pb-5">
-                        <div class="col-lg-2 col-md-3 text-center text-lg-start pb-2">
+                        <div class="col-12 col-lg-2 text-center text-lg-start pb-2">
                             {% set media = article_adress_billetterie.getMedia(15) %}
                             {% if media is not null %}
                             {% set url = '/assets/images/' ~ media.media %}
-                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0  pb-4 pb-lg-0"  style="max-width: 71px;max-height: 84px" alt="...">
+                            <img src="{{ asset((url)) }}" class="object-fit-cover card-img-top rounded-0  pb-4 pb-lg-0"  style="max-width: 71px;max-height: 84px" alt="...">
                             {% endif  %}
-
                         </div>
-                        <div class="col-lg-5 col-md-9 fs-5 lh-1 text-center text-lg-start">
+                        <div class="col-12 col-lg-5 fs-5 lh-1 text-center text-lg-start">
                             {{ article_adress_billetterie.description | raw }}
                         </div>
                     </div>
-
                     <div>
                         <div class="h3 py-lg-5 text-center text-lg-start">{{ article_contact_billetterie.getDatas(locale) }}
-
                             {{ article_contact_billetterie.subtitle  }}
                         </div>
                         {{ article_contact_billetterie.getDatas(locale) }}
-
                         <div class="row-header text-center text-lg-start">
-                            <div class="col-lg-2 col-md-3">
-
-
+                            <div class="col-12 col-lg-2 ">
                                 {% set media = article_contact_billetterie.getMedia(15) %}
                                 {% if media is not null %}
                                     {% set url = '/assets/images/' ~ media.media %}
-                                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0 pb-4 pb-lg-0" style="max-height: 80px;max-width: 80px" alt="...">
+                                    <img src="{{ asset((url)) }}" class="object-fit-cover card-img-top rounded-0 pb-4 pb-lg-0" style="max-height: 80px;max-width: 80px" alt="...">
                                 {% endif  %}                            </div>
-                            <div class="col-lg-5 col-md-9 fs-5 lh-1">
-
+                            <div class="col-12 col-lg-5 fs-5 lh-1">
                                 {{ article_contact_billetterie.description | raw }}
-
                             </div>
-
                         </div>
                         <div class="fs-5 pt-5 pb-5">
                             {{ article_contact_billetterie.content | raw }}
                         </div>
-
-
                         <div class="fs-5">
                             {{ article_abonnement_billetterie.getDatas(locale) }}
                             {{ article_abonnement_billetterie.description | raw }}
                         </div>
-
                         <div class="row pt-4">
                             <div class="col-5">
                                 {% set media = article_abonnement_billetterie.getMedia(15) %}
@@ -242,142 +230,7 @@
                             </div>
                         </div>
 
-                        <p class="fs-5">Abonnez-vous à la billetterie les soirs de concerts ou à la billetterie de La Lune des Pirates ou en ligne en remplissant ce formulaire :</p>
 
-                        <div class="h3">INFORMATIONS PERSONNELLES</div>
-
-
-                        <!-- FORMULAIRE -->
-                        <form>
-                            <div class="row fs-5">
-                                <!-- Abonnement -->
-                                <div class="col-12 ">
-
-                                    <div class="form-group py-4">
-                                        <label for="select-billetterie-renouvellement">Abonnement | Renouvellement (obligatoire)</label>
-                                        <select class="form-control rounded-0 border-secondary select-infos" id="select-billetterie-renouvellement">
-                                            <option>Sélectionner ...</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
-                                    </div>
-
-                                </div>
-                                <div class="col-6">
-
-                                    <div class="form-group py-4">
-                                        <label for="nameInput">Nom (obligatoire)</label>
-                                        <input type="text" class="form-control rounded-0 border-secondary select-infos" id="nameInput">
-                                    </div>
-                                </div>
-                                <div class="col-6">
-
-                                    <div class="form-group py-4">
-                                        <label for="lastnameInput">Prénom (obligatoire)</label>
-                                        <input type="text" class="form-control rounded-0 border-secondary select-infos" id="lastnameInput">
-                                    </div>
-                                </div>
-                                <div class="col-6">
-
-                                    <div class="form-group py-4">
-                                        <label for="select-billetterie-gender">Genre (obligatoire)</label>
-                                        <select class="form-control rounded-0 border-secondary select-infos" id="select-billetterie-gender">
-                                            <option>Sélectionner ...</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-
-                                    <div class="form-group py-4">
-                                        <label for="select-billetterie-tarif">Tarif (obligatoire)</label>
-                                        <select class="form-control rounded-0 border-secondary select-infos" id="select-billetterie-tarif">
-                                            <option>Sélectionner ...</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-
-                                    <div class="form-group">
-                                        <label for="dateInput">Date de naissance(obligatoire)</label>
-                                        <input type="date" class="form-control rounded-0 border-secondary select-infos" id="dateInput">
-                                    </div>
-                                </div>
-                                <div class="col-6">
-
-                                    <div class="form-group">
-                                        <label for="telInput">Téléphone (obligatoire)</label>
-                                        <input type="tel" class="form-control rounded-0 border-secondary select-infos" id="telInput" placeholder="XX XX XX XX XX">
-                                    </div>
-                                </div>
-                                <hr class="py-3">
-                                <div class="h3">COORDONNÉES</div>
-                                <div class="col-6">
-
-                                    <div class="form-group">
-                                        <label for="lastnameInput">Adresse (obligatoire)</label>
-                                        <input type="text" class="form-control rounded-0 border-secondary select-infos" id="lastnameInput">
-                                    </div>
-                                </div>
-                                <div class="col-6">
-
-                                    <div class="form-group">
-                                        <label for="lastnameInput">Adresse 2 (obligatoire)</label>
-                                        <input type="text" class="form-control rounded-0 border-secondary select-infos" id="lastnameInput">
-                                    </div>
-                                </div>
-                                <div class="col-6">
-
-                                    <div class="form-group">
-                                        <label for="lastnameInput">Code Postal (obligatoire)</label>
-                                        <input type="text" class="form-control rounded-0 border-secondary select-infos" id="lastnameInput">
-                                    </div>
-                                </div>
-                                <div class="col-6">
-
-                                    <div class="form-group">
-                                        <label for="lastnameInput">Ville (obligatoire)</label>
-                                        <input type="text" class="form-control rounded-0 border-secondary select-infos" id="lastnameInput">
-                                    </div>
-                                </div>
-                                <div class="col-6 pb-3">
-
-
-                                    <div class="form-group">
-                                        <label for="select-billetterie-pays">Pays (obligatoire)</label>
-                                        <select class="form-control rounded-0 border-secondary select-infos" id="select-billetterie-pays">
-                                            <option>Sélectionner ...</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <hr class="py-3">
-                                <!-- NEWSLETTER -->
-                                <div class="form-check py-4 px-1">
-                                    <input class="form-check-input  rounded-0 border-secondary" type="checkbox" value="" id="newsCheck">
-                                    <label class="form-check-label" for="newsCheck">
-                                        Je souhaite recevoir la Newsletter de La Lune
-                                    </label>
-                                </div>
-
-                                <!-- ENVOYER -->
-                                <button type="submit" class="btn border border-secondary rounded-0 py-1 fs-3">ENREGISTRER</button>
-
-                                <div class="pb-5 fs-6">En cliquant sur "Enregistrer", vous acceptez de fournir les informations permettant de procéder à votre achat. En indiquant vos infor- mations personnelles, et en cochant la ou les cases associées, vous consentez à recevoir nos lettres d'information par voie électro- nique. Vous pouvez vous désinscrire à tout moment via les liens de désinscription ou en nous contactant. <br>Pour en savoir plus, consultez notre Politique de confidentialité et nos conditions générales de vente.</div>
-                            </div>
-                        </form>
                     </div>
                 </div>
                 <!-- QUESTIONS -->
@@ -486,7 +339,7 @@
 
 
     <!-- BAS COMMENT VENIR -->
-    <div id="footer0" class="hidden bg-grey">
+    <div id="footer0" class="hidden bg-grey container-fluid">
         <div class="py-5 px-2 px-lg-5">
             <div class="row">
                 <div class="col-lg-9 col-md-12">
@@ -498,7 +351,7 @@
 
                                 {% if media is not null %}
                                     {% set url = '/assets/images/' ~ media.media %}
-                                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0 transport-infos" alt="...">
+                                    <img src="{{ asset((url)) }}" class="object-fit-cover card-img-top rounded-0 transport-infos" alt="...">
                                 {% endif  %}
                             </div>
                             <div class="col-lg-6 col-md-9 py-5">
@@ -524,7 +377,7 @@
     </div>
 
     <!-- BILLETTERIE BAS -->
-    <div id="footer1" class="hidden">
+    <div id="footer1" class="hidden container-fluid">
         <div class="py-5 px-2 px-md-2 px-lg-5 bg-grey">
             <div class="row-header">
                 <div class="col-3">
@@ -543,7 +396,7 @@
                             {% set media = article_tarif_etudiant_billetterie.getMedia(15) %}
                             {% if media is not null %}
                                 {% set url = '/assets/images/' ~ media.media %}
-                                <img src="{{ asset((url)) }}" class="card-img-top rounded-0 tarif-infos" alt="...">
+                                <img src="{{ asset((url)) }}" class="object-fit-cover card-img-top rounded-0 tarif-infos" alt="...">
                             {% endif  %}
 
 
