@@ -5,7 +5,7 @@
 {# URL de récupération des publications liées au média #}
 {% set url_publications = ea_url()
     .unsetAll()
-    .setController('App\\Controller\\Backoffice\\PictureCrudController')
+    .setController('App\\Controller\\Backoffice\\FileCrudController')
     .setAction('getRelatedEntities').set('entityId', entity.primaryKeyValueAsString)
 %}
 

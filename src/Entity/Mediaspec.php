@@ -83,6 +83,13 @@ class Mediaspec
         return $this->name;
     }
 
+    public function getLabel(): string
+    {
+        $label = '';
+        $label .= $this->name . ' (' . $this->width . ' x ' . $this->height . ')';
+        return $label;
+    }
+
     public function setName(string $name): self
     {
         $this->name = $name;

@@ -217,7 +217,7 @@ class DashboardController extends AbstractDashboardController
                 yield MenuItem::linkToCrud('Médiaspecs', 'fa-regular fa-image', Mediaspec::class);
             }
             // Liste des utilisateurs.
-            yield MenuItem::linkToCrud('Tous les tilisateurs', 'fa-solid fa-user', User::class);
+            yield MenuItem::linkToCrud('Uilisateurs', 'fa-solid fa-user', User::class);
             yield MenuItem::linkToRoute('Preview', 'fa-solid fa-eye', 'bo_toggle_preview')->setBadge($this->session->get('preview') ? "ON" : "OFF");
         }
 

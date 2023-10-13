@@ -117,14 +117,14 @@ class FileCrudController extends MediaCrudController
     }
 
     /**
-     * Définie les assets nécessaires pour le controleur de médias.
+     * Définie les assets nécessaires pour le controleur
      * @param Assets $assets
      * @return Assets
      */
     public function configureAssets(Assets $assets): Assets
     {
-        return $assets
-            ->addWebpackEncoreEntry('bo_files');
+        $assets->addWebpackEncoreEntry('bo_files');
+        return parent::configureAssets($assets);
     }
 
 }

@@ -212,6 +212,17 @@ class MediaCrudController extends BoController
     }
 
     /**
+     * Définie les assets nécessaires pour le controleur
+     * @param Assets $assets
+     * @return Assets
+     */
+    public function configureAssets(Assets $assets): Assets
+    {
+        $assets->addWebpackEncoreEntry('bo_medias');
+        return $assets;
+    }
+
+    /**
      * Requêtage des entités à afficher.
      *
      * @param SearchDto $searchDto

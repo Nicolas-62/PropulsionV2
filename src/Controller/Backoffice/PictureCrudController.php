@@ -65,36 +65,15 @@ class PictureCrudController extends MediaCrudController
     }
 
     /**
-     * Définie les assets nécessaires pour le controleur de médias.
+     * Définie les assets nécessaires pour le controleur
      * @param Assets $assets
      * @return Assets
      */
     public function configureAssets(Assets $assets): Assets
     {
-        return $assets
-            ->addWebpackEncoreEntry('bo_pictures');
+        $assets->addWebpackEncoreEntry('bo_pictures');
+        return parent::configureAssets($assets);
     }
-
-    /**
-     * Défini les actions supplémentaires disponibles dans la vue
-     *
-     * @param Actions $actions
-     * @return Actions
-     */
-    public function configureActions(Actions $actions): Actions
-    {
-
-//        $selectorPagePicture = Action::new('Ajouter à la Galerie', 'Ajouter à la galerie', 'fa fa-image');
-//        $selectorPagePicture->setCssClass('btn btn-success');
-//        $selectorPagePicture->setHtmlAttributes([]);
-//        $selectorPagePicture->linkToCrudAction('selectorPagePicture');
-//        $selectorPagePicture->createAsGlobalAction();
-//        $actions->add(Crud::PAGE_INDEX, $selectorPagePicture);
-
-
-        return $actions;
-    }
-
 
     public function selectorPagePicture(){
 // Création d'une instance de Response

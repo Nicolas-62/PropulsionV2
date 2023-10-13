@@ -225,6 +225,7 @@ abstract class BoController extends AbstractCrudController
     {
         // Liste des champs à retourner.
         $mediaFields = array();
+        // Si l'entité peut posséder des fichiers
         if($this->entityManager->getRepository($this->getEntityFqcn())->hasFiles($this->entity)){
             // Ajout d'un onglet pour les fichiers
             $mediaFields[] = FormField::addTab('Fichiers')
@@ -244,7 +245,7 @@ abstract class BoController extends AbstractCrudController
         // En édition on peut ajouter/enlever des médias.
         // Médiaspecs appliquées à l'entité
         $mediaspecs = $this->entityManager->getRepository($this->getEntityFqcn())->getMediaspecs($this->entity);
-        // Si ils existent.
+        // Si elles existent.
         if ($mediaspecs != null) {
 
             // MEDIAS
@@ -253,17 +254,16 @@ abstract class BoController extends AbstractCrudController
                 ->setIcon('image');
             // Pour chaque mediaspec
             foreach ($mediaspecs as $index => $mediaspec) {
+                // Ajout d'une ligne
                 $mediaFields[] =  FormField::addRow();
-
                 // Ajout d'un champ d'upload d'un média
-                // Ajout du personnalisé champ média.
                 $imageField = Field::new('media' . ($index + 1), ucfirst($mediaspec->getName()) . ' : téléchargez un média ou...');
                 $imageField->setColumns(8);
                 // Récupération du média.
                 $media = $this->entityManager->getRepository($this->getEntityFqcn())->getMedia($this->entity, $mediaspec);
                 // Si l'entité possède un média pour cette mediaspec.
                 if ($media != null) {
-                    $imageField->setLabel(ucfirst($mediaspec->getName()))
+                    $imageField->setLabel(ucfirst($mediaspec->getLabel()))
                         // On associe le média existant au champ configuré
                         ->setValue($media)
                         // On définit la vue dédiée à l'affichage du média
