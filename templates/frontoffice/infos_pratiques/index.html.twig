@@ -178,7 +178,7 @@
                 <div id="entry2" class="py-lg-5 px-2 px-lg-5 hidden ">
                     {{ article_adress_billetterie.getDatas(locale) }}
 
-                    <div class="row pb-5">
+                    <div class="row-header pb-5">
                         <div class="col-lg-2 col-md-3 text-center text-lg-start pb-2">
                             {% set media = article_adress_billetterie.getMedia(15) %}
                             {% if media is not null %}
@@ -199,7 +199,7 @@
                         </div>
                         {{ article_contact_billetterie.getDatas(locale) }}
 
-                        <div class="row text-center text-lg-start">
+                        <div class="row-header text-center text-lg-start">
                             <div class="col-lg-2 col-md-3">
 
 
@@ -526,13 +526,13 @@
     <!-- BILLETTERIE BAS -->
     <div id="footer1" class="hidden">
         <div class="py-5 px-2 px-md-2 px-lg-5 bg-grey">
-            <div class="row">
+            <div class="row-header">
                 <div class="col-3">
 
                 </div>
                 <div class="col-lg-9 col-md-12">
 
-                    <div class="row">
+                    <div class="row-header">
                         <div class="col-12">
                             {{ article_tarif_etudiant_billetterie.getDatas(locale) }}
                             <div class="h3">{{ article_tarif_etudiant_billetterie.title }}</div>
@@ -556,7 +556,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row-header">
 
             <div class="col-lg-9 offset-lg-3 col-md-12">
                 {{ article_pass_billetterie.getDatas(locale) }}

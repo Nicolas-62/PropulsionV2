@@ -3,7 +3,7 @@
 {% block body %}
     {{ article.getDatas(locale) }}
     <!-- IMAGE DU HAUT -->
-    <div class="row shadow-lg" >
+    <div class="row-header shadow-lg" >
         <div class="col-lg-8 col-md-12 p-0" style="">
             {% set media = article.getMedia(18) %}
             {% set category = article.category %}
@@ -22,7 +22,7 @@
         <!-- BILLETTERIE AU DESSUS DE L'IMAGE -->
         <div class=" col-lg-4 col-md-12" style="z-index: 600; border-left: #C8C8C8 solid 1px" >
             <div class="col-12 pb-3">
-                <div class="row text-center h3">
+                <div class="row-header text-center h3">
                     <div
                             class="col-3 theme-1"
                             style="background-color:{{ article.category.themeBackColor }};color: {{ article.themeTextColor }};"
