@@ -48,10 +48,10 @@
                             Tous les évènements
                         </button>
                         <ul class="dropdown-menu">
-                            <div class="dropdown-select-item-li dropdown-select-item text-uppercase w-100">Tous les évènements</div>
+                            <div class="dropdown-select-item-li dropdown-select-item text-uppercase w-100 fs-5">Tous les évènements</div>
 
                             {% for categorie_actu in categories_actu %}
-                                <div class="dropdown-select-item-li dropdown-select-item w-100">{{ categorie_actu.title | upper }}</div>
+                                <div class="dropdown-select-item-li dropdown-select-item w-100 fs-5">{{ categorie_actu.title | upper }}</div>
                             {% endfor %}
                         </ul>
                     </div>
@@ -62,7 +62,7 @@
                 {% set media = actu.getMedia(2) %}
                 {% set CategoryTitle = actu.category.title|replace({' ': '-'})|lower %}
 
-                <div class="custom-col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-1 px-md-0 category-{{ CategoryTitle }} category-tous-les-evenements">
+                <div class="custom-col-xxl-3 col-lg-4 col-md-12 py-3 pb-lg-5 px-lg-1 px-md-0 category-{{ CategoryTitle }} category-tous-les-evenements">
                     <!-- Card-Actu -->
                     {% include 'frontoffice/_components/card.html.twig' with {'event': actu, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': false, 'soutiens': false, 'actions' : false } %}
                 </div>

@@ -147,7 +147,7 @@
                     {% if temoin < 5 %}
                     {% set media = event.getMedia(1) %}
                     {% set CategoryTitle = event.category.title|replace({' ': '-'})|lower %}
-                    <div class="col pb-lg-5 px-lg-2 px-md-0 category-{{ CategoryTitle }} category-tous-les-evenements {% if temoin == 4 %}show-xxl{% endif %}">
+                    <div class="col py-3 pb-lg-5 px-lg-2 px-md-0 category-{{ CategoryTitle }} category-tous-les-evenements {% if temoin == 4 %}show-xxl{% endif %}">
                         <!-- Card-Actu -->
                         {% include 'frontoffice/_components/card.html.twig' with {'event': event, 'agenda': true, 'showButton': false, 'actu': false, 'billetterie': true, 'soutiens': false, 'actions': false } %}
                     </div>

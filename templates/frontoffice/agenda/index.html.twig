@@ -47,9 +47,9 @@
                             Tous les évènements
                         </button>
                         <ul class="dropdown-menu">
-                            <div class="dropdown-select-item-li dropdown-select-item text-uppercase w-100">Tous les évènements</div>
+                            <div class="dropdown-select-item-li dropdown-select-item text-uppercase w-100 fs-5">Tous les évènements</div>
                             {% for categorie_child_agenda in categories_child_agenda %}
-                                <div class="dropdown-select-item-li dropdown-select-item w-100">{{ categorie_child_agenda.title | upper }}</div>
+                                <div class="dropdown-select-item-li dropdown-select-item w-100 fs-5">{{ categorie_child_agenda.title | upper }}</div>
                             {% endfor %}
                         </ul>
                     </div>
@@ -62,7 +62,7 @@
                 {% if event.dateEvent >  date_yesterday %}
                     {% set media = event.getMedia(1) %}
                     {% set CategoryTitle = event.category.title|replace({' ': '-'})|lower %}
-                    <div class="custom-col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-3 px-md-0 category-{{ CategoryTitle }} category-tous-les-evenements">
+                    <div class="custom-col-xxl-3 col-lg-4 col-md-12 py-3 pb-lg-5 px-lg-3 px-md-0 category-{{ CategoryTitle }} category-tous-les-evenements">
                         <!-- Card-Actu -->
                         {% include 'frontoffice/_components/card.html.twig' with {'event': event, 'agenda': true, 'showButton': false, 'actu': false, 'billetterie': true, 'soutiens': false, 'actions': false } %}
                     </div>
