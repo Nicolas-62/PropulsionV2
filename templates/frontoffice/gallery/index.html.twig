@@ -30,16 +30,14 @@
                                     {% for photo in array_photos[article.title] %}
                                         <div class="">
                                             {% set url = '/assets/images/gallery/' ~ photo.media %}
-                                            <a href="{{ asset(url) }}" data-lightbox="image-{{ loop.parent.loop.index0 }}" style="width: 100%" data-title="{{ article.title }}">
+                                            <a href="{{ asset(url) }}" data-lightbox="image-{{ loop.parent.loop.index0 }}" style="width: 100%" data-title="{{ article.title ~ ' - ' ~ article.dateEvent | date("d/m/Y")  }}">
                                                 {% if loop.index0 == 0 %}
                                                     <img class="object-fit-cover" style="width: 100%" src="{{ asset(url) }}" />
                                                 {% endif %}
                                             </a>
                                         </div>
                                     {% endfor %}
-
                                 {% endif %}
-
                                 <h3 class="text-center">{{ article.title }} {% if article.dateEvent is defined %}- {{ article.dateEvent | date("d/m/Y") }}{% endif %}</h3>
 
                             </div>

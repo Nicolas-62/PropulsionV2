@@ -35,7 +35,7 @@
                                 >
                                     {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
                                 </a>
-                            {% elseif entity.fields.getByProperty('articles').formattedValue > 0 %}
+                            {% else %}
                                 <a
                                     href="{{
                                         ea_url()
@@ -48,8 +48,6 @@
                                 >
                                     {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
                                 </a>
-                            {% else %}
-                                {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
                             {% endif %}
 
                         {# Pour property 'Nombre Enfants'#}
