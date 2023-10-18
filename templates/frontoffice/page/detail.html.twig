@@ -6,6 +6,7 @@
 
 {% block body %}
     {% if event is not null %}
+        <div class="container-fluid">
         <div class="p-5">
             <div class="text-center h2 pb-5">
                 {{ event.getDatas(locale) }}
@@ -36,27 +37,29 @@
             </div>
 
 
-            <div class="fs-3 py-3">
+            <div class="fs-5 py-3">
                 {{ event.description | raw }}
             </div>
             <br>
-            <div class="fs-3">
+            <div class="fs-5">
                 {{ event.content | raw }}
             </div>
         </div>
-        <div class="mt-5">
+        <div class="mt-5 row text-center">
             <!-- VIDEO ARTISTE -->
-            {% if event.youtubeLink is not null and event.youtubeLink is not empty %}
+            <div class="col">
+                {% if event.youtubeLink is not null and event.youtubeLink is not empty %}
 
-                <div class="embed-responsive embed-responsive-16by9 p-5">
-                    <iframe class="embed-responsive-item " style="height: 840px; width: 1240px" src="{{ event.youtubeLink }}" allowfullscreen></iframe>
-                </div>
-            {% endif %}
-            <div>
+                    <div class=" embed-responsive embed-responsive-16by9 p-5">
+                        {{ event.youtubeLink | raw }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col">
                 {% if event.youtubeSecondLink is not null and event.youtubeSecondLink is not empty %}
 
-                    <div class="embed-responsive embed-responsive-16by9 p-5">
-                        <iframe class="embed-responsive-item " style="height: 840px; width: 1240px" src="{{ event.youtubeSecondLink }}" allowfullscreen></iframe>
+                    <div class=" embed-responsive embed-responsive-16by9 p-5">
+                        {{ event.youtubeSecondLink | raw }}
                     </div>
                 {% endif %}
             </div>
@@ -85,11 +88,13 @@
 
 
 
-
+        </div>
 
     {% else %}
-        <div class="p-5 fs-3 text-center">
-            Aucun Article ne correspond à ce hash.
+        <div class="container-fluid">
+            <div class="p-5 fs-3 text-center">
+                Aucun Article ne correspond à ce hash.
+            </div>
         </div>
     {% endif %}
 {% endblock %}

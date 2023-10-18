@@ -84,21 +84,27 @@
                 <div class="mt-4">
 
                     <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item w-100" style="min-height: 40vh" src="{{ article.youtubeLink }}" allowfullscreen></iframe>
+                       {{ article.youtubeLink | raw }}
+                    </div>
+                </div>
+
+                <div class="mt-4">
+
+                    <div class="embed-responsive embed-responsive-16by9">
+                        {{ article.youtubeSecondLink | raw }}
                     </div>
                 </div>
                 <div class="mt-4">
                 </div>
                 <div>
                     {% if article.soundcloudLink is not null and article.soundcloudLink is not empty %}
-                        <iframe width="100%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="{{ article.soundcloudLink }}"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/nguvulu-ngola" title="Nguvulu Produções" target="_blank" style="color: #cccccc; text-decoration: none;">Nguvulu Produções</a> · <a href="https://soundcloud.com/nguvulu-ngola/cobra-jonaskay-gsforlife-ft-doryzzy-jonaskay" title="cobra - Jonaskay Gsforlife​ ft  Doryzzy Jonaskay 2015" target="_blank" style="color: #cccccc; text-decoration: none;">cobra - Jonaskay Gsforlife​ ft  Doryzzy Jonaskay 2015</a></div>
+                        {{ article.soundcloudLink | raw }}
                     {% endif %}
-
                     {% if article.soundcloudSecondLink is not null and article.soundcloudSecondLink is not empty %}
-                        <iframe width="100%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="{{ article.soundcloudSecondLink }}"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/jonaskayguettostar" title="EYAYA" target="_blank" style="color: #cccccc; text-decoration: none;">EYAYA</a> · <a href="https://soundcloud.com/jonaskayguettostar/jonaskay-atetete" title="Jonaskay - Ateteté" target="_blank" style="color: #cccccc; text-decoration: none;">Jonaskay - Ateteté</a></div>
+                        {{ article.soundcloudSecondLink | raw }}"
                     {% endif %}
                     {% if article.soundcloudThirdLink is not null and article.soundcloudThirdLink is not empty %}
-                        <iframe width="100%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="{{ article.soundcloudThirdLink }}"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/guettostar" title="Angoboyz" target="_blank" style="color: #cccccc; text-decoration: none;">Angoboyz</a> · <a href="https://soundcloud.com/guettostar/guettostar_cobra" title="GUETTO STAR COBRAS(PROD BY DOCTA BIO)" target="_blank" style="color: #cccccc; text-decoration: none;">GUETTO STAR COBRAS(PROD BY DOCTA BIO)</a></div>
+                        {{ article.soundcloudThirdLink | raw }}">
                     {% endif %}
                 </div>
             </div>

@@ -113,14 +113,20 @@ class FOController extends AbstractController
         // Si on a une entité
         if($entity !=null) {
             // Récupération de notre SEO selon la langue
+
             $seo = $entity->getSeo($this->getParameter('locale'));
+
             // Titre
             if ($entity->getTitle() != null || trim($entity->getTitle()) != '') {
                 $openGraph->setTitle($entity->getTitle());
             }
             // Description
-            if ($seo->getDescription() != null || trim($seo->getDescription()) != '') {
-                $openGraph->setDescription($seo->getDescription());
+
+            if ($seo != null){
+
+                if ($seo->getDescription() != null || trim($seo->getDescription()) != '') {
+                    $openGraph->setDescription($seo->getDescription());
+                }
             }
             // Type
             $openGraph->setType('article');

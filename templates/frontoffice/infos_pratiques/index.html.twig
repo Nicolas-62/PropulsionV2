@@ -63,6 +63,9 @@
                             </div>
                             <div id="blue-dot{{ loop.index0 }}" class="blue-dot"></div>
                         {% endfor %}
+                        <div class="text-center text-lg-start h3 py-3">
+                            <a class="text-decoration-none" href="{{ path('fo_contact_contact') }}">NOUS CONTACTER</a>
+                        </div>
                     </div>
                     <div class="col-2 d-none d-lg-block">
                         <img src="{{ asset(('build/maquette/images/SOUTIENS_MENU.png')) }}" class="">
@@ -214,18 +217,18 @@
                             {{ article_abonnement_billetterie.description | raw }}
                         </div>
                         <div class="row pt-4">
-                            <div class="col-5">
+                            <div class="col-12 col-lg-5">
                                 {% set media = article_abonnement_billetterie.getMedia(15) %}
                                 {% if media is not null %}
                                     {% set url = '/assets/images/' ~ media.media %}
                                     <a class="text-decoration-none" href="https://billetterie.lalune.net/abonnements/1652669054a538/renouvellement">
-                                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
+                                        <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
                                     </a>
                                 {% endif  %}
 
                             </div>
 
-                            <div class="col-7 fs-5">
+                            <div class="col-12 col-lg-7 fs-5 mt-4 mt-lg-0">
                                 {{ article_abonnement_billetterie.content | raw }}
                             </div>
                         </div>
@@ -355,7 +358,7 @@
                                 {% endif  %}
                             </div>
                             <div class="col-lg-6 col-md-9 py-5">
-                                <div class="h3 fw-bold py-2">{{ article_comment_venir.title }}</div>
+                                <div class="h3 fw-bold py-2 text-center text-lg-start">{{ article_comment_venir.title }}</div>
                                 <div class="fs-5">{{ article_comment_venir.description | raw }}</div>
                             </div>
 
@@ -376,8 +379,9 @@
         {% endif  %}
     </div>
 
+
     <!-- BILLETTERIE BAS -->
-    <div id="footer1" class="hidden container-fluid">
+    <div id="footer1" class="hidden container-fluid px-0">
         <div class="py-5 px-2 px-md-2 px-lg-5 bg-grey">
             <div class="row-header">
                 <div class="col-3">
@@ -396,7 +400,7 @@
                             {% set media = article_tarif_etudiant_billetterie.getMedia(15) %}
                             {% if media is not null %}
                                 {% set url = '/assets/images/' ~ media.media %}
-                                <img src="{{ asset((url)) }}" class="object-fit-cover card-img-top rounded-0 tarif-infos" alt="...">
+                                <img src="{{ asset((url)) }}" class="object-fit-contain card-img-top rounded-0 tarif-infos" alt="...">
                             {% endif  %}
 
 
@@ -409,7 +413,7 @@
                 </div>
             </div>
         </div>
-        <div class="row-header">
+        <div class="row-header  text-center text-lg-start">
 
             <div class="col-lg-9 offset-lg-3 col-md-12">
                 {{ article_pass_billetterie.getDatas(locale) }}
@@ -419,15 +423,15 @@
                         {{ article_pass_billetterie.description | raw }}
                     </div>
 
-                    <div class="row pt-2">
-                        <div class="col-6">
+                    <div class=" pt-2 d-flex  justify-content-between">
+                        <div class="">
                             {% set media = article_pass_billetterie.getMedia(15) %}
                             {% if media is not null %}
                                 {% set url = '/assets/images/' ~ media.media %}
-                                <img src="{{ asset((url)) }}" class="card-img-top rounded-0 pass-culture-infos"  alt="...">
+                                <img src="{{ asset((url)) }}" class="object-fit-contain card-img-top rounded-0 pass-culture-infos"  alt="...">
                             {% endif  %}
                         </div>
-                        <div class="col-6">
+                        <div class="">
                             {% set media = article_pass_billetterie.getMedia(16) %}
                             {% if media is not null %}
                                 {% set url = '/assets/images/' ~ media.media %}

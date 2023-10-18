@@ -2,16 +2,14 @@
 {% block stylesheet %}
     <style>
         .row-header {
-            --bs-gutter-x: 0; /* Annule le décalage horizontal */
-            --bs-gutter-y: 0; /* Annule le décalage vertical */
-
+            --bs-gutter-x: 0;
+            --bs-gutter-y: 0;
             display: flex;
             flex-wrap: wrap;
             margin-top: 0;
             margin-right: 0;
             margin-left: 0;
         }
-
     </style>
 {% endblock %}
 <div class="d-none d-lg-block p-0 m-0">
@@ -21,9 +19,6 @@
                 <img class="img-fluid logo-header" src="{{ asset('build/maquette/images/LOGO_HEADER.jpg') }}">
             </a>
         </div>
-
-
-
         <div class="col-lg-9 col-md-9 d-block flex-column align-items-start p-0">
             <nav class="navbar navbar-expand-lg col-12 mt-auto px-lg-5">
                 <ul class="navbar-nav w-100 justify-content-end pt-3 px-lg-5">
@@ -35,27 +30,21 @@
                                         <a class="text-decoration-none" href="{{ path('gallery') }}">
                                             {% set longueurMax = 10 %}
                                             {% set url = '/assets/images/gallery/' ~ media_header_value[0].media %}
+                                            <img src="{{ asset((url)) }}" class=" rounded-circle round-img-header" style="width: 80px;height: 80px; object-fit: cover" alt="...">
+                                            {% if event_header.title|length > longueurMax %}
 
-                                                <img src="{{ asset((url)) }}" class=" rounded-circle round-img-header" style="width: 80px;height: 80px; object-fit: cover" alt="...">
-                                                {% if event_header.title|length > longueurMax %}
-
-                                                    <div class="text-center ml-15" style="font-size: 12px">{{ event_header.dateEvent | date('d/m') }} </div>
-                                                    <div class="text-center ml-15" style="font-size: 12px">{{ event_header.title|slice(0, longueurMax) ~ '...' }}</div>
-                                                {% else %}
-                                                    <div class="text-center ml-15" style="font-size: 12px">{{ event_header.dateEvent | date('d/m') }} </div>
-                                                    <div class="text-center ml-15" style="font-size: 12px">{{ event_header.title }}</div>
-                                                {% endif %}
-
+                                                <div class="text-center ml-15" style="font-size: 12px">{{ event_header.dateEvent | date('d/m') }} </div>
+                                                <div class="text-center ml-15" style="font-size: 12px">{{ event_header.title|slice(0, longueurMax) ~ '...' }}</div>
+                                            {% else %}
+                                                <div class="text-center ml-15" style="font-size: 12px">{{ event_header.dateEvent | date('d/m') }} </div>
+                                                <div class="text-center ml-15" style="font-size: 12px">{{ event_header.title }}</div>
+                                            {% endif %}
                                         </a>
                                     </li>
                                 {% endif %}
                             {% endif %}
                         {% endfor %}
                     {% endfor %}
-
-
-
-
 {#                    {% for event_header in events_header %}#}
 {#                        {% set media = event_header.getMedia(12) %}#}
 
@@ -91,8 +80,6 @@
 {#                            </li>#}
 {#                        {% endif %}#}
 {#                    {% endfor %}#}
-
-
                     <div class="d-flex align-items-center">
                     {% for src, siteWeb in btns %}
                         {% set url = 'build/front/images/' %}
@@ -125,7 +112,6 @@
                     {% for name, url in menu %}
                         <div class="px-4 col {% if loop.index0 != 0 %} border-dotted-black {% endif %}">
                             <a class="text-decoration-none black fs-4"  href="{{ path(url) }}">{{ name|upper }}</a>
-
                         </div>
                     {% endfor %}
                 </div>
@@ -133,7 +119,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- HEADER MD/SM -->
 
@@ -148,7 +133,6 @@
             <div class="row">
                 <div class="col-12">
                     <div class="row pt-3">
-
                         {% for event_header in category_gallery_articles_header %}
                         {% for media_header_key, media_header_value in array_photos_header %}
                         {% if event_header.id == media_header_key %}
@@ -156,17 +140,13 @@
                                 <div class="col-6">
                                     <a class="text-decoration-none" href="{{ path('gallery') }}">
                                         {% set url = '/assets/images/gallery/' ~ media_header_value[0].media %}
-
-                                            <img src="{{ asset((url)) }}" class="cover rounded-circle round-img-header-sm" style="z-index:{{ 1000 +  loop.index }}; height: 50px;width: 50px" alt="...">
-
+                                            <img src="{{ asset((url)) }}" class="object-fit-cover rounded-circle round-img-header-sm" style="z-index:{{ 1000 +  loop.index }}; height: 50px;width: 50px" alt="...">
                                     </a>
                                 </div>
                             {% endif %}
                             {% endif %}
                             {% endfor %}
                         {% endfor %}
-
-
                     </div>
                 </div>
             </div>
@@ -181,15 +161,12 @@
             </div>
         {% endfor %}
         <div class="col-3 text-center">
-
             <button class="btn btn-move-up "  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                 <img class="btns-header" src="{{ asset('build/maquette/images/MENU_HEADER.png') }}">
             </button>
-
         </div>
         <div class="col text-center">
             <div class="dropdown">
-
                 <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
                     <div class="offcanvas-body">
                         <nav class="navbar navbar-dark py-0" style="color: black">
@@ -209,4 +186,3 @@
         </div>
     </div>
 </div>
-
