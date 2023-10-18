@@ -83,7 +83,8 @@ class UserCrudController extends AbstractCrudController
             ])
             ->setChoices([
                 'Administrateur' => 'ROLE_ADMIN',
-                'Auteur'         => 'ROLE_AUTHOR'
+                'Auteur'         => 'ROLE_AUTHOR',
+                'Photographe'    => 'ROLE_PHOTOGRAPH'
             ])
             ->setColumns(7)
         ;

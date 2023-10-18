@@ -52,7 +52,11 @@ class DashboardController extends AbstractDashboardController
         }
         // Controleur par défaut, liste des catégories.
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
+        if ($this->isGranted('ROLE_PHOTOGRAPH')) {
+            return $this->redirect($adminUrlGenerator->setController(GalleryCrudController::class)->generateUrl());
+        }
         return $this->redirect($adminUrlGenerator->setController(ArticleCrudController::class)->generateUrl());
+
     }
 
     #[Route('/clearCache', name: 'clear_cache')]
@@ -69,42 +73,6 @@ class DashboardController extends AbstractDashboardController
 
 
         return $this->redirectToRoute('bo_home');
-    }
-
-
-    /**
-     * Envoi un mail à l'utilisateur pour qu'il puisse créer son mot de passe.
-     *
-     * @param BoNotification $notification
-     * @return RedirectResponse
-     */
-    #[Route('/user/sendAccess/{hash}', name: 'user_send_access')]
-    public function sendAccess(?User $user, BoNotification $notification, AdminUrlGenerator $adminUrlGenerator): RedirectResponse
-    {
-        // Envoi d'un mail à l'utilisateur pour qu'il puisse créer son mot de passe
-        $sent = $notification->sendAcces(
-        // Utilissateur sélectionné
-            $user,
-            // Lien pour définir le mot de passe
-            $this->generateUrl(
-                'user_define_password',
-                ['hash' => $user->getHash()],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            )
-        );
-        // Si le mail a été envoyé
-        if($sent) {
-            $this->addFlash('success', 'Votre email a bien été envoyé');
-        }else{
-            $this->addFlash('error', "Une erreur s'est produite, veuillez renouveler l'operation, si l'erreur persite contactez l'administrateur du site" );
-        }
-        // Retour à la liste des utilisateurs
-        $url = $adminUrlGenerator
-            ->setController(UserController::class)
-            ->setAction(Crud::PAGE_INDEX)
-            ->generateUrl();
-        // Redirection vers la liste des utilisateurs
-        return $this->redirect($url);
     }
 
 
@@ -194,23 +162,29 @@ class DashboardController extends AbstractDashboardController
 
         // yield MenuItem::linkToDashboard('dashboard', 'fa fa-home');
         //yield MenuItem::section('Contenu','fa-solid fa-folder');
-
-        // Liste des Catégories.
-        yield MenuItem::linkToCrud('Categories', 'fa-solid fa-bars', Category::class);
-        // Liste des Articles.
-        yield MenuItem::linkToCrud('Articles', 'fas fa-newspaper', Article::class)->setController(ArticleCrudController::class);
-        // Liste des articles de la catégorie galerie.
-        yield MenuItem::linkToCrud('Galerie', 'fa-regular fa-images', Article::class)->setController(GalleryCrudController::class);
-        // Liste des images.
-        yield MenuItem::linkToCrud('Images', 'fa-regular fa-image', Media::class)->setController(PictureCrudController::class);
-        // Liste des fichiers.
-        yield MenuItem::linkToCrud('Fichiers', 'fa-regular fa-file', Media::class)->setController(FileCrudController::class);
-        // Liste des thèmes.
-        yield MenuItem::linkToCrud('Thèmes', 'fa-regular fa-image', Theme::class);
-
-        // Config.
-        yield MenuItem::linkToCrud('Configuration', 'fas fa-gear', Config::class)->setAction(Crud::PAGE_EDIT)->setEntityId(1);
         if ($this->isGranted('ROLE_ADMIN')) {
+
+            // Liste des Catégories.
+            yield MenuItem::linkToCrud('Categories', 'fa-solid fa-bars', Category::class);
+            // Liste des Articles.
+            yield MenuItem::linkToCrud('Articles', 'fas fa-newspaper', Article::class)->setController(ArticleCrudController::class);
+        }
+        if ($this->isGranted('ROLE_PHOTOGRAPH')) {
+
+            // Liste des articles de la catégorie galerie.
+            yield MenuItem::linkToCrud('Galerie', 'fa-regular fa-images', Article::class)->setController(GalleryCrudController::class);
+        }
+        if ($this->isGranted('ROLE_ADMIN')) {
+
+            // Liste des images.
+            yield MenuItem::linkToCrud('Images', 'fa-regular fa-image', Media::class)->setController(PictureCrudController::class);
+            // Liste des fichiers.
+            yield MenuItem::linkToCrud('Fichiers', 'fa-regular fa-file', Media::class)->setController(FileCrudController::class);
+            // Liste des thèmes.
+            yield MenuItem::linkToCrud('Thèmes', 'fa-regular fa-image', Theme::class);
+
+            // Config.
+            yield MenuItem::linkToCrud('Configuration', 'fas fa-gear', Config::class)->setAction(Crud::PAGE_EDIT)->setEntityId(1);
 
             if ($this->isGranted('ROLE_DEV')) {
                 // Liste des médiaspecs.
@@ -219,15 +193,10 @@ class DashboardController extends AbstractDashboardController
             // Liste des utilisateurs.
             yield MenuItem::linkToCrud('Uilisateurs', 'fa-solid fa-user', User::class);
             yield MenuItem::linkToRoute('Preview', 'fa-solid fa-eye', 'bo_toggle_preview')->setBadge($this->session->get('preview') ? "ON" : "OFF");
+            yield MenuItem::linkToRoute('Vider le Cache', 'fa-solid fa-trash', 'bo_clear_cache');
+
         }
 
-//        yield MenuItem::linkToRoute('Préférences','fa-solid fa-gears','',[]);
-        yield MenuItem::linkToRoute('Vider le Cache', 'fa-solid fa-trash', 'bo_clear_cache');
-//        yield MenuItem::section('Galerie','fa-solid fa-photo-film');
-//        yield MenuItem::linkToRoute('Images','fa-solid fa-image','',[]);
-//        yield MenuItem::linkToRoute('Video','fa-solid fa-film','',[]);
-//        yield MenuItem::section('Theme', 'fa-solid fa-palette');
-//        yield MenuItem::section('Newsletter', 'fa-solid fa-envelope');
 
         // Lien de déconnexion.
         yield MenuItem::linkToLogout('Logout', 'fa fa-arrow-left');
