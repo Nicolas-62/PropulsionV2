@@ -34,7 +34,7 @@
                 <div class="row px-5 pt-5" >
                     <div class="col-lg-10 col-md-12" style="padding-left: 30px">
                         <!-- Titre -->
-                        <div class="h2">{{ article.title }}</div>
+                        <div class="h2">{{ article.titleByLanguage }}</div>
                         <div class="row">
                             {% if article.instagramLink != '' %}
                                 <div class="col-3">
@@ -154,7 +154,7 @@
                     <!-- Récupération des datas de l'article -->
                     {{ actu.getDatas(locale) }}
                     {% set media = actu.getMedia(2) %}
-                    {% if actu.title|upper != article.title|upper %}
+                    {% if actu.titleByLanguage|upper != article.titleByLanguage|upper %}
                         {% set themesChild = actu.category.title %}
                             {% if actu.category.title == themeArticle %}
                                 {% set test = test + 1 %}

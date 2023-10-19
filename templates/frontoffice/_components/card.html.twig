@@ -84,7 +84,7 @@
         <!-- Titre -->
         {% if agenda or actu %}
         <div class="my-3 fs-4 mb-0 fw-bold" style="line-height: 1">
-            {{ event.title | upper }}
+            {% if event.eventName is not empty %}{{ event.eventName }} :{% endif%} {{ event.titleByLanguage | upper }}
         </div>
         {% endif %}
         <!-- CONTENU -->
@@ -129,7 +129,7 @@
         {% endif %}
         {% if soutiens or actions %}
             <div class="fs-2 justify-content-start">
-                {{ event.title }}
+                {{ event.titleByLanguage }}
             </div>
             {% if soutiens %}
                 <a class="text-decoration-none" href="{{ path('fo_soutiens_detail', { 'slug': event.slug,}) }}">

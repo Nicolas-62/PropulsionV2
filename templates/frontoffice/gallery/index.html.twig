@@ -17,7 +17,12 @@
 
 
 
-            <h3 class="mb-5 text-center">Galerie</h3>
+            <h3 class="mb-5 text-center">Galerie photos</h3>
+            <div class="mb-4">
+                {{ cat_galery.getDatas(locale)  }}
+                {{ cat_galery.description | raw }}
+            </div>
+
             <div class="row">
                 {% for article in category_gallery_articles %}
 

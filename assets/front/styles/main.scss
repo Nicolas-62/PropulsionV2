@@ -194,7 +194,7 @@ body {
   font-size: 4rem;
   font-weight: bold;
   color: white;
-  top: 100px;
+  top: 40%;
 }
 
 /* Thème */
@@ -222,13 +222,8 @@ body {
 
 
 .offcanvas {
-  border: none !important;
-  color: black !important;
   &.offcanvas-end {
-    top:20%;
-    background:transparent;
-    right: -15px;
-    width: 450px;
+    width: 70%;
   }
 }
 
@@ -331,7 +326,7 @@ body {
 /* Image */
 
 .round-img-header {
-  padding:5px;
+  padding:2px;
   border: solid 1px #B4B4B4FF;
   background-color: #ffffff;
   margin-left: -8px;
@@ -339,7 +334,7 @@ body {
 }
 
 .round-img-header-sm  {
-  padding:5px;
+  padding:2px;
   border: solid 1px #B4B4B4FF;
   background-color: #ffffff;
   margin-left: -8px;
@@ -580,4 +575,9 @@ body {
   background-color: white;
   text-decoration: none;
   color: black;
+}
+@media (max-width: 989px) {
+  .w-sm-100 {
+    width: 100% !important;
+  }
 }

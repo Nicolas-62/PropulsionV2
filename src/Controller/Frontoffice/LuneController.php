@@ -65,8 +65,8 @@ class LuneController extends FOController
         $this->data['array_photos_header']              = $array_photos;
 
         $this->data['events_header']            =     $events_header;
-        $this->data['btns']                     =     $this->btns = array('GALLERY.png' => '/gallery', 'PROFIL.jpg' => 'https://billetterie.lalune.net/identification', 'COMMANDE.jpg' => 'https://billetterie.lalune.net/');
-        $this->data['menu']                     =     $this->menu = array('Agenda' => 'fo_agenda_index','Actus' => 'fo_actus_index','Action Culturelle' => 'fo_actions_index','Soutiens aux artistes' => 'fo_soutiens_index','Infos Pratiques' => 'fo_infos_index');
+        $this->data['btns']                     =     $this->btns = array('CAMERA_HEADER.svg' => '/gallery', 'USER_HEADER.svg' => 'https://billetterie.lalune.net/identification', 'SAC_HEADER.svg' => 'https://billetterie.lalune.net/');
+        $this->data['menu']                     =     $this->menu = array('Agenda' => 'fo_agenda_index','Actus' => 'fo_actus_index','Action Culturelle' => 'fo_actions_index','Soutien aux artistes' => 'fo_soutiens_index','Infos Pratiques' => 'fo_infos_index');
         $this->data['lien_billetterie']         =     $this->entityManager->getRepository(Article::class)->find(184);
         $this->data['lien_billetterie_profil']  =     $this->entityManager->getRepository(Article::class)->find(183);
     }
@@ -74,7 +74,7 @@ class LuneController extends FOController
     public function buildFooter()
     {
         // FOOTER
-        $this->data['sponsors_img']       =     $this->sponsors_img = $this->entityManager->getRepository(Article::class)->findBy(['category' => 23]);
+        $this->data['sponsors_img']       =     $this->entityManager->getRepository(Article::class)->findBy(['category' => 23]);
         $this->data['medias']             =     $this->medias = array('FOOTER_TEL' => 'tel:+33322978801', 'FOOTER_INSTA' => 'https://www.instagram.com/lalunedespirates/?hl=fr','FOOTER_FACEBOOK' => 'https://www.facebook.com/lalunedespirates/?locale=fr_FR');
         $this->data['mentions']           =     $this->mentions = array('Plan du site' => "/sitemap", 'FAQ' => "/faq",'Mentions légales' => "/mentions", 'CGV' => "/cgv", 'Politique de Confidentialité' => "/confidentialite", 'Espace presse' => "/espacepresse");
         $this->data['icones']             =     $this->icones = array('ARROW.jpg','BUBBLE.jpg','CADDY.jpg');

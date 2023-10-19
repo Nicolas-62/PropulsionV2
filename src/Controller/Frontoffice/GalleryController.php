@@ -34,7 +34,7 @@ class GalleryController extends LuneController
         }
 
 
-
+        $this->data['cat_galery']                   = $this->entityManager->getRepository(Category::class)->findOneBy(['id' => $_ENV['GALLERY_CATEGORY_ID']]);
         $this->data['array_photos']                 = $array_photos;
         $this->data['category_gallery_articles']    = $category_gallery_articles;
         $this->data['page_title']                   = 'Soutiens aux artistes';

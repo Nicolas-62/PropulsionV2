@@ -63,9 +63,6 @@
                             </div>
                             <div id="blue-dot{{ loop.index0 }}" class="blue-dot"></div>
                         {% endfor %}
-                        <div class="text-center text-lg-start h3 py-3">
-                            <a class="text-decoration-none" href="{{ path('fo_contact_contact') }}">NOUS CONTACTER</a>
-                        </div>
                     </div>
                     <div class="col-2 d-none d-lg-block">
                         <img src="{{ asset(('build/maquette/images/SOUTIENS_MENU.png')) }}" class="">
@@ -79,80 +76,80 @@
             <div class="content col-lg-9 col-md-12 container-fluid">
 
                 <!--  NOUS CONTACTER -->
-{#                <div id="entry1" class="py-5 px-2 px-lg-5" >#}
-{#                    <div class="row">#}
-{#                        <div class="col-lg-2 col-md-3 text-center text-lg-start">#}
-{#                            <img src="{{ asset(('build/maquette/images/arrow_contact.png')) }}" class="">#}
+                <div id="entry1" class="py-5 px-2 px-lg-5" >
+                    <div class="row">
+                        <div class="col-lg-2 col-md-3 text-center text-lg-start">
+                            <img src="{{ asset(('build/maquette/images/arrow_contact.png')) }}" class="">
 
-{#                        </div>#}
+                        </div>
 
-{#                        <div class="col-md-9 col-lg-5 fs-5 lh-1 text-center text-lg-start">#}
-{#                            {{ cat_contact.getDatas(locale) }}#}
-{#                            {{ cat_contact.description | raw }}#}
-{#                        </div>#}
-{#                    </div>#}
+                        <div class="col-md-9 col-lg-5 fs-5 lh-1 text-center text-lg-start">
+                            {{ cat_contact.getDatas(locale) }}
+                            {{ cat_contact.description | raw }}
+                        </div>
+                    </div>
 
-{#                    <div class="fs-5 mt-5">#}
+                    <div class="fs-5 mt-5">
 
-{#                        {{ cat_contact.content | raw }}#}
-{#                    </div>#}
+                        {{ cat_contact.content | raw }}
+                    </div>
 
 
-{#                    <div class="h3">NOUS ÉCRIRE</div>#}
-{#                    <!-- Formulaire -->#}
-{#                    <form class="fs-5"  method="post" action="{{ path('fo_infos_contact') }}" >#}
+                    <div class="h3">NOUS ÉCRIRE</div>
+                    <!-- Formulaire -->
+                    <form class="fs-5"  method="post" action="{{ path('fo_infos_contact') }}" >
 
-{#                        <div class="form-group">#}
-{#                            <label class="pb-2" for="select-contact">{{ field_label(form.subject) }} (obligatoire)</label>#}
-{#                            <select class="form-control rounded-0 border-secondary fs-5 select-infos"  name="{{ field_name(form.subject) }}" id="contact">#}
-{#                                <option>Sélectionner ...</option>#}
-{#                                {% for value, subject in field_choices(form.subject) %}#}
-{#                                    <option value="{{ value }}">{{ subject }}</option>#}
-{#                                {% endfor %}#}
-{#                            </select>#}
-{#                            {{ form_errors(form.subject) }}#}
-{#                        </div>#}
+                        <div class="form-group">
+                            <label class="pb-2" for="select-contact">{{ field_label(form.subject) }} (obligatoire)</label>
+                            <select class="form-control rounded-0 border-secondary fs-5 select-infos"  name="{{ field_name(form.subject) }}" id="contact">
+                                <option>Sélectionner ...</option>
+                                {% for value, subject in field_choices(form.subject) %}
+                                    <option value="{{ value }}">{{ subject }}</option>
+                                {% endfor %}
+                            </select>
+                            {{ form_errors(form.subject) }}
+                        </div>
 
-{#                        <div class="form-group">#}
-{#                            <label class="pb-2" for="mailInput">{{ field_label(form.replyTo) }} (obligatoire)</label>#}
-{#                            <input type="email" class="form-control rounded-0 border-secondary select-infos"  name="{{ field_name(form.replyTo) }}"  value="{{ field_value(form.replyTo) }}" id="mailInput" aria-describedby="emailHelp">#}
-{#                            {{ form_errors(form.replyTo) }}#}
+                        <div class="form-group">
+                            <label class="pb-2" for="mailInput">{{ field_label(form.replyTo) }} (obligatoire)</label>
+                            <input type="email" class="form-control rounded-0 border-secondary select-infos"  name="{{ field_name(form.replyTo) }}"  value="{{ field_value(form.replyTo) }}" id="mailInput" aria-describedby="emailHelp">
+                            {{ form_errors(form.replyTo) }}
 
-{#                        </div>#}
-{#                        <div class="form-group">#}
-{#                            <label class="pb-2" for="nomInput">{{ field_label(form.name) }} (obligatoire)</label>#}
-{#                            <input type="text" class="form-control rounded-0 border-secondary select-infos"  name="{{ field_name(form.name) }}" value="{{ field_value(form.name) }}" id="nomInput">#}
-{#                            {{ form_errors(form.name) }}#}
+                        </div>
+                        <div class="form-group">
+                            <label class="pb-2" for="nomInput">{{ field_label(form.name) }} (obligatoire)</label>
+                            <input type="text" class="form-control rounded-0 border-secondary select-infos"  name="{{ field_name(form.name) }}" value="{{ field_value(form.name) }}" id="nomInput">
+                            {{ form_errors(form.name) }}
 
-{#                        </div>#}
-{#                        <div class="form-group">#}
-{#                            <label class="pb-2" for="messageInput">{{ field_label(form.message) }} (obligatoire)</label>#}
-{#                            <textarea class="form-control  rounded-0 border-secondary"  name="{{ field_name(form.message) }}" style="min-height: 348px" id="messageInput" rows="3">{{ field_value(form.message) }}</textarea>#}
-{#                            {{ form_errors(form.message) }}#}
-{#                        </div>#}
-{#                        <!-- Checkbox -->#}
-{#                        <div class="form-check">#}
-{#                            <input class="form-check-input  rounded-0 border-secondary"  name="{{ field_name(form.getNewsletter) }}" type="checkbox" value="{{ field_value(form.getNewsletter) }}" id="newsCheck">#}
-{#                            <label class="pb-2" class="form-check-label" for="newsCheck">#}
-{#                                {{ field_label(form.getNewsletter) }}#}
-{#                            </label>#}
-{#                        </div>#}
-{#                        {{ form_row(form._token) }}#}
-{#                        <!-- Submit -->#}
-{#                        <div class="pt-4">#}
-{#                            <button type="submit" class="btn border border-secondary rounded-0 p-3 fs-3"><div class="p-2">ENVOYER</div></button>#}
-{#                        </div>#}
-{#                        <div class="fs-6 pb-4">#}
-{#                            En cliquant sur "Envoyer", vous acceptez de fournir les informations permettant qu'une réponse vous soit délivrée et que votre demande soit traitée. En indiquant votre adresse email, et en cochant la ou les cases associées, vous consentez à recevoir nos lettres d'information par voie électronique. Vous pouvez vous désinscrire à tout moment via les liens de désinscription ou en nous contactant.#}
-{#                            <br>Pour en savoir plus, consultez notre Politique de confidentialité.</div>#}
-{#                    </form>#}
-{#                </div>#}
+                        </div>
+                        <div class="form-group">
+                            <label class="pb-2" for="messageInput">{{ field_label(form.message) }} (obligatoire)</label>
+                            <textarea class="form-control  rounded-0 border-secondary"  name="{{ field_name(form.message) }}" style="min-height: 348px" id="messageInput" rows="3">{{ field_value(form.message) }}</textarea>
+                            {{ form_errors(form.message) }}
+                        </div>
+                        <!-- Checkbox -->
+                        <div class="form-check">
+                            <input class="form-check-input  rounded-0 border-secondary"  name="{{ field_name(form.getNewsletter) }}" type="checkbox" value="{{ field_value(form.getNewsletter) }}" id="newsCheck">
+                            <label class="pb-2" class="form-check-label" for="newsCheck">
+                                {{ field_label(form.getNewsletter) }}
+                            </label>
+                        </div>
+                        {{ form_row(form._token) }}
+                        <!-- Submit -->
+                        <div class="pt-4">
+                            <button type="submit" class="btn border border-secondary rounded-0 p-3 fs-3"><div class="p-2">ENVOYER</div></button>
+                        </div>
+                        <div class="fs-6 pb-4">
+                            En cliquant sur "Envoyer", vous acceptez de fournir les informations permettant qu'une réponse vous soit délivrée et que votre demande soit traitée. En indiquant votre adresse email, et en cochant la ou les cases associées, vous consentez à recevoir nos lettres d'information par voie électronique. Vous pouvez vous désinscrire à tout moment via les liens de désinscription ou en nous contactant.
+                            <br>Pour en savoir plus, consultez notre Politique de confidentialité.</div>
+                    </form>
+                </div>
 
 
 
 
                 <!-- COMMENT VENIR -->
-                <div id="entry1"  class="py-lg-5 px-2 px-lg-5 hidden container-fluid">
+                <div id="entry2"  class="py-lg-5 px-2 px-lg-5 hidden container-fluid">
 
                     <div class="row w-100">
                         <div class="col-lg-2 col-md-12 text-center">
@@ -178,7 +175,7 @@
 
                 <!-- TARIFS ET BILLETTERIE -->
 
-                <div id="entry2" class="py-lg-5 px-2 px-lg-5 hidden  container-fluid">
+                <div id="entry3" class="py-lg-5 px-2 px-lg-5 hidden  container-fluid">
                     {{ article_adress_billetterie.getDatas(locale) }}
 
                     <div class="row-header pb-5">
@@ -238,7 +235,7 @@
                 </div>
                 <!-- QUESTIONS -->
 
-                <div id="entry3" class="py-5 px-lg-5 hidden">
+                <div id="entry4" class="py-5 px-lg-5 hidden">
                     <div class="accordion accordion-flush" id="accordionFlushExample">
                         {% for question in question_infos %}
                             <div class="accordion-item">
@@ -255,7 +252,7 @@
                     </div>
                 </div>
                 <!-- Qui Sommes nous -->
-                <div id="entry4" class="py-5 px-lg-5 hidden">
+                <div id="entry5" class="py-5 px-lg-5 hidden">
                     {% for article_qui_sommes in articles_qui_sommes %}
                         {{article_qui_sommes.getDatas(locale) }}
                         <h3 class="text-center">{{ article_qui_sommes.title }}</h3>
@@ -286,63 +283,63 @@
 
 
     <!-- BAS CONTACT -->
-{#    <div id="footer0" class="bg-grey">#}
-{#        <div class="py-5 px-2 px-lg-5">#}
-{#            <div class="row">#}
+    <div id="footer0" class="bg-grey">
+        <div class="py-5 px-2 px-lg-5">
+            <div class="row">
 
-{#                <!-- Les Pirates -->#}
-{#                <div class="col-md-12 col-lg-9 offset-lg-3">#}
-{#                    <!-- LOGO LUNE DES PIRATES -->#}
-
-
-{#                    <h1 class="pb-5 text-center text-lg-start "><img src="{{ asset(('build/maquette/images/MINI_LOGO.png')) }}" class="">Les Pirates</h1>#}
-{#                    <div class="row">#}
-{#                        <div class="col-md-12 col-lg-8">#}
-{#                            <div class="row">#}
-{#                                {% for contact in contact_contact %}#}
-{#                                    <div class="col-md-12 col-lg-6 py-2 text-center text-lg-start">#}
-{#                                        <p class="h3">{{ contact.title }}</p>#}
-{#                                        <div class="fs-5">{{ contact.description | raw}}</div>#}
-{#                                    </div>#}
-{#                                {% endfor %}#}
-{#                            </div>#}
-{#                        </div>#}
+                <!-- Les Pirates -->
+                <div class="col-md-12 col-lg-9 offset-lg-3">
+                    <!-- LOGO LUNE DES PIRATES -->
 
 
-{#                        <!-- L'équipe technique / Bénévoles -->#}
-{#                        <div class="col-md-12 col-lg-4 pt-5 pt-lg-0 ">#}
-{#                            <div class="">#}
-{#                                <div class="h3 text-center text-lg-start">L'ÉQUIPE TECHNIQUE</div>#}
-{#                                <div class="fs-5 pb-5">#}
-
-{#                                    {% for membre_tech in equipe_tech_contact %}#}
-{#                                        {{ membre_tech.title }}{% if loop.index != equipe_tech_contact | length %},{% endif %}#}
-{#                                    {% endfor %} ...#}
-{#                                </div>#}
-{#                            </div>#}
-{#                            <div class="h3 pt-5 text-center text-lg-start">MERCI AUX BÉNÉVOLES !</div>#}
-{#                            <p class="fs-5">#}
-{#                                {% for benevole in benevoles_contact %}#}
-{#                                    {{ benevole.title }}{% if loop.index != benevoles_contact | length %},{% endif %}#}
-{#                                {% endfor %} ...#}
-{#                            </p>#}
-
-{#                        </div>#}
-{#                    </div>#}
-
-{#                </div>#}
+                    <h1 class="pb-5 text-center text-lg-start "><img src="{{ asset(('build/maquette/images/MINI_LOGO.png')) }}" class="">Les Pirates</h1>
+                    <div class="row">
+                        <div class="col-md-12 col-lg-8">
+                            <div class="row">
+                                {% for contact in contact_contact %}
+                                    <div class="col-md-12 col-lg-6 py-2 text-center text-lg-start">
+                                        <p class="h3">{{ contact.title }}</p>
+                                        <div class="fs-5">{{ contact.description | raw}}</div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
 
 
+                        <!-- L'équipe technique / Bénévoles -->
+                        <div class="col-md-12 col-lg-4 pt-5 pt-lg-0 ">
+                            <div class="">
+                                <div class="h3 text-center text-lg-start">L'ÉQUIPE TECHNIQUE</div>
+                                <div class="fs-5 pb-5">
 
-{#            </div>#}
+                                    {% for membre_tech in equipe_tech_contact %}
+                                        {{ membre_tech.title }}{% if loop.index != equipe_tech_contact | length %},{% endif %}
+                                    {% endfor %} ...
+                                </div>
+                            </div>
+                            <div class="h3 pt-5 text-center text-lg-start">MERCI AUX BÉNÉVOLES !</div>
+                            <p class="fs-5">
+                                {% for benevole in benevoles_contact %}
+                                    {{ benevole.title }}{% if loop.index != benevoles_contact | length %},{% endif %}
+                                {% endfor %} ...
+                            </p>
 
-{#        </div>#}
-{#    </div>#}
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
 
 
 
     <!-- BAS COMMENT VENIR -->
-    <div id="footer0" class="hidden bg-grey container-fluid">
+    <div id="footer1" class="hidden bg-grey container-fluid">
         <div class="py-5 px-2 px-lg-5">
             <div class="row">
                 <div class="col-lg-9 col-md-12">
@@ -381,7 +378,7 @@
 
 
     <!-- BILLETTERIE BAS -->
-    <div id="footer1" class="hidden container-fluid px-0">
+    <div id="footer2" class="hidden container-fluid px-0">
         <div class="py-5 px-2 px-md-2 px-lg-5 bg-grey">
             <div class="row-header">
                 <div class="col-3">
@@ -448,11 +445,11 @@
         </div>
     </div>
 
-    <div id="footer2" class="hidden">
+    <div id="footer3" class="hidden">
 
     </div>
 
-    <div id="footer3" class="hidden">
+    <div id="footer4" class="hidden">
 
     </div>
 

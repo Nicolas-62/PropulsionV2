@@ -4,7 +4,20 @@
     {{ article.getDatas(locale) }}
     <!-- IMAGE DU HAUT -->
     <div class="row-header shadow-lg container-fluid" >
-        <div class="col-lg-8 col-md-12 p-0" style="">
+        <div class="col-lg-8 col-md-12 p-0 position-relative w-sm-100" style="">
+            {% if article.cancelled %}
+                <div class="cancelled-overlay">
+                    <p class="cancelled-text">ANNULÉ</p>
+                </div>
+            {% elseif article.reported %}
+                <div class="cancelled-overlay">
+                    <p class="cancelled-text">REPORTÉ</p>
+                </div>
+            {% elseif article.full %}
+                <div class="full-overlay">
+                    <p class="cancelled-text">COMPLET</p>
+                </div>
+            {% endif %}
             {% set media = article.getMedia(18) %}
             {% set category = article.category %}
             {{ category.getDatas(locale) }}
@@ -27,15 +40,15 @@
                             class="col-3 theme-1"
                             style="background-color:{{ article.category.themeBackColor }};color: {{ article.themeTextColor }};"
                     >
-                        {{ category.title|upper }}
+                        {{ category.title | upper }}
                     </div>
-                    <div class="col-9 text-uppercase white justify-content-start" style="background-color: black;min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px"><img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">{{ article.style }}</div>
+                    <div class="col-9 text-uppercase white justify-content-start px-3" style="background-color: black;min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px"><img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">{{ article.style }}</div>
                 </div>
             </div>
             <div class="card-container" >
                 <!-- Titre -->
                 <div class="lh-1 pt-3">
-                    <p class="fs-2 mb-3 text-center">{{ article.title }}</p>
+                    <p class="fs-2 mb-3 text-center">{% if article.eventName is not empty %}{{ article.eventName }} :{% endif%} {{ article.titleByLanguage }}</p>
                     <p class="fs-3 mt-0 text-center">{{ article.subtitle }}</p>
                 </div>
                 <!-- Date -->
@@ -51,7 +64,26 @@
                     </div>
                 </div>
                 <!-- Bouton ajout panier -->
-                {% if article.dateEvent >  date_yesterday %}
+                {% if article.cancelled %}
+                    <div class="py-4 fs-3 text-center" style="color: red">
+                        Cet évènement est annulé.
+                    </div>
+                    <!-- Lien de remboursement -->
+                    {% if article.refund %}`
+                        <div class="text-center mb-4">
+                            <a class="btn btn-read-card " href="{{ article.refund }}">Lien de remboursement</a>
+                        </div>
+                    {% endif %}
+
+                {% elseif article.reported %}
+                    <div class="py-4 fs-3 text-center" style="">
+                        Cet évènement est reporté.
+                    </div>
+                {% elseif article.full %}
+                    <div class="py-4 fs-3 text-center" style="color: red">
+                        Cet évènement est plein.
+                    </div>
+                {% elseif article.dateEvent >  date_yesterday %}
                     <div class="pt-2 pb-5">
                     <div class="row  h3">
                         <div class="col fs-5">
@@ -119,9 +151,9 @@
     <hr class="my-0">
     <!-- RECAPITULATIF -->
     {% if (article.facebookEventLuneLink is not empty and article.facebookEventLuneLink is not null) or (article.organizer is not empty and article.organizer is not null) or (article.placement is not empty and article.placement is not null) or (article.datetimeEventOpening is not empty and article.datetimeEventOpening is not null)  %}
-        <div class=" text-center d-flex justify-content-around text-uppercase py-2 container-fluid">
+        <div class=" text-center d-flex justify-content-around text-uppercase py-2 container-fluid "  style="background-color:{{ article.category.themeBackColor }};color: {{ article.themeTextColor }};">
             {% if article.facebookEventLuneLink is not empty and article.facebookEventLuneLink is not null %}
-                <p style="display: inline; margin: 0;"><a class="text-decoration-none" href="{{ article.facebookEventLuneLink }}">Évènement Facebook</a></p>
+                <p style="display: inline; margin: 0;"><a class="text-decoration-none" style="color: {{ article.themeTextColor }} !important" href="{{ article.facebookEventLuneLink }}">Évènement Facebook</a></p>
             {% endif %}
             {% if article.organizer is not empty and article.organizer is not null %}
                 <p style="display: inline; margin: 0;">Organisateur : {{ article.organizer }}</p>
@@ -145,7 +177,7 @@
                 <!-- NOM GROUPE / STYLE / HORAIRE -->
                 <div class="row pb-2 align-items-end">
                     <div class="col-lg-6 col-md-12">
-                        <div class="fs-1 lh-1">{{ article.title }}</div>
+                        <div class="fs-1 lh-1">{{ article.titleByLanguage }}</div>
                     </div>
                     <div class="col-lg-4 col-md-6">
                         <div class="h4 d-flex align-items-center">{{ article.typeMusic}}  {% if article.origin != "" %} | {{ article.origin }}{% endif %}</div>
@@ -161,19 +193,7 @@
                     {{ article.description | raw }}
                 </div>
                 <!-- IMAGE ARTISTE -->
-                {% set media2 = article.getMedia(10) %}
-                {% set media3 = article.getMedia(1) %}
                 {% set media4 = article.getMedia(12) %}
-                <div class="">
-                    {% if media2 is not null %}
-
-                        {% set url = '/assets/images/' ~ media2.media  %}
-                        <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
-                    {% elseif media3 is not null %}
-                        {% set url = '/assets/images/' ~ media3.media  %}
-                        <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
-                    {% endif %}
-                </div>
                 <!-- DESCRIPTION ARTISTE -->
                 <div class="fs-5 py-3" style="line-height: 1.3">
                     {{ article.content | raw }}
@@ -302,7 +322,7 @@
                     <!-- NOM GROUPE / STYLE / HORAIRE -->
                     <div class="row py-3 align-items-end">
                         <div class="col-lg-6 col-md-12">
-                            <h1 class="fs-1">{{ child.title }}</h1>
+                            <h1 class="fs-1">{{ child.titleByLanguage }}</h1>
                         </div>
                         <div class="col-lg-4 col-md-8"  >
                             <h1>{{ child.typeMusic}} {% if child.origin != "" %} | {{ child.origin }}{% endif %}</h1>
@@ -315,10 +335,21 @@
                     <div class="fs-5">
                         {{ child.description | raw }}
                     </div>
-                    <!-- Image Artiste -->
+                    <!-- Image Artiste Ou vidéos artistes-->
                     {% set media3 = child.getMedia(1) %}
                     <div class="pt-3">
-                        {% if media3 is not null %}
+
+                        {% if child.youtubeLink is not empty and child.youtubeLink is not null %}
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe class="embed-responsive-item w-100" style="height: 860px" src="{{ child.youtubeLink }}" allowfullscreen></iframe>
+                            </div>
+                        {% endif %}
+                        {% if child.youtubeSecondLink is not empty and child.youtubeSecondLink is not null %}
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe class="embed-responsive-item w-100" style="height: 860px" src="{{ child.youtubeLink }}" allowfullscreen></iframe>
+                            </div>
+                        {% endif %}
+                        {% if media3 is not null and child.youtubeSecondLink is empty  and child.youtubeLink is empty %}
                             {% set url = '/assets/images/' ~ media3.media  %}
                             <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
                         {% endif %}
@@ -327,12 +358,6 @@
                     <div class="fs-5 pb-3">
                         {{ child.content | raw }}
                     </div>
-                    <!-- VIDEO ARTISTE -->
-                    {% if child.youtubeLink is not empty and child.youtubeLink is not null %}
-                        <div class="embed-responsive embed-responsive-16by9">
-                            <iframe class="embed-responsive-item w-100" style="height: 860px" src="{{ child.youtubeLink }}" allowfullscreen></iframe>
-                        </div>
-                    {% endif %}
                     <!-- PLUS D'INFOS SUR L'ARTISTE -->
                     <div>
                         {% if child.soundcloudLink is not null and child.soundcloudLink is not empty %}
@@ -410,7 +435,7 @@
                 {% if event.dateEvent > date_yesterday and count < 4 %}
                     {% set media = event.getMedia(1) %}
                     {% set CategoryTitle = event.category.title|replace({' ': '-'})|lower %}
-                    <div class="custom-col-xxl-3 col-lg-4 col-md-12 pb-lg-5 px-lg-3 category-{{ CategoryTitle }} category-tous-les-evenements {% if count == 3 %}d-none show-xxl{% endif %}">
+                    <div class="custom-col-xxl-3 col-lg-4 col-md-12 py-3 pb-lg-5 px-lg-3 category-{{ CategoryTitle }} category-tous-les-evenements {% if count == 3 %}d-none show-xxl{% endif %}">
                         <!-- Card-Actu -->
                         {% include 'frontoffice/_components/card.html.twig' with {'event': event, 'agenda': true, 'showButton': false, 'actu': false, 'billetterie': true, 'soutiens': false, 'actions' : false } %}
                     </div>

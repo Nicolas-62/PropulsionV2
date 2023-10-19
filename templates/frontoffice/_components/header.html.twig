@@ -31,13 +31,13 @@
                                             {% set longueurMax = 10 %}
                                             {% set url = '/assets/images/gallery/' ~ media_header_value[0].media %}
                                             <img src="{{ asset((url)) }}" class=" rounded-circle round-img-header" style="width: 80px;height: 80px; object-fit: cover" alt="...">
-                                            {% if event_header.title|length > longueurMax %}
+                                            {% if event_header.titleByLanguage|length > longueurMax %}
 
                                                 <div class="text-center ml-15" style="font-size: 12px">{{ event_header.dateEvent | date('d/m') }} </div>
-                                                <div class="text-center ml-15" style="font-size: 12px">{{ event_header.title|slice(0, longueurMax) ~ '...' }}</div>
+                                                <div class="text-center ml-15" style="font-size: 12px">{{ event_header.titleByLanguage|slice(0, longueurMax) ~ '...' }}</div>
                                             {% else %}
                                                 <div class="text-center ml-15" style="font-size: 12px">{{ event_header.dateEvent | date('d/m') }} </div>
-                                                <div class="text-center ml-15" style="font-size: 12px">{{ event_header.title }}</div>
+                                                <div class="text-center ml-15" style="font-size: 12px">{{ event_header.titleByLanguage }}</div>
                                             {% endif %}
                                         </a>
                                     </li>
@@ -85,7 +85,7 @@
                         {% set url = 'build/front/images/' %}
                         {% set src = url ~ src %}
                             <a href="{{ siteWeb }}" class="mx-1">
-                                <li><img class="btns-header" src="{{ asset(src) }}"></li>
+                                <li><img class="btns-header" style="height: 57px" src="{{ asset(src) }}"></li>
                             </a>
                     {% endfor %}
                     </div>
@@ -124,6 +124,7 @@
 
 <div class="d-lg-none container-fluid">
     <div class="row">
+
         <div class="col-6">
             <a href="{{ path('fo_home_index') }}">
                 <img style="max-width: 100%" src="{{ asset('build/maquette/images/LOGO_ACTUEL.png') }}">
@@ -131,20 +132,21 @@
         </div>
         <div class="col-6">
             <div class="row">
+
                 <div class="col-12">
                     <div class="row pt-3">
                         {% for event_header in category_gallery_articles_header %}
-                        {% for media_header_key, media_header_value in array_photos_header %}
-                        {% if event_header.id == media_header_key %}
-                            {% if loop.index < 5 %}
-                                <div class="col-6">
-                                    <a class="text-decoration-none" href="{{ path('gallery') }}">
-                                        {% set url = '/assets/images/gallery/' ~ media_header_value[0].media %}
-                                            <img src="{{ asset((url)) }}" class="object-fit-cover rounded-circle round-img-header-sm" style="z-index:{{ 1000 +  loop.index }}; height: 50px;width: 50px" alt="...">
-                                    </a>
-                                </div>
-                            {% endif %}
-                            {% endif %}
+                            {% for media_header_key, media_header_value in array_photos_header %}
+                                {% if event_header.id == media_header_key %}
+                                    {% if loop.index < 5 %}
+                                        <div class="col-6">
+                                            <a class="text-decoration-none" href="{{ path('gallery') }}">
+                                                {% set url = '/assets/images/gallery/' ~ media_header_value[0].media %}
+                                                    <img src="{{ asset((url)) }}" class="object-fit-cover rounded-circle round-img-header-sm" style="z-index:{{ 1000 +  loop.index }}; height: 50px;width: 50px" alt="...">
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
                             {% endfor %}
                         {% endfor %}
                     </div>
@@ -165,24 +167,28 @@
                 <img class="btns-header" src="{{ asset('build/maquette/images/MENU_HEADER.png') }}">
             </button>
         </div>
-        <div class="col text-center">
-            <div class="dropdown">
-                <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                    <div class="offcanvas-body">
-                        <nav class="navbar navbar-dark py-0" style="color: black">
-                            <ul class="navbar-nav w-100">
-                                <!-- Catégorie du menu -->
-                                <li class="nav-item border-y ps-3">
-                                    <div class="round-left nav-link fs-1" href=""><a class="text-decoration-none" style="color: black" href="/home">> ACCUEIL</a></div>
-                                    {% for name, url in menu %}
-                                        <div class="round-left nav-link fs-1" href=""><a class="text-decoration-none" style="color: black" href="{{ path(url) }}">> {{ name|upper }}</a></div>
-                                    {% endfor %}
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
+    </div>
+</div>
+
+<div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="staticBackdropLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <nav class="navbar navbar-dark py-0" style="color: black;">
+            <ul class="navbar-nav w-100">
+                <!-- Catégorie du menu -->
+                <li class="nav-item border-y ps-3">
+                    <div class="nav-link fs-3" href=""><a class="text-decoration-none" style="color: black" href="/home">> ACCUEIL</a></div>
+                    <hr>
+
+                    {% for name, url in menu %}
+                        <div class="nav-link fs-3" href=""><a class="text-decoration-none" style="color: black" href="{{ path(url) }}">> {{ name|upper }}</a></div>
+                        {% if not loop.last %}<hr>{% endif %}
+                    {% endfor %}
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>

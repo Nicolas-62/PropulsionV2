@@ -78,6 +78,8 @@ class Article
     private ?string $price  = '';
     private ?string $subscriberPrice  = '';
     private ?string $reducedPrice  = '';
+    private ?string $refund  = '';
+    private ?string $eventName  = '';
 
     private array $files = array();
 

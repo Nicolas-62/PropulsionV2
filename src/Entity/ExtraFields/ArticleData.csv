@@ -30,3 +30,5 @@
 "price","Tarif normal","TextField","false","3","",
 "subscriberPrice","Tarif abonné","TextField","false","3","",
 "reducedPrice","Tarif réduit","TextField","false","3","",
+"refund","Remboursement","TextField","false","3","",
+"eventName","Nom de l'évènement","TextField","false","3","",
