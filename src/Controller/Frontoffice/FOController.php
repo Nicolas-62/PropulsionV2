@@ -236,6 +236,15 @@ class FOController extends AbstractController
     }
 
 
-
+    /*
+     * file_not_found
+     * @description : Affiche une page 404 File not found.
+     * @access : protected
+     * @return void.
+     */
+    protected function file_not_found(): Response
+    {
+        return new Response('FILE NOT FOUND', '404');
+    }
 
 }

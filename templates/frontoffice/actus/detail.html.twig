@@ -4,14 +4,14 @@
 
     <style>
         .image-bot-corner {
-            background: url("../build/front/images/actu_cadre_2.svg") no-repeat;
+            background: url( {{ asset(getSiteImagePath('actu_cadre_2.svg')) }} ) no-repeat;
             background-size: 50px;
             background-position: bottom right;
         }
 
 
         .image-top-corner {
-            background: url("../build/front/images/actu_cadre_1.svg") no-repeat;
+            background: url( {{ asset(getSiteImagePath('actu_cadre_1.svg')) }} ) no-repeat;
             background-size: 50px;
         }
     </style>
