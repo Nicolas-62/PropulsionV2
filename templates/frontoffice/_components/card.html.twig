@@ -57,12 +57,12 @@
     <div class="row mx-0 px-0">
         {% if actions == false %}
         {% set category = event.category %}
-        {{ category.getDatas(locale) }}
+        {% do category.getDatas(locale) %}
             <div class="col-5 fs-6 theme-1 text-uppercase"  style="background-color: {% if category is not null %}{{ category.themeBackColor }};{% endif%} color: {{ event.themeTextColor }};">
                 {{ event.category.title }}
             </div>
         {% else %}
-            {{ event.getDatas(locale) }}
+            {% do event.getDatas(locale) %}
             <div class="col-5 fs-6 theme-1 text-uppercase"  style="background-color: #FB9E32">
                 Action Culturelle
             </div>

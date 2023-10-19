@@ -24,14 +24,14 @@
                 </div>
             </div>
             <div class="fs-5 py-4 px-3 px-lg-0">
-                {{ category_accomp.getDatas(locale) }}
+                {% do category_accomp.getDatas(locale) %}
                 {{ category_accomp.description|raw }}
             </div>
         </div>
 
         <div class="row">
             {% for accomp in accompagnes %}
-                {{  accomp.getDatas(locale) }}
+                {% do accomp.getDatas(locale) %}
 
                 {% set media = accomp.getMedia(4) %}
                 <div class="custom-col-xxl-3 col-lg-4 col-md-12 py-3 pb-lg-5 px-lg-1 px-md-0">
@@ -61,14 +61,14 @@
 
 
             <div class="fs-5 py-4 px-3 px-lg-0">
-                {{ category_audition.getDatas(locale) }}
+                {% do category_audition.getDatas(locale) %}
                 {{ category_audition.description|raw }}
             </div>
         </div>
 
         <div class="row">
             {% for accomp in auditions %}
-                {{  accomp.getDatas(locale) }}
+                {% do  accomp.getDatas(locale) %}
 
                 {% set media = accomp.getMedia(4) %}
                 <div class="custom-col-xxl-3 col-lg-4 col-md-12 py-3 pb-lg-5 px-lg-1 px-md-0">
@@ -91,12 +91,12 @@
 
 
         <div class="h3 py-4 px-3 px-lg-3">
-            {{ category_event.getDatas(locale) }}
+            {% do category_event.getDatas(locale) %}
             {{ category_event.description|raw }}
         </div>
         <div class="row">
             {% for event_actu in event_actus %}
-                {{  event_actu.getDatas(locale) }}
+                {% do  event_actu.getDatas(locale) %}
 
                 {% set media = event_actu.getMedia(4) %}
                 <div class="custom-col-xxl-3 col-lg-4 col-md-12 py-3 pb-lg-5 px-lg-1 px-md-0">

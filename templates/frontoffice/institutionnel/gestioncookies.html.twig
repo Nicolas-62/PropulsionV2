@@ -59,7 +59,7 @@
                     <div id="entry{{ loop.index }}" class="py-5 px-5 {% if loop.index > 1 %}hidden{% endif %}" >
                         <div class="row">
                             <div class="col-12 text-center pb-5">
-                                {{ categorie.getDatas(locale) }}
+                                {% do categorie.getDatas(locale) %}
 
                                 <h2>{{ categorie.title|upper }}</h2>
                             </div>

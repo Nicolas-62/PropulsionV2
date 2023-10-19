@@ -1,7 +1,6 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
 
 {% block body %}
-    {{ article.getDatas(locale) }}
     <!-- IMAGE DU HAUT -->
     <div class="row-header shadow-lg container-fluid" >
         <div class="col-lg-8 col-md-12 p-0 position-relative w-sm-100" style="">
@@ -20,7 +19,7 @@
             {% endif %}
             {% set media = article.getMedia(18) %}
             {% set category = article.category %}
-            {{ category.getDatas(locale) }}
+            {% do category.getDatas(locale) %}
             {% if media is not null %}
                 {% set url = '/assets/images/' ~ media.media %}
                 <img src="{{ asset((url)) }}" class="rounded-0 w-100 img-fluid"   alt="...">
@@ -314,7 +313,7 @@
     </div>
     <!-- DEUXIEME PARTIE -->
     {% for child in children %}
-        {{ child.getDatas(locale) }}
+        {% do child.getDatas(locale) %}
     <div class="bg-grey container-fluid">
         <div class="p-5">
             <div class="row">

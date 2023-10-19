@@ -1,6 +1,6 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
 {% block body %}
-    {{ cat_actu.getDatas(locale) }}
+    {% do cat_actu.getDatas(locale) %}
     <div class=" pr-md-3 p-lg-5 container-fluid">
         <!-- ARTICLE -->
         <div class="p-lg-5 h2">

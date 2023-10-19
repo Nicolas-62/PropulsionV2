@@ -36,7 +36,7 @@
                                                             {{ event.category.title }}
                                                         </div>
                                                         {% if event.style is not empty and event.style is not null %}
-                                                            {{ event.category.getDatas(locale) }}
+                                                            {% do event.category.getDatas(locale) %}
                                                             <div class="col-7 theme-2" style="background-color: {{ event.category.themeBackColor }}" >
                                                                 <img class="card-ticketing" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}" alt="">{{ event.style }}
                                                             </div>

@@ -9,7 +9,7 @@
         <div class="container-fluid">
         <div class="p-5">
             <div class="text-center h2 pb-5">
-                {{ event.getDatas(locale) }}
+                {% do event.getDatas(locale) %}
                 {{ event.title }}
             </div>
 

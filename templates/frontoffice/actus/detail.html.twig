@@ -19,7 +19,7 @@
 
 {% block body %}
     <!-- Récupération des datas de l'article -->
-    {{ article.getDatas(locale) }}
+    {% do article.getDatas(locale) %}
     {% set mediaArticle = article.getMedia(8) %}
     <div class="p-lg-5 container-fluid">
         <!-- ARTICLE -->
@@ -60,7 +60,7 @@
                     </div>
                     <div class="col-lg-2 col-md-12">
                         <!-- Thème -->
-                        {{ article.category.getDatas(locale) }}
+                        {% do article.category.getDatas(locale) %}
                         <div class="text-center h2 white" style="background-color: {{ article.category.themeBackColor }}; min-height: 50px;">
                             <div class="p-1">
                                 {% set themeArticle = article.category.title %}
@@ -152,7 +152,7 @@
                 {% set test = 0 %}
                 {% for actu in actu_childs %}
                     <!-- Récupération des datas de l'article -->
-                    {{ actu.getDatas(locale) }}
+                    {% do actu.getDatas(locale) %}
                     {% set media = actu.getMedia(2) %}
                     {% if actu.titleByLanguage|upper != article.titleByLanguage|upper %}
                         {% set themesChild = actu.category.title %}

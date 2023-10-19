@@ -182,7 +182,10 @@
                     <div class="nav-link fs-3" href=""><a class="text-decoration-none" style="color: black" href="/home">> ACCUEIL</a></div>
                     <hr>
                     {% for url, title in menu_category_datas %}
-                        <div class="round-left nav-link fs-1" href=""><a class="text-decoration-none" style="color: black" href="{{ path(url) }}">> {{ title|upper }}</a></div>
+                        <div class="nav-link fs-1" href=""><a class="text-decoration-none" style="color: black" href="{{ path(url) }}">> {{ title|upper }}</a></div>
+                        {% if not loop.last %}
+                        <hr>
+                        {% endif %}
                     {% endfor %}
                 </li>
             </ul>

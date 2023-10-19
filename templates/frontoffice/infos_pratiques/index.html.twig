@@ -57,7 +57,7 @@
                 <div class="row p-5">
                     <div class="col-lg-10 col-md-12 pt-lg-5">
                         {% for sous_categorie_infos in sous_categories_infos %}
-                            {{ sous_categorie_infos.getDatas(locale) }}
+                            {% do sous_categorie_infos.getDatas(locale) %}
                             <div class="text-center text-lg-start h3 py-3 menu-item {% if active_entry == 'entry' ~ loop.index %}active{% endif %}" data-entry="entry{{ loop.index }}" onclick="showContent('entry{{ loop.index }}', 'footer{{ loop.index0 }}')">
                                 {{ sous_categorie_infos.title | upper}}
                             </div>
@@ -84,7 +84,7 @@
                         </div>
 
                         <div class="col-md-9 col-lg-5 fs-5 lh-1 text-center text-lg-start">
-                            {{ cat_contact.getDatas(locale) }}
+                            {% do cat_contact.getDatas(locale) %}
                             {{ cat_contact.description | raw }}
                         </div>
                     </div>
@@ -161,7 +161,7 @@
                         <div class="col-md-12 col-lg-5 fs-5 mt-lg-5 text-center text-lg-start  mb-2 lh-1">
 
 
-                                {{ cat_comment_venir.getDatas(locale) }}
+                                {% do cat_comment_venir.getDatas(locale) %}
                                 {{ cat_comment_venir.description | raw }}
                         </div>
                     </div>
@@ -176,7 +176,7 @@
                 <!-- TARIFS ET BILLETTERIE -->
 
                 <div id="entry3" class="py-lg-5 px-2 px-lg-5 hidden  container-fluid">
-                    {{ article_adress_billetterie.getDatas(locale) }}
+                    {% do article_adress_billetterie.getDatas(locale) %}
 
                     <div class="row-header pb-5">
                         <div class="col-12 col-lg-2 text-center pb-2">
@@ -191,10 +191,10 @@
                         </div>
                     </div>
                     <div>
-                        <div class="h3 py-lg-5 text-center text-lg-start">{{ article_contact_billetterie.getDatas(locale) }}
+                        <div class="h3 py-lg-5 text-center text-lg-start">{% do article_contact_billetterie.getDatas(locale) %}
                             {{ article_contact_billetterie.subtitle  }}
                         </div>
-                        {{ article_contact_billetterie.getDatas(locale) }}
+                        {% do article_contact_billetterie.getDatas(locale) %}
                         <div class="row-header text-center text-lg-start">
                             <div class="col-12 col-lg-2 ">
                                 {% set media = article_contact_billetterie.getMedia(15) %}
@@ -210,7 +210,7 @@
                             {{ article_contact_billetterie.content | raw }}
                         </div>
                         <div class="fs-5">
-                            {{ article_abonnement_billetterie.getDatas(locale) }}
+                            {% do article_abonnement_billetterie.getDatas(locale) %}
                             {{ article_abonnement_billetterie.description | raw }}
                         </div>
                         <div class="row pt-4">
@@ -254,7 +254,7 @@
                 <!-- Qui Sommes nous -->
                 <div id="entry5" class="py-5 px-lg-5 hidden">
                     {% for article_qui_sommes in articles_qui_sommes %}
-                        {{article_qui_sommes.getDatas(locale) }}
+                        {% do article_qui_sommes.getDatas(locale) %}
                         <h3 class="text-center">{{ article_qui_sommes.title }}</h3>
 
                         <div class="fs-5 p-2 mb-5">
@@ -344,7 +344,7 @@
             <div class="row">
                 <div class="col-lg-9 col-md-12">
                     {% for article_comment_venir in articles_comment_venir %}
-                        {{ article_comment_venir.getDatas(locale) }}
+                        {% do article_comment_venir.getDatas(locale) %}
                         <div class="row">
                             <div class="col-lg-2 offset-lg-4 col-md-3 text-center">
                                 {% set media = article_comment_venir.getMedia(13) %}
@@ -388,7 +388,7 @@
 
                     <div class="row-header">
                         <div class="col-12">
-                            {{ article_tarif_etudiant_billetterie.getDatas(locale) }}
+                            {% do article_tarif_etudiant_billetterie.getDatas(locale) %}
                             <div class="h3">{{ article_tarif_etudiant_billetterie.title }}</div>
                             <div class="fs-5">{{article_tarif_etudiant_billetterie.description | raw}}</div>
                         </div>
@@ -413,7 +413,7 @@
         <div class="row-header  text-center text-lg-start">
 
             <div class="col-lg-9 offset-lg-3 col-md-12">
-                {{ article_pass_billetterie.getDatas(locale) }}
+                {% do article_pass_billetterie.getDatas(locale) %}
                 <div class="py-5 px-2 px-lg-5 h2">
                     <div class="pb-2 h2">{{ article_pass_billetterie.title }}</div>
                     <div class="fs-5">

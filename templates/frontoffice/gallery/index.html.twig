@@ -19,7 +19,7 @@
 
             <h3 class="mb-5 text-center">Galerie photos</h3>
             <div class="mb-4">
-                {{ cat_galery.getDatas(locale)  }}
+                {% do cat_galery.getDatas(locale)  %}
                 {{ cat_galery.description | raw }}
             </div>
 
@@ -29,7 +29,7 @@
                     {% if array_photos[article.title] is defined %}
                     <div class="col-lg-3">
                         <div class="row">
-                            {{ article.getDatas(locale) }}
+                            {% do article.getDatas(locale) %}
                             <div class="">
                                 {% if array_photos[article.title] is not empty %}
                                     {% for photo in array_photos[article.title] %}

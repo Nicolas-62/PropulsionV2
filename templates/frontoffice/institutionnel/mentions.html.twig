@@ -62,7 +62,7 @@
                 <div id="entry{{ loop.index }}" class="py-5 px-lg-5 {% if loop.index > 1 %}hidden{% endif %}" >
                     <div class="row">
                         <div class="col-12 text-center pb-5">
-                            {{ article.getDatas(locale) }}
+                            {% do article.getDatas(locale) %}
 
                             <div class="h2">{{ article.title|upper }}</div>
                         </div>

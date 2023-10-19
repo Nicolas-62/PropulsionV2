@@ -4,7 +4,7 @@
     <div class="accordion accordion-flush" id="accordionFlushExample">
         <div class="p-2 p-lg-5">
             {% for article in articles_question %}
-                {{ article.getDatas(locale) }}
+                {% do article.getDatas(locale) %}
                 <div class="accordion-item">
                     <div class="accordion-header">
                         <button class="accordion-button collapsed fs-4 p-2" type="button" style="font-family: 'Akshar', sans-serif" data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{ loop.index }}" aria-expanded="false" aria-controls="flush-collapse-{{ loop.index }}">
