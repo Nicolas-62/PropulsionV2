@@ -30,6 +30,13 @@ class LuneController extends FOController
     {
         //  Configuration du controller :
         $this->category_agenda_id                =     3;              // Identifiant de la catégorie concernée.=  3;
+        $this->category_menu_ids                 =     [
+            'fo_agenda_index'   => 3,
+            'fo_actus_index'    => 4,
+            'fo_actions_index'  => 53,
+            'fo_soutiens_index' => 6,
+            'fo_infos_index'    => 39
+        ];
         parent::__construct($entityManager, $params);
 
         // Récupération des infos du header.
@@ -44,6 +51,8 @@ class LuneController extends FOController
 
         // Récupération des articles de la galerie
         $category_gallery_articles = $this->entityManager->getRepository(Category::class)->getArticles([$_ENV['GALLERY_CATEGORY_ID']], $this->params->get('locale'), true, 'dateEvent', 'DESC');
+        $this->data['category_gallery_articles_header'] = $category_gallery_articles;
+        // Photos cliquables de la gallerie dans le menu
         $array_photos = array();
         // Pour chaque article de la galerie
         foreach($category_gallery_articles as $article) {
@@ -55,18 +64,28 @@ class LuneController extends FOController
                 $array_photos[$article_id][] = $photos[0];
             }
         }
-
-
-
-        $sous_categorie_ids                     =     $this->entityManager->getRepository(Category::class)->find($this->category_agenda_id)->getChildrenIds();
-        $events_header                          =     $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->params->get('locale'), true, 'dateEvent', 'DESC');
-        $galery = $this->entityManager->getRepository(Category::class)->find($_ENV['GALLERY_CATEGORY_ID']);
-        $this->data['category_gallery_articles_header'] = $category_gallery_articles;
         $this->data['array_photos_header']              = $array_photos;
 
+
+        // Catégories affichées dans le menu
+        $menu_category_datas = array();
+        $menu_categories = $this->entityManager->getRepository(Category::class)->findBy(['id' => $this->category_menu_ids]);
+        foreach($this->category_menu_ids as $url =>  $category_id) {
+            // Catégories du menu
+            foreach ($menu_categories as $category) {
+                if($category->getId() == $category_id){
+                    $menu_category_datas[$url] = $category->getDatas($this->params->get('locale'))->getTitleByLanguage();
+                }
+            }
+        }
+        $this->data['menu_category_datas']          =    $menu_category_datas;
+
+        // Programmation à venir
+        $sous_categorie_ids                     =     $this->entityManager->getRepository(Category::class)->find($this->category_agenda_id)->getChildrenIds();
+        $events_header                          =     $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->params->get('locale'), true, 'dateEvent', 'DESC');
         $this->data['events_header']            =     $events_header;
         $this->data['btns']                     =     $this->btns = array('CAMERA_HEADER.svg' => '/gallery', 'USER_HEADER.svg' => 'https://billetterie.lalune.net/identification', 'SAC_HEADER.svg' => 'https://billetterie.lalune.net/');
-        $this->data['menu']                     =     $this->menu = array('Agenda' => 'fo_agenda_index','Actus' => 'fo_actus_index','Action Culturelle' => 'fo_actions_index','Soutien aux artistes' => 'fo_soutiens_index','Infos Pratiques' => 'fo_infos_index');
+
         $this->data['lien_billetterie']         =     $this->entityManager->getRepository(Article::class)->find(184);
         $this->data['lien_billetterie_profil']  =     $this->entityManager->getRepository(Article::class)->find(183);
     }

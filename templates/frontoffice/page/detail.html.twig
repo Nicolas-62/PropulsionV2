@@ -16,22 +16,22 @@
             <div class="row text-center">
                 {% if article.instagramLink != '' %}
                     <div class="col-3">
-                        <a href="{{ article.instagramLink }}"><img class="mh-45"  src="{{ asset('build/front/images/PICTURE.svg') }}"></a>
+                        <a href="{{ article.instagramLink }}"><img class="mh-45"  src="{{ asset(getSiteImagePath('PICTURE.svg')) }}"></a>
                     </div>
                 {% endif %}
                 {% if article.twitterLink != '' %}
                     <div class="col-3">
-                        <a href="{{ article.twitterLink }}"><img class="mh-45" src="{{ asset('build/front/images/TWITTER.svg') }}"></a>
+                        <a href="{{ article.twitterLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('TWITTER.svg')) }}"></a>
                     </div>
                 {% endif %}
                 {% if article.facebookLink != '' %}
                     <div class="col-3">
-                        <a href="{{ article.facebookLink }}"><img class="mh-45" src="{{ asset('build/front/images/FACEBOOK.svg') }}"></a>
+                        <a href="{{ article.facebookLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('FACEBOOK.svg')) }}"></a>
                     </div>
                 {% endif %}
                 {% if article.siteInternet != '' %}
                     <div class="col-3">
-                        <a href="{{ article.siteInternet }}"><img class="mh-45" src="{{ asset('build/front/images/INTERNET.svg') }}"></a>
+                        <a href="{{ article.siteInternet }}"><img class="mh-45" src="{{ asset(getSiteImagePath('INTERNET.svg')) }}"></a>
                     </div>
                 {% endif %}
             </div>

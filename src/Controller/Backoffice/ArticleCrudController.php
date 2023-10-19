@@ -513,12 +513,16 @@ class ArticleCrudController extends BoController
             ->setEntityLabelInPlural('Articles')
             // Titre de la page et nom de la liste affichée
             ->setPageTitle('index', function (){
-                if($this->entity != null){
-                    return 'Article : '.$this->entity->getTitle();
-                }else if($this->category != null){
+                if($this->category != null){
                     return 'Articles de la catégorie : '.$this->category->getTitle();
                 }
             })
+            ->setPageTitle('edit', function (){
+                if($this->entity != null){
+                    return 'Article : '.$this->entity->getTitle();
+                }
+            })
+
             ->setPaginatorPageSize(12)
             ->setPaginatorRangeSize(4)
             // Surcharge des templates de base.

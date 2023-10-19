@@ -109,9 +109,9 @@
 {#            </div>#}
             <div class="d-none d-lg-flex block navbar-expand-lg col-12 mb-auto pt-4">
                 <div class="row  row-cols-auto">
-                    {% for name, url in menu %}
+                    {% for url, title in menu_category_datas %}
                         <div class="px-4 col {% if loop.index0 != 0 %} border-dotted-black {% endif %}">
-                            <a class="text-decoration-none black fs-4"  href="{{ path(url) }}">{{ name|upper }}</a>
+                            <a class="text-decoration-none black fs-4"  href="{{ path(url) }}">{{ title|upper }}</a>
                         </div>
                     {% endfor %}
                 </div>
@@ -169,7 +169,6 @@
         </div>
     </div>
 </div>
-
 <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="staticBackdropLabel"></h5>
@@ -182,13 +181,12 @@
                 <li class="nav-item border-y ps-3">
                     <div class="nav-link fs-3" href=""><a class="text-decoration-none" style="color: black" href="/home">> ACCUEIL</a></div>
                     <hr>
-
-                    {% for name, url in menu %}
-                        <div class="nav-link fs-3" href=""><a class="text-decoration-none" style="color: black" href="{{ path(url) }}">> {{ name|upper }}</a></div>
-                        {% if not loop.last %}<hr>{% endif %}
+                    {% for url, title in menu_category_datas %}
+                        <div class="round-left nav-link fs-1" href=""><a class="text-decoration-none" style="color: black" href="{{ path(url) }}">> {{ title|upper }}</a></div>
                     {% endfor %}
                 </li>
             </ul>
         </nav>
+
     </div>
 </div>

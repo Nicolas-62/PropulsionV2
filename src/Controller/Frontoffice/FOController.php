@@ -58,7 +58,7 @@ class FOController extends AbstractController
         $this->data['header_partial']     =     '_components/header.html.twig';
         $this->data['footer_partial']     =     '_components/footer.html.twig';
 
-        $this->data['locale']             =     $params->get('locale');
+        $this->data['locale']             =     $this->params->get('locale');
         // HEADER
         // Récupération de la SEO du site
         $this->data['seo']                =     $this->entityManager->getRepository(Config::class)->find(1)->getSeo();

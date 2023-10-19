@@ -125,7 +125,7 @@ class MediaListener implements EventSubscriberInterface
             // Si l'entité n'est pas en erreur.
             if( ! $entity->hasError()) {
                 // SI c'est un article de la galerie
-                if($entity instanceof  Article && $entity->getCategory()->getId() == $_ENV['GALLERY_CATEGORY_ID']){
+                if($entity instanceof  Article && $entity->getCategory()?->getId() == $_ENV['GALLERY_CATEGORY_ID']){
                     $new_filenames = $this->mediaService->getFiles(
                         $this->requestStack->getCurrentRequest()->get('folderId-galleryMediaUploads'),  'gallery/'
                     );
@@ -149,7 +149,6 @@ class MediaListener implements EventSubscriberInterface
                             $this->entityManager->getRepository(MediaLink::class)->save($mediaLink, true);
                         }
                     }
-
                 }
 
                 // !! FICHIERS

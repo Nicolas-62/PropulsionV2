@@ -79,7 +79,7 @@ class MediaspecsRepository extends ServiceEntityRepository
         $parent_mediaspecs    =   array();
         if($category->getParent() != null){
             $heritage++;
-            $parent_mediaspecs = $this->findByHeritage($category->getParent(), $heritage);
+            $parent_mediaspecs = $this->findByCategory($category->getParent(), $heritage);
         }
         $mediaspecs = array_merge($current_mediaspecs, $parent_mediaspecs);
         return $mediaspecs;

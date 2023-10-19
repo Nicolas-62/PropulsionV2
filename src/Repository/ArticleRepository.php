@@ -40,26 +40,33 @@ class ArticleRepository extends CMSRepository
         $mediaSpecRepository    =   $this->registry->getRepository(Mediaspec::class);
         // Récupération des mediaspec définies spécialement pour l'objet.
         $current_mediaspecs     =   $mediaSpecRepository->findByHeritage($entity, $heritage);
-
-        // Recherche des mediaspec héritées du parent.
-        $parent_mediaspecs      =   array();
+        $mediaspecs             =   array();
         // Si l'article a un article parent.
         if($entity->getParent() != null) {
                 $heritage++;
                 // On récupère les mediaspecs du parent qui s'applique à l'enfant.
                 $parent_mediaspecs   =   $mediaSpecRepository->findByHeritage($entity->getParent(), $heritage);
-        }
-        // On ajoute les mediaspecs à celles déjà récupérées.
-        $mediaspecs   =   array_merge($current_mediaspecs, $parent_mediaspecs);
+                // On ajoute les mediaspecs à celles déjà récupérées.
+                $mediaspecs   =   array_merge($current_mediaspecs, $parent_mediaspecs);
 
-        // Recherche des mediaspec héritées de la catégorie parent.
-        $category_mediaspecs    =   array();
-        if($entity->getCategory() != null) {
-            $heritage++;
-            $category_mediaspecs    =   $mediaSpecRepository->findByCategory($entity->getCategory(), $heritage);
+            // Recherche des mediaspecs héritées de la catégorie parent de l'article parent.
+            if($entity->getParent()->getCategory() != null){
+                $heritage++;
+                $category_mediaspecs = $mediaSpecRepository->findByCategory($entity->getParent()->getCategory(), $heritage);
+                // On ajoute les mediaspecs à celles déjà récupérées.
+                $mediaspecs = array_merge($mediaspecs, $category_mediaspecs);
+            }
         }
-        // On ajoute les mediaspecs à celles déjà récupérées.
-        $mediaspecs   =  array_merge($mediaspecs, $category_mediaspecs);
+        // Si l'article a une catégorie parent
+        else {
+            // Recherche des mediaspec héritées de la catégorie parent.
+            if ($entity->getCategory() != null) {
+                $heritage++;
+                $category_mediaspecs = $mediaSpecRepository->findByCategory($entity->getCategory(), $heritage);
+                // On ajoute les mediaspecs à celles déjà récupérées.
+                $mediaspecs = array_merge($mediaspecs, $category_mediaspecs);
+            }
+        }
 
         // retour
         return $mediaspecs;

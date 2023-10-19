@@ -139,9 +139,9 @@ trait ExtraFieldtrait
 
     /**
      * @param $code_langue
-     * @return void
+     * @return $this
      */
-    public function getDatas($code_langue): void
+    public function getDatas($code_langue)
     {
         $datas = $this->data->filter(function($data) use ($code_langue) {
             return $data->getLanguage()->getCode() === $code_langue;
@@ -150,6 +150,7 @@ trait ExtraFieldtrait
         foreach($datas as $data){
             $this->{'set' . $data->getFieldKey()}($data->getFieldValue());
         }
+        return $this;
     }
 
     public function addData($data): self

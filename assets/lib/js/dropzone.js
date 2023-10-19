@@ -52,7 +52,8 @@ import Cropper from 'cropperjs';
                 dropzone.on('success', function (file) {
                     // On récupère la réponse envoyée
                     let response    =    JSON.parse(file.xhr.responseText);
-                    console.log(response);
+                    // DEBUG
+                    //console.log(response);
                     // Si pas d'erreurs.
                     if (response.error == null) {
                         // Si une vignette est présente (cas des PDFs)

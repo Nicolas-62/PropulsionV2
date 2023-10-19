@@ -257,7 +257,7 @@ abstract class BoController extends AbstractCrudController
                 // Ajout d'une ligne
                 $mediaFields[] =  FormField::addRow();
                 // Ajout d'un champ d'upload d'un média
-                $imageField = Field::new('media' . ($index + 1), ucfirst($mediaspec->getName()) . ' : téléchargez un média ou...');
+                $imageField = Field::new('media' . ($index + 1), ucfirst($mediaspec->getLabel()) . ' : téléchargez un média ou...');
                 $imageField->setColumns(8);
                 // Récupération du média.
                 $media = $this->entityManager->getRepository($this->getEntityFqcn())->getMedia($this->entity, $mediaspec);
