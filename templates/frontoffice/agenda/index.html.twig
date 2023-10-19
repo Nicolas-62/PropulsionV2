@@ -1,42 +1,5 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
-
-{% block javascripts %}
-    <script>
-        // DROPDOWN SELECT
-
-        // Récupération des éléments
-        const dropDownItems  = document.querySelectorAll('.dropdown-select-item');
-        const dropDownButton = document.querySelector('.dropdown-select-button');
-        const allEventCards  = document.querySelectorAll('.category-tous-les-evenements');
-
-        // Ajout des écouteurs d'événements
-        dropDownItems.forEach(function(item) {
-            item.addEventListener('click', function(event) {
-                // console.log('changement de selecteur');
-                dropDownButton.innerHTML = event.target.innerHTML;
-
-                // Affichage des cartes en fonction de la catégorie sélectionnée
-                allEventCards.forEach(function(card) {
-                    let selectedCategory = document.querySelector('.dropdown-select-button').innerHTML.toLowerCase();
-                    selectedCategory = selectedCategory.replace(/ /g, '-');
-                    selectedCategory = selectedCategory.replace(/[éè]/g, 'e');
-                    //console.log('Catégorie sélectionnée ' + selectedCategory);
-
-                    if(card.classList.contains('category-' + selectedCategory)) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-
-            });
-        });
-    </script>
-
-{% endblock %}
-
 {% block body %}
-
     <div class="px-lg-5 container-fluid">
         <div class="row font-primary">
             <div class="px-lg-5 px-md-5 pt-5 row">

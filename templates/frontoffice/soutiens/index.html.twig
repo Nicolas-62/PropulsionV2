@@ -5,7 +5,9 @@
 
 
     <!-- ARTISTES ACCOMPAGNES -->
-    <div class="p-lg-5 container-fluid">
+
+    {% do category_accomp.getDatas(locale) %}
+    <div id="{{ category_accomp.title }}" class="p-lg-5 container-fluid">
         <div class="p-sm-5 p-md-5 p-lg-0 px-lg-3">
             <div class="row">
                 <div class=" text-center text-lg-start col-md-6 col-lg-3">
@@ -24,7 +26,6 @@
                 </div>
             </div>
             <div class="fs-5 py-4 px-3 px-lg-0">
-                {% do category_accomp.getDatas(locale) %}
                 {{ category_accomp.description|raw }}
             </div>
         </div>
@@ -43,11 +44,12 @@
     </div>
 
     <!-- AUDITIONS -->
-    <div class="p-lg-5 bg-grey container-fluid">
+    {% do category_audition.getDatas(locale) %}
+    <div id="{{ category_audition.title }}" class="p-lg-5 bg-grey container-fluid">
         <div class="p-sm-5 p-md-5 py-lg-0 px-lg-3">
             <div class="row">
                 <div class="mb-5 mt-3 mt-lg-0 mb-lg-0 text-center text-lg-start col-md-6 col-lg-3">
-                    <h1 class="">Auditions</h1>
+                    <h1 class="">{{ category_audition.title }}</h1>
                 </div>
                 <div class="text-center text-lg-start col-md-6 col-lg-4 offset-lg-2">
                     <h2>Dispositif national de repérage et de sélection de nouveaux talents</h2>
@@ -55,13 +57,9 @@
                 <div class="col-md-12 col-lg-3" style="line-height: 40pt">
 {#                    <p class="objectif-soutiens">Les inouïs du printemps de Bourges</p>#}
                     <img class="img-fluid" src="{{ asset(getSiteImagePath('Logo_inouis_NB.png')) }}">
-
                 </div>
             </div>
-
-
             <div class="fs-5 py-4 px-3 px-lg-0">
-                {% do category_audition.getDatas(locale) %}
                 {{ category_audition.description|raw }}
             </div>
         </div>
@@ -81,8 +79,9 @@
     </div>
 
     <!-- Évènements Actualités -->
+    {% do category_event.getDatas(locale) %}
 
-    <div class="p-lg-5 container-fluid">
+    <div id="{{ category_event.title }}" class="p-lg-5 container-fluid">
         <div class="p-sm-5 p-md-5 p-lg-0">
             <div class="text-center text-lg-start row px-lg-3">
                 <h1 class="py-4">Evenements<br> Actualités</h1>
@@ -91,7 +90,6 @@
 
 
         <div class="h3 py-4 px-3 px-lg-3">
-            {% do category_event.getDatas(locale) %}
             {{ category_event.description|raw }}
         </div>
         <div class="row">

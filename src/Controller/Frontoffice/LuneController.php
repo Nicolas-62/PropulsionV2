@@ -74,7 +74,8 @@ class LuneController extends FOController
             // Catégories du menu
             foreach ($menu_categories as $category) {
                 if($category->getId() == $category_id){
-                    $menu_category_datas[$url] = $category->getDatas($this->params->get('locale'))->getTitleByLanguage();
+                    $category->getDatas($this->params->get('locale'));
+                    $menu_category_datas[$url] = $category;
                 }
             }
         }

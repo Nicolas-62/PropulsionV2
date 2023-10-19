@@ -40,5 +40,72 @@ $('.custom-select').select2({
     theme: 'bootstrap-5',
 });
 
-// test bootstrap & jquery well imported
-$('.dropdown-toggle').dropdown();
+$(document).ready(function() {
+    // Sélecteur principal de la vue
+    let $main               = $('body');
+    let $pageContainer      = $('#page-container');
+    let $pageLinkContainer  = $('#page-link-container');
+
+    // Fonctions
+
+    /*
+    * Affiche le contenu correspondant à l'entrée sélectionnée
+    * */
+    function showContent() {
+        // Récupérer l'entrée sélectionnée
+        let entryId = $(this).attr('data-entry');
+        // Cacher tous les contenus
+        $pageContainer.children().hide();
+        // Afficher le contenu correspondant à l'entrée sélectionnée
+        $("#"+entryId).show();
+        // Move the blue dot to all menu items
+        let menuItems = $main.find('.menu-item');
+        menuItems.removeClass('active');
+        // Move the blue dot to the selected menu item
+        let selectedMenuItem = $main.find('.menu-item[data-entry="' + entryId + '"]');
+        selectedMenuItem.addClass('active');
+    }
+
+    // Initialisation
+
+    // Afficher le premier élément
+    $pageLinkContainer.find('.menu-item').first().trigger('click');
+
+    // Initialisation des événements
+
+    // Au clique sur un élément du menu gauche (pages infos pratiques et institutionnel)
+    $pageLinkContainer.find('.menu-item').on('click', showContent);
+
+
+
+    // SELECTEUR DE CATEGORIES D'EVENEMENTS  ToDo : à réécrire en jQuery
+
+    // Récupération des éléments
+    const dropDownItems = document.querySelectorAll('.dropdown-select-item');
+    const dropDownItemsLi = document.querySelectorAll('.dropdown-select-item-li');
+    const dropDownButton = document.querySelector('.dropdown-select-button');
+    const allEventCards = document.querySelectorAll('.category-tous-les-evenements');
+
+    // Ajout des écouteurs d'événements
+    dropDownItems.forEach(function(item) {
+        item.addEventListener('click', function(event) {
+            // console.log('changement de selecteur');
+            dropDownButton.innerHTML = event.target.innerHTML;
+
+            // Affichage des cartes en fonction de la catégorie sélectionnée
+            allEventCards.forEach(function(card) {
+                let selectedCategory = document.querySelector('.dropdown-select-button').innerHTML.toLowerCase();
+                selectedCategory = selectedCategory.replace(/ /g, '-');
+                selectedCategory = selectedCategory.replace(/[éè]/g, 'e');
+                //console.log('Catégorie sélectionnée ' + selectedCategory);
+
+                if(card.classList.contains('category-' + selectedCategory)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+        });
+    });
+});
