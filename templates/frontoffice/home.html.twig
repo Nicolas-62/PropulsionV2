@@ -38,7 +38,7 @@
                                                         {% if event.style is not empty and event.style is not null %}
                                                             {% do event.category.getDatas(locale) %}
                                                             <div class="col-7 theme-2" style="background-color: {{ event.category.themeBackColor }}" >
-                                                                <img class="card-ticketing" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}" alt="">{{ event.style }}
+                                                                <img class="card-ticketing" src="{{ asset(getSiteImagePath('MINI_BILLETTERIE.svg')) }}" alt="">{{ event.style }}
                                                             </div>
                                                         {% endif %}
                                                     </div>
@@ -63,7 +63,7 @@
                                                         </div>
 
                                                         <a href="{% if event.ticketingLink is not empty %}{{ event.ticketingLink }}{% else %}https://billetterie.lalune.net/{% endif %}">
-                                                            <img class="btn-billetterie-card" src="{{ asset(('build/front/images/LIEN_BILLETTERIE.jpg')) }}" alt="...">
+                                                            <img class="btn-billetterie-card" src="{{ asset(getSiteImagePath('LIEN_BILLETTERIE.jpg')) }}" alt="...">
                                                         </a>
                                                     </div>
                                                 </div>
@@ -206,12 +206,12 @@
                 <div class="row py-5 text-center">
                     <div class="col-12 pb-3">
                         <a href="http://www.lalune.net/concert-amiens/bruits-de-lune/">
-                            <img class="img-bruits-lune" src="{{ asset('build/maquette/images/BRUITS_LUNE.png') }}">
+                            <img class="img-bruits-lune" src="{{ asset(getSiteImagePath('BRUITS_LUNE.png')) }}">
                         </a>
                     </div>
                     <div class="col-12 py-3">
                         <a href="https://open.spotify.com/user/lalunedespirates">
-                            <img class="img-lune-spotify" src="{{ asset('build/maquette/images/LUNE_SPOTIFY.svg') }}">
+                            <img class="img-lune-spotify" src="{{ asset(getSiteImagePath('LUNE_SPOTIFY.svg')) }}">
                         </a>
                         <div class="fs-5">
 
@@ -224,7 +224,7 @@
                     <div class="col-12 py-3">
                         <div class="h2"> Playlist</div>
                         <a href="https://open.spotify.com/user/lalunedespirates">
-                            <img class="img-spotify" src="{{ asset('build/maquette/images/SPOTIFY.svg') }}">
+                            <img class="img-spotify" src="{{ asset(getSiteImagePath('SPOTIFY.svg')) }}">
                         </a>
                         <div class="fs-5">
                             <b>Abonnez-vous</b> à notre playlist

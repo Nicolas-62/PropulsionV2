@@ -16,7 +16,7 @@
     <div class="row-header" style="margin-left: 0 !important; margin-right: 0 !important">
         <div class="col-3 p-4">
             <a href="{{ path('fo_home_index') }}">
-                <img class="img-fluid logo-header" src="{{ asset('build/maquette/images/LOGO_HEADER.jpg') }}">
+                <img class="img-fluid logo-header" style="max-height: 200px" src="{{ asset(getSiteImagePath('LOGO_HEADER.svg')) }}">
             </a>
         </div>
         <div class="col-lg-9 col-md-9 d-block flex-column align-items-start p-0">
@@ -48,10 +48,8 @@
                     {% endfor %}
                     <div class="d-flex align-items-center">
                     {% for src, siteWeb in btns %}
-                        {% set url = 'build/front/images/' %}
-                        {% set src = url ~ src %}
                             <a href="{{ siteWeb }}" class="mx-1">
-                                <li><img class="btns-header" style="height: 57px" src="{{ asset(src) }}"></li>
+                                <li><img class="btns-header" style="height: 57px" src="{{ asset(getSiteImagePath(src)) }}"></li>
                             </a>
                     {% endfor %}
                     </div>
@@ -95,9 +93,9 @@
 <div class="d-lg-none container-fluid">
     <div class="row">
 
-        <div class="col-6">
+        <div class="col-6 p-3">
             <a href="{{ path('fo_home_index') }}">
-                <img style="max-width: 100%" src="{{ asset('build/maquette/images/LOGO_ACTUEL.png') }}">
+                <img style="max-width: 100%" src="{{ asset(getSiteImagePath('LOGO_HEADER.svg')) }}">
             </a>
         </div>
         <div class="col-6">
@@ -125,16 +123,14 @@
         </div>
         {% for src, siteWeb in btns %}
             <div class="col-3 text-center">
-                {% set url = 'build/front/images/' %}
-                {% set src = url ~ src  %}
                 <a href="{{ siteWeb }}" class="mx-1">
-                <img class="btns-header" src="{{ asset(src) }}">
+                <img class="btns-header" src="{{ asset(getSiteImagePath(src)) }}">
                 </a>
             </div>
         {% endfor %}
         <div class="col-3 text-center">
             <button class="btn btn-move-up "  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                <img class="btns-header" src="{{ asset('build/maquette/images/MENU_HEADER.png') }}">
+                <img class="btns-header" src="{{ asset(getSiteImagePath('MENU_HEADER.png')) }}">
             </button>
         </div>
     </div>

@@ -69,7 +69,7 @@
         {% endif %}
         {% if event.style is not null and event.style is not empty %}
             <div class="col-7 white fs-6 theme-2 justify-content-start text-uppercase" style="background-color: black; }};">
-                <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}"> {{ event.style }}
+                <img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(getSiteImagePath('MINI_BILLETTERIE.svg')) }}"> {{ event.style }}
             </div>
         {% endif %}
         {% if actions %}
@@ -137,7 +137,7 @@
                 <a class="text-decoration-none" href="{{ path('fo_actions_detail', { 'title': event.title}) }}">
             {% endif %}
                 <div class="">
-                    <img src="{{ asset(('build/front/images/OEIL.png')) }}" class="card-img-top rounded-0" style="height: 30px; min-width: 37px" alt="...">
+                    <img src="{{ asset(getSiteImagePath('OEIL.png')) }}" class="card-img-top rounded-0" style="height: 30px; min-width: 37px" alt="...">
                 </div>
             </a>
         {% endif %}

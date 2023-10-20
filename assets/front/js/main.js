@@ -71,6 +71,14 @@ $(document).ready(function() {
         selectedMenuItem.addClass('active');
     }
 
+
+
+    // Ajoutez un gestionnaire d'événement de clic au bouton
+    $('#btn-modal').click(function() {
+        // Affichez la modal en utilisant jQuery
+        $('#Modal').modal('show');
+    });
+
     // Initialisation
 
     // Afficher le premier élément

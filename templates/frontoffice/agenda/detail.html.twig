@@ -41,7 +41,7 @@
                     >
                         {{ category.title | upper }}
                     </div>
-                    <div class="col-9 text-uppercase white justify-content-start px-3" style="background-color: black;min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px"><img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">{{ article.style }}</div>
+                    <div class="col-9 text-uppercase white justify-content-start px-3" style="background-color: black;min-height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px"><img class="" style="width: 30px; padding-right: 5px;" src="{{ asset(getSiteImagePath('MINI_BILLETTERIE.svg')) }}">{{ article.style }}</div>
                 </div>
             </div>
             <div class="card-container" >
@@ -138,7 +138,7 @@
                         <div class="col-6 text-center">
 
                             <a class="text-decoration-none" href="https://billetterie.lalune.net/abonnements/165251527696b7/renouvellement">
-                            <img class="" style="max-height: 50px" src="{{ asset('build/maquette/images/LUNE_ABONNE.svg') }}">
+                            <img class="" style="max-height: 50px" src="{{ asset(getSiteImagePath('LUNE_ABONNE.svg')) }}">
                             <div style="font-size: 14px">
                                 Profitez du tarif abonné<br>
                                 <b>
@@ -150,7 +150,7 @@
                         </div>
                     <div class="col-6 text-center">
                         <a class="text-decoration-none" href="https://pass.culture.fr/">
-                            <img style="max-height: 50px" src="{{ asset('build/maquette/images/LUNE_PASS_CULTURE.svg') }}">
+                            <img style="max-height: 50px" src="{{ asset(getSiteImagePath('LUNE_PASS_CULTURE.svg')) }}">
                             <div style="font-size: 14px">
                                 Tu as entre 15 et 18 ans ?<br>
                                 <b>Dispo sur le Pass Culture</b>
@@ -299,7 +299,7 @@
                     <!-- CARTE LUNE -->
                     <div class="py-5">
                         <a class="text-decoration-none" href="https://billetterie.lalune.net/abonnements/165251527696b7/renouvellement">
-                            <img style="max-height: 163px " src="{{ asset('build/maquette/images/CARTE_LUNE_BAS.svg') }}">
+                            <img style="max-height: 163px " src="{{ asset(getSiteImagePath('CARTE_LUNE_BAS.svg')) }}">
                             <div class="fs-5">
                                 Concerts Gratuits Abonnés & Réductions<br>
                                 <b> Abonnez-vous !</b>
@@ -308,7 +308,7 @@
                     </div>
                     <div class="py-5 h3">
                         <a class="text-decoration-none" href="https://pass.culture.fr/">
-                        <img style="max-height: 90px" src="{{ asset('build/maquette/images/PASS_CULTURE_BIG.svg') }}">
+                        <img style="max-height: 90px" src="{{ asset(getSiteImagePath('PASS_CULTURE_BIG.svg')) }}">
                             <div class="fs-5">
                                 Tu as entre 15 et 18ans ?<br>
                                 <b>Dispo sur le Pass Culture</b>
@@ -317,7 +317,7 @@
                     </div>
                     <div class="py-5">
                         <a class="text-decoration-none" href="{{ path('fo_infos_index') }}">
-                            <img style="max-height: 150px" src="{{ asset('build/maquette/images/INFOS_PRATIQUES.svg') }}">
+                            <img style="max-height: 150px" src="{{ asset(getSiteImagePath('INFOS_PRATIQUES.svg')) }}">
                         </a>
                     </div>
                 </div>
@@ -425,7 +425,7 @@
                     <div class="p-5">
                         <div class="py-5" style="max-height: 140px; max-width: 266px;min-width: 265px">
                             <a class="text-decoration-none" href="{{ path('fo_infos_index') }}">
-                                <img src="{{ asset('build/maquette/images/INFOS_PRATIQUES.svg') }}">
+                                <img src="{{ asset(getSiteImagePath('INFOS_PRATIQUES.svg')) }}">
                             </a>
                         </div>
                     </div>

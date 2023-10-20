@@ -24,11 +24,11 @@
 
     <!-- LOGOS -->
     <div class="row pb-5">
-        <div class="col-md-12 col-lg-10">
-            <img class="img-fluid logo-footer" src="{{ asset('build/maquette/images/FOOTER_LUNE.png') }}">
+        <div class="col-md-12 col-lg-10 px-4">
+            <img class="img-fluid logo-footer" class="img-fluid" style="max-width: 400px" src="{{ asset(getSiteImagePath('FOOTER_LOGO.svg')) }}">
         </div>
-        <div class="d-none d-lg-block col-lg-2">
-            <img class="img-fluid" style="max-width: 115px" src="{{ asset('build/maquette/images/FOOTER_LOGO.png') }}">
+        <div class="d-none d-lg-block col-lg-2 text-end px-5">
+            <img class="img-fluid" style="max-width: 115px" src="{{ asset(getSiteImagePath('FOOTER_LOGO2.png')) }}">
         </div>
     </div>
 
@@ -64,7 +64,7 @@
         <div class="col-sm  ">
             <div class="row">
                 <div class="col-12 text-center mb-4 mb-lg-0"  id="btn-modal">
-                            <img class="" style="max-height: 60px;cursor: pointer" src="{{ asset(getSiteImagePath('FOOTER_ENVELOPPE.svg')) }}">
+                    <img class="" style="max-height: 60px;cursor: pointer" src="{{ asset(getSiteImagePath('FOOTER_ENVELOPPE.svg')) }}">
                     <form style="cursor: pointer">
                         <div class="row mt-3">
                             <div  class="text-center">
@@ -81,12 +81,11 @@
     <!-- MEDIAS SOCIAUX -->
     <div class="row">
         {% for src, link in medias %}
-            {% set url = 'build/maquette/images/' %}
-            {% set ext = '.png' %}
-            {% set src = url ~ src ~ ext %}
+            {% set ext = '.svg' %}
+            {% set src =  src ~ ext %}
             <div class=" text-center  col {% if loop.index0 == 0 %}{% endif %}">
                 <a href="{{ link }}">
-                    <img class="img-fluid" style="min-width: 30px; max-height: 60px" src="{{ asset(src) }}">
+                    <img class="img-fluid" style="min-width: 30px; max-height: 60px" src="{{ asset(getSiteImagePath(src)) }}">
                 </a>
             </div>
         {% endfor %}
@@ -153,7 +152,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
