@@ -44,6 +44,7 @@ $(document).ready(function() {
     // Sélecteur principal de la vue
     let $main               = $('body');
     let $pageContainer      = $('#page-container');
+    let $footerContainer    = $('#footer-container');
     let $pageLinkContainer  = $('#page-link-container');
 
     // Fonctions
@@ -54,10 +55,14 @@ $(document).ready(function() {
     function showContent() {
         // Récupérer l'entrée sélectionnée
         let entryId = $(this).attr('data-entry');
+        // Récupérer le footer séléctionné
+        let footerId = $(this).attr('data-footer');
         // Cacher tous les contenus
         $pageContainer.children().hide();
+        $footerContainer.children().hide();
         // Afficher le contenu correspondant à l'entrée sélectionnée
         $("#"+entryId).show();
+        $("#"+footerId).show();
         // Move the blue dot to all menu items
         let menuItems = $main.find('.menu-item');
         menuItems.removeClass('active');

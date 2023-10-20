@@ -3,7 +3,7 @@
 
     <div class="px-4 p-lg-5">
         <div class="row">
-            <div class="col-lg-4 col-md-12 p-5 menu text-md-center text-sm-center">
+            <div id="page-link-container" class="col-lg-4 col-md-12 p-5 menu text-md-center text-sm-center">
                 <div class="row">
                     <div class="col-lg-10 col-md-12 pt-lg-5">
                         {% for article in articles %}
@@ -23,7 +23,7 @@
             </div>
 
 
-            <div class="content col-lg-8 col-md-12">
+            <div id="page-container"  class="col-lg-8 col-md-12">
                 {% for article in articles %}
                     <div id="entry{{ loop.index }}" class="py-5 px-lg-5 {% if loop.index > 1 %}hidden{% endif %}" >
                         <div class="row">

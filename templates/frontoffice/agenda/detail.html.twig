@@ -67,6 +67,15 @@
                     <div class="py-4 fs-3 text-center" style="color: red">
                         Cet évènement est annulé.
                     </div>
+
+                    {% if article.cancelledOrReportedDescription %}
+                        <div class="text-center fs-4">
+                            {{ article.cancelledOrReportedDescription }}
+                        </div>
+                    {% endif %}
+
+
+
                     <!-- Lien de remboursement -->
                     {% if article.refund %}`
                         <div class="text-center mb-4">
@@ -78,6 +87,11 @@
                     <div class="py-4 fs-3 text-center" style="">
                         Cet évènement est reporté.
                     </div>
+                    {% if article.cancelledOrReportedDescription %}
+                        <div class="text-center fs-4">
+                            {{ article.cancelledOrReportedDescription }}
+                        </div>
+                    {% endif %}
                 {% elseif article.full %}
                     <div class="py-4 fs-3 text-center" style="color: red">
                         Cet évènement est plein.
@@ -105,11 +119,11 @@
                             {% endif %}
                         </div>
                     </div>
-                        {% if article.ticketingLink %}
-                            <div class="col text-center">
-                                <a href="{{ article.ticketingLink }}" class="btn-read-card">Lien Billetterie</a>
-                            </div>
-                        {% endif %}
+                    {% if article.ticketingLink %}
+                        <div class="col text-center">
+                            <a href="{{ article.ticketingLink }}" class="btn-read-card">Lien Billetterie</a>
+                        </div>
+                    {% endif %}
                 </div>
                 {% else %}
                     <div class="pt-2 pb-5 fs-4">
@@ -335,7 +349,7 @@
                         {{ child.description | raw }}
                     </div>
                     <!-- Image Artiste Ou vidéos artistes-->
-                    {% set media3 = child.getMedia(1) %}
+                    {% set media3 = child.getMedia(33) %}
                     <div class="pt-3">
 
                         {% if child.youtubeLink is not empty and child.youtubeLink is not null %}

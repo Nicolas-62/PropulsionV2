@@ -80,6 +80,7 @@ class Article
     private ?string $reducedPrice  = '';
     private ?string $refund  = '';
     private ?string $eventName  = '';
+    private ?string $cancelledOrReportedDescription  = '';
 
     private array $files = array();
 

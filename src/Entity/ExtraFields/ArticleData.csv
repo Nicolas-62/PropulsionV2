@@ -32,3 +32,4 @@
 "reducedPrice","Tarif réduit","TextField","false","3","",
 "refund","Remboursement","TextField","false","3","",
 "eventName","Nom de l'évènement","TextField","false","3","",
+"cancelledOrReportedDescription","Description annulation ou report","TextField","false","3","",
