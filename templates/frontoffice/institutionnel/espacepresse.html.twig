@@ -41,8 +41,7 @@
                             {% set media = article.getMedia(20) %}
 
                             {% if media is not null %}
-                                {% set url = '/assets/images/' ~ media.media %}
-                                <img src="{{ asset((url)) }}"  class="card-img-top rounded-0 transport-info object-fit-contain" alt="...">
+                                <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':media.media} ) }}"  class="card-img-top rounded-0 transport-info object-fit-contain" alt="...">
                             {% endif  %}
 
 

@@ -7,13 +7,11 @@
                 <a class="text-decoration-none stretched-link" href="{{ path('fo_soutiens_detail', { 'slug': event.slug,}) }}">
         {% endif %}
         {% if media is not null %}
-            {% set url = '/assets/images/' ~ media.media %}
-            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
+            <img src="{{ url('ressources_image', {'width':'medium','height':'medium', 'media':media.media} ) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
         {% elseif agenda %}
             {% set mediaCategoryAgenda = category_agenda.getMedia(22) %}
             {% if mediaCategoryAgenda is not null %}
-                {% set url = 'assets/images/' ~ mediaCategoryAgenda.media %}
-                <img src="{{ asset((url)) }}" class="d-block w-100" alt="...">
+                <img src="{{ url('ressources_image', {'width':'medium','height':'medium', 'media':mediaCategoryAgenda.media} ) }}" class="d-block w-100" alt="...">
             {% endif %}
         {% elseif actu %}
             {% set mediaCategoryActu = category_actu.getMedia(23) %}
@@ -25,8 +23,7 @@
 
             {% set mediaCategorySoutiens = category_soutiens.getMedia(24) %}
             {% if mediaCategorySoutiens is not null %}
-                {% set url = 'assets/images/' ~ mediaCategorySoutiens.media %}
-                <img src="{{ asset((url)) }}" class="d-block w-100" alt="...">
+                <img src="{{ url('ressources_image', {'width':'medium','height':'medium', 'media':mediaCategorySoutiens.media} ) }}" class="d-block w-100" alt="...">
             {% endif %}
         {% endif %}
 

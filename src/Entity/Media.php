@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Constants\Constants;
 use App\Entity\Traits\ErrorTrait;
 use App\Entity\Traits\TimesTampableTrait;
 use App\Repository\MediaRepository;
@@ -9,6 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use PHPUnit\TextUI\XmlConfiguration\Constant;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -42,7 +44,7 @@ class Media
     private ?mediaType $mediaType = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $section = 'phototheque';
+    private ?string $section = Constants::DEFAULT_SECTION;
 
 // TEST VICHUPLOAD BUNDLE
 //    #[Assert\Image(mimeTypes: ['image/jpeg'])]
@@ -207,6 +209,15 @@ class Media
     public function getSection(): ?string
     {
         return $this->section;
+    }
+
+    public function getSectionPath(): string
+    {
+        if($this->section != null && $this->section != Constants::DEFAULT_SECTION) {
+            return $this->section.'/';
+        }else{
+            return '';
+        }
     }
 
     public function setSection(?string $section): self

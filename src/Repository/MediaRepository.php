@@ -57,7 +57,7 @@ class MediaRepository extends ServiceEntityRepository
             ->where('m.section = :section')
             ->andWhere('mediaLinks.article = :article')
             ->setParameter('article', $entity)
-            ->setParameter('section', 'galerie');
+            ->setParameter('section', 'gallery');
         return $query->getQuery()->getResult();
     }
 

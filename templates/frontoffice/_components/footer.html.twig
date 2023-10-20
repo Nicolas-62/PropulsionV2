@@ -100,8 +100,7 @@
             {% set media_footer = sponsor_img.getMedia(11) %}
             <div class="col mb-2 text-center">
                 {% if media_footer is not null %}
-                    {% set url = '/assets/images/' ~ media_footer.media %}
-                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0" style="max-height: 100px; max-width: 163px" alt="...">
+                    <img src="{{ url('ressources_image', {'width':'medium','height':'medium', 'media':media_footer.media} ) }}" class="card-img-top rounded-0" style="max-height: 100px; max-width: 163px" alt="...">
                 {% endif %}
             </div>
         {% endfor %}

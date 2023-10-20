@@ -21,13 +21,11 @@
             {% set category = article.category %}
             {% do category.getDatas(locale) %}
             {% if media is not null %}
-                {% set url = '/assets/images/' ~ media.media %}
-                <img src="{{ asset((url)) }}" class="rounded-0 w-100 img-fluid"   alt="...">
+                <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':media.media} ) }}" class="rounded-0 w-100 img-fluid"   alt="...">
             {% else %}
                 {% set mediaCategoryAgenda = category_agenda.getMedia(25) %}
                 {% if mediaCategoryAgenda is not null %}
-                    {% set url = 'assets/images/' ~ mediaCategoryAgenda.media %}
-                    <img src="{{ asset((url)) }}" class="d-block w-100" alt="...">
+                    <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':mediaCategoryAgenda.media} ) }}" class="d-block w-100" alt="...">
                 {% endif %}
             {% endif %}
         </div>

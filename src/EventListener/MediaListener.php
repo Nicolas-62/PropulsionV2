@@ -136,7 +136,7 @@ class MediaListener implements EventSubscriberInterface
                             $media->setMedia($new_filename);
                             $media->setMediaType($this->entityManager->getRepository(MediaType::class)->findOneByFiletype($new_filename));
                             // On précise la section pour na pas les voir dans la phototheque.
-                            $media->setSection('galerie');
+                            $media->setSection('gallery');
                             // Todo controler la saisie de la description de l'image
                             $this->entityManager->persist($media);
                         }

@@ -18,13 +18,11 @@
 
                                                 {% set media = event.getMedia(9) %}
                                                 {% if media is not null %}
-                                                    {% set url = '/assets/images/' ~ media.media %}
-                                                        <img src="{{ asset((url)) }}" class="d-block w-100" alt="...">
+                                                        <img src="{{ url('ressources_image', {'width':'large','height':'large', 'media':media.media} ) }}" class="d-block w-100" alt="...">
                                                     {% else %}
                                                         {% set mediaCategoryAgenda = category_agenda.getMedia(21) %}
                                                         {% if mediaCategoryAgenda is not null %}
-                                                            {% set url = 'assets/images/' ~ mediaCategoryAgenda.media %}
-                                                            <img src="{{ asset((url)) }}" class="d-block w-100" alt="...">
+                                                            <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':mediaCategoryAgenda.media} ) }}" class="d-block w-100" alt="...">
                                                         {% endif %}
                                                     {% endif %}
 
@@ -177,8 +175,7 @@
 
                                     {% set mediaArticle = event.getMedia(8) %}
                                     {% if mediaArticle is not null %}
-                                        {% set url = '/assets/images/' ~ mediaArticle.media %}
-                                        <img src="{{ asset((url)) }}" class="img-fluid w-100" alt="...">
+                                        <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':mediaArticle.media} ) }}" class="img-fluid w-100" alt="...">
                                     {% endif %}
                                     <div class="p-4">
                                         <!-- TITRE -->

@@ -3,6 +3,7 @@
 namespace App\Controller\Backoffice;
 
 
+use App\Constants\Constants;
 use App\Entity\Article;
 use App\Entity\MediaType;
 use App\Field\ImageUploadField;
@@ -45,7 +46,7 @@ use function PHPUnit\Framework\throwException;
 class MediaCrudController extends BoController
 {
     // Nom de la section
-    public string $section            =   'phototheque';
+    public string $section            =   Constants::DEFAULT_SECTION;
     // Nom du type de média, utilisé pour nommage des templates
     public string $bo_model_name      =   '';
     public string $bo_models_name     =   '';

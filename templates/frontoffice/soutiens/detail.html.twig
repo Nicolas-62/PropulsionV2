@@ -14,8 +14,7 @@
                 <div class="d-block d-lg-none">
                     {% set media = article.getMedia(4) %}
                     {% if media is not null %}
-                        {% set url = '/assets/images/' ~ media.media %}
-                        <img src="{{ url }}" alt="{{ media.media}}" class="w-100 img-fluid">
+                        <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':media.media} ) }}" alt="{{ media.media}}" class="w-100 img-fluid">
                     {% endif %}
                 </div>
                 <div>
@@ -77,8 +76,7 @@
                 <div class="d-none d-lg-block">
                     {% set media = article.getMedia(4) %}
                     {% if media is not null %}
-                        {% set url = '/assets/images/' ~ media.media %}
-                        <img src="{{ url }}" alt="{{ media.media}}" class="w-100 img-fluid">
+                        <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':media.media} ) }}" alt="{{ media.media}}" class="w-100 img-fluid">
                     {% endif %}
                 </div>
                 <div class="mt-4">

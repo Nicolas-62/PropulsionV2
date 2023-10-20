@@ -30,8 +30,7 @@
                                     <li class="nav-item " style="z-index: {{ 1000 - loop.index }}">
                                         <a class="text-decoration-none" href="{{ path('gallery') }}">
                                             {% set longueurMax = 10 %}
-                                            {% set url = '/assets/images/gallery/' ~ media_header_value[0].media %}
-                                            <img src="{{ asset((url)) }}" class=" rounded-circle round-img-header" style="width: 80px;height: 80px; object-fit: cover" alt="...">
+                                            <img src="{{ url('ressources_image', {'width':'small','height':'small', 'media':media_header_value[0].media} ) }}" class=" rounded-circle round-img-header" style="width: 80px;height: 80px; object-fit: cover" alt="...">
                                             {% if event_header.titleByLanguage|length > longueurMax %}
 
                                                 <div class="text-center ml-15" style="font-size: 12px">{{ event_header.dateEvent | date('d/m') }} </div>
@@ -109,8 +108,7 @@
                                     {% if loop.index < 5 %}
                                         <div class="col-6">
                                             <a class="text-decoration-none" href="{{ path('gallery') }}">
-                                                {% set url = '/assets/images/gallery/' ~ media_header_value[0].media %}
-                                                <img src="{{ asset((url)) }}" class="object-fit-cover rounded-circle round-img-header-sm" style="z-index:{{ 1000 +  loop.index }}; height: 50px;width: 50px" alt="...">
+                                                <img src="{{ url('ressources_image', {'width':'small','height':'small', 'media':media_header_value[0].media} ) }}" class="object-fit-cover rounded-circle round-img-header-sm" style="z-index:{{ 1000 +  loop.index }}; height: 50px;width: 50px" alt="...">
                                             </a>
                                         </div>
                                     {% endif %}
