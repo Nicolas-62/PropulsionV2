@@ -38,9 +38,10 @@ class CategoryRepository extends CMSRepository
      * @param bool $online
      * @param $field
      * @param $order
+     * @param $limit
      * @return ArrayCollection
      */
-    public function getArticles(array $category_ids, $code_langue, bool $online = true, string $field = 'ordre', string $order = 'DESC'): ArrayCollection
+    public function getArticles(array $category_ids, $code_langue, bool $online = true, string $field = 'ordre', string $order = 'DESC', $limit = null): ArrayCollection
     {
 
         $articles = array();
@@ -52,7 +53,9 @@ class CategoryRepository extends CMSRepository
             if ($category != null) {
                 // Récupération des articles de la catégorie.
                 $articlesByCategory = $category->getArticles()->filter(function (Article $article) use ($code_langue, $online) {
+                    // Récupération des datas de l'article.
                     $article->getDatas($code_langue);
+                    // Récupération de l'article en ligne ou en mode preview.
                     $preview = $this->session->get('preview');
                     $returnFlag = true;
                     if ($online && $preview == null) {
@@ -63,9 +66,15 @@ class CategoryRepository extends CMSRepository
             }
             $articles = array_merge($articlesByCategory->toArray(), $articles);
         }
-
+        // On transforme le tableau en ArrayCollection.
         $articles = new ArrayCollection($articles);
-        // Trie des articles.
+
+        // Si on a précisé une limite, on la prend en compte.
+        if($limit){
+            $articles = new ArrayCollection($articles->slice(0, $limit));
+        }
+
+        // Trie des articles par l'ordre passé en paramètre.
         $iterator = $articles->getIterator();
         $iterator->uasort(function ($a, $b) use ($field, $order) {
             if ($a->{'get' . ucfirst($field)}() == $b->{'get' . ucfirst($field)}()) {

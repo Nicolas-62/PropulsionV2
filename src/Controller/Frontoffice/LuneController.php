@@ -50,22 +50,21 @@ class LuneController extends FOController
 
 
         // Récupération des articles de la galerie
-        $category_gallery_articles = $this->entityManager->getRepository(Category::class)->getArticles([$_ENV['GALLERY_CATEGORY_ID']], $this->params->get('locale'), true, 'dateEvent', 'DESC');
-        $this->data['category_gallery_articles_header'] = $category_gallery_articles;
-        // Photos cliquables de la gallerie dans le menu
-        $array_photos = array();
+        $articles = $this->entityManager->getRepository(Category::class)->getArticles([$_ENV['GALLERY_CATEGORY_ID']], $this->params->get('locale'), true, 'dateEvent', 'DESC', 4);
+
+        // Tableau associatif des articles de la galerie avec leur permière photo trouvée.
+        $gallery_articles = array();
         // Pour chaque article de la galerie
-        foreach($category_gallery_articles as $article) {
-            $article_id = $article->getId();
+        foreach($articles as $index => $article) {
+            $gallery_articles[$index] = array('article' => $article, 'photos' => null);
             // Obtenez les photos liées à l'article
             $photos = $this->entityManager->getRepository(Media::class)->getPhotos($article);
             if (isset($photos) && count($photos) > 0){
-                // Ajoutez la premiere photo au tableau associatif avec l'id de l'article comme clé
-                $array_photos[$article_id][] = $photos[0];
+                // Ajoutez les photos à l'article
+                $gallery_articles[$index]['photos'] = $photos;
             }
         }
-        $this->data['array_photos_header']              = $array_photos;
-
+        $this->data['gallery_articles_header'] = $gallery_articles;
 
         // Catégories affichées dans le menu
         $menu_category_datas = array();

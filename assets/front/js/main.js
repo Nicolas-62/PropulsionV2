@@ -41,6 +41,7 @@ $('.custom-select').select2({
 });
 
 $(document).ready(function() {
+
     // Sélecteur principal de la vue
     let $main               = $('body');
     let $pageContainer      = $('#page-container');

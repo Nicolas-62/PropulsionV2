@@ -23,27 +23,34 @@
             <!-- Boutons galerie et Bouton Menu -->
             <nav class="navbar navbar-expand-lg col-12 mt-auto px-lg-5">
                 <ul class="navbar-nav w-100 justify-content-end pt-3 px-lg-5">
-                    {% for event_header in category_gallery_articles_header %}
-                        {% for media_header_key, media_header_value in array_photos_header %}
-                            {% if event_header.id == media_header_key %}
-                                {% if loop.index < 5 %}
+                    {% for article_datas in gallery_articles_header %}
+                        {% if article_datas['photos'] != null %}
+                            {% for photo in article_datas['photos'] %}
+                                {% if loop.index == 1 %}
                                     <li class="nav-item " style="z-index: {{ 1000 - loop.index }}">
-                                        <a class="text-decoration-none" href="{{ path('gallery') }}">
+                                        <a
+                                                class="text-decoration-none"
+                                                href="{{ url('ressources_image', {'width':'src','height':'src', 'media':photo.media}) }}"
+                                                data-lightbox="image-{{ loop.parent.loop.index0 }}"
+                                                data-title="{{ article_datas['article'].title ~ ' - ' ~ article_datas['article'].dateEvent | date("d/m/Y")  }}"
+                                        >
                                             {% set longueurMax = 10 %}
-                                            <img src="{{ url('ressources_image', {'width':'small','height':'small', 'media':media_header_value[0].media} ) }}" class=" rounded-circle round-img-header" style="width: 80px;height: 80px; object-fit: cover" alt="...">
-                                            {% if event_header.titleByLanguage|length > longueurMax %}
+                                            <img src="{{ url('ressources_image', {'width':'small','height':'small', 'media':photo.media} ) }}" class=" rounded-circle round-img-header" style="width: 80px;height: 80px; object-fit: cover" alt="...">
+                                            {% if article_datas['article'].titleByLanguage|length > longueurMax %}
 
-                                                <div class="text-center ml-15" style="font-size: 12px">{{ event_header.dateEvent | date('d/m') }} </div>
-                                                <div class="text-center ml-15" style="font-size: 12px">{{ event_header.titleByLanguage|slice(0, longueurMax) ~ '...' }}</div>
+                                                <div class="text-center ml-15" style="font-size: 12px">{{ article_datas['article'].dateEvent | date('d/m') }} </div>
+                                                <div class="text-center ml-15" style="font-size: 12px">{{ article_datas['article'].titleByLanguage|slice(0, longueurMax) ~ '...' }}</div>
                                             {% else %}
-                                                <div class="text-center ml-15" style="font-size: 12px">{{ event_header.dateEvent | date('d/m') }} </div>
-                                                <div class="text-center ml-15" style="font-size: 12px">{{ event_header.titleByLanguage }}</div>
+                                                <div class="text-center ml-15" style="font-size: 12px">{{ article_datas['article'].dateEvent | date('d/m') }} </div>
+                                                <div class="text-center ml-15" style="font-size: 12px">{{ article_datas['article'].titleByLanguage }}</div>
                                             {% endif %}
                                         </a>
                                     </li>
+                                {% else %}
+                                    <a  href="{{ url('ressources_image', {'width':'src','height':'src', 'media':photo.media}) }}" data-lightbox="image-{{ loop.parent.loop.index0 }}"></a>
                                 {% endif %}
-                            {% endif %}
-                        {% endfor %}
+                            {% endfor %}
+                        {% endif %}
                     {% endfor %}
                     <div class="d-flex align-items-center">
                     {% for src, siteWeb in btns %}
@@ -98,22 +105,19 @@
             </a>
         </div>
         <div class="col-6">
+
             <div class="row">
 
                 <div class="col-12">
                     <div class="row pt-3">
-                        {% for event_header in category_gallery_articles_header %}
-                            {% for media_header_key, media_header_value in array_photos_header %}
-                                {% if event_header.id == media_header_key %}
-                                    {% if loop.index < 5 %}
-                                        <div class="col-6">
-                                            <a class="text-decoration-none" href="{{ path('gallery') }}">
-                                                <img src="{{ url('ressources_image', {'width':'small','height':'small', 'media':media_header_value[0].media} ) }}" class="object-fit-cover rounded-circle round-img-header-sm" style="z-index:{{ 1000 +  loop.index }}; height: 50px;width: 50px" alt="...">
-                                            </a>
-                                        </div>
-                                    {% endif %}
-                                {% endif %}
-                            {% endfor %}
+                        {% for article_datas in gallery_articles_header %}
+                            {% if article_datas['photos'] != null  %}
+                                <div class="col-6">
+                                    <a class="text-decoration-none" href="{{ path('gallery') }}">
+                                        <img src="{{ url('ressources_image', {'width':'small','height':'small', 'media':article_datas['photos'][0].media} ) }}" class="object-fit-cover rounded-circle round-img-header-sm" style="z-index:{{ 1000 +  loop.index }}; height: 50px;width: 50px" alt="...">
+                                    </a>
+                                </div>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>

@@ -301,7 +301,7 @@ body {
   min-width: 300px;
   &:hover {
     background-color: #09b2FF;
-    color: white;
+    color: white !important;
     cursor: pointer;
     width: 300px;
   }

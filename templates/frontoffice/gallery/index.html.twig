@@ -1,64 +1,31 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
 
 {% block body %}
-{#    <div class="p-5">#}
-{#        <div class="row" data-masonry='{"percentPosition": true }'>#}
-{#            {% for media in medias_gallery %}#}
-{#                <div class="col-md-12 col-lg-3 p-3">#}
-{#                    {% set url = '/assets/images/' ~ media.media %}#}
-{#                    <img src="{{ asset((url)) }}" class="card-img-top rounded-0 object-fit-cover" alt="..." id="image{{ loop.index }}">#}
-{#                </div>#}
-{#            {% endfor %}#}
-{#        </div>#}
-{#    </div>#}
-
-        <div class="p-5">
-
-
-
-
-            <h3 class="mb-5 text-center">Galerie photos</h3>
-            <div class="mb-4">
-                {% do cat_galery.getDatas(locale)  %}
-                {{ cat_galery.description | raw }}
-            </div>
-
-            <div class="row">
-                {% for article in category_gallery_articles %}
-
-                    {% if array_photos[article.title] is defined %}
-                    <div class="col-lg-3">
-                        <div class="row">
-                            {% do article.getDatas(locale) %}
-                            <div class="">
-                                {% if array_photos[article.title] is not empty %}
-                                    {% for photo in array_photos[article.title] %}
-                                        <div class="">
-                                            <a href="{{ url('ressources_image', {'width':'src','height':'src', 'media':photo.media}) }}" data-lightbox="image-{{ loop.parent.loop.index0 }}" style="width: 100%" data-title="{{ article.title ~ ' - ' ~ article.dateEvent | date("d/m/Y")  }}">
-                                                {% if loop.index0 == 0 %}
-                                                    <img class="object-fit-cover" style="width: 100%" src="{{ url('ressources_image', {'width':'src','height':'src', 'media':photo.media}) }}" />
-                                                {% endif %}
-                                            </a>
-                                        </div>
-                                    {% endfor %}
-                                {% endif %}
-                                <h3 class="text-center">{{ article.title }} {% if article.dateEvent is defined %}- {{ article.dateEvent | date("d/m/Y") }}{% endif %}</h3>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    {% endif %}
-                {% endfor %}
-            </div>
+    <div class="p-5">
+        <h3 class="mb-5 text-center">Galerie photos</h3>
+        <div class="mb-4">
+            {% do cat_galery.getDatas(locale)  %}
+            {{ cat_galery.description | raw }}
         </div>
-
-    <!-- La modale -->
-    <div id="myModal" class="modal">
-        <span class="fs-1 close">&times;</span>
-        <img class="modal-content" id="modalImage">
+        <!-- Liste des vignettes -->
+        <div class="row">
+            {% for article_datas in gallery_articles %}
+                {% if article_datas['photos'] != null %}
+                    <div class="col-lg-3">
+                        {% do article_datas['article'].getDatas(locale) %}
+                        {% for photo in article_datas['photos'] %}
+                            <a href="{{ url('ressources_image', {'width':'src','height':'src', 'media':photo.media}) }}" data-lightbox="image-{{ loop.parent.loop.index0 }}" style="width: 100%" data-title="{{ article_datas['article'].title ~ ' - ' ~ article_datas['article'].dateEvent | date("d/m/Y")  }}">
+                                {% if loop.index0 == 0 %}
+                                    <img class="object-fit-cover" style="width: 100%" src="{{ url('ressources_image', {'width':'src','height':'src', 'media':photo.media}) }}" />
+                                {% endif %}
+                            </a>
+                        {% endfor %}
+                        <h3 class="text-center">{{ article_datas['article'].title }} {% if article_datas['article'].dateEvent is defined %}- {{ article_datas['article'].dateEvent | date("d/m/Y") }}{% endif %}</h3>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
-
 {% endblock %}
 
 
