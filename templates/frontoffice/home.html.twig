@@ -9,12 +9,13 @@
                         <div class="position-relative">
                                 <div id="carousel" class="carousel slide" data-bs-ride="carousel">
                                     <div class="carousel-inner">
-
+                                        {% set conditionIterator = 0 %}
                                         {% for event in events_agenda %}
 
                                             <a href="{{ url('fo_agenda_detail',{'slug':event.slug }) }}" class="text-decoration-none">
                                             {% if event.star == 1 and event.dateEvent >  date_yesterday %}
-                                            <div class="carousel-item active">
+                                                {% set conditionIterator = conditionIterator + 1 %}
+                                            <div class="carousel-item {% if conditionIterator == 1 %} active{% endif %}">
 
                                                 {% set media = event.getMedia(9) %}
                                                 {% if media is not null %}
@@ -70,11 +71,11 @@
                                         {% endfor %}
                                         </a>
                                     </div>
-                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                         <span class="visually-hidden">Previous</span>
                                     </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
                                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                         <span class="visually-hidden">Next</span>
                                     </button>
