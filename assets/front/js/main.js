@@ -92,34 +92,35 @@ $(document).ready(function() {
 
 
 
-    // SELECTEUR DE CATEGORIES D'EVENEMENTS  ToDo : à réécrire en jQuery
+    // SELECTEUR DE CATEGORIES D'EVENEMENTS
 
     // Récupération des éléments
-    const dropDownItems = document.querySelectorAll('.dropdown-select-item');
-    const dropDownItemsLi = document.querySelectorAll('.dropdown-select-item-li');
-    const dropDownButton = document.querySelector('.dropdown-select-button');
-    const allEventCards = document.querySelectorAll('.category-tous-les-evenements');
+    const $dropDownItems    =   $('.dropdown-select-item');
+    const $dropDownButton   =   $('.dropdown-select-button');
+    const $allEventCards    =   $('.card-event');
 
     // Ajout des écouteurs d'événements
-    dropDownItems.forEach(function(item) {
-        item.addEventListener('click', function(event) {
-            // console.log('changement de selecteur');
-            dropDownButton.innerHTML = event.target.innerHTML;
-
-            // Affichage des cartes en fonction de la catégorie sélectionnée
-            allEventCards.forEach(function(card) {
-                let selectedCategory = document.querySelector('.dropdown-select-button').innerHTML.toLowerCase();
-                selectedCategory = selectedCategory.replace(/ /g, '-');
-                selectedCategory = selectedCategory.replace(/[éè]/g, 'e');
-                //console.log('Catégorie sélectionnée ' + selectedCategory);
-
-                if(card.classList.contains('category-' + selectedCategory)) {
-                    card.style.display = 'block';
+    $dropDownItems.on('click', function(event) {
+        // On récupère l'élément sur lequel on a cliqué
+        let $dropDownItem = $(this);
+        // On injecte son label dans le bouton du dropdown.
+        $dropDownButton.text($dropDownItem.text());
+        // Si l'élément cliqué est associé à un filtre
+        if($dropDownItem.attr('data-id')){
+            // On affiche que les cards dont la sous catégorie correspond à celle de l'élément cliqué
+            $allEventCards.each(function(index, element) {
+                let $card = $(element);
+                // Si la card est associée à la sous catégorie de l'élément cliqué
+                if ($card.attr('data-id') === $dropDownItem.attr('data-id')) {
+                    // On l'affiche
+                    $card.show();
                 } else {
-                    card.style.display = 'none';
+                    $card.hide();
                 }
             });
-
-        });
+        }else{
+            // On affiche toutes les cards
+            $allEventCards.show();
+        }
     });
 });
