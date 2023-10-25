@@ -84,7 +84,6 @@ class LuneController extends FOController
         $sous_categorie_ids                     =     $this->entityManager->getRepository(Category::class)->find($this->category_agenda_id)->getChildrenIds();
         $events_header                          =     $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->params->get('locale'), true, 'dateEvent', 'DESC');
         $this->data['events_header']            =     $events_header;
-        $this->data['btns']                     =     $this->btns = array('CAMERA_HEADER.svg' => '/gallery', 'USER_HEADER.svg' => 'https://billetterie.lalune.net/identification', 'SAC_HEADER.svg' => 'https://billetterie.lalune.net/');
 
         $this->data['lien_billetterie']         =     $this->entityManager->getRepository(Article::class)->find(184);
         $this->data['lien_billetterie_profil']  =     $this->entityManager->getRepository(Article::class)->find(183);

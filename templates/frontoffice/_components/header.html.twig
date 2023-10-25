@@ -1,33 +1,25 @@
 <!-- HEADER LG -->
-{% block stylesheet %}
-    <style>
-        .row-header {
-            --bs-gutter-x: 0;
-            --bs-gutter-y: 0;
-            display: flex;
-            flex-wrap: wrap;
-            margin-top: 0;
-            margin-right: 0;
-            margin-left: 0;
-        }
-    </style>
-{% endblock %}
-<div class="d-none d-lg-block p-0 m-0">
-    <div class="row-header" style="margin-left: 0 !important; margin-right: 0 !important">
-        <div class="col-3 p-4">
-            <a href="{{ path('fo_home_index') }}">
-                <img class="img-fluid logo-header" style="max-height: 200px" src="{{ asset(getSiteImagePath('LOGO_HEADER.svg')) }}">
-            </a>
+<!-- Mode desktop -->
+<div class="container-fluid d-none d-lg-block" style="margin-top:35px">
+    <div class="row">
+        <div class="col-3">
+            <div style="padding-left: 30px">
+                <a href="{{ path('fo_home_index') }}">
+                    <img style="max-width: 234px" src="{{ asset(getSiteImagePath('LOGO_HEADER.svg')) }}" alt="la_lune_logo">
+                </a>
+            </div>
         </div>
-        <div class="col-lg-9 col-md-9 d-block flex-column align-items-start p-0">
+        <div class="col-9">
             <!-- Boutons galerie et Bouton Menu -->
-            <nav class="navbar navbar-expand-lg col-12 mt-auto px-lg-5">
-                <ul class="navbar-nav w-100 justify-content-end pt-3 px-lg-5">
+            <div style="padding-right: 30px">
+                <div class="d-flex justify-content-end align-items-center">
+                    {% set count_header = 0  %}
                     {% for article_datas in gallery_articles_header %}
                         {% if article_datas['photos'] != null %}
                             {% for photo in article_datas['photos'] %}
                                 {% if loop.index == 1 %}
-                                    <li class="nav-item " style="z-index: {{ 1000 - loop.index }}">
+                                    {% set count_header = count_header + 1  %}
+                                    <div style="z-index: {{ 1000 - count_header }}">
                                         <a
                                                 class="text-decoration-none"
                                                 href="{{ url('ressources_image', {'width':'src','height':'src', 'media':photo.media}) }}"
@@ -35,34 +27,45 @@
                                                 data-title="{{ article_datas['article'].title ~ ' - ' ~ article_datas['article'].dateEvent | date("d/m/Y")  }}"
                                         >
                                             {% set longueurMax = 10 %}
-                                            <img src="{{ url('ressources_image', {'width':'small','height':'small', 'media':photo.media} ) }}" class=" rounded-circle round-img-header" style="width: 80px;height: 80px; object-fit: cover" alt="...">
+                                            <img src="{{ url('ressources_image', {'width':'small','height':'small', 'media':photo.media} ) }}" class=" rounded-circle round-img-header">
                                             {% if article_datas['article'].titleByLanguage|length > longueurMax %}
 
-                                                <div class="text-center ml-15" style="font-size: 12px">{{ article_datas['article'].dateEvent | date('d/m') }} </div>
-                                                <div class="text-center ml-15" style="font-size: 12px">{{ article_datas['article'].titleByLanguage|slice(0, longueurMax) ~ '...' }}</div>
+                                                <div class="text-center header-gallery-art" style="font-size: 12px">{{ article_datas['article'].dateEvent | date('d/m') }} </div>
+                                                <div class="text-center header-gallery-art" style="font-size: 12px">{{ article_datas['article'].titleByLanguage|slice(0, longueurMax) ~ '...' }}</div>
                                             {% else %}
-                                                <div class="text-center ml-15" style="font-size: 12px">{{ article_datas['article'].dateEvent | date('d/m') }} </div>
-                                                <div class="text-center ml-15" style="font-size: 12px">{{ article_datas['article'].titleByLanguage }}</div>
+                                                <div class="text-center header-gallery-art" style="font-size: 12px">{{ article_datas['article'].dateEvent | date('d/m') }} </div>
+                                                <div class="text-center header-gallery-art" style="font-size: 12px">{{ article_datas['article'].titleByLanguage }}</div>
                                             {% endif %}
                                         </a>
-                                    </li>
+                                    </div>
                                 {% else %}
                                     <a  href="{{ url('ressources_image', {'width':'src','height':'src', 'media':photo.media}) }}" data-lightbox="image-{{ loop.parent.loop.index0 }}"></a>
                                 {% endif %}
                             {% endfor %}
                         {% endif %}
                     {% endfor %}
-                    <div class="d-flex align-items-center">
-                    {% for src, siteWeb in btns %}
-                            <a href="{{ siteWeb }}" class="mx-1">
-                                <li><img class="btns-header" style="height: 57px" src="{{ asset(getSiteImagePath(src)) }}"></li>
-                            </a>
-                    {% endfor %}
-                    </div>
+                    <a href="/gallery"  class="ms-2 text-decoration-none" style="padding-bottom: 30px">
+                        <img style="width: 62px" src="{{ asset(getSiteImagePath('header-galerie.svg')) }}">
+                    </a>
+                    <a rel="nofollow" href="https://billetterie.lalune.net/identification"  class="ms-2 text-decoration-none" style="padding-bottom: 30px">
+                        <img style="width: 62px" src="{{ asset(getSiteImagePath('header-account.svg')) }}">
+                    </a>
+                    <a rel="nofollow" href="https://billetterie.lalune.net/"  class="ms-2 text-decoration-none" style="padding-bottom: 30px">
+                        <img style="width: 62px" src="{{ asset(getSiteImagePath('header-basket.svg')) }}">
+                    </a>
+                </div>
+            </div>
+            <div>
+
+            </div>
+            <nav class="navbar navbar-expand-lg mt-auto px-lg-5">
+                <ul class="navbar-nav w-100 justify-content-end pt-3 px-lg-5">
+
+
                 </ul>
             </nav>
             <!-- Menu avec dropdowns -->
-            <div class="d-none d-lg-flex block navbar-expand-lg col-12 mb-auto pt-4">
+            <div class="d-none d-lg-flex block navbar-expand-lg col-12">
                 <div class="row  row-cols-auto">
                     {% for url, category_header in menu_category_datas %}
                         <ul class="px-4 col {% if loop.index0 != 0 %} border-dotted-black {% endif %}">
@@ -96,43 +99,26 @@
 
 <!-- HEADER MD/SM -->
 
-<div class="d-lg-none container-fluid">
+<div class="d-lg-none container-fluid" style="margin-top:24px; margin-bottom: 20px">
     <div class="row">
-
-        <div class="col-6 p-3">
+        <div class="col-3">
             <a href="{{ path('fo_home_index') }}">
-                <img style="max-width: 100%" src="{{ asset(getSiteImagePath('LOGO_HEADER.svg')) }}">
+                <img style="" src="{{ asset(getSiteImagePath('LOGO_HEADER.svg')) }}">
             </a>
         </div>
-        <div class="col-6">
+        <div class="col-9 d-flex justify-content-end align-items-center">
 
-            <div class="row">
-
-                <div class="col-12">
-                    <div class="row pt-3">
-                        {% for article_datas in gallery_articles_header %}
-                            {% if article_datas['photos'] != null  %}
-                                <div class="col-6">
-                                    <a class="text-decoration-none" href="{{ path('gallery') }}">
-                                        <img src="{{ url('ressources_image', {'width':'small','height':'small', 'media':article_datas['photos'][0].media} ) }}" class="object-fit-cover rounded-circle round-img-header-sm" style="z-index:{{ 1000 +  loop.index }}; height: 50px;width: 50px" alt="...">
-                                    </a>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% for src, siteWeb in btns %}
-            <div class="col-3 text-center">
-                <a href="{{ siteWeb }}" class="mx-1">
-                <img class="btns-header" src="{{ asset(getSiteImagePath(src)) }}">
-                </a>
-            </div>
-        {% endfor %}
-        <div class="col-3 text-center">
-            <button class="btn btn-move-up "  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                <img class="btns-header" src="{{ asset(getSiteImagePath('MENU_HEADER.png')) }}">
+            <a href="/gallery"  class="ms-2 text-decoration-none">
+                <img style="width: 44px" src="{{ asset(getSiteImagePath('header-galerie.svg')) }}">
+            </a>
+            <a rel="nofollow" href="https://billetterie.lalune.net/identification"  class="ms-2 text-decoration-none">
+                <img style="width: 44px" src="{{ asset(getSiteImagePath('header-account.svg')) }}">
+            </a>
+            <a rel="nofollow" href="https://billetterie.lalune.net/"  class="ms-2 text-decoration-none">
+                <img style="width: 44px" src="{{ asset(getSiteImagePath('header-basket.svg')) }}">
+            </a>
+            <button class="btn p-0 ms-2" style=""  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                <img style="width: 44px" src="{{ asset(getSiteImagePath('header-menu.svg')) }}">
             </button>
         </div>
     </div>

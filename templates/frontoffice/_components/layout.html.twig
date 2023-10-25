@@ -32,6 +32,8 @@
     </head>
 
 
+    <body>
+
     {%  block header %}
         {%  if header_partial is defined and header_partial != '' %}
             <header>
@@ -39,7 +41,6 @@
             </header>
         {% endif %}
     {%  endblock %}
-    <body>
         <!-- Breadcrumb -->
         <div class="container-fluid">
             {{  include(fo_path ~ '_components/breadcrumb.html.twig') }}
