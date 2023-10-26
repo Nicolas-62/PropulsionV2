@@ -8,11 +8,12 @@
 
     {% do category_accomp.getDatas(locale) %}
     <div id="{{ category_accomp.title }}" class="p-lg-5 container-fluid">
-        <div class="p-sm-5 p-md-5 p-lg-0 px-lg-3">
+        <div class="p-2 p-lg-0 px-lg-3">
             <div class="row">
+
+                <!-- Titre de la section -->
                 <div class=" text-center text-lg-start col-md-6 col-lg-3">
                     <div class="h1 mb-5 mt-5 mt-lg-0 mb-lg-0">Artistes <br> Accompagnés</div>
-
                 </div>
                 <div class="text-center text-lg-start col-md-6 col-lg-4 offset-lg-2">
                     <h2>Dispositif d’accompagnement de<br> La Lune des Pirates</h2>
@@ -21,19 +22,19 @@
 {#                    <p class="objectif-soutiens mb-0">Objectif</p>#}
 {#                    <p class="lune-soutiens mb-0">LUNE</p>#}
                     <img class="img-fluid" src="{{ asset(getSiteImagePath('Logo_ObjectifLune_NB.png')) }}">
-
-
                 </div>
             </div>
+
+            <!-- Description de la catégorie -->
             <div class="fs-5 py-4 px-3 px-lg-0">
                 {{ category_accomp.description|raw }}
             </div>
         </div>
 
+        <!-- Boucle de nos cards artistes accompagnes -->
         <div class="row">
             {% for accomp in accompagnes %}
                 {% do accomp.getDatas(locale) %}
-
                 {% set media = accomp.getMedia(4) %}
                 <div class="custom-col-xxl-3 col-lg-4 col-md-12 py-3 pb-lg-5 px-lg-1 px-md-0">
                     <!-- Card-Actu -->

@@ -2,7 +2,7 @@
 {% block body %}
 
     <div class="p-lg-3 container-fluid">
-        <div class="row">
+        <div class="row gx-0">
             <div id="page-link-container" class="col-lg-3 col-md-12 py-2 menu text-md-center text-sm-center">
                 <div class="row p-5">
                     <div class="col-lg-10 col-md-12 pt-lg-5">
@@ -27,28 +27,22 @@
 
                 <!--  NOUS CONTACTER -->
                 <div id="entry1" class="py-5 px-2 px-lg-5" >
-                    <div class="row">
+                    <div class="row gx-0">
                         <div class="col-lg-2 col-md-3 text-center text-lg-start">
                             <img style="max-height: 120px" src="{{ asset(getSiteImagePath('arrow_contact.svg')) }}" class="">
-
                         </div>
-
                         <div class="col-md-9 col-lg-5 fs-5 lh-1 text-center text-lg-start">
                             {% do cat_contact.getDatas(locale) %}
                             {{ cat_contact.description | raw }}
                         </div>
                     </div>
-
                     <div class="fs-5 mt-5">
-
                         {{ cat_contact.content | raw }}
                     </div>
-
-
                     <div class="h3">NOUS ÉCRIRE</div>
+
                     <!-- Formulaire -->
                     <form class="fs-5"  method="post" action="{{ path('fo_infos_contact') }}" >
-
                         <div class="form-group">
                             <label class="pb-2" for="select-contact">{{ field_label(form.subject) }} (obligatoire)</label>
                             <select class="form-control rounded-0 border-secondary fs-5 select-infos"  name="{{ field_name(form.subject) }}" id="contact">
@@ -59,24 +53,22 @@
                             </select>
                             {{ form_errors(form.subject) }}
                         </div>
-
                         <div class="form-group">
                             <label class="pb-2" for="mailInput">{{ field_label(form.replyTo) }} (obligatoire)</label>
                             <input type="email" class="form-control rounded-0 border-secondary select-infos"  name="{{ field_name(form.replyTo) }}"  value="{{ field_value(form.replyTo) }}" id="mailInput" aria-describedby="emailHelp">
                             {{ form_errors(form.replyTo) }}
-
                         </div>
                         <div class="form-group">
                             <label class="pb-2" for="nomInput">{{ field_label(form.name) }} (obligatoire)</label>
                             <input type="text" class="form-control rounded-0 border-secondary select-infos"  name="{{ field_name(form.name) }}" value="{{ field_value(form.name) }}" id="nomInput">
                             {{ form_errors(form.name) }}
-
                         </div>
                         <div class="form-group">
                             <label class="pb-2" for="messageInput">{{ field_label(form.message) }} (obligatoire)</label>
                             <textarea class="form-control  rounded-0 border-secondary"  name="{{ field_name(form.message) }}" style="min-height: 348px" id="messageInput" rows="3">{{ field_value(form.message) }}</textarea>
                             {{ form_errors(form.message) }}
                         </div>
+
                         <!-- Checkbox -->
                         <div class="form-check">
                             <input class="form-check-input  rounded-0 border-secondary"  name="{{ field_name(form.getNewsletter) }}" type="checkbox" value="{{ field_value(form.getNewsletter) }}" id="newsCheck">
@@ -85,6 +77,7 @@
                             </label>
                         </div>
                         {{ form_row(form._token) }}
+
                         <!-- Submit -->
                         <div class="pt-4">
                             <button type="submit" class="btn border border-secondary rounded-0 p-3 fs-3"><div class="p-2">ENVOYER</div></button>
@@ -101,7 +94,7 @@
                 <!-- COMMENT VENIR -->
                 <div id="entry2"  class="py-lg-5 px-2 px-lg-5 hidden container-fluid">
 
-                    <div class="row w-100">
+                    <div class="row gx-0 w-100">
                         <div class="col-lg-2 col-md-12 text-center">
 
 
@@ -128,7 +121,7 @@
                 <div id="entry3" class="py-lg-5 px-2 px-lg-5 hidden  container-fluid">
                     {% do article_adress_billetterie.getDatas(locale) %}
 
-                    <div class="row-header pb-5">
+                    <div class="row gx-0 pb-5">
                         <div class="col-12 col-lg-2 text-center pb-2">
                             {% set media = article_adress_billetterie.getMedia(15) %}
                             {% if media is not null %}
@@ -145,7 +138,7 @@
                             {{ article_contact_billetterie.subtitle  }}
                         </div>
                         {% do article_contact_billetterie.getDatas(locale) %}
-                        <div class="row-header text-center text-lg-start">
+                        <div class="row gx-0 text-center text-lg-start">
                             <div class="col-12 col-lg-2 ">
                                 {% set media = article_contact_billetterie.getMedia(15) %}
                                 {% if media is not null %}
@@ -163,7 +156,7 @@
                             {% do article_abonnement_billetterie.getDatas(locale) %}
                             {{ article_abonnement_billetterie.description | raw }}
                         </div>
-                        <div class="row pt-4">
+                        <div class="row gx-0 pt-4">
                             <div class="col-12 col-lg-5">
                                 {% set media = article_abonnement_billetterie.getMedia(15) %}
                                 {% if media is not null %}
@@ -234,7 +227,7 @@
         <!-- BAS CONTACT -->
         <div id="footer1" class="bg-grey">
             <div class="py-5 px-2 px-lg-5">
-                <div class="row">
+                <div class="row gx-0">
 
                     <!-- Les Pirates -->
                     <div class="col-md-12 col-lg-9 offset-lg-3">
@@ -242,9 +235,9 @@
 
 
                         <h1 class="pb-5 text-center text-lg-start  "><img style="max-height: 100px; margin-right: 10px" src="{{ asset(getSiteImagePath('MINI_LOGO.svg')) }}" class="">Les Pirates</h1>
-                        <div class="row">
+                        <div class="row gx-0">
                             <div class="col-md-12 col-lg-8">
-                                <div class="row">
+                                <div class="row gx-0">
                                     {% for contact in contact_contact %}
                                         <div class="col-md-12 col-lg-6 py-2 text-center text-lg-start">
                                             <p class="h3">{{ contact.title }}</p>

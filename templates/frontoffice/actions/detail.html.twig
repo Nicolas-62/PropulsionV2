@@ -1,27 +1,21 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
 {% block body %}
     {% do cat.getDatas(locale) %}
-    <div class="p-3 p-lg-5">
-
+    <div class="p-3 p-lg-5 container-fluid">
+        <!-- Description de la catégorie -->
         <h1 class="text-center">{{ cat.title }}</h1>
-
-
         <div class="my-5 fs-5">
             {{ cat.description | raw }}
         </div>
-
-
         <div class="mb-5 fs-5">
             {{ cat.content | raw }}
-
         </div>
-
-
+        <!-- Boucle sur les articles de la sous-catégorie -->
         {% for article in articles %}
             {% do article.getDatas(locale) %}
-
             <div class="mb-5 fs-5">
 
+                <!-- Média -->
                 {% set media = article.getMedia(31) %}
                 {% if media %}
                     {% set url = '/assets/images/' ~ media.media  %}
@@ -29,7 +23,11 @@
                         <img src="{{ asset((url)) }}" alt="{{ media.legend }}" class="img-fluid w-100">
                     </div>
                 {% endif %}
+
+                <!-- Titre -->
                 <h2 class="text-center">{{ article.titleByLanguage }}</h2>
+
+                <!-- Liens Medias Sociaux -->
                 <div class="row text-center mt-5">
                     {% if article.instagramLink != '' %}
                         <div class="col">
@@ -53,10 +51,12 @@
                     {% endif %}
                 </div>
 
+                <!-- Description -->
                 <div class="my-5">
                     {{ article.description | raw }}
                 </div>
 
+                <!-- Photos de l'article -->
                 <div class="row text-center">
                     {% set media = article.getMedia(28) %}
                     {% if media %}
@@ -81,11 +81,12 @@
                     {% endif %}
                 </div>
 
-
+                <!-- Contenu de l'article -->
                 <div>
                     {{ article.content | raw }}
                 </div>
 
+                <!-- Vidéos de l'article -->
                 <div class="row">
                     {% if article.youtubeLink %}
                         <div class="embed-responsive embed-responsive-16by9 col-md-12 col-lg-6 px-2">
@@ -99,10 +100,9 @@
                     {% endif %}
                 </div>
 
+                <!-- Fichiers liés à l'article -->
                 <div class="row">
-
                     {% if not article.getFiles is empty %}
-
                         <div class="mt-5">
                             {% set filesArray = article.getFiles() %}
                             {% set arrayLength = filesArray|length %}
@@ -117,11 +117,7 @@
                             {% endfor %}
                         </div>
                     {% endif %}
-
-
                 </div>
-
-
             </div>
         {% endfor %}
     </div>

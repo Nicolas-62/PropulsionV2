@@ -117,7 +117,7 @@
                             <div class="col-6 text-center">
 
                                 <a class="text-decoration-none" href="https://billetterie.lalune.net/abonnements/165251527696b7/renouvellement">
-                                    <img class="" style="max-height: 50px" src="{{ asset(getSiteImagePath('LUNE_ABONNE.svg')) }}">
+                                    <img class="rounded rounded-2" style="max-height: 50px" src="{{ asset(getSiteImagePath('abonnement.png')) }}">
                                     <div style="font-size: 14px">
                                         Profitez du tarif abonné<br>
                                         <b>
@@ -131,8 +131,9 @@
                                 <a class="text-decoration-none" href="https://pass.culture.fr/">
                                     <img style="max-height: 50px" src="{{ asset(getSiteImagePath('LUNE_PASS_CULTURE.svg')) }}">
                                     <div style="font-size: 14px">
-                                        Tu as entre 15 et 18 ans ?<br>
-                                        <b>Dispo sur le Pass Culture</b>
+                                        <b>Dispo sur le Pass Culture,</b><br>
+                                        pour les 15-18 ans,<br>
+                                        ou en offre collective
                                     </div>
                                 </a>
                             </div>
@@ -195,7 +196,7 @@
                     {{ article.content | raw }}
                 </div>
                 <!-- VIDEO ARTISTE -->
-                {% if article.youtubeLink is not null and article.youtubelink is not empty %}
+                {% if article.youtubeLink %}
                     <div class="embed-responsive embed-responsive-16by9">
                         <iframe class="embed-responsive-item w-100" style="height: 860px;" src="{{ article.youtubeLink }}" allowfullscreen></iframe>
                     </div>
@@ -203,14 +204,14 @@
                 <!-- PLUS D'INFOS SUR L'ARTISTE -->
                 <div>
                     {% if article.soundcloudLink is not null and article.soundcloudLink is not empty %}
-                        <iframe width="100%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="{{ article.soundcloudLink }}"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/nguvulu-ngola" title="Nguvulu Produções" target="_blank" style="color: #cccccc; text-decoration: none;">Nguvulu Produções</a> · <a href="https://soundcloud.com/nguvulu-ngola/cobra-jonaskay-gsforlife-ft-doryzzy-jonaskay" title="cobra - Jonaskay Gsforlife​ ft  Doryzzy Jonaskay 2015" target="_blank" style="color: #cccccc; text-decoration: none;">cobra - Jonaskay Gsforlife​ ft  Doryzzy Jonaskay 2015</a></div>
+                        {{ article.soundcloudLink | raw }}
                     {% endif %}
 
                     {% if article.soundcloudSecondLink is not null and article.soundcloudSecondLink is not empty %}
-                        <iframe width="100%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="{{ article.soundcloudSecondLink }}"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/jonaskayguettostar" title="EYAYA" target="_blank" style="color: #cccccc; text-decoration: none;">EYAYA</a> · <a href="https://soundcloud.com/jonaskayguettostar/jonaskay-atetete" title="Jonaskay - Ateteté" target="_blank" style="color: #cccccc; text-decoration: none;">Jonaskay - Ateteté</a></div>
+                        {{ article.soundcloudSecondLink | raw }}
                     {% endif %}
                     {% if article.soundcloudThirdLink is not null and article.soundcloudThirdLink is not empty %}
-                        <iframe width="100%" height="200" scrolling="no" frameborder="no" allow="autoplay" src="{{ article.soundcloudThirdLink }}"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/guettostar" title="Angoboyz" target="_blank" style="color: #cccccc; text-decoration: none;">Angoboyz</a> · <a href="https://soundcloud.com/guettostar/guettostar_cobra" title="GUETTO STAR COBRAS(PROD BY DOCTA BIO)" target="_blank" style="color: #cccccc; text-decoration: none;">GUETTO STAR COBRAS(PROD BY DOCTA BIO)</a></div>
+                        {{ article.soundcloudThirdLink | raw }}
                     {% endif %}
                 </div>
                 <div class="row py-5">
@@ -282,7 +283,7 @@
                     <!-- CARTE LUNE -->
                     <div class="py-5">
                         <a class="text-decoration-none" href="https://billetterie.lalune.net/abonnements/165251527696b7/renouvellement">
-                            <img style="max-height: 163px " src="{{ asset(getSiteImagePath('CARTE_LUNE_BAS.svg')) }}">
+                            <img style="max-height: 163px " src="{{ asset(getSiteImagePath('abonnement.png')) }}">
                             <div class="fs-5">
                                 Concerts Gratuits Abonnés & Réductions<br>
                                 <b> Abonnez-vous !</b>
@@ -293,8 +294,9 @@
                         <a class="text-decoration-none" href="https://pass.culture.fr/">
                         <img style="max-height: 90px" src="{{ asset(getSiteImagePath('PASS_CULTURE_BIG.svg')) }}">
                             <div class="fs-5">
-                                Tu as entre 15 et 18ans ?<br>
-                                <b>Dispo sur le Pass Culture</b>
+                                <b>Dispo sur le Pass Culture,</b><br>
+                                pour les 15-18 ans,<br>
+                                ou en offre collective
                             </div>
                         </a>
                     </div>

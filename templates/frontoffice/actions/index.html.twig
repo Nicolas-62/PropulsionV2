@@ -9,11 +9,15 @@
             {% if media is not null %}
                 <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':media.media} ) }}" class="rounded-0 w-100 img-fluid"   alt="...">
             {% endif %}
+
+            <!-- Titre / Description / Contenu de la catégorie -->
             <div class="p-3 p-lg-0">
                 <h1 class="blue-title py-5"  style="padding-bottom: 10px">{{ page_title | upper }}</h1>
                 <div class="fs-5">{{ cat_actu.description | raw }}</div>
                 <div class="fs-5">{{ cat_actu.content | raw }}</div>
             </div>
+
+            <!-- Liste des sous-catégories d'action culturelle -->
             <div class="row">
                 {% for sous_cat in sous_cat_actions %}
                     {% set media = sous_cat.getMedia(27) %}

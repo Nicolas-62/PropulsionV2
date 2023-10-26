@@ -23,17 +23,17 @@ class SoutiensController extends LuneController
         parent::__construct($entityManager, $params);
 
         $sous_categorie_ids_event_actus     = $this->entityManager->getRepository(Category::class)->find(9)->getChildrenIds();
-        $event_actus                        = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids_event_actus, $params->get('locale'), true, 'dateEvent', 'ASC');
+        $event_actus                        = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids_event_actus, $params->get('locale'), true, 'ordre', 'ASC');
         $this->event_actus                  = $event_actus;
 
 
         $sous_categorie_ids_event_actus     = $this->entityManager->getRepository(Category::class)->find(8)->getChildrenIds();
-        $event_auditions                    = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids_event_actus, $params->get('locale'), true, 'dateEvent', 'ASC');
+        $event_auditions                    = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids_event_actus, $params->get('locale'), true, 'ordre', 'ASC');
         $this->event_auditions              = $event_auditions;
 
 
         $sous_categorie_ids_event_actus     = $this->entityManager->getRepository(Category::class)->find(7)->getChildrenIds();
-        $event_artistes_accomp              = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids_event_actus, $params->get('locale'), true, 'dateEvent', 'ASC');
+        $event_artistes_accomp              = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids_event_actus, $params->get('locale'), true, 'ordre', 'ASC');
         $this->event_artistes_accomp        = $event_artistes_accomp;
 
     }
