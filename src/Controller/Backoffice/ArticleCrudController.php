@@ -515,6 +515,8 @@ class ArticleCrudController extends BoController
             ->setPageTitle('index', function (){
                 if($this->category != null){
                     return 'Articles de la catégorie : '.$this->category->getTitle();
+                }elseif ($this->entity && $this->entity->getChildren()){
+                    return "Article : ".$this->entity->getTitle();
                 }
             })
             ->setPageTitle('edit', function (){

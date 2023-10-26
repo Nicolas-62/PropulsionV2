@@ -7,6 +7,7 @@ use App\Entity\Category;
 use App\Entity\MediaLink;
 use App\Entity\Mediaspec;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -58,29 +59,27 @@ class MediaLinkRepository extends ServiceEntityRepository
 //    }
 
 
-
+    /**
+     * Récupère le dernier lien créé avec un media pour une médiaspec donnée, normalement seul un lien doit exister
+     * @param Category|Article $entity
+     * @param Mediaspec|null $mediaspec
+     * @return MediaLink|null
+     */
     public function findOneByEntity(Category|Article $entity, Mediaspec $mediaspec = null): ?MediaLink
     {
-        if($entity instanceof Article) {
-            return $this->createQueryBuilder('m')
-              ->andWhere('m.mediaspec = :mediaspec')
-              ->andWhere('m.article  = :article')
-              ->setParameter('mediaspec', $mediaspec)
-              ->setParameter('article', $entity)
-              ->getQuery()
-              ->getOneOrNullResult();
-        }else{
-            return $this->createQueryBuilder('m')
-              ->andWhere('m.mediaspec = :mediaspec')
-              ->andWhere('m.category   = :category')
-              ->setParameter('mediaspec', $mediaspec)
-              ->setParameter('category', $entity)
-              ->getQuery()
-              ->getOneOrNullResult()
-              ;
-        }
 
+        // Récupération du nom du modèle
+        $model_name = strtolower($entity->getClassName());
 
+        $results = $this->createQueryBuilder('m')
+            ->andWhere('m.mediaspec = :mediaspec')
+            ->setParameter('mediaspec', $mediaspec)
+            ->andWhere("m.$model_name = :entity")
+            ->setParameter('entity', $entity)
+            ->getQuery()
+            ->getResult();
+        // On retourne le dernier résultat
+        return array_pop($results);
     }
 
 

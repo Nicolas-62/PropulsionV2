@@ -15,26 +15,26 @@
         <img src="{{ asset(getThumbnailPath(ea.entity.getInstance.thumbnail)) }}" class="img-fluid">
     {% else %}
         {# Zone d'upload du nouveau média #}
-        <div class="form-group mb-3">
+        <div
+            class="entity-detail-media-card form-group mb-3"
+            data-form-id="{{ form.vars.name }}"
+        >
             <div
                 class="my-dropzone text-center dropzone "
                 data-upload-url="{{ upload_url }}"
                 data-upload-message="{{ 'upload.upload-message'|trans ~ ' ' ~ acceptedExtensions|join(', ') }}"
                 data-accepted-file-types="{{ acceptedFileTypes|join(',') }}"
-                data-id="{{ form.vars.name }}"
             >
             </div>
             <div
                     class="my-cropper text-center"
                     style="display: none;"
-                    data-id="{{ form.vars.name }}"
 
             >
-                    <img id="image-cropper-{{ form.vars.name }}"  class="img-fluid" src="#">
+                    <img class="image-cropper img-fluid" src="#">
                     <div class="mt-3">
                         <a
                             class="btn btn-delete-upload btn-danger"
-                            id="btn-delete-upload-{{ form.vars.name }}"
                             href="{{ delete_upload_url }}"
                             data-href="{{ delete_upload_url }}"
                         >
@@ -43,12 +43,11 @@
                         <a class="btn btn-primary crop-action">
                             Recadrer
                         </a>
-                        <a class="btn btn-success crop-valid crop-valid-{{ form.vars.name }}" style="display: none">Valider</a>
+                        <a class="btn btn-success crop-valid" style="display: none">Valider</a>
                     </div>
 
             </div>
         </div>
-        <input type="hidden" name="imageSelector-{{ form.vars.name }}" id="imageSelector-{{ form.vars.name }}" />
         <input type="hidden" name="folderId-{{ form.vars.name }}" id="folderId-{{ form.vars.name }}" />
         <input type="hidden" name="filename-{{ form.vars.name }}" id="filename-{{ form.vars.name }}" />
         {# Champ qui contient les datas de l'image croppée le cas échéant #}
