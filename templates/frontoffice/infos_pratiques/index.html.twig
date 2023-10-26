@@ -27,9 +27,9 @@
 
                 <!--  NOUS CONTACTER -->
                 <div id="entry1" class="py-5 px-2 px-lg-5" >
-                    <div class="row gx-0">
-                        <div class="col-lg-2 col-md-3 text-center text-lg-start">
-                            <img style="max-height: 120px" src="{{ asset(getSiteImagePath('arrow_contact.svg')) }}" class="">
+                    <div class="row gx-0 d-lg-flex align-items-center">
+                        <div class="col-lg-1 col-md-3 text-center text-lg-start  mb-4">
+                            <img style="max-height: 70px" src="{{ asset(getSiteImagePath('arrow_contact.svg')) }}" class="">
                         </div>
                         <div class="col-md-9 col-lg-5 fs-5 lh-1 text-center text-lg-start">
                             {% do cat_contact.getDatas(locale) %}
@@ -95,10 +95,10 @@
                 <div id="entry2"  class="py-lg-5 px-2 px-lg-5 hidden container-fluid">
 
                     <div class="row gx-0 w-100">
-                        <div class="col-lg-2 col-md-12 text-center">
+                        <div class="col-lg-1 col-md-12 text-center d-lg-flex align-items-center mb-4">
 
 
-                            <img style="max-height: 120px" src="{{ asset(getSiteImagePath('point_venir.svg')) }}" class="">
+                            <img style="max-height: 70px; text-align: center !important" src="{{ asset(getSiteImagePath('point_venir.svg')) }}" class="">
                         </div>
 
                         <div class="col-md-12 col-lg-5 fs-5 mt-lg-5 text-center text-lg-start  mb-2 lh-1">
@@ -231,9 +231,8 @@
 
                     <!-- Les Pirates -->
                     <div class="col-md-12 col-lg-9 offset-lg-3">
+
                         <!-- LOGO LUNE DES PIRATES -->
-
-
                         <h1 class="pb-5 text-center text-lg-start  "><img style="max-height: 100px; margin-right: 10px" src="{{ asset(getSiteImagePath('MINI_LOGO.svg')) }}" class="">Les Pirates</h1>
                         <div class="row gx-0">
                             <div class="col-md-12 col-lg-8">
@@ -246,7 +245,6 @@
                                     {% endfor %}
                                 </div>
                             </div>
-
 
                             <!-- L'équipe technique / Bénévoles -->
                             <div class="col-md-12 col-lg-4 pt-5 pt-lg-0 ">
@@ -268,13 +266,8 @@
 
                             </div>
                         </div>
-
                     </div>
-
-
-
                 </div>
-
             </div>
         </div>
 
@@ -303,13 +296,13 @@
                     </div>
                 </div>
             </div>
+
             <!-- PLAN -->
             {% set media = cat_comment_venir.getMedia(17) %}
 
             {% if media is not null %}
                 <a href="https://www.google.com/maps/place/17+Quai+Belu,+80000+Amiens/@49.8965935,2.3044642,18.14z/data=!4m6!3m5!1s0x47e7843770099b73:0x65a4335dc8d72f5b!8m2!3d49.8964876!4d2.3048764!16s%2Fg%2F11cs8245jj?entry=ttu">
                     <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':media.media} ) }}" class="card-img-top rounded-0" alt="...">
-
                 </a>
             {% endif  %}
         </div>
@@ -319,7 +312,6 @@
             <div class="py-5 px-2 px-md-2 px-lg-5 bg-grey">
                 <div class="row-header">
                     <div class="col-3">
-
                     </div>
                     <div class="col-lg-9 col-md-12">
 

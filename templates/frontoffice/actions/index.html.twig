@@ -24,6 +24,7 @@
                     {% if media %}
                         {% set url = '/assets/images/' ~ media.media %}
                     {% endif %}
+
                     <div class=" col-lg-4 col-md-12 py-3 py-lg-5 px-lg-2 px-md-0">
                         <!-- Card-Actu -->
                         {% include 'frontoffice/_components/card.html.twig' with {'event': sous_cat, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : false, 'actions': true } %}

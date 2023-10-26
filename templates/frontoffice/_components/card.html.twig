@@ -60,7 +60,7 @@
             </div>
         {% else %}
             {% do event.getDatas(locale) %}
-            <div class="col-5 fs-6 theme-1 text-uppercase"  style="background-color: #FB9E32">
+            <div class="col-5 fs-6 theme-1 text-uppercase"  style="background-color:  {{ event.parent.themeBackColor }}">
                 Action Culturelle
             </div>
         {% endif %}
