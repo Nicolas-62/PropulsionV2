@@ -171,7 +171,10 @@ class GalleryCrudController extends ArticleCrudController
             yield  Field::new('galleryMedias', 'Photos')
                 ->setFormTypeOptions([
                     'block_name' => 'gallery_show',
-                    'data' => $this->entityManager->getRepository(Media::class)->getPhotos($this->entity)
+                    'data' => [
+                        'photos' => $this->entityManager->getRepository(Media::class)->getPhotos($this->entity),
+                        'article' => $this->entity,
+                    ]
                 ]);
 
 
@@ -214,6 +217,31 @@ class GalleryCrudController extends ArticleCrudController
             $response['mediaId']    =   $context->getRequest()->get('mediaId');
         }else{
             $response['error']      =   'Impossible de supprimer la photo';
+        }
+        // Retour
+        return new JsonResponse($response);
+    }
+
+    /**
+     *  Supprime un media d'un article
+     *
+     * @param AdminContext $context
+     * @return JsonResponse
+     */
+    public function starMedia(AdminContext $context)
+    {
+        $response = array(
+            'error'             => null,
+            'mediaId'           => null,
+        );
+
+        if($this->entityManager->getRepository(Article::class)->starMedia(
+            $context->getRequest()->get('articleId'),
+            $context->getRequest()->get('mediaId')
+        )){
+            $response['mediaId']    =   $context->getRequest()->get('mediaId');
+        }else{
+            $response['error']      =   'Impossible de mettre en vedette la photo';
         }
         // Retour
         return new JsonResponse($response);

@@ -16,12 +16,16 @@
     max-width: 100px;
 }
 
-// Article
+// Article, card contenant la dropzone et le cropper
 .entity-detail-media-card{
     border: solid;
     border-radius: 2.5rem;
     padding: 1rem;
 }
-.entity-detail-media-thumbnail{
-    width: 300px;
+.entity-detail-media-thumbnail,.image-cropper{
+    max-height: 40vh;
+}
+// Bouton de suppression d'une image dans la galerie
+.photo-remove:hover{
+    color: red;
 }

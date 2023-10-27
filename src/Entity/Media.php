@@ -46,6 +46,9 @@ class Media
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $section = Constants::DEFAULT_SECTION;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $star = null;
+
 // TEST VICHUPLOAD BUNDLE
 //    #[Assert\Image(mimeTypes: ['image/jpeg'])]
 //    #[Vich\UploadableField(mapping: 'cms_media', fileNameProperty: 'media')]
@@ -223,6 +226,18 @@ class Media
     public function setSection(?string $section): self
     {
         $this->section = $section;
+
+        return $this;
+    }
+
+    public function isStar(): ?bool
+    {
+        return $this->star;
+    }
+
+    public function setStar(?bool $star): self
+    {
+        $this->star = $star;
 
         return $this;
     }

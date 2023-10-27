@@ -34,19 +34,19 @@ import Cropper from 'cropperjs';
     function toggleCrop(event){
         // On récupère le bouton de recadrage
         let $btnCrop        =   $(event.currentTarget);
-        // On récupère l'image qui contient le cropper
-        let $btnValidate    =   $main.find(btnValidCropSelector);
 
         // Si on annule le croppage
         if ($btnCrop.hasClass('active')) {
-            // On déclanche le reset du crop
+            // On déclenche le reset du crop
             $btnCrop.parents(formSelector).trigger('resetCrop');
         }
         // Si on active le croppage
         else {
+            // Le bouton 'recarder' devient le bouton 'annuler'
             $btnCrop.addClass('active');
             $btnCrop.text('Annuler');
-            $btnValidate.show();
+            // Affiche le bouton de validation du crop
+            $btnCrop.parents(formSelector).find(btnValidCropSelector).show();
             // On initialise le cropper
             let cropper = new Cropper($btnCrop.parents(formSelector).find(imageCropperSelector)[0], {
                 viewMode: 1, // La zonne de recardage ne peut pas sortir de l'image
@@ -59,6 +59,7 @@ import Cropper from 'cropperjs';
 
     function resetCrop(event){
         let $formMediaCard  =   $(event.currentTarget);
+
         $formMediaCard.find(btnCropSelector).removeClass('active');
         $formMediaCard.find(btnCropSelector).text('Recadrer');
         // On supprime le cropper

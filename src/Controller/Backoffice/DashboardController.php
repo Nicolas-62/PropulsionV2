@@ -52,6 +52,11 @@ class DashboardController extends AbstractDashboardController
         }
         // Controleur par défaut, liste des catégories.
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
+        // Si l'utilisateur est admin, on redirige vers la liste des catégories.
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->redirect($adminUrlGenerator->setController(CategoryCrudController::class)->generateUrl());
+        }
+        // Si l'utilisateur est photographe, on redirige vers la galerie.
         if ($this->isGranted('ROLE_PHOTOGRAPH')) {
             return $this->redirect($adminUrlGenerator->setController(GalleryCrudController::class)->generateUrl());
         }

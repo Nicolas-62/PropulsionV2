@@ -25,7 +25,13 @@ class GalleryController extends LuneController
     public function index(): Response
     {
         // Récupération des articles de la galerie
-        $articles = $this->entityManager->getRepository(Category::class)->getArticles([$_ENV['GALLERY_CATEGORY_ID']], $this->params->get('locale'), true, 'dateEvent', 'DESC');
+        $articles = $this->entityManager->getRepository(Category::class)->getArticles(
+            [$_ENV['GALLERY_CATEGORY_ID']],
+            $this->params->get('locale'),
+            true,
+            'dateEvent',
+            'DESC'
+        );
         // Tableau associatif des articles de la galerie avec leur permière photo trouvée.
         $gallery_articles = array();
         // Pour chaque article de la galerie

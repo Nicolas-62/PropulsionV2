@@ -57,7 +57,8 @@ class MediaRepository extends ServiceEntityRepository
             ->where('m.section = :section')
             ->andWhere('mediaLinks.article = :article')
             ->setParameter('article', $entity)
-            ->setParameter('section', 'gallery');
+            ->setParameter('section', 'gallery')
+            ->orderBy('m.star', 'DESC');
         return $query->getQuery()->getResult();
     }
 
@@ -93,6 +94,7 @@ class MediaRepository extends ServiceEntityRepository
         // retour
         return $removed;
     }
+
     /**
      * Supprime un média
      *

@@ -203,4 +203,42 @@ class ArticleRepository extends CMSRepository
     }
 
 
+    /**
+     *  Met un media lié à l'article en vedette, dévedettise les autres.
+     *
+     * @param string $entityId
+     * @param bool $flush
+     * @return bool
+     */
+    public function starMedia(string $entityId, string $mediaId): bool
+    {
+        // Capteur
+        $stared = false;
+        // Récupération de l'article.
+        $entity = $this->find($entityId);
+
+        if( ! $entity){
+            $stared = false;
+        }
+        // Si on a récupéré l'article
+        else {
+            // On passe tous ses medias liés en non vedette
+            foreach($entity->getMediaLinks() as $mediaLink){
+                // Si le media possède le même id que celui passé en paramètre
+                if($mediaLink->getMedia()->getId() == $mediaId){
+                    // On le passe en vedette.
+                    $mediaLink->getMedia()->setStar(true);
+                    $stared = true;
+                }else {
+                    $mediaLink->getMedia()->setStar(false);
+                }
+            }
+            // Si on met à jour la BDD
+            $this->getEntityManager()->flush();
+        }
+        // retour
+        return $stared;
+    }
+
+
 }

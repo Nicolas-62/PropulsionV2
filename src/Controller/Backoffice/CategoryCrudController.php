@@ -48,9 +48,12 @@ use Symfony\Component\HttpFoundation\Response;
 class CategoryCrudController extends BoController
 {
     // Variables.
-
+    public array $acceptedExtensions  =   ['png', 'jpg', 'jpeg'];
 
     protected ?Category $entity = null;
+
+    // Initialisés dans le constructeur:
+    public array $acceptedFileTypes   =   [];
 
     public function __construct(
         // Services
@@ -355,6 +358,10 @@ class CategoryCrudController extends BoController
         $responseParameters->set('ancestorId', $ancestorId);
         $responseParameters->set('crudControllerName', 'Category');
         $responseParameters->set('keyName', 'entityId');
+
+        $twig = $this->container->get('twig');
+        $twig->addGlobal('acceptedFileTypes', $this->acceptedFileTypes);
+        $twig->addGlobal('acceptedExtensions', $this->acceptedExtensions);
 
         return parent::configureResponseParameters($responseParameters);
     }

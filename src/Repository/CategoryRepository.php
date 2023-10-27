@@ -69,10 +69,6 @@ class CategoryRepository extends CMSRepository
         // On transforme le tableau en ArrayCollection.
         $articles = new ArrayCollection($articles);
 
-        // Si on a précisé une limite, on la prend en compte.
-        if($limit){
-            $articles = new ArrayCollection($articles->slice(0, $limit));
-        }
 
         // Trie des articles par l'ordre passé en paramètre.
         $iterator = $articles->getIterator();
@@ -88,6 +84,12 @@ class CategoryRepository extends CMSRepository
 
         });
         $articles = new ArrayCollection(iterator_to_array($iterator));
+
+        // Si on a précisé une limite, on la prend en compte.
+        if($limit){
+            $articles = new ArrayCollection($articles->slice(0, $limit));
+        }
+
         return $articles;
     }
 
