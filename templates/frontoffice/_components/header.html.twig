@@ -23,7 +23,7 @@
                                         <a
                                                 class="text-decoration-none"
                                                 href="{{ url('ressources_image', {'width':'src','height':'src', 'media':photo.media}) }}"
-                                                data-lightbox="image-{{ loop.parent.loop.index0 }}"
+                                                data-lightbox="image-header-{{ loop.parent.loop.index0 }}"
                                                 data-title="{{ article_datas['article'].title ~ ' - ' ~ article_datas['article'].dateEvent | date("d/m/Y")  }}"
                                         >
                                             {% set longueurMax = 10 %}
@@ -39,7 +39,7 @@
                                         </a>
                                     </div>
                                 {% else %}
-                                    <a  href="{{ url('ressources_image', {'width':'src','height':'src', 'media':photo.media}) }}" data-lightbox="image-{{ loop.parent.loop.index0 }}"></a>
+                                    <a  href="{{ url('ressources_image', {'width':'src','height':'src', 'media':photo.media}) }}" data-lightbox="image-header-{{ loop.parent.loop.index0 }}"></a>
                                 {% endif %}
                             {% endfor %}
                         {% endif %}

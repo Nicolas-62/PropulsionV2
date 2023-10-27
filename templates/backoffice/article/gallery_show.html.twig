@@ -1,9 +1,23 @@
 {# gallery_show.html.twig #}
 {% block _Article_gallery_show_widget %}
     <div class="row row-cols-1 row-cols-md-4 g-4">
-        {%  for photo in form.vars.data %}
-            <div class="col">
+        {%  for photo in form.vars.data.photos %}
+            <div class="col gallery-thumbnail">
                 <div class="position-relative">
+                    <a
+                        class="photo-star{{ photo.star ? ' active' : '' }}"
+                        {%  set star_media_url =  ea_url()
+                            .unsetAll()
+                            .setController('App\\Controller\\Backoffice\\GalleryCrudController')
+                            .setAction('starMedia')
+                            .set('articleId', form.vars.data.article.id)
+                            .set('mediaId', photo.id)
+                            .generateUrl()
+                         %}
+                        href="{{ star_media_url }}"
+                    >
+                        <i class="fas fa-star"></i>
+                    </a>
                     <img src="{{ getGalleryPath(photo.media) }}" data-media-id="{{ photo.id }}" class="img-fluid">
                     {# Url de suppression du media #}
                     {% set delete_upload_url = ea_url()

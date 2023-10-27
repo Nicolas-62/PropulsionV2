@@ -61,7 +61,8 @@ class MediaService{
                 // Infos de l'image
                 $file = new File($imageTmpPath);
                 // Identifiant unique du fichier
-                $uniqueId = time();
+                $uniqueId = uniqid();
+
                 // On ajoute un identifiant unique au nom de l'image.
                 $new_basename = $this->toolbox->url_compliant($file->getBasename('.' . $file->getExtension())).'-'.$uniqueId;
                 $new_filename = $new_basename.'.'.$file->guessExtension();
