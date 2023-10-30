@@ -21,148 +21,182 @@
     <!-- Récupération des datas de l'article -->
     {% do article.getDatas(locale) %}
     {% set mediaArticle = article.getMedia(8) %}
-    <div class="p-lg-5 container-fluid">
-        <!-- ARTICLE -->
-        <div class="p-lg-5 h2">
+    {% include 'frontoffice/_components/title.html.twig' with {'events': categories_actu, 'filter': true, 'historic': false, title: null } %}
+
+    <!-- Bannière -->
+    <div class="px-lg-5 container-fluid">
+        <div class="row">
             <!-- IMAGE ARTICLE -->
-            {% if mediaArticle is not null %}
-                {% set url = '/assets/images/' ~ mediaArticle.media  %}
-                <img  src="{{ asset((url)) }}" class="card-img-top rounded-0 mb-5" style="object-fit: cover;" alt="...">
-            {% endif %}
-            <div class="pt-4 position-relative image-top-corner">
-{#                <img src="{{ asset(('build/maquette/images/actu_cadre_1.svg')) }}" class="position-absolute other-browser" alt="ACTIONCULTURELLE">#}
-                <div class="row px-5 pt-5" >
-                    <div class="col-lg-9 col-md-12" style="padding-left: 30px">
-                        <!-- Titre -->
-                        <div class="h2 pb-4">{{ article.titleByLanguage }}</div>
-                        <div class="row text-center">
-                            {% if article.instagramLink != '' %}
-                                <div class="col">
-                                    <a href="{{ article.instagramLink }}"><img class="mh-45"  src="{{ asset(getSiteImagePath('PICTURE.svg')) }}"></a>
-                                </div>
-                            {% endif %}
-                            {% if article.twitterLink != '' %}
-                                <div class="col">
-                                    <a href="{{ article.twitterLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('TWITTER.svg')) }}"></a>
-                                </div>
-                            {% endif %}
-                            {% if article.facebookLink != '' %}
-                                <div class="col">
-                                    <a href="{{ article.facebookLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('FACEBOOK.svg')) }}"></a>
-                                </div>
-                            {% endif %}
-                            {% if article.siteInternet != '' %}
-                                <div class="col">
-                                    <a href="{{ article.siteInternet }}"><img class="mh-45" src="{{ asset(getSiteImagePath('INTERNET.svg')) }}"></a>
-                                </div>
-                            {% endif %}
-                        </div>
+            <div class="col-12">
+                {% if mediaArticle is not null %}
+                    {% set url = '/assets/images/' ~ mediaArticle.media  %}
+                    <img  src="{{ asset((url)) }}" class="card-img-top rounded-0 mb-5" style="object-fit: cover; max-height: 40vh" alt="...">
+                {% endif %}
+            </div>
+        </div>
+    </div>
 
 
-                        <div class="fs-5">
+    <!-- Article -->
+    <div class="px-lg-5 container-fluid">
 
-                            <div style="padding-right: 40px" class="py-3">
-                                {{ article.description | raw }}
-                            </div>
-
-
-
-                            <!-- Contenu -->
-                            <div style="padding-right: 40px">
-                                <p class="fs-4 py-4">
-                                    {{ article.subtitle }}
-                                </p>
-                                <div class="row">
-                                    <div class=" px-5 text-center">
-                                        {% set mediaArticle2 = article.getMedia(2) %}
-                                        {% if mediaArticle2 is not null %}
-                                            {% set url = '/assets/images/' ~ mediaArticle2.media  %}
-                                            <img  src="{{ asset((url)) }}" class="card-img-top rounded-0 mb-5" style="object-fit: contain; max-height: 50vh" alt="...">
-                                        {% endif %}
-                                    </div>
-                                    <div class="">
-
-                                        {{ article.content | raw }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                {% if not article.getFiles is empty %}
-
-                                    <div class="mt-5">
-                                        {% set filesArray = article.getFiles() %}
-                                        {% set arrayLength = filesArray|length %}
-                                        {% if arrayLength > 1 %}
-                                            <div class="mb-5">
-                                                Fichiers :
-                                                {% for file in article.getFiles() %}
-                                                    {% set url_file = '/assets/images/' ~ file.media %}
-                                                    <a class="btn-files fs-5" href="{{ url_file }}" role="button">{{ file.legend }}</a>
-                                                {% endfor %}</div>
-                                        {% elseif arrayLength == 1 %}
-                                            <div class="mb-5">
-                                                Fichier :
-                                                {% for file in article.getFiles() %}
-                                                    {% set url_file = '/assets/images/' ~ file.media %}
-                                                    <a class="btn-files fs-5" href="{{ url_file }}" role="button">{{ file.legend }}</a>
-                                                {% endfor %}
-                                            </div>
-                                        {% endif %}
-
-                                    </div>
-                                {% endif %}</div>
-                            <div class="mt-5">
-                                <!-- VIDEO ARTISTE -->
-                                {% if article.youtubeLink is not null and article.youtubeLink is not empty  %}
-                                    <div class="embed-responsive embed-responsive-16by9">
-                                        <iframe class="embed-responsive-item w-100" style="height: 860px;" src="{{ article.youtubeLink }}" allowfullscreen></iframe>
+        <div class="pt-4 position-relative image-top-corner">
+    {#                <img src="{{ asset(('build/maquette/images/actu_cadre_1.svg')) }}" class="position-absolute other-browser" alt="ACTIONCULTURELLE">#}
+                    <div class="row px-5 pt-5" >
+                        <div class="col-lg-9 col-md-12" style="padding-left: 30px">
+                            <!-- Titre -->
+                            <div class="h2 pb-4">{{ article.titleByLanguage }}</div>
+                            <div class="row text-center">
+                                {% if article.instagramLink != '' %}
+                                    <div class="col">
+                                        <a href="{{ article.instagramLink }}"><img class="mh-45"  src="{{ asset(getSiteImagePath('PICTURE.svg')) }}"></a>
                                     </div>
                                 {% endif %}
-                                {% if article.youtubeLink2 is not null and article.youtubeLink2 is not empty  %}
-                                    <div class="embed-responsive embed-responsive-16by9">
-                                        <iframe class="embed-responsive-item w-100" style="height: 860px;" src="{{ article.youtubeLink2 }}" allowfullscreen></iframe>
+                                {% if article.twitterLink != '' %}
+                                    <div class="col">
+                                        <a href="{{ article.twitterLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('TWITTER.svg')) }}"></a>
+                                    </div>
+                                {% endif %}
+                                {% if article.facebookLink != '' %}
+                                    <div class="col">
+                                        <a href="{{ article.facebookLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('FACEBOOK.svg')) }}"></a>
+                                    </div>
+                                {% endif %}
+                                {% if article.siteInternet != '' %}
+                                    <div class="col">
+                                        <a href="{{ article.siteInternet }}"><img class="mh-45" src="{{ asset(getSiteImagePath('INTERNET.svg')) }}"></a>
                                     </div>
                                 {% endif %}
                             </div>
-                            {#                        <img src="{{ asset(('build/maquette/images/actu_cadre_2.svg')) }}" class="position-absolute" style="height: 50px; bottom:0; left: 95%;" alt="ACTIONCULTURELLE">#}
-                        </div>
+                            <div class="fs-5">
+                                <div style="padding-right: 40px" class="py-3">
+                                    {{ article.description | raw }}
+                                </div>
 
-                    </div>
-                    <div class="col-lg-3 col-md-12 image-bot-corner">
-                        <!-- Thème -->
-                        {% do article.category.getDatas(locale) %}
-                        <div class="text-center h2 white" style="background-color: {{ article.category.themeBackColor }}; min-height: 50px;">
-                            <div class="p-1">
-                                {% set themeArticle = article.category.title %}
-                                {{ article.category.title }}
-                            </div>
-                        </div>
-                        <!-- Voir aussi v2 -->
-                        <div>
-                            {% for actu in actu_childs %}
-                                {% do actu.getDatas(locale) %}
-                                {% if actu.titleByLanguage|upper != article.titleByLanguage|upper %}
-                                    {% set themesChild = actu.category.title %}
-                                    {% if actu.category.title == themeArticle %}
-                                        <div style="" class="mb-4 card rounded rounded-0 p-4">
-                                            <div class="fs-4 fw-bold">
-                                                {% if actu.eventName is not empty %}{{ actu.eventName }} :{% endif%} {{ actu.titleByLanguage | upper }}
-                                            </div>
-                                            <div class="card-text py-3 fs-5" style="line-height: 1">
-                                                {{ actu.description|raw }}
-                                            </div>
-                                            <div>
-                                                <a href="{{ path('fo_actus_detail', { 'slug': actu.slug}) }}" class="btn-read-card">LIRE LA SUITE</a>
-                                            </div>
+                                <!-- Contenu -->
+                                <div style="padding-right: 40px">
+                                    <p class="fs-4 py-4">
+                                        {{ article.subtitle }}
+                                    </p>
+                                    <div class="row">
+{#                                        <div class=" px-5 text-center">#}
+{#                                            {% set mediaArticle2 = article.getMedia(2) %}#}
+{#                                            {% if mediaArticle2 is not null %}#}
+{#                                                {% set url = '/assets/images/' ~ mediaArticle2.media  %}#}
+{#                                                <img  src="{{ asset((url)) }}" class="card-img-top rounded-0 mb-5" style="object-fit: contain; max-height: 50vh" alt="...">#}
+{#                                            {% endif %}#}
+{#                                        </div>#}
+                                        <div class="">
+
+                                            {{ article.content | raw }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    {% if not article.getFiles is empty %}
+
+                                        <div class="mt-5">
+                                            {% set filesArray = article.getFiles() %}
+                                            {% set arrayLength = filesArray|length %}
+                                            {% if arrayLength > 1 %}
+                                                <div class="mb-5">
+                                                    Fichiers :
+                                                    {% for file in article.getFiles() %}
+                                                        {% set url_file = '/assets/images/' ~ file.media %}
+                                                        <a class="btn-files fs-5" href="{{ url_file }}" role="button">{{ file.legend }}</a>
+                                                    {% endfor %}</div>
+                                            {% elseif arrayLength == 1 %}
+                                                <div class="mb-5">
+                                                    Fichier :
+                                                    {% for file in article.getFiles() %}
+                                                        {% set url_file = '/assets/images/' ~ file.media %}
+                                                        <a class="btn-files fs-5" href="{{ url_file }}" role="button">{{ file.legend }}</a>
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+
+                                        </div>
+                                    {% endif %}</div>
+                                <div class="mt-5">
+                                    <!-- VIDEO ARTISTE -->
+                                    {% if article.youtubeLink is not null and article.youtubeLink is not empty  %}
+                                        <div class="video-container">
+                                            <iframe src="{{ article.youtubeLink }}" allowfullscreen></iframe>
                                         </div>
                                     {% endif %}
-                                {% endif %}
-                            {% endfor %}
+                                    {% if article.youtubeSecondLink is not null and article.youtubeSecondLink is not empty  %}
+                                        <div class="video-container">
+                                            <iframe src="{{ article.youtubeSecondLink }}" allowfullscreen></iframe>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                {#                        <img src="{{ asset(('build/maquette/images/actu_cadre_2.svg')) }}" class="position-absolute" style="height: 50px; bottom:0; left: 95%;" alt="ACTIONCULTURELLE">#}
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3 col-md-12 image-bot-corner">
+                            <!-- Thème -->
+                            {% do article.category.getDatas(locale) %}
+                            <div class="text-center h2 white" style="background-color: {{ article.category.themeBackColor }}; min-height: 50px;">
+                                <div class="p-1">
+                                    {% set themeArticle = article.category.title %}
+                                    {{ article.category.title }}
+                                </div>
+                            </div>
+                            <!-- Voir aussi v2 -->
+                            <div>
+                                {% for actu in actu_childs %}
+                                    {% do actu.getDatas(locale) %}
+                                    {% if actu.titleByLanguage|upper != article.titleByLanguage|upper %}
+                                        {% set themesChild = actu.category.title %}
+                                        {% if actu.category.title == themeArticle %}
+                                            <div style="" class="mb-4 card rounded rounded-0 p-4">
+                                                <div class="fs-4 fw-bold">
+                                                    {% if actu.eventName is not empty %}{{ actu.eventName }} :{% endif%} {{ actu.titleByLanguage | upper }}
+                                                </div>
+                                                <div class="card-text py-3 fs-5" style="line-height: 1">
+                                                    {{ actu.description|raw }}
+                                                </div>
+                                                <div>
+                                                    <a href="{{ path('fo_actus_detail', { 'slug': actu.slug}) }}" class="btn-read-card">LIRE LA SUITE</a>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+
+                            <div class="fs-3 ps-3 pb-3">
+                                à voir aussi ...
+                            </div>
+                            <div>
+                                {% set temoin_nb_actus = 0 %}
+                                {% for actu in actu_childs %}
+                                    {% do actu.getDatas(locale) %}
+                                    {% if actu.titleByLanguage|upper != article.titleByLanguage|upper %}
+                                        {% set themesChild = actu.category.title %}
+                                        {% if actu.category.title != themeArticle %}
+                                            {% set temoin_nb_actus = temoin_nb_actus + 1 %}
+                                            {% if temoin_nb_actus < 4 %}
+                                                <div style="" class="mb-4 card rounded rounded-0 p-4">
+                                                    <div class="fs-4 fw-bold">
+                                                        {% if actu.eventName is not empty %}{{ actu.eventName }} :{% endif%} {{ actu.titleByLanguage | upper }}
+                                                    </div>
+                                                    <div class="card-text py-3 fs-5" style="line-height: 1">
+                                                        {{ actu.description|raw }}
+                                                    </div>
+                                                    <div>
+                                                        <a href="{{ path('fo_actus_detail', { 'slug': actu.slug}) }}" class="btn-read-card">LIRE LA SUITE</a>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
     </div>
     <!-- Voir aussi -->
 {#    <div class="bg-grey container-fluid">#}

@@ -1,32 +1,41 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
 {% block body %}
+    <!-- Container du titre -->
+    {% include 'frontoffice/_components/title.html.twig' with {'events': categories_child_agenda, 'filter': true, 'historic': true, 'title': null } %}
+
+    {#    <div class="px-lg-5 container-fluid">#}
+{#        <div class="row font-primary">#}
+{#            <div class="px-lg-5 px-md-5 pt-5 row">#}
+{#                <!-- Titre de la catégorie Agenda -->#}
+{#                <div class="col-lg-2 px-lg-1 col-md-6 col-sm-12 fs-1 blue-title text-center text-lg-start mb-3 mb-lg-0"  style="padding-bottom: 10px; padding-left: 30px !important">{{ page_title | upper }}</div>#}
+{#                <!-- Filtre des sous-catégories -->#}
+{#                <div class="custom-select col-lg-2 col-md-6 col-sm-12 d-flex align-items-end bottom-17">#}
+{#                    <div class="dropdown mx-auto">#}
+{#                        <!-- Dropdown button / Sélecteur -->#}
+{#                        <button class="btn btn-secondary dropdown-toggle dropdown-toggle-select text-uppercase dropdown-select-button dropdown-select text-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">#}
+{#                            Tous les évènements#}
+{#                        </button>#}
+{#                        <!-- Options du sélecteur -->#}
+{#                        <ul class="dropdown-menu">#}
+{#                            <div class="dropdown-select-item-li dropdown-select-item text-uppercase w-100 fs-5">Tous les évènements</div>#}
+{#                            {% for categorie_child_agenda in categories_child_agenda %}#}
+{#                                <div#}
+{#                                        class="dropdown-select-item-li dropdown-select-item w-100 fs-5"#}
+{#                                        data-id="{{ categorie_child_agenda.id }}"#}
+{#                                >{{ categorie_child_agenda.title | upper }}</div>#}
+{#                            {% endfor %}#}
+{#                        </ul>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <!-- Bouton Historique -->#}
+{#                <div class="col-12 col-lg-3  offset-lg-3 h1 text-center text-lg-start mb-4"> <a class="btn-read-card" href="{{ path('fo_agenda_historic')}}">HISTORIQUE  ></a></div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
+    <!-- Container des évènements -->
     <div class="px-lg-5 container-fluid">
         <div class="row font-primary">
-            <div class="px-lg-5 px-md-5 pt-5 row">
-                <!-- Titre de la catégorie Agenda -->
-                <h1 class="col-lg-2 px-lg-1 col-md-6 col-sm-12 fs-1 blue-title text-center text-lg-start mb-3 mb-lg-0"  style="padding-bottom: 10px">{{ page_title | upper }}</h1>
-                <!-- Filtre des sous-catégories -->
-                <div class="custom-select col-lg-2 col-md-6 col-sm-12 d-flex align-items-end bottom-17">
-                    <div class="dropdown mx-auto">
-                        <!-- Dropdown button / Sélecteur -->
-                        <button class="btn btn-secondary dropdown-toggle dropdown-toggle-select text-uppercase dropdown-select-button dropdown-select text-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Tous les évènements
-                        </button>
-                        <!-- Options du sélecteur -->
-                        <ul class="dropdown-menu">
-                            <div class="dropdown-select-item-li dropdown-select-item text-uppercase w-100 fs-5">Tous les évènements</div>
-                            {% for categorie_child_agenda in categories_child_agenda %}
-                                <div
-                                        class="dropdown-select-item-li dropdown-select-item w-100 fs-5"
-                                        data-id="{{ categorie_child_agenda.id }}"
-                                >{{ categorie_child_agenda.title | upper }}</div>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-                <!-- Bouton Historique -->
-                <div class="col-12 col-lg-3  offset-lg-3 h1 text-center text-lg-start mb-4"> <a class="btn-read-card" href="{{ path('fo_agenda_historic')}}">HISTORIQUE  ></a></div>
-            </div>
             <!-- Boucle des cards des événements -->
             {% for event in events_agenda %}
                 {% if event.dateEvent >  date_yesterday %}
@@ -41,6 +50,12 @@
                     </div>
                 {% endif %}
             {% endfor %}
+        </div>
+
+        <div class="row no-event" style="display: none">
+            <div class="col-12 d-flex justify-content-center fs-3 py-5">
+                Désolé, il n'y a pas d'autres évènements dans cette catégorie.
+            </div>
         </div>
     </div>
 {% endblock %}

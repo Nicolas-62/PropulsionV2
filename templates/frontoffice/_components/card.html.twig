@@ -116,7 +116,7 @@
         {% if billetterie %}
             {% if event.ticketingLink is not empty and event.ticketingLink is not null %}
                 <a rel="nofollow" href="{{ event.ticketingLink }}">
-                    <img class="btn-billetterie-card" src="{{ asset(getSiteImagePath('LIEN_BILLETTERIE.jpg')) }}" alt="...">
+                    <img style="height: 50px" class="btn-billetterie-card" src="{{ asset(getSiteImagePath('picto-billet.svg')) }}" alt="...">
                 </a>
 {#            {% else %}#}
 {#                <a rel="nofollow" href="https://billetterie.lalune.net/">#}

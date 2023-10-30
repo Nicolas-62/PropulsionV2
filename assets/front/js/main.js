@@ -98,6 +98,10 @@ $(document).ready(function() {
     const $dropDownItems    =   $('.dropdown-select-item');
     const $dropDownButton   =   $('.dropdown-select-button');
     const $allEventCards    =   $('.card-event');
+    const $noEventText      =   $('.no-event');
+
+    // On remet no-event en display none
+    $noEventText.hide();
 
     // Ajout des écouteurs d'événements
     $dropDownItems.on('click', function(event) {
@@ -107,17 +111,25 @@ $(document).ready(function() {
         $dropDownButton.text($dropDownItem.text());
         // Si l'élément cliqué est associé à un filtre
         if($dropDownItem.attr('data-id')){
+            // On crée un témoin pour savoir si on a affiché au moins une card
+            let atLeastOneCardDisplayed = false;
             // On affiche que les cards dont la sous catégorie correspond à celle de l'élément cliqué
             $allEventCards.each(function(index, element) {
                 let $card = $(element);
                 // Si la card est associée à la sous catégorie de l'élément cliqué
                 if ($card.attr('data-id') === $dropDownItem.attr('data-id')) {
                     // On l'affiche
+                    atLeastOneCardDisplayed = true;
                     $card.show();
                 } else {
                     $card.hide();
                 }
             });
+            if( atLeastOneCardDisplayed === true ) {
+                $noEventText.hide();
+            }else{
+                $noEventText.show();
+            }
         }else{
             // On affiche toutes les cards
             $allEventCards.show();

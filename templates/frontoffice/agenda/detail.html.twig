@@ -197,8 +197,8 @@
                 </div>
                 <!-- VIDEO ARTISTE -->
                 {% if article.youtubeLink %}
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item w-100" style="height: 860px;" src="{{ article.youtubeLink }}" allowfullscreen></iframe>
+                    <div class="video-container">
+                        <iframe src="{{ article.youtubeLink }}" allowfullscreen></iframe>
                     </div>
                 {% endif %}
                 <!-- PLUS D'INFOS SUR L'ARTISTE -->
@@ -302,7 +302,7 @@
                     </div>
                     <div class="py-5">
                         <a class="text-decoration-none" href="{{ path('fo_infos_index') }}">
-                            <img style="max-height: 150px" src="{{ asset(getSiteImagePath('INFOS_PRATIQUES.svg')) }}">
+                            <img style="max-height: 150px" src="{{ asset(getSiteImagePath('infos.png')) }}">
                         </a>
                     </div>
                 </div>
@@ -339,13 +339,16 @@
 
                         {% if child.youtubeLink is not empty and child.youtubeLink is not null %}
                             <div class="embed-responsive embed-responsive-16by9">
-                                <iframe class="embed-responsive-item w-100" style="height: 860px" src="{{ child.youtubeLink }}" allowfullscreen></iframe>
+                                <div class="video-container">
+                                    <iframe src="{{ child.youtubeLink }}" allowfullscreen></iframe>
+                                </div>
                             </div>
                         {% endif %}
                         {% if child.youtubeSecondLink is not empty and child.youtubeSecondLink is not null %}
                             <div class="embed-responsive embed-responsive-16by9">
-                                <iframe class="embed-responsive-item w-100" style="height: 860px" src="{{ child.youtubeLink }}" allowfullscreen></iframe>
-                            </div>
+                                <div class="video-container">
+                                    <iframe src="{{ child.youtubeLink }}" allowfullscreen></iframe>
+                                </div>                            </div>
                         {% endif %}
                         {% if media3 is not null and child.youtubeSecondLink is empty  and child.youtubeLink is empty %}
                             {% set url = '/assets/images/' ~ media3.media  %}

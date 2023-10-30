@@ -1,32 +1,38 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
 {% block body %}
+    {% include 'frontoffice/_components/title.html.twig' with {'events': categories_actu, 'filter': true, 'historic': false, 'title': null } %}
+{#    <div class="px-lg-5 container-fluid">#}
+{#        <div class="row">#}
+{#            <div class="px-lg-5  px-md-5 pt-5 row">#}
+{#                <!-- Titre de la catégorie Actu -->#}
+{#                <div class="px-md-2 px-lg-0 col-lg-2 col-md-6 col-sm-6 fs-1 blue-title text-center text-lg-start mb-3 mb-lg-0" style="padding-bottom: 10px; padding-left: 30px !important">{{ page_title | upper }}</div>#}
+{#                <div class="custom-select col-lg-3 col-md-6 col-sm-6 d-flex align-items-end " style="bottom: 17px">#}
+{#                    <div class="dropdown mx-auto">#}
+{#                        <!-- Dropdown button / Sélecteur -->#}
+{#                        <button class="text-center btn btn-secondary dropdown-toggle dropdown-toggle-select text-uppercase dropdown-select-button dropdown-select" type="button" data-bs-toggle="dropdown" aria-expanded="false">#}
+{#                            Tous les évènements#}
+{#                        </button>#}
+{#                        <!-- Options du dropdown -->#}
+{#                        <ul class="dropdown-menu">#}
+{#                            <li class="dropdown-select-item-li dropdown-select-item text-uppercase w-100 fs-5">Tous les évènements</li>#}
+{#                            {% for categorie_actu in categories_actu %}#}
+{#                                <li#}
+{#                                        class="dropdown-select-item-li dropdown-select-item w-100 fs-5"#}
+{#                                        data-id="{{ categorie_actu.id }}"#}
+{#                                >#}
+{#                                    {{ categorie_actu.title | upper }}#}
+{#                                </li>#}
+{#                            {% endfor %}#}
+{#                        </ul>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
     <div class="px-lg-5 container-fluid">
         <div class="row">
-            <div class="px-lg-5  px-md-5 pt-5 row">
-                <!-- Titre de la catégorie Actu -->
-                <div class="px-md-2 px-lg-0 col-lg-2 col-md-6 col-sm-6 fs-1 blue-title text-center text-lg-start mb-3 mb-lg-0" style="padding-bottom: 10px">{{ page_title | upper }}</div>
-                <div class="custom-select col-lg-3 col-md-6 col-sm-6 d-flex align-items-end " style="bottom: 17px">
-                    <div class="dropdown mx-auto">
-                        <!-- Dropdown button / Sélecteur -->
-                        <button class="text-center btn btn-secondary dropdown-toggle dropdown-toggle-select text-uppercase dropdown-select-button dropdown-select" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Tous les évènements
-                        </button>
-                        <!-- Options du dropdown -->
-                        <ul class="dropdown-menu">
-                            <li class="dropdown-select-item-li dropdown-select-item text-uppercase w-100 fs-5">Tous les évènements</li>
-                            {% for categorie_actu in categories_actu %}
-                                <li
-                                        class="dropdown-select-item-li dropdown-select-item w-100 fs-5"
-                                        data-id="{{ categorie_actu.id }}"
-                                >
-                                    {{ categorie_actu.title | upper }}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- Boucle des cards actualités -->
+
+                <!-- Boucle des cards actualités -->
             {% for actu in actu_childs %}
                 {% set media = actu.getMedia(2) %}
                 <div
@@ -37,6 +43,11 @@
                     {% include 'frontoffice/_components/card.html.twig' with {'event': actu, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': false, 'soutiens': false, 'actions' : false } %}
                 </div>
             {% endfor %}
+        </div>
+        <div class="row no-event" style="display: none">
+            <div class="col-12 d-flex justify-content-center fs-3 py-5">
+                Désolé, il n'y a pas d'autres actualités dans cette catégorie.
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -54,8 +54,11 @@ class ActusController extends LuneController
     #[Route('{slug}', name: 'detail')]
     public function detail(?Article $actus): Response
     {
+        $categories = $this->entityManager->getRepository(Category::class)->findBy(['category_id'=>4]);
 
         $category_actu = $this->entityManager->getRepository(Category::class)->find($this->category_id);
+        $category_actu = $this->entityManager->getRepository(Category::class)->find($this->category_id);
+        $this->data['categories_actu'] = $categories;
         $this->data['category_actu'] = $category_actu;
         // Récupération des sous catégories de la catégorie actu
         $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($this->category_id)->getChildrenIds();
