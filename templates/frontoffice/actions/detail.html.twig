@@ -90,15 +90,19 @@
                 </div>
 
                 <!-- Vidéos de l'article -->
-                <div class="row">
+                <div class="row pt-4">
                     {% if article.youtubeLink %}
-                        <div class="video-container">
-                            <iframe src="{{ article.youtubeLink }}" allowfullscreen></iframe>
+                        <div class="w-50">
+                            <div class="video-container">
+                                <iframe src="{{ article.youtubeLink }}" allowfullscreen></iframe>
+                            </div>
                         </div>
                     {% endif %}
                     {% if article.youtubeSecondLink %}
-                        <div class="video-container">
-                            <iframe src="{{ article.youtubeSecondLink }}" allowfullscreen></iframe>
+                        <div class="w-50">
+                            <div class="video-container">
+                                <iframe src="{{ article.youtubeSecondLink }}" allowfullscreen></iframe>
+                            </div>
                         </div>
                     {% endif %}
                 </div>

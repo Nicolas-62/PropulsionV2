@@ -21,7 +21,7 @@
     <!-- Récupération des datas de l'article -->
     {% do article.getDatas(locale) %}
     {% set mediaArticle = article.getMedia(8) %}
-    {% include 'frontoffice/_components/title.html.twig' with {'events': categories_actu, 'filter': true, 'historic': false, title: null } %}
+    {% include 'frontoffice/_components/title.html.twig' with {'events': categories_actu, 'filter': true, 'historic': false, 'title': null, linkToSorted : true } %}
 
     <!-- Bannière -->
     <div class="px-lg-5 container-fluid">

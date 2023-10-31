@@ -39,6 +39,7 @@ $.extend(verge);
 $('.custom-select').select2({
     theme: 'bootstrap-5',
 });
+let urlParams = new URLSearchParams(window.location.search);
 
 $(document).ready(function() {
 
@@ -47,7 +48,6 @@ $(document).ready(function() {
     let $pageContainer      = $('#page-container');
     let $footerContainer    = $('#footer-container');
     let $pageLinkContainer  = $('#page-link-container');
-
     // Fonctions
 
     /*
@@ -99,10 +99,31 @@ $(document).ready(function() {
     const $dropDownButton   =   $('.dropdown-select-button');
     const $allEventCards    =   $('.card-event');
     const $noEventText      =   $('.no-event');
+    const $tri         = urlParams.get('tri');
+    let $temoinTri = 0;
 
     // On remet no-event en display none
     $noEventText.hide();
+    if ($tri !== null) {
+        $allEventCards.each(function(index, element) {
+            let $card = $(element);
+            console.log('tri : ' + $tri);
+            console.log('card : ' + $card.attr('data-id'));
+            $dropDownItems.each(function(index, element) {
+                if($(element).attr('data-id') === $tri){
+                    $dropDownButton.text($(element).text());
+                }
 
+            });
+
+            if ($tri === $card.attr('data-id')) {
+                $temoinTri = 1;
+                $card.show();
+            } else {
+                $card.hide();
+            }
+        });
+    }
     // Ajout des écouteurs d'événements
     $dropDownItems.on('click', function(event) {
         // On récupère l'élément sur lequel on a cliqué
@@ -113,17 +134,18 @@ $(document).ready(function() {
         if($dropDownItem.attr('data-id')){
             // On crée un témoin pour savoir si on a affiché au moins une card
             let atLeastOneCardDisplayed = false;
-            // On affiche que les cards dont la sous catégorie correspond à celle de l'élément cliqué
+            // On affiche que les cards dont la sous-catégorie correspond à celle de l'élément cliqué
             $allEventCards.each(function(index, element) {
                 let $card = $(element);
-                // Si la card est associée à la sous catégorie de l'élément cliqué
-                if ($card.attr('data-id') === $dropDownItem.attr('data-id')) {
-                    // On l'affiche
-                    atLeastOneCardDisplayed = true;
-                    $card.show();
-                } else {
-                    $card.hide();
-                }
+                    // Si la card est associée à la sous-catégorie de l'élément cliqué
+                    if ($card.attr('data-id') === $dropDownItem.attr('data-id')) {
+                        // On l'affiche
+                        atLeastOneCardDisplayed = true;
+                        $card.show();
+                    } else {
+                        $card.hide();
+                    }
+
             });
             if( atLeastOneCardDisplayed === true ) {
                 $noEventText.hide();

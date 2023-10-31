@@ -202,7 +202,7 @@
                     </div>
                 {% endif %}
                 <!-- PLUS D'INFOS SUR L'ARTISTE -->
-                <div>
+                <div class="pt-5">
                     {% if article.soundcloudLink is not null and article.soundcloudLink is not empty %}
                         {{ article.soundcloudLink | raw }}
                     {% endif %}
@@ -356,7 +356,7 @@
                         {% endif %}
                     </div>
                     <!-- CONTENT ARTISTE -->
-                    <div class="fs-5 pb-3">
+                    <div class="fs-5 py-3">
                         {{ child.content | raw }}
                     </div>
                     <!-- PLUS D'INFOS SUR L'ARTISTE -->

@@ -14,14 +14,25 @@
                     </button>
                     <!-- Options du dropdown -->
                     <ul class="dropdown-menu">
+                        {% if linkToSorted == true %}
+                            <a class="text-decoration-none" href="{{ path('fo_actus_index', {'tri': 'Tous les évènements'}) }}">
+                        {% endif %}
                         <li class="dropdown-select-item-li dropdown-select-item text-uppercase w-100 fs-5">Tous les évènements</li>
+                        {% if linkToSorted == true %}
+                            </a>
+                        {% endif %}
                         {% for event in events %}
-                            <li
-                                    class="dropdown-select-item-li dropdown-select-item w-100 fs-5"
-                                    data-id="{{ event.id }}"
-                            >
-                                {{ event.title | upper }}
-                            </li>
+
+                        {% if linkToSorted == true %}
+                            <a class="text-decoration-none" href="{{ path('fo_actus_index', {'tri': event.id } ) }}">
+                            {% endif %}
+                                <li
+                                        class="dropdown-select-item-li dropdown-select-item w-100 fs-5"
+                                        data-id="{{ event.id }}"
+                                >
+                                    {{ event.title | upper }}
+                                </li>
+                            </a>
                         {% endfor %}
                     </ul>
                 </div>

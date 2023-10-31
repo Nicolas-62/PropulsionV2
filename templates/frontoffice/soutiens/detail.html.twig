@@ -2,9 +2,10 @@
 
 
 {% block body %}
-
+    {% include 'frontoffice/_components/title.html.twig' with {'events': null, 'filter': false, 'historic': false, 'title': null, linkToSorted: false } %}
     {% do  article.getDatas(locale) %}
     <!-- Container de la page -->
+
     <div class="p-2 p-lg-5 container-fluid">
         <div class="row gx-0 p-lg-5">
 
