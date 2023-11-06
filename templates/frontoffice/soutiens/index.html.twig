@@ -2,62 +2,68 @@
 
 {% block body %}
 
-
-
     <!-- ARTISTES ACCOMPAGNES -->
 
     {% do category_accomp.getDatas(locale) %}
-    <div id="{{ category_accomp.title }}" class="p-lg-5 container-fluid">
-        <div class="row gx-0">
 
-            <!-- Titre de la section -->
-            <div class="text-center text-lg-start col-md-6 col-lg-3">
-                <div class="h1 mb-5 mt-5 mt-lg-0 mb-lg-0">Artistes <br> Accompagnés</div>
-            </div>
-            <div class="text-center text-lg-start col-md-6 col-lg-4 offset-lg-2">
-                <h2>Dispositif d’accompagnement de<br> La Lune des Pirates</h2>
-            </div>
-            <div class="col-md-12 col-lg-3" style="line-height: 0.8">
-{#                    <p class="objectif-soutiens mb-0">Objectif</p>#}
-{#                    <p class="lune-soutiens mb-0">LUNE</p>#}
-                <img class="img-fluid" src="{{ asset(getSiteImagePath('Logo_ObjectifLune_NB.png')) }}" alt="Objectif Lune">
-            </div>
-        </div>
 
-        <!-- Description de la catégorie -->
-        <div class="fs-5 py-4 px-2 px-lg-0">
-            {{ category_accomp.description|raw }}
-        </div>
+    <div id="{{ category_accomp.title }}">
+        {% include 'frontoffice/_components/title.html.twig' with {'events': null, 'filter': false, 'historic': false, 'title': 'Dispositif d’accompagnement de La Lune des Pirates', linkToSorted: false, logo : 'Logo_ObjectifLune_NB.png' } %}
 
-        <!-- Boucle de nos cards artistes accompagnes -->
-        <div class="row">
-            {% for accomp in accompagnes %}
-                {% do accomp.getDatas(locale) %}
-                {% set media = accomp.getMedia(4) %}
-                <div class="custom-col-xxl-3 col-lg-4 col-md-12 py-3 pb-lg-5 px-lg-1 px-md-0">
-                    <!-- Card-Actu -->
-                    {% include 'frontoffice/_components/card.html.twig' with {'event': accomp, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true, "actions" : false } %}
-                </div>
-            {% endfor %}
+
+        <div class="px-lg-5 container-fluid">
+            <div class="row gx-0">
+
+    {#            <!-- Titre de la section -->#}
+    {#            <div class="text-center text-lg-start col-md-6 col-lg-3">#}
+    {#                <div class="h1 mb-5 mt-5 mt-lg-0 mb-lg-0">Artistes <br> Accompagnés</div>#}
+    {#            </div>#}
+    {#            <div class="text-center text-lg-start col-md-6 col-lg-4 offset-lg-2">#}
+    {#                <h2>Dispositif d’accompagnement de<br> La Lune des Pirates</h2>#}
+    {#            </div>#}
+    {#            <div class="col-md-12 col-lg-3" style="line-height: 0.8">#}
+    {#                    <p class="objectif-soutiens mb-0">Objectif</p>#}
+    {#                    <p class="lune-soutiens mb-0">LUNE</p>#}
+    {#                <img class="img-fluid" src="{{ asset(getSiteImagePath('Logo_ObjectifLune_NB.png')) }}" alt="Objectif Lune">#}
+    {#            </div>#}
+            </div>
+
+            <!-- Description de la catégorie -->
+            <div class="fs-5 py-4 px-2 px-lg-0">
+                {{ category_accomp.description|raw }}
+            </div>
+
+            <!-- Boucle de nos cards artistes accompagnes -->
+            <div class="row">
+                {% for accomp in accompagnes %}
+                    {% do accomp.getDatas(locale) %}
+                    {% set media = accomp.getMedia(4) %}
+                    <div class="custom-col-xxl-3 col-lg-4 col-md-12 py-3 pb-lg-5 px-lg-1 px-md-0">
+                        <!-- Card-Actu -->
+                        {% include 'frontoffice/_components/card.html.twig' with {'event': accomp, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true, "actions" : false } %}
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
-
     <!-- AUDITIONS -->
     {% do category_audition.getDatas(locale) %}
-    <div id="{{ category_audition.title }}" class="p-lg-5 bg-grey container-fluid">
+    <div id="{{ category_audition.title }}" class="px-0 bg-grey container-fluid">
+        {% include 'frontoffice/_components/title.html.twig' with {'events': null, 'filter': false, 'historic': false, 'title': 'Dispositif national de repérage et de sélection de nouveaux talents', linkToSorted: false, logo: 'Logo_inouis_NB.png' } %}
 
+    <div class="px-lg-5">
         <!-- Entête audition -->
         <div class="row gx-0">
-            <div class="mb-5 mt-3 mt-lg-0 mb-lg-0 text-center text-lg-start col-md-6 col-lg-3">
-                <h1 class="">{{ category_audition.title }}</h1>
-            </div>
-            <div class="text-center text-lg-start col-md-6 col-lg-4 offset-lg-2">
-                <h2>Dispositif national de repérage et de sélection de nouveaux talents</h2>
-            </div>
-            <div class="col-md-12 col-lg-3" style="line-height: 40pt">
+{#            <div class="mb-5 mt-3 mt-lg-0 mb-lg-0 text-center text-lg-start col-md-6 col-lg-3">#}
+{#                <h1 class="">{{ category_audition.title }}</h1>#}
+{#            </div>#}
+{#            <div class="text-center text-lg-start col-md-6 col-lg-4 offset-lg-2">#}
+{#                <h2>Dispositif national de repérage et de sélection de nouveaux talents</h2>#}
+{#            </div>#}
+{#            <div class="col-md-12 col-lg-3" style="line-height: 40pt">#}
 {#                    <p class="objectif-soutiens">Les inouïs du printemps de Bourges</p>#}
-                <img class="img-fluid" src="{{ asset(getSiteImagePath('Logo_inouis_NB.png')) }}" alt="Les Inouïs">
-            </div>
+{#                <img class="img-fluid" src="{{ asset(getSiteImagePath('Logo_inouis_NB.png')) }}" alt="Les Inouïs">#}
+{#            </div>#}
         </div>
 
         <!-- Description Audition -->
@@ -78,32 +84,35 @@
             {% endfor %}
         </div>
     </div>
-
-    <!-- Évènements Actualités -->
-    {% do category_event.getDatas(locale) %}
-
-    <div id="{{ category_event.title }}" class="p-lg-5 container-fluid">
-        <div class="text-center text-lg-start row gx-0 px-lg-3">
-            <h1 class="pt-4">Évènements<br> Actualités</h1>
-        </div>
-        {% if category_event.description %}
-        <div class="h3 py-4 px-2">
-            {{ category_event.description|raw }}
-        </div>
-        {% endif %}
-        <div class="row gx-0">
-            {% for event_actu in event_actus %}
-                {% do  event_actu.getDatas(locale) %}
-                {% set media = event_actu.getMedia(4) %}
-                <div class="custom-col-xxl-3 col-lg-4 col-md-12 py-3 pb-lg-5 px-lg-1 px-md-0">
-
-                    <!-- Card-Actu -->
-                    {% include 'frontoffice/_components/card.html.twig' with {'event': event_actu, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': false, 'soutiens': false, 'actions': false } %}
-                </div>
-            {% endfor %}
-        </div>
     </div>
 
+    <!-- Évènements Actualités -->
+    <div id="{{ category_event.title }}">
+        {% include 'frontoffice/_components/title.html.twig' with {'events': null, 'filter': false, 'historic': false, 'title': 'Évènements Actualités', linkToSorted: false, logo : false } %}
+        {% do category_event.getDatas(locale) %}
+
+        <div  class="px-lg-5 container-fluid">
+    {#        <div class="text-center text-lg-start row gx-0 px-lg-3">#}
+    {#            <h1 class="pt-4">Évènements<br> Actualités</h1>#}
+    {#        </div>#}
+            {% if category_event.description %}
+            <div class="h3 py-2 px-2">
+                {{ category_event.description|raw }}
+            </div>
+            {% endif %}
+            <div class="row gx-0">
+                {% for event_actu in event_actus %}
+                    {% do  event_actu.getDatas(locale) %}
+                    {% set media = event_actu.getMedia(4) %}
+                    <div class="custom-col-xxl-3 col-lg-4 col-md-12 py-4 pb-lg-5 px-lg-1 px-md-0">
+
+                        <!-- Card-Actu -->
+                        {% include 'frontoffice/_components/card.html.twig' with {'event': event_actu, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': false, 'soutiens': false, 'actions': false } %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 
 
 {% endblock %}

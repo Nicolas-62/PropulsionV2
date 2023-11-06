@@ -1,7 +1,7 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
 {% block body %}
     {% do cat.getDatas(locale) %}
-    {% include 'frontoffice/_components/title.html.twig' with {'events': null, 'filter': false, 'historic': false, 'title': cat.title } %}
+    {% include 'frontoffice/_components/title.html.twig' with {'events': null, 'filter': false, 'historic': false, 'title': cat.title, logo: null } %}
 
     <div class=" px-lg-5 container-fluid">
         <div class="row">
