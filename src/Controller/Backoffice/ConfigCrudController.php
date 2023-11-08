@@ -12,6 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -44,18 +45,7 @@ class ConfigCrudController extends AbstractCrudController
 
         // Onglet Configuration générale
         yield FormField::addTab('Configuration générale');
-        // Todo : Champs pour lancer le vidage du cache à la sauvegarde des données. A implémenter, désactivé pour l'instant
-        //yield IntegerField::new('cache_flush_auto');
-
-
-        // Onglet Informations Contact
-        yield FormField::addPanel('Informations Contact');
-        yield TextField::new('email_contact','Email Contact')->setColumns(6);
-        yield TextField::new('email_objet',"Objet de l'email")->setColumns(6);
-        yield FormField::addPanel('SEO du site');
-        yield TextField::new('seo_title',"Titre du site")->setColumns(6);
-        yield TextField::new('seo_description',"Description du site")->setColumns(6);
-        yield CollectionField::new('seo_keywords', 'Mots clés du site')->setColumns(6);
+        yield NumberField::new('tauxTVA', 'Taux de TVA en %');
     }
 
     /**

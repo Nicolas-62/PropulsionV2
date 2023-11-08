@@ -4,10 +4,12 @@ namespace App\DataFixtures;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\Config;
 use App\Entity\Media;
 use App\Entity\MediaLink;
 use App\Entity\Mediaspec;
 use App\Entity\Online;
+use App\Entity\Projet;
 use App\Factory\ArticleFactory;
 use App\Factory\CategoryFactory;
 use App\Factory\LanguageFactory;
@@ -27,34 +29,28 @@ class AppFixtures extends Fixture
     {
         // Ne fonctionne pas, truncater manuellement les tables
 
-//        $factory = factory(Article::class);
-//        $factory->truncate();
-//        $factory = factory(Category::class);
-//        $factory->truncate();
-//        $factory = factory(MediaLink::class);
-//        $factory->truncate();
-//        $factory = factory(Online::class);
-//        $factory->truncate();
-//        $factory = factory(Mediaspec::class);
-//        $factory->truncate();
-//        $factory = factory(Media::class);
-//        $factory->truncate();
+        $config = new Config();
+        $config->setTauxTVA(20);
+        $manager->persist($config);
 
-        MediasTypesFactory::createOne();
-        LanguageFactory::createOne();
+        $projet = new Projet();
+        $projet->setRefInterne('PROJET-1');
+        $projet->setRefExterne('123456');
+        $projet->setClient('capside');
+        $projet->setDateCreation(new \DateTime());
+        $projet->setMontantHT(1000.00);
+        $projet->setMontantTTC(1200);
+        $manager->persist($projet);
 
-//        CategoryFactory::createMany(4,
-//            function(){
-//                return [
-//                    'articles' => ArticleFactory::createMany(3, ['children' => ArticleFactory::new()->many(0,2)]),
-//                    'parent'   => CategoryFactory::createOne(),
-//                ];
-//            }
-//        );
+        $projet = new Projet();
+        $projet->setRefInterne('PROJET-2');
+        $projet->setRefExterne('78891011');
+        $projet->setDateCreation(new \DateTime());
+        $projet->setClient('edf');
+        $projet->setMontantHT(2540.50);
+        $projet->setMontantTTC(3048.60);
+        $manager->persist($projet);
 
-//        OnlineFactory::createMany(5);
-        //MediaFactory::createMany(60);
-        //MediaLinkFactory::createMany(40);
-        //MediaspecFactory::createMany(40);
+        $manager->flush();
     }
 }
