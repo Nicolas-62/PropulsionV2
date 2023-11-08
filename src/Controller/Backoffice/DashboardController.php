@@ -8,6 +8,7 @@ use App\Entity\Category;
 use App\Entity\Config;
 use App\Entity\Media;
 use App\Entity\Mediaspec;
+use App\Entity\Projet;
 use App\Entity\Theme;
 use App\Entity\User;
 use App\Notification\BoNotification;
@@ -33,7 +34,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Cache\CacheInterface;
 
-#[Route('/backoffice', name: 'bo_')]
+#[Route('/', name: 'bo_')]
 class DashboardController extends AbstractDashboardController
 {
     private $session;
@@ -48,19 +49,11 @@ class DashboardController extends AbstractDashboardController
     {
         // Si pas d'utilisateur connecté.
         if (!$this->getUser()) {
-            return $this->redirectToRoute('login');
+            return $this->redirectToRoute('user_login');
         }
         // Controleur par défaut, liste des catégories.
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-        // Si l'utilisateur est admin, on redirige vers la liste des catégories.
-        if ($this->isGranted('ROLE_ADMIN')) {
-            return $this->redirect($adminUrlGenerator->setController(CategoryCrudController::class)->generateUrl());
-        }
-        // Si l'utilisateur est photographe, on redirige vers la galerie.
-        if ($this->isGranted('ROLE_PHOTOGRAPH')) {
-            return $this->redirect($adminUrlGenerator->setController(GalleryCrudController::class)->generateUrl());
-        }
-        return $this->redirect($adminUrlGenerator->setController(ArticleCrudController::class)->generateUrl());
+        return $this->redirect($adminUrlGenerator->setController(DossierCrudController::class)->generateUrl());
 
     }
 
@@ -79,34 +72,6 @@ class DashboardController extends AbstractDashboardController
 
         return $this->redirectToRoute('bo_home');
     }
-
-
-
-    public function clearDir($dossier, $rmdir = false)
-    {
-        // Ouverture du dossier.
-        $ouverture = @opendir($dossier);
-        // Si l'ouverture à échouée, on sort de la fonction.
-        if (!$ouverture) return;
-        // On parcours tout les éléments du dossier.
-        while ($fichier = readdir($ouverture)) {
-            // Si c'est un fichier système, on le passe.
-            if ($fichier == '.' || $fichier == '..') continue;
-            // Si c'est un sous-dossier.
-            if (is_dir($dossier . "/" . $fichier)) {
-                // On le supprime de manière récursive.
-                $r = clearDir($dossier . "/" . $fichier);
-                // Si la suppréssion à échoué on retourne false.
-                if (!$r) return false;
-            } else {  // Sinon si c'est un fichier.
-                // On le supprime.
-                $r = @unlink($dossier . "/" . $fichier);
-                // Si la suppréssion à échoué on retourne false.
-                if (!$r) return false;
-            }
-        }
-    }
-
 
     /**
      * Permet de voir dans le frontoffice les éléments hors ligne.
@@ -133,13 +98,6 @@ class DashboardController extends AbstractDashboardController
         return Dashboard::new()
             // Titre du backoffice
             ->setTitle($_ENV['SITE'])
-            // Langues supportées.
-            ->setLocales(
-                [
-                    'en' => '🇬🇧 English', // locale without custom options
-                    'fr' => '🇫🇷 Français',
-                ]
-            )
             ->renderContentMaximized();
     }
 
@@ -161,51 +119,20 @@ class DashboardController extends AbstractDashboardController
      */
     public function configureMenuItems(): iterable
     {
-
-        // Lien vers le frontoffice
-        yield MenuItem::linkToRoute('Aller sur le site', 'fas fa-undo', 'fo_home_index');
-
-        // yield MenuItem::linkToDashboard('dashboard', 'fa fa-home');
-        //yield MenuItem::section('Contenu','fa-solid fa-folder');
+        // Dossier avec etapes
+        yield MenuItem::linkToCrud('Dossiers', 'fa-solid fa-bars', Projet::class)->setController(DossierCrudController::class);
+        // Si l'utilisateur est admin
         if ($this->isGranted('ROLE_ADMIN')) {
-
-            // Liste des Catégories.
-            yield MenuItem::linkToCrud('Categories', 'fa-solid fa-bars', Category::class);
-            // Liste des Articles.
-            yield MenuItem::linkToCrud('Articles', 'fas fa-newspaper', Article::class)->setController(ArticleCrudController::class);
-        }
-        if ($this->isGranted('ROLE_PHOTOGRAPH')) {
-
-            // Liste des articles de la catégorie galerie.
-            yield MenuItem::linkToCrud('Galerie', 'fa-regular fa-images', Article::class)->setController(GalleryCrudController::class);
-        }
-        if ($this->isGranted('ROLE_ADMIN')) {
-
-            // Liste des images.
-            yield MenuItem::linkToCrud('Images', 'fa-regular fa-image', Media::class)->setController(PictureCrudController::class);
-            // Liste des fichiers.
-            yield MenuItem::linkToCrud('Fichiers', 'fa-regular fa-file', Media::class)->setController(FileCrudController::class);
-            // Liste des thèmes.
-            yield MenuItem::linkToCrud('Thèmes', 'fa-regular fa-image', Theme::class);
-
+            // Dossier avec CA
+            yield MenuItem::linkToCrud('CA', 'fa-solid fa-bars', Projet::class)->setController(CACrudController::class);
             // Config.
             yield MenuItem::linkToCrud('Configuration', 'fas fa-gear', Config::class)->setAction(Crud::PAGE_EDIT)->setEntityId(1);
-
-            if ($this->isGranted('ROLE_DEV')) {
-                // Liste des médiaspecs.
-                yield MenuItem::linkToCrud('Médiaspecs', 'fa-regular fa-image', Mediaspec::class);
-            }
             // Liste des utilisateurs.
             yield MenuItem::linkToCrud('Uilisateurs', 'fa-solid fa-user', User::class);
-            yield MenuItem::linkToRoute('Preview', 'fa-solid fa-eye', 'bo_toggle_preview')->setBadge($this->session->get('preview') ? "ON" : "OFF");
-            yield MenuItem::linkToRoute('Vider le Cache', 'fa-solid fa-trash', 'bo_clear_cache');
 
         }
-
-
         // Lien de déconnexion.
         yield MenuItem::linkToLogout('Logout', 'fa fa-arrow-left');
-
     }
 
     /**

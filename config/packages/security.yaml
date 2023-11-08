@@ -31,14 +31,14 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/backoffice, roles: [ROLE_ADMIN, ROLE_PHOTOGRAPH] }
+        # - { path: ^/backoffice, roles: [ROLE_ADMIN, ROLE_PHOTOGRAPH] }
         # - { path: ^/profile, roles: ROLE_USER }
 
     role_hierarchy:
         # Le rôle DEV possède tous les droits du rôle admin
         ROLE_DEV: ROLE_ADMIN
         # Le rôle ADMIN possède tous les droits des rôles USER et AUTHOR
-        ROLE_ADMIN: [ ROLE_USER, ROLE_AUTHOR, ROLE_PHOTOGRAPH]
+        ROLE_ADMIN: [ ROLE_USER]
 
 when@test:
     security:

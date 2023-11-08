@@ -47,6 +47,8 @@ Encore
     .addEntry('bo_article', './assets/bo/js/article.js')
     .addEntry('bo_gallery', './assets/bo/js/gallery.js')
     .addEntry('bo_category', './assets/bo/js/category.js')
+    .addEntry('bo_projets', './assets/bo/js/projets.js')
+
 
     // FRONTOFFICE
 
