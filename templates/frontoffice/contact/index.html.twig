@@ -1,12 +1,12 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
 {% block body %}
     {% do categorie_contact.getDatas(locale) %}
-    <div class="px-4 p-lg-5 ">
-        <div class="row">
-            <div class="col-lg-3 col-md-12 p-5 menu text-md-center text-sm-center">
-                <div class="row">
-                    <div class="col-lg-10 col-md-12 pt-lg-5">
-                            <div class="text-center text-lg-start h3 py-3 menu-item active" data-entry="entry1">
+    <div class="container-fluid p-lg-3 ">
+        <div class="row gx-0">
+            <div class="col-lg-3 col-md-12 menu text-md-center text-sm-center">
+                <div class="row p-5">
+                    <div class="col-lg-10 col-md-12 px-lg-5">
+                            <div class="text-center text-lg-start h3 pb-3 menu-item active" data-entry="entry1">
                                 {{ categorie_contact.title | upper}}
                             </div>
                             <div id="blue-dot1" class="blue-dot"></div>
@@ -22,31 +22,22 @@
                 <hr>
             </div>
 
-            <div class="content col-lg-9 col-md-12">
+            <div class="content col-lg-9 col-md-12 container-fluid">
                 <!--  NOUS CONTACTER -->
-                <div id="entry1" class="py-5 px-2 px-lg-5" >
-                    <div class="row">
-                        <div class="col-lg-2 col-md-3 text-center text-lg-start">
-                            <img src="{{ asset(getSiteImagePath('arrow_contact.png')) }}" class="">
+                <div id="entry1" class="py-5 px-2 px-lg-5 container-fluid">
 
-                        </div>
+                    {% include 'frontoffice/_components/adress.html.twig' %}
 
-                        <div class="col-md-9 col-lg-5 fs-5 lh-1 text-center text-lg-start">
-                            {{ categorie_contact.description | raw }}
-                        </div>
+                    <div class="fs-5 my-5">
+                        <h4>HORAIRES</h4>
+
+                        {{ cat_contact.content | raw }}
                     </div>
+                    <div class="h4 mb-4">NOUS ÉCRIRE</div>
 
-                    <div class="fs-5 mt-5">
-
-                        {{ categorie_contact.content | raw }}
-                    </div>
-
-
-                    <div class="h3">NOUS ÉCRIRE</div>
                     <!-- Formulaire -->
                     <form class="fs-5"  method="post" action="{{ path('fo_infos_contact') }}" >
-
-                        <div class="form-group">
+                        <div class="form-group mb-4">
                             <label class="pb-2" for="select-contact">{{ field_label(form.subject) }} (obligatoire)</label>
                             <select class="form-control rounded-0 border-secondary fs-5 select-infos"  name="{{ field_name(form.subject) }}" id="contact">
                                 <option>Sélectionner ...</option>
@@ -56,24 +47,22 @@
                             </select>
                             {{ form_errors(form.subject) }}
                         </div>
-
-                        <div class="form-group">
-                            <label class="pb-2" for="mailInput">{{ field_label(form.replyTo) }} (obligatoire)</label>
+                        <div class="form-group mb-4">
+                            <label class="pb-2" for="mailInput">Votre {{ field_label(form.replyTo)|lower  }} (obligatoire)</label>
                             <input type="email" class="form-control rounded-0 border-secondary select-infos"  name="{{ field_name(form.replyTo) }}"  value="{{ field_value(form.replyTo) }}" id="mailInput" aria-describedby="emailHelp">
                             {{ form_errors(form.replyTo) }}
-
                         </div>
-                        <div class="form-group">
-                            <label class="pb-2" for="nomInput">{{ field_label(form.name) }} (obligatoire)</label>
+                        <div class="form-group mb-4">
+                            <label class="pb-2" for="nomInput">Votre {{ field_label(form.name)|lower  }} (obligatoire)</label>
                             <input type="text" class="form-control rounded-0 border-secondary select-infos"  name="{{ field_name(form.name) }}" value="{{ field_value(form.name) }}" id="nomInput">
                             {{ form_errors(form.name) }}
-
                         </div>
-                        <div class="form-group">
-                            <label class="pb-2" for="messageInput">{{ field_label(form.message) }} (obligatoire)</label>
+                        <div class="form-group mb-4">
+                            <label class="pb-2" for="messageInput">Votre {{ field_label(form.message) |lower }} (obligatoire)</label>
                             <textarea class="form-control  rounded-0 border-secondary"  name="{{ field_name(form.message) }}" style="min-height: 348px" id="messageInput" rows="3">{{ field_value(form.message) }}</textarea>
                             {{ form_errors(form.message) }}
                         </div>
+
                         <!-- Checkbox -->
                         <div class="form-check">
                             <input class="form-check-input  rounded-0 border-secondary"  name="{{ field_name(form.getNewsletter) }}" type="checkbox" value="{{ field_value(form.getNewsletter) }}" id="newsCheck">
@@ -82,32 +71,33 @@
                             </label>
                         </div>
                         {{ form_row(form._token) }}
+
                         <!-- Submit -->
-                        <div class="pt-4">
-                            <button type="submit" class="btn border border-secondary rounded-0  fs-3"><div class="">ENVOYER</div></button>
+                        <div class="py-4">
+                            <button type="submit" class="btn border border-secondary rounded-0 fs-4"><div>ENVOYER</div></button>
                         </div>
                         <div class="fs-6 pb-4">
                             En cliquant sur "Envoyer", vous acceptez de fournir les informations permettant qu'une réponse vous soit délivrée et que votre demande soit traitée. En indiquant votre adresse email, et en cochant la ou les cases associées, vous consentez à recevoir nos lettres d'information par voie électronique. Vous pouvez vous désinscrire à tout moment via les liens de désinscription ou en nous contactant.
-                            <br>Pour en savoir plus, consultez notre Politique de confidentialité.</div>
+                            <br><br>Pour en savoir plus, consultez notre <a class="black" href="https://dev-lalune.e-systemes.fr/confidentialite">Politique de confidentialité</a>.</div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
     <!-- BAS CONTACT -->
-        <div id="footer0" class="bg-grey">
+    <div id="footer0" class="bg-grey">
+        <div class="wrapper">
             <div class="py-5 px-2 px-lg-5">
-                <div class="row">
+                <div class="row gx-0">
 
                     <!-- Les Pirates -->
-                    <div class="col-md-12 col-lg-9 offset-lg-3">
-                        <!-- LOGO LUNE DES PIRATES -->
+                    <div class="col-12">
 
-
-                        <h1 class="pb-5 text-center text-lg-start "><img src="{{ asset(getSiteImagePath('MINI_LOGO.png')) }}" class="">Les Pirates</h1>
-                        <div class="row">
-                            <div class="col-md-12 col-lg-8">
-                                <div class="row">
+                        {#                        <!-- LOGO LUNE DES PIRATES -->#}
+                        <h1 class="pb-5 text-center text-lg-start"><img style="max-height: 80px;" src="{{ asset(getSiteImagePath('MINI_LOGO.svg')) }}" class="">Les Pirates</h1>
+                        <div class="row gx-0">
+                            <div class="col-12 col-lg-8">
+                                <div class="row gx-0">
                                     {% for contact in contact_contact %}
                                         <div class="col-md-12 col-lg-6 py-2 text-center text-lg-start">
                                             <p class="h3">{{ contact.title }}</p>
@@ -117,9 +107,8 @@
                                 </div>
                             </div>
 
-
                             <!-- L'équipe technique / Bénévoles -->
-                            <div class="col-md-12 col-lg-4 pt-5 pt-lg-0 ">
+                            <div class="col-12 col-lg-4 pt-5 pt-lg-0 ">
                                 <div class="">
                                     <div class="h3 text-center text-lg-start">L'ÉQUIPE TECHNIQUE</div>
                                     <div class="fs-5 pb-5">
@@ -138,13 +127,10 @@
 
                             </div>
                         </div>
-
                     </div>
-
-
-
                 </div>
-
             </div>
         </div>
+    </div>
+
 {% endblock %}

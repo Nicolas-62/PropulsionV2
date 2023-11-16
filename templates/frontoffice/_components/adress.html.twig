@@ -1,0 +1,9 @@
+<div class="row gx-0 d-lg-flex align-items-center">
+    <div class="col-lg-1 col-md-3 text-center text-lg-start  mb-4">
+        <img style="max-height: 70px" src="{{ asset(getSiteImagePath('point_venir.svg')) }}" class="">
+    </div>
+    <div class="col-md-9 col-lg-5 fs-5 text-center text-lg-start">
+        {% do cat_contact.getDatas(locale) %}
+        {{ cat_contact.description | raw }}
+    </div>
+</div>

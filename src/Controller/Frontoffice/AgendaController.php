@@ -105,6 +105,9 @@ class AgendaController extends LuneController
         $this->data['events_agenda']        = $events_agenda;
         $date_today = new \DateTimeImmutable();
         $date_yesterday = $date_today->modify('-1 day');
+        $category_agenda = $this->entityManager->getRepository(Category::class)->find(3);
+
+        $this->data['categories_child_agenda'] = $categories;
 
         $this->data['date_yesterday']       = $date_yesterday;
         return $this->render('frontoffice/agenda/historic.html.twig', $this->data);

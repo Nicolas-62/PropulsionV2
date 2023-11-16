@@ -34,25 +34,25 @@
 
     <body>
 
-    {%  block header %}
-        {%  if header_partial is defined and header_partial != '' %}
-            <header>
-                {{ include(fo_path ~ header_partial) }}
-            </header>
-        {% endif %}
-    {%  endblock %}
-        <!-- Breadcrumb -->
-        <div class="container-fluid">
-            {{  include(fo_path ~ '_components/breadcrumb.html.twig') }}
-        </div>
-        <!-- Flash messages -->
-        <div class="container-fluid flash">
-            {{ include(fo_path ~ '_components/flash.html.twig') }}
-        </div>
-        {% block body %}{% endblock %}
-        {% block javascripts %}
-            {{ include(fo_path ~ '_components/scripts.html.twig') }}
-        {% endblock %}
+        {%  block header %}
+            {%  if header_partial is defined and header_partial != '' %}
+                <header>
+                    {{ include(fo_path ~ header_partial) }}
+                </header>
+            {% endif %}
+        {%  endblock %}
+            <!-- Breadcrumb -->
+            <div class="container-fluid">
+                {{  include(fo_path ~ '_components/breadcrumb.html.twig') }}
+            </div>
+            <!-- Flash messages -->
+            <div class="container-fluid flash">
+                {{ include(fo_path ~ '_components/flash.html.twig') }}
+            </div>
+            {% block body %}{% endblock %}
+            {% block javascripts %}
+                {{ include(fo_path ~ '_components/scripts.html.twig') }}
+            {% endblock %}
     </body>
     {%  block footer %}
         {%  if footer_partial is defined and footer_partial != '' %}

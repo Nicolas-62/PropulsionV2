@@ -48,6 +48,20 @@ body {
 
 }
 
+.btn-rate-card,
+.btn-rate:hover{
+
+  font-size: 1.25rem;
+  padding: 0.5rem 0.5rem;
+  text-align: center;
+  border: 1px solid #343a40;
+  border-radius: 0;
+  background-color: white;
+  text-decoration: none;
+  color: black;
+
+}
+
 /* Police */
 .font-primary {
   font-family: 'Akshar', sans-serif;
@@ -318,6 +332,7 @@ body {
 .dropdown-toggle-select {
   text-align: start;
   min-width: 300px;
+  padding: 0.45rem;
   &:hover {
     background-color: white;
     color: black;
@@ -532,11 +547,11 @@ body {
   }
 }
 
-@media (max-width: 989px) {
-  .p-custom-actus {
-    padding-left: 30px
-  }
-}
+//@media (max-width: 989px) {
+//  .p-custom-actus {
+//    padding-left: 30px
+//  }
+//}
 @media (min-width: 770px) {
   .logo-footer {
 
@@ -579,6 +594,7 @@ body {
   padding-top: 30px;
   height: 0;
   overflow: hidden;
+  width: 100%;
 }
 
 .video-container iframe {
@@ -594,4 +610,11 @@ body {
 }
 .sound-container iframe{
   height: 100px;
+}
+
+/* Wrapper */
+@media (min-width: 992px) {
+  .wrapper {
+    padding:0 40px 0 40px;
+  }
 }

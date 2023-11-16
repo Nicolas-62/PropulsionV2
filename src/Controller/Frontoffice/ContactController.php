@@ -29,7 +29,7 @@ class ContactController extends LuneController
         $category_agenda = $this->entityManager->getRepository(Category::class)->find(3);
         $category_contact = $this->entityManager->getRepository(Category::class)->find(40);
 
-
+        $this->data['cat_contact']                             = $this->entityManager->getRepository(Category::class)->find(40);
         $this->data['active_entry'] = "entry1";
         $this->data['categorie_contact'] =$category_contact;
         $this->data['category_agenda'] = $category_agenda;

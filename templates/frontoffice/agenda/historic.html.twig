@@ -1,26 +1,35 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
 
 {% block body %}
-    <div class="px-lg-5 container-fluid">
-        <div class="row font-primary">
-            <div class="px-lg-5 px-md-5 pt-5 row">
-                <h1 class="col-lg-2 px-lg-1 col-md-6 col-sm-12 fs-1 blue-title text-center text-lg-start"  style="padding-bottom: 10px">HISTORIQUE</h1>
-                <div class="col-12 text-center col-lg-2 h1 mb-4 mb-lg-e"> <a class="btn-read-card" href="{{ path('fo_agenda_index')}}">PROGRAMMATION  ></a></div>
+    <div class="wrapper">
+
+        {% include 'frontoffice/_components/title.html.twig' with {'events': categories_child_agenda, 'filter': true, 'historic': false, 'title': "Historique",'linkToSorted' : false, logo : null } %}
+        <div class="container-fluid">
+            <div class="row font-primary">
+                <!-- Boucle des cards des événements -->
+                {% for event in events_agenda %}
+                    {% if event.dateEvent <  date_yesterday %}
+                        {% set media = event.getMedia(1) %}
+                        {% set CategoryTitle = event.category.title|replace({' ': '-'})|lower %}
+                        <div
+                                class="custom-col-xxl-3 col-lg-4 col-md-12 py-3 pb-lg-5 px-md-0 card-event"
+                                data-id="{{ event.category.id }}"
+                        >
+                            <!-- Card-Actu -->
+                            {% include 'frontoffice/_components/card.html.twig' with {'event': event, 'agenda': true, 'showButton': false, 'actu': false, 'billetterie': false, 'soutiens': false, 'actions': false } %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
             </div>
-            {% for event in events_agenda %}
-                {% if event.dateEvent <  date_yesterday %}
 
-                {% set media = event.getMedia(1) %}
-                {% set CategoryTitle = event.category.title|replace({' ': '-'})|lower %}
-                <div class="custom-col-xxl-3 col-lg-4 col-md-12 py-3 pb-lg-5 px-lg-3 px-md-0 category-{{ CategoryTitle }} category-tous-les-evenements">
-                    <!-- Card-Actu -->
-                    {% include 'frontoffice/_components/card.html.twig' with {'event': event, 'agenda': true, 'showButton': false, 'actu': false, 'billetterie': false, 'soutiens': false, 'actions': false } %}
+            <div class="row no-event" style="display: none">
+                <div class="col-12 d-flex justify-content-center fs-3 py-5">
+                    Désolé, il n'y a pas d'autres évènements dans cette catégorie.
                 </div>
-                {% endif %}
-            {% endfor %}
+            </div>
         </div>
+
+
     </div>
-
-
 
 {% endblock %}

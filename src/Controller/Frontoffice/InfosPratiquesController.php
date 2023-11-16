@@ -62,8 +62,9 @@ class InfosPratiquesController extends LuneController
 
 
         $this->data['active_entry']                     = 'entry1';
-        $this->data['sous_categories_infos']            = $this->entityManager->getRepository(Category::class)->findBy(['parent' => 39]);
-
+//        $this->data['sous_categories_infos']            = $this->entityManager->getRepository(Category::class)->findBy(['parent' => 39]);
+        // Envois des catégories dans le sens d'apparition
+        $this->data['sous_categories_infos']            = [$this->entityManager->getRepository(Category::class)->find(41),$this->entityManager->getRepository(Category::class)->find(42),$this->entityManager->getRepository(Category::class)->find(43),$this->entityManager->getRepository(Category::class)->find(49),$this->entityManager->getRepository(Category::class)->find(40)];
         // CONSTANTES GENERALES
         $this->data['locale']                           = $this->getParameter('locale');
 

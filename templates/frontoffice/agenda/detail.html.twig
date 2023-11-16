@@ -94,23 +94,26 @@
                         {% endif %}
 
                         <!-- Tarifs -->
+                        {% if article.dateEvent >  date_yesterday %}
+
                         <div class="container-fluid">
 
                             {% if article.price is not empty and article.price is not null %}
                             <div class="row mt-3">
-                                <div class="col btn-read-card"> <a class="text-decoration-none" href="{{ article.ticketingLink }}">Tarif plein : {{ article.price }}</a></div>
+                                <div class="col btn-rate-card"> <a class="text-decoration-none" href="{{ article.ticketingLink }}">Tarif plein : {{ article.price }}</a></div>
 
                                 {% if article.subscriberPrice %}
-                                    <div class="col btn-read-card mx-2"><a class="text-decoration-none" href="{{ article.ticketingLink }}">Tarif abo : {{ article.subscriberPrice }}</a></div>
+                                    <div class="col btn-rate-card mx-2"><a class="text-decoration-none" href="{{ article.ticketingLink }}">Tarif abo : {{ article.subscriberPrice }}</a></div>
                                 {% endif %}
 
                                 {%  if article.reducedPrice %}
-                                    <div class="col btn-read-card"><a class="text-decoration-none" href="{{ article.ticketingLink }}">Tarif réduit : {{ article.reducedPrice }}</a></div>
+                                    <div class="col btn-rate-card"><a class="text-decoration-none" href="{{ article.ticketingLink }}">Tarif réduit : {{ article.reducedPrice }}</a></div>
                                 {% endif %}
                             </div>
                             {% endif %}
 
                         </div>
+                        {% endif %}
 
                         <!-- Cartes Lunes -->
                         <div class="row gx-0 pt-5">
@@ -167,8 +170,8 @@
         <hr class="my-0">
     {% endif %}
     <!-- DETAIL ARTICLE -->
-    <div class="p-2 p-lg-5 container-fluid">
-        <div class="row container-fluid">
+    <div class="container-fluid">
+        <div class="p-2 p-lg-5 row">
             <!-- CONTENU PARTIE GAUCHE-->
             <div class="col-lg-8 col-md-12">
                 <!-- NOM GROUPE / STYLE / HORAIRE -->
@@ -252,7 +255,7 @@
                             <!-- MEDIAS SOCIAUX -->
                             <div class="row text-center">
                                 {% if article.instagramLink != '' %}
-                                    <div class="col">
+                                    <div class="col text-center">
                                         <a href="{{ article.instagramLink }}"><img class="mh-45"  src="{{ asset(getSiteImagePath('PICTURE.svg')) }}"></a>
                                     </div>
                                 {% endif %}
@@ -314,7 +317,7 @@
     {% for child in children %}
         {% do child.getDatas(locale) %}
     <div class="bg-grey container-fluid">
-        <div class="p-5">
+        <div class="p-2 p-lg-5">
             <div class="row">
                 <div class="col-lg-8 col-md-12">
                     <!-- NOM GROUPE / STYLE / HORAIRE -->
@@ -375,31 +378,31 @@
                     <div class="row">
                         <div class="col-lg-8 offset-lg-4 col-md-12 py-5">
                             <div class="row">
-                                <div class="col-6 d-flex align-items-end">
+                                <div class="col-12 col-lg-6 d-flex align-items-end">
                                     {% if child.instagramLink != '' or child.twitterLink != '' or child.facebookLink != '' or child.siteInternet != ''  %}
-                                        <div class="fs-4">Plus d'infos sur l'artiste</div>
+                                        <div class="fs-4 text-center text-lg-start">Plus d'infos sur l'artiste</div>
                                     {% endif %}
                                 </div>
-                                <div class="col-6">
+                                <div class="col-12 col-lg-6">
                                     <!-- MEDIAS SOCIAUX -->
-                                    <div class="row">
+                                    <div class="row text-center">
                                         {% if child.instagramLink != '' %}
-                                            <div class="col-3">
+                                            <div class="col">
                                                 <a href="{{ child.instagramLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('PICTURE.svg')) }}"></a>
                                             </div>
                                         {% endif %}
                                         {% if child.twitterLink != '' %}
-                                            <div class="col-3">
+                                            <div class="col">
                                                 <a href="{{ child.twitterLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('TWITTER.svg')) }}"></a>
                                             </div>
                                         {% endif %}
                                         {% if child.facebookLink != '' %}
-                                            <div class="col-3">
+                                            <div class="col">
                                                 <a href="{{ child.facebookLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('FACEBOOK.svg')) }}"></a>
                                             </div>
                                         {% endif %}
                                         {% if child.siteInternet != '' %}
-                                            <div class="col-3">
+                                            <div class="col">
                                                 <a href="{{ child.siteInternet }}"><img class="mh-45" src="{{ asset(getSiteImagePath('INTERNET.svg')) }}"></a>
                                             </div>
                                         {% endif %}
@@ -425,7 +428,7 @@
     <!-- A DECOUVRIR -->
     <hr class="my-0">
     <div class="p-lg-5 container-fluid">
-        <h1 class="pb-5">
+        <h1 class="pb-lg-5 pt-3 pt-lg-0">
             à découvrir >> >> >>
         </h1>
         <div class="row">
