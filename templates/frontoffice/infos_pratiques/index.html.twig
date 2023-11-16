@@ -291,17 +291,17 @@
                             {{ article_pass_billetterie.description | raw }}
                         </div>
 
-                        <div class=" pt-2 d-flex  justify-content-between">
-                            <div class="">
+                        <div class=" pt-2 row">
+                            <div class="col text-center text-lg-start">
                                 {% set media = article_pass_billetterie.getMedia(15) %}
                                 {% if media is not null %}
-                                    <img src="{{ asset(getSiteImagePath('passculture.svg')) }}" class="object-fit-contain card-img-top rounded-0 pass-culture-infos"  alt="...">
+                                    <img src="{{ asset(getSiteImagePath('passculture.svg')) }}" class="object-fit-contain rounded-0 pass-culture-infos"  alt="...">
                                 {% endif  %}
                             </div>
-                            <div class="">
+                            <div class="col text-start">
                                 {% set media = article_pass_billetterie.getMedia(16) %}
                                 {% if media is not null %}
-                                    <img src="{{ asset(getSiteImagePath('CAPTCHA.svg')) }}" class="card-img-top rounded-0 captcha-infos"  alt="...">
+                                    <img src="{{ asset(getSiteImagePath('CAPTCHA.svg')) }}" class="rounded-0 captcha-infos"  alt="...">
                                 {% endif  %}
                             </div>
 
