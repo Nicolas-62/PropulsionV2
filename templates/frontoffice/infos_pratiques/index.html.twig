@@ -5,13 +5,12 @@
         <div class="row gx-0">
             <div id="page-link-container" class="col-lg-3 col-md-12  menu text-md-center text-sm-center">
                 <div class="row p-5">
-                    <div class="col-lg-10 col-md-12 px-lg-5 mt-4">
+                    <div class="col-lg-10 col-md-12 ps-lg-5 mt-4">
                         {% for sous_categorie_infos in sous_categories_infos %}
                             {% do sous_categorie_infos.getDatas(locale) %}
-                            <div class="text-center text-lg-start h3 {% if loop.index > 1 %}py-3{% else %}pb-3{% endif %} menu-item {% if active_entry == 'entry' ~ loop.index %}active{% endif %}" data-entry="entry{{ loop.index }}" data-footer="footer{{ loop.index }}">
+                            <div class="text-center text-lg-start h3 py-3 menu-item {% if active_entry == 'entry' ~ loop.index %}active{% endif %}" data-entry="entry{{ loop.index }}" data-footer="footer{{ loop.index }}">
                                 {{ sous_categorie_infos.title | upper}}
                             </div>
-                            <div id="blue-dot{{ loop.index0 }}" class="blue-dot"></div>
                         {% endfor %}
                     </div>
                     <div class="col-2 d-none d-lg-block">
@@ -23,7 +22,7 @@
                 <hr>
             </div>
             <!-- Contenu -->
-            <div id="page-container" class="col-lg-9 col-md-12 mt-4 container-fluid">
+            <div id="page-container" class="col-lg-9 col-md-12 mt-4 container-fluid pt-3">
 
                 <!-- COMMENT VENIR -->
                 <div id="entry1"  class="py-lg-5 px-2 px-lg-5 mb-4 mb-lg-0 container-fluid">
@@ -225,7 +224,7 @@
                     <div class="col-lg-9 col-md-12">
                         {% for article_comment_venir in articles_comment_venir %}
                             {% do article_comment_venir.getDatas(locale) %}
-                            <div class="row">
+                            <div class="row d-flex align-items-center">
                                 <div class="col-lg-2 offset-lg-4 col-md-3 text-center">
                                     {% set media = article_comment_venir.getMedia(13) %}
 
