@@ -33,6 +33,9 @@
                     {% set media = sous_cat.getMedia(27) %}
                     {% if media %}
                         {% set url = '/assets/images/' ~ media.media %}
+                    {% else %}
+                        {% set media = cat_actu.getMedia(34) %}
+                        {% set url = '/assets/images/' ~ media.media %}
                     {% endif %}
 
                     <div class=" col-lg-4 col-md-12 py-3 py-lg-5 px-lg-2 px-md-0">
