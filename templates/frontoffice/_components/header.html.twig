@@ -65,7 +65,7 @@
                 </ul>
             </nav>
             <!-- Menu avec dropdowns -->
-            <div class="d-none d-lg-flex block navbar-expand-lg col-12">
+            <div class="d-none justify-content-end d-lg-flex block navbar-expand-lg col-12" style="padding-right: 30px">
                 <div class="row  row-cols-auto">
                     {% for url, category_header in menu_category_datas %}
                         <ul class="px-4 col {% if loop.index0 != 0 %} border-dotted-black {% endif %}">

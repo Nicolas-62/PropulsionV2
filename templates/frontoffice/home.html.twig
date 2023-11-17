@@ -132,8 +132,8 @@
     <!-- Programmation à venir -->
     <div class="wrapper">
         <div class="container-fluid">
-            <div class="px-lg-5 mt-5">
-                <div class="pt-lg-0 pb-lg-5 h2 text-center text-lg-start">Programmation <strong>à venir</strong></div>
+            <div class="mt-5">
+                <div class="px-lg-3 pt-lg-0 pb-lg-4 h2 text-center text-lg-start">Programmation <strong>à venir</strong></div>
             </div>
             <div class="row">
                 {% set temoin = 0 %}
@@ -143,7 +143,7 @@
                         {% if temoin < 5 %}
                         {% set media = event.getMedia(1) %}
                         {% set CategoryTitle = event.category.title|replace({' ': '-'})|lower %}
-                        <div class="col-12 col-lg py-3 pb-lg-5 px-lg-2 category-{{ CategoryTitle }} category-tous-les-evenements {% if temoin == 4 %}show-xxl{% endif %}">
+                        <div class="col-12 col-lg py-3 pb-lg-5 px-lg-3 category-{{ CategoryTitle }} category-tous-les-evenements {% if temoin == 4 %}show-xxl{% endif %}">
                             <!-- Card-Actu -->
                             {% include 'frontoffice/_components/card.html.twig' with {'event': event, 'agenda': true, 'showButton': false, 'actu': false, 'billetterie': true, 'soutiens': false, 'actions': false } %}
                         </div>
@@ -163,7 +163,7 @@
                         <div class="row"  data-masonry='{"percentPosition": true }'>
                             {% for event in events_actus %}
                                 {% if loop.index0 < 4 %}
-                                    <div class="col-lg-6 col-md-12 border-event mb-md-3 mb-lg-0 mb-sm-3 px-0">
+                                    <div class="col-lg-6 col-md-12 border-event mb-md-3  mb-lg-0 mb-sm-3 px-0">
                                         {% set mediaArticle = event.getMedia(8) %}
                                         {% if mediaArticle is not null %}
                                             <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':mediaArticle.media} ) }}" class="img-fluid w-100" alt="...">

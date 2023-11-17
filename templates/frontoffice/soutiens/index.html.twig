@@ -13,24 +13,9 @@
 
 
             <div class="container-fluid">
-                <div class="row gx-0">
-
-        {#            <!-- Titre de la section -->#}
-        {#            <div class="text-center text-lg-start col-md-6 col-lg-3">#}
-        {#                <div class="h1 mb-5 mt-5 mt-lg-0 mb-lg-0">Artistes <br> Accompagnés</div>#}
-        {#            </div>#}
-        {#            <div class="text-center text-lg-start col-md-6 col-lg-4 offset-lg-2">#}
-        {#                <h2>Dispositif d’accompagnement de<br> La Lune des Pirates</h2>#}
-        {#            </div>#}
-        {#            <div class="col-md-12 col-lg-3" style="line-height: 0.8">#}
-        {#                    <p class="objectif-soutiens mb-0">Objectif</p>#}
-        {#                    <p class="lune-soutiens mb-0">LUNE</p>#}
-        {#                <img class="img-fluid" src="{{ asset(getSiteImagePath('Logo_ObjectifLune_NB.png')) }}" alt="Objectif Lune">#}
-        {#            </div>#}
-                </div>
 
                 <!-- Description de la catégorie -->
-                <div class="fs-5 py-4 px-2">
+                <div class="fs-5 py-4 px-2 px-lg-3">
                     {{ category_accomp.description|raw }}
                 </div>
 
@@ -39,7 +24,7 @@
                     {% for accomp in accompagnes %}
                         {% do accomp.getDatas(locale) %}
                         {% set media = accomp.getMedia(4) %}
-                        <div class="custom-col-xxl-3 col-lg-4 col-md-12 py-3 pb-lg-5 px-lg-1 px-md-0">
+                        <div class="custom-col-xxl-3 col-lg-4 px-lg-3 col-md-12 py-3 pb-lg-5 px-lg-1 px-md-0">
                             <!-- Card-Actu -->
                             {% include 'frontoffice/_components/card.html.twig' with {'event': accomp, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true, "actions" : false } %}
                         </div>
@@ -50,36 +35,23 @@
     </div>
     <!-- AUDITIONS -->
     {% do category_audition.getDatas(locale) %}
-    <div id="{{ category_audition.title }}" class="bg-grey container-fluid">
+    <div id="{{ category_audition.title }}" class="bg-grey container-fluid px-0">
         <div class="wrapper">
             {% include 'frontoffice/_components/title_soutiens.html.twig' with {'events': null, 'filter': false, 'historic': false, 'title': 'Dispositif national de repérage et de sélection de nouveaux talents', linkToSorted: false, logo: 'inouis.svg' } %}
 
-            <div>
-                <!-- Entête audition -->
-                <div class="row gx-0">
-        {#            <div class="mb-5 mt-3 mt-lg-0 mb-lg-0 text-center text-lg-start col-md-6 col-lg-3">#}
-        {#                <h1 class="">{{ category_audition.title }}</h1>#}
-        {#            </div>#}
-        {#            <div class="text-center text-lg-start col-md-6 col-lg-4 offset-lg-2">#}
-        {#                <h2>Dispositif national de repérage et de sélection de nouveaux talents</h2>#}
-        {#            </div>#}
-        {#            <div class="col-md-12 col-lg-3" style="line-height: 40pt">#}
-        {#                    <p class="objectif-soutiens">Les inouïs du printemps de Bourges</p>#}
-        {#                <img class="img-fluid" src="{{ asset(getSiteImagePath('Logo_inouis_NB.png')) }}" alt="Les Inouïs">#}
-        {#            </div>#}
-                </div>
+            <div class="container-fluid">
 
                 <!-- Description Audition -->
-                <div class="fs-5 py-4 px-3">
+                <div class="fs-5 py-4 px-2 px-lg-3">
                     {{ category_audition.description|raw }}
                 </div>
 
                 <!-- Boucle sur les articles auditions -->
-                <div class="row gx-0">
+                <div class="row">
                     {% for accomp in auditions %}
                         {% do  accomp.getDatas(locale) %}
                         {% set media = accomp.getMedia(4) %}
-                        <div class="custom-col-xxl-3 col-lg-4 col-md-12 py-3 pb-lg-5 px-lg-1 px-md-0">
+                        <div class="custom-col-xxl-3 col-lg-4 px-lg-3 col-md-12 py-3 pb-lg-5 px-lg-1 px-md-0">
 
                             <!-- Card-Actu -->
                             {% include 'frontoffice/_components/card.html.twig' with {'event': accomp, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true, 'actions': false } %}
@@ -97,11 +69,8 @@
             {% do category_event.getDatas(locale) %}
 
             <div  class="container-fluid">
-        {#        <div class="text-center text-lg-start row gx-0 px-lg-3">#}
-        {#            <h1 class="pt-4">Évènements<br> Actualités</h1>#}
-        {#        </div>#}
                 {% if category_event.description %}
-                <div class="h3 py-2 px-3">
+                    <div class="fs-5 py-4 px-2 px-lg-3">
                     {{ category_event.description|raw }}
                 </div>
                 {% endif %}
@@ -109,7 +78,7 @@
                     {% for event_actu in event_actus %}
                         {% do  event_actu.getDatas(locale) %}
                         {% set media = event_actu.getMedia(4) %}
-                        <div class="custom-col-xxl-3 col-lg-4 col-md-12 py-4 pb-lg-5 px-md-0">
+                        <div class="custom-col-xxl-3 col-lg-4 px-lg-3 col-md-12 py-4 pb-lg-5 px-md-0">
 
                             <!-- Card-Actu -->
                             {% include 'frontoffice/_components/card.html.twig' with {'event': event_actu, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': false, 'soutiens': false, 'actions': false } %}
