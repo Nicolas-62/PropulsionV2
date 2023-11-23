@@ -47,7 +47,7 @@
                                 data-id="{{ event.category.id }}"
                         >
                             <!-- Card-Actu -->
-                            {% include 'frontoffice/_components/card.html.twig' with {'event': event, 'agenda': true, 'showButton': false, 'actu': false, 'billetterie': true, 'soutiens': false, 'actions': false } %}
+                            {% include 'frontoffice/_components/card.html.twig' with {'event': event, 'agenda': true, 'showButton': false, 'actu': false, 'billetterie': true, 'soutiens': false, 'actions': false, 'linkActu': null } %}
                         </div>
                     {% endif %}
                 {% endfor %}

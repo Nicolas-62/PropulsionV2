@@ -83,7 +83,6 @@
                         <div class="fs-5 pt-4 pb-5">
                             {{ article_contact_billetterie.content | raw }}
                         </div>
-                        <h4 class="pt-3">TARIFS</h4>
                         <div class="fs-5 mb-5">
                             {% do article_abonnement_billetterie.getDatas(locale) %}
                             {{ article_abonnement_billetterie.description | raw }}
@@ -156,7 +155,6 @@
                     {% include 'frontoffice/_components/adress.html.twig' %}
 
                     <div class="fs-5 my-5">
-                        <h4>HORAIRES</h4>
 
                         {{ cat_contact.content | raw }}
                     </div>

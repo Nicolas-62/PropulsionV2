@@ -6,17 +6,16 @@
 
     {% do category_accomp.getDatas(locale) %}
 
-
     <div id="{{ category_accomp.title }}">
         <div class="wrapper">
-            {% include 'frontoffice/_components/title_soutiens.html.twig' with {'events': null, 'filter': false, 'historic': false, 'title': 'Dispositif d’accompagnement de La Lune des Pirates', linkToSorted: false, logo : 'Logo_ObjectifLune_NB.png' } %}
+            {% include 'frontoffice/_components/title_soutiens.html.twig' with {'events': null, 'filter': false, 'historic': false, 'title': '' , linkToSorted: false, logo : 'Logo_ObjectifLune_NB.png' } %}
 
 
             <div class="container-fluid">
 
                 <!-- Description de la catégorie -->
                 <div class="fs-5 py-4 px-2 px-lg-3">
-                    {{ category_accomp.description|raw }}
+                    {{ category_accomp.content|raw }}
                 </div>
 
                 <!-- Boucle de nos cards artistes accompagnes -->
@@ -26,7 +25,7 @@
                         {% set media = accomp.getMedia(4) %}
                         <div class="custom-col-xxl-3 col-lg-4 px-lg-3 col-md-12 py-3 pb-lg-5 px-lg-1 px-md-0">
                             <!-- Card-Actu -->
-                            {% include 'frontoffice/_components/card.html.twig' with {'event': accomp, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true, "actions" : false } %}
+                            {% include 'frontoffice/_components/card.html.twig' with {'event': accomp, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true, "actions" : false, 'linkActu' : null } %}
                         </div>
                     {% endfor %}
                 </div>
@@ -37,13 +36,13 @@
     {% do category_audition.getDatas(locale) %}
     <div id="{{ category_audition.title }}" class="bg-grey container-fluid px-0">
         <div class="wrapper">
-            {% include 'frontoffice/_components/title_soutiens.html.twig' with {'events': null, 'filter': false, 'historic': false, 'title': 'Dispositif national de repérage et de sélection de nouveaux talents', linkToSorted: false, logo: 'inouis.svg' } %}
+            {% include 'frontoffice/_components/title_soutiens.html.twig' with {'events': null, 'filter': false, 'historic': false, 'title': category_audition.description, linkToSorted: false, logo: 'inouis.svg' } %}
 
             <div class="container-fluid">
 
                 <!-- Description Audition -->
                 <div class="fs-5 py-4 px-2 px-lg-3">
-                    {{ category_audition.description|raw }}
+                    {{ category_audition.content|raw }}
                 </div>
 
                 <!-- Boucle sur les articles auditions -->
@@ -54,7 +53,7 @@
                         <div class="custom-col-xxl-3 col-lg-4 px-lg-3 col-md-12 py-3 pb-lg-5 px-lg-1 px-md-0">
 
                             <!-- Card-Actu -->
-                            {% include 'frontoffice/_components/card.html.twig' with {'event': accomp, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true, 'actions': false } %}
+                            {% include 'frontoffice/_components/card.html.twig' with {'event': accomp, 'agenda': false, 'showButton': false, 'actu': false, 'billetterie' : false, 'soutiens' : true, 'actions': false, 'linkActu' : null } %}
                         </div>
                     {% endfor %}
                 </div>
@@ -65,13 +64,14 @@
     <!-- Évènements Actualités -->
     <div id="{{ category_event.title }}">
         <div class="wrapper">
-            {% include 'frontoffice/_components/title_soutiens.html.twig' with {'events': null, 'filter': false, 'historic': false, 'title': 'Évènements Actualités', linkToSorted: false, logo : false } %}
             {% do category_event.getDatas(locale) %}
+            {% include 'frontoffice/_components/title_soutiens.html.twig' with {'events': null, 'filter': false, 'historic': false, 'title': category_event.description , linkToSorted: false, logo : false } %}
+
 
             <div  class="container-fluid">
                 {% if category_event.description %}
                     <div class="fs-5 py-4 px-2 px-lg-3">
-                    {{ category_event.description|raw }}
+                    {{ category_event.content|raw }}
                 </div>
                 {% endif %}
                 <div class="row">
@@ -81,7 +81,7 @@
                         <div class="custom-col-xxl-3 col-lg-4 px-lg-3 col-md-12 py-4 pb-lg-5 px-md-0">
 
                             <!-- Card-Actu -->
-                            {% include 'frontoffice/_components/card.html.twig' with {'event': event_actu, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': false, 'soutiens': false, 'actions': false } %}
+                            {% include 'frontoffice/_components/card.html.twig' with {'event': event_actu, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': false, 'soutiens': false, 'actions': false, 'linkActu' : true } %}
                         </div>
                     {% endfor %}
                 </div>

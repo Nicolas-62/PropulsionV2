@@ -12,10 +12,13 @@
                     {% set conditionIterator = 0 %}
                     {% for event in events_agenda %}
                         {% if event.star == 1  %}
+                        {% if event.dateEvent >  date_yesterday %}
 
-                        <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{ conditionIterator }}" class="active" aria-label="Slide {{ conditionIterator + 1 }}" aria-current="true"></button>
+
+                            <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{ conditionIterator }}" class="active" aria-label="Slide {{ conditionIterator + 1 }}" aria-current="true"></button>
                             {% set conditionIterator = conditionIterator + 1 %}
 
+                        {% endif %}
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -24,8 +27,10 @@
                     {% for event in events_agenda %}
                         <a href="{{ url('fo_agenda_detail',{'slug':event.slug }) }}" class="text-decoration-none">
                         {% if event.star == 1  %}
-                            {% set conditionIterator = conditionIterator + 1 %}
-                        <div class="carousel-item {% if conditionIterator == 1 %} active{% endif %}">
+                            {% if event.dateEvent >  date_yesterday %}
+
+                                {% set conditionIterator = conditionIterator + 1 %}
+                        <div class="carousel-item {% if conditionIterator == 1 %} active{% endif %}" data-bs-interval="4000">
                             {% set media = event.getMedia(9) %}
                             {% if media is not null %}
                                     <img src="{{ url('ressources_image', {'width':'large','height':'large', 'media':media.media} ) }}" class="d-block w-100" alt="...">
@@ -75,6 +80,7 @@
                             </div>
                         </div>
                         {% endif %}
+                            {% endif %}
                     {% endfor %}
                     </a>
                 </div>
