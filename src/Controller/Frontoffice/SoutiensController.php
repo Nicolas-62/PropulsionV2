@@ -22,8 +22,11 @@ class SoutiensController extends LuneController
 
         parent::__construct($entityManager, $params);
 
-        $sous_categorie_ids_event_actus     = $this->entityManager->getRepository(Category::class)->find(9)->getChildrenIds();
-        $event_actus                        = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids_event_actus, $params->get('locale'), true, 'ordre', 'ASC');
+        $event_actus             = $this->entityManager->getRepository(Category::class)->getArticles(array(19), $params->get('locale'), true, 'ordre', 'ASC');
+
+
+//        $sous_categorie_ids_event_actus     = $this->entityManager->getRepository(Category::class)->find(9)->getChildrenIds();
+//        $event_actus                        = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids_event_actus, $params->get('locale'), true, 'ordre', 'ASC');
         $this->event_actus                  = $event_actus;
 
 

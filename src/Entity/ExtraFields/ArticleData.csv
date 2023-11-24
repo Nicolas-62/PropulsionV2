@@ -16,6 +16,7 @@
 "siteInternet","Site internet","TextField","false","3","",
 "twitterLink","Lien Twitter","TextField","false","3","",
 "ticketingLink","Lien Billetterie","TextField","false","3","",
+"culturePassLink","Lien Pass Culture","TextField","false","3","",
 "typeMusic","Type de musique","TextField","false","3","",
 "origin","Origine","TextField","false","3","",
 "style","Style","TextField","false","3","",

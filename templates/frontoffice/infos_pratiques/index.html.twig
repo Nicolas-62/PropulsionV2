@@ -32,10 +32,6 @@
                     <div class="fs-5 mt-5">
                         <h4>INFOS</h4>
                         {{ cat_comment_venir.content | raw }}
-                        <br>
-                        La Lune des Pirates est accessible aux personnes à mobilité réduite, merci de nous prévenir de votre venue par <a class="black" href="{{ path('fo_contact_contact') }}">mail</a> ou <a class="black" href="tel:+33322978801">téléphone</a>.
-                        <br>
-                        Des bouchons d'oreilles sont disponibles gratuitement au bar ainsi que des casques adaptés aux enfants (en échange d'une pièce d'identité).
                     </div>
 
 
@@ -332,8 +328,10 @@
                         <div class="col-12">
 
     {#                        <!-- LOGO LUNE DES PIRATES -->#}
-                            <h1 class="pb-5 text-center text-lg-start"><img style="max-height: 80px;" src="{{ asset(getSiteImagePath('MINI_LOGO.svg')) }}" class="">Les Pirates</h1>
-                            <div class="row gx-0">
+                            <div style="display: flex;">
+                                <img style="height: 80px;" src="{{ asset(getSiteImagePath('MINI_LOGO.svg')) }}" class="text-lg-start">
+                                <h1 style="display: inline-block; margin-left: 15px;" class="pb-5 text-center text-lg-start">Les Pirates</h1>
+                            </div>                            <div class="row gx-0">
                                 <div class="col-12 col-lg-8">
                                     <div class="row gx-0">
                                         {% for contact in contact_contact %}

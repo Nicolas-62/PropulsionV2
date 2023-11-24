@@ -2,7 +2,7 @@
 {% block body %}
 
     <!-- IMAGE DU HAUT -->
-    <div class="container-fluid px-0" >
+    <div class="container-fluid px-0 shadow-lg" >
         <div class="row gx-0">
             <div class="col-12 col-lg-8 p-0 position-relative w-sm-100" style="">
                 {% if article.cancelled %}
@@ -47,14 +47,11 @@
                     <div class="p-5">
                         <h1 class="fw-bold mb-0">{% if article.eventName is not empty %}{{ article.eventName }} :{% endif%} {{ article.titleByLanguage }}</h1>
                         <h2 class="">{{ article.subtitle }}</h2>
+                        <hr>
                         <p class="h3 fw-bold mt-5">{{ formatCustomDate(article.dateEvent) }}</p>
-                            {% if article.datetimeEvent is not empty and article.datetimeEvent is not null %}
-                                <p class="h4">{{ article.datetimeEvent| date("H:i") }}</p>
-                            {% endif %}
-                            {% if article.dateOpeningTime is not empty and article.openingTime is not null %}
-                                <p class="h4">{{ article.dateOpeningTime| date("H:i") }}</p>
-                            {% endif %}
-
+                        {% if article.datetimeEventOpening is not empty and article.datetimeEventOpening is not null %}
+                            <p class="fs-5">{{ article.datetimeEventOpening | date("H:i") }} </p>
+                        {% endif %}
                         <!-- EVENT TERMINE -->
                         {% if article.dateEvent <  date_yesterday %}
                             <p class="text-bg-danger p-3 text-center fs-2">Cet évènement est terminé.</p>
@@ -117,7 +114,7 @@
 
                         <!-- Cartes Lunes -->
                         <div class="row gx-0 pt-5">
-                            <div class="col-6 text-center">
+                            <div class="col text-center">
 
                                 <a class="text-decoration-none" href="https://billetterie.lalune.net/abonnements/165251527696b7/renouvellement">
                                     <img class="rounded rounded-2" style="max-height: 50px" src="{{ asset(getSiteImagePath('abonnement.png')) }}">
@@ -130,8 +127,9 @@
 
                                 </a>
                             </div>
-                            <div class="col-6 text-center">
-                                <a class="text-decoration-none" href="https://pass.culture.fr/">
+                            {% if article.culturePassLink %}
+                            <div class="col text-center">
+                                <a class="text-decoration-none" href="{{ article.culturePassLink }}">
                                     <img style="max-height: 50px" src="{{ asset(getSiteImagePath('LUNE_PASS_CULTURE.svg')) }}">
                                     <div style="font-size: 14px">
                                         <b>Dispo sur le Pass Culture,</b><br>
@@ -140,6 +138,19 @@
                                     </div>
                                 </a>
                             </div>
+                            {% endif %}
+                        </div>
+                        <hr>
+                        <div class="pt-3">
+                            {% if article.facebookEventLuneLink is not empty and article.facebookEventLuneLink is not null %}
+                                <p class="fs-5"><a class="btn-read-card text-decoration-none" href="{{ article.facebookEventLuneLink }}">Évènement Facebook</a></p>
+                            {% endif %}
+                            {% if article.organizer is not empty and article.organizer is not null %}
+                                <p style="" class="fs-5">Organisateur : {{ article.organizer }}</p>
+                            {% endif %}
+                            {% if article.placement is not empty and article.placement is not null %}
+                                <p style="">{{ article.placement }}</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -149,25 +160,25 @@
     <hr class="my-0">
     <!-- RECAPITULATIF -->
     {% if (article.facebookEventLuneLink is not empty and article.facebookEventLuneLink is not null) or (article.organizer is not empty and article.organizer is not null) or (article.placement is not empty and article.placement is not null) or (article.datetimeEventOpening is not empty and article.datetimeEventOpening is not null)  %}
-        <div class="container-fluid px-0">
-            <div class=" text-center d-flex justify-content-around text-uppercase py-2"  style="background-color:{{ article.category.themeBackColor }};color: {{ article.themeTextColor }};">
-                {% if article.facebookEventLuneLink is not empty and article.facebookEventLuneLink is not null %}
-                    <p style="display: inline; margin: 0;"><a class="text-decoration-none" style="color: {{ article.themeTextColor }} !important" href="{{ article.facebookEventLuneLink }}">Évènement Facebook</a></p>
-                {% endif %}
-                {% if article.organizer is not empty and article.organizer is not null %}
-                    <p style="display: inline; margin: 0;">Organisateur : {{ article.organizer }}</p>
-                {% endif %}
-                <!-- <p style="display: inline; margin: 0;">Lieu</p>-->
-                {% if article.placement is not empty and article.placement is not null %}
-                    <p style="display: inline; margin: 0;">{{ article.placement }}</p>
-                {% endif %}
-                {% if article.datetimeEventOpening is not empty and article.datetimeEventOpening is not null %}
-                    <p style="display: inline; margin: 0;">Ouverture des portes : {{ article.datetimeEventOpening | date("H:i") }} </p>
-                {% endif %}
+{#        <div class="container-fluid px-0">#}
+{#            <div class=" text-center d-flex justify-content-around text-uppercase py-2"  style="background-color:{{ article.category.themeBackColor }};color: {{ article.themeTextColor }};">#}
+{#                {% if article.facebookEventLuneLink is not empty and article.facebookEventLuneLink is not null %}#}
+{#                    <p style="display: inline; margin: 0;"><a class="text-decoration-none" style="color: {{ article.themeTextColor }} !important" href="{{ article.facebookEventLuneLink }}">Évènement Facebook</a></p>#}
+{#                {% endif %}#}
+{#                {% if article.organizer is not empty and article.organizer is not null %}#}
+{#                    <p style="display: inline; margin: 0;">Organisateur : {{ article.organizer }}</p>#}
+{#                {% endif %}#}
+{#                <!-- <p style="display: inline; margin: 0;">Lieu</p>-->#}
+{#                {% if article.placement is not empty and article.placement is not null %}#}
+{#                    <p style="display: inline; margin: 0;">{{ article.placement }}</p>#}
+{#                {% endif %}#}
+{#                {% if article.datetimeEventOpening is not empty and article.datetimeEventOpening is not null %}#}
+{#                    <p style="display: inline; margin: 0;">Ouverture des portes : {{ article.datetimeEventOpening | date("H:i") }} </p>#}
+{#                {% endif %}#}
 
-            </div>
-        </div>
-        <hr class="my-0">
+{#            </div>#}
+{#        </div>#}
+{#        <hr class="my-0">#}
     {% endif %}
     <!-- DETAIL ARTICLE -->
     <div class="container-fluid">
@@ -205,6 +216,7 @@
                     </div>
                 {% endif %}
                 <!-- PLUS D'INFOS SUR L'ARTISTE -->
+                {% if article.soundcloudLink or article.soundcloudSecondLink or article.soundcloudThirdLink %}
                 <div class="pt-5">
                     {% if article.soundcloudLink is not null and article.soundcloudLink is not empty %}
                         {{ article.soundcloudLink | raw }}
@@ -217,6 +229,7 @@
                         {{ article.soundcloudThirdLink | raw }}
                     {% endif %}
                 </div>
+                {% endif %}
                 <div class="row py-5">
                     <div class="col-lg-12 col-md-12 row">
                         <div class="mb-3 col-lg-12 col-md-12">
@@ -282,7 +295,7 @@
             <!-- LIENS ET INFOS PRATIQUES (PARTIE DROITE) -->
             <div class="col-lg-4 col-md-12 d-flex align-content-end justify-content-center flex-wrap text-md-center text-lg-start">
 
-                <div class="p-5">
+                <div class="p-5 d-none d-lg-block">
                     <!-- CARTE LUNE -->
                     <div class="py-5">
                         <a class="text-decoration-none" href="https://billetterie.lalune.net/abonnements/165251527696b7/renouvellement">
@@ -326,7 +339,7 @@
                             <h1 class="fs-1">{{ child.titleByLanguage }}</h1>
                         </div>
                         <div class="col-lg-4 col-md-8"  >
-                            <h1>{{ child.typeMusic}} {% if child.origin != "" %} | {{ child.origin }}{% endif %}</h1>
+                            <div class="h4 d-flex align-items-center">{{ child.typeMusic}}  {% if child.origin != "" %} | {{ child.origin }}{% endif %}</div>
                         </div>
                         <div class="col-lg-2 col-md-4 d-flex justify-content-end">
                             <div class="fs-2">{{ child.datetimeEvent | date('H:i') }}</div>
@@ -413,7 +426,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 d-flex align-content-end justify-content-center text-md-center text-lg-start flex-wrap">
-                    <div class="p-5">
+                    <div class="p-5 d-none d-lg-block">
                         <div class="py-5" style="max-height: 140px; max-width: 266px;min-width: 265px">
                             <a class="text-decoration-none" href="{{ path('fo_infos_index') }}">
                                 <img src="{{ asset(getSiteImagePath('INFOS_PRATIQUES.svg')) }}">

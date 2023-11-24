@@ -63,6 +63,7 @@ class Article
     private ?bool   $reported  = false;
     private ?bool   $full  = false;
     private ?string $ticketingLink  = '';
+    private ?string $culturePassLink  = '';
     private ?string $typeMusic  = '';
     private ?string $origin  = '';
     private ?string $style              = '';
