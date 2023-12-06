@@ -15,7 +15,10 @@
         <img src="{{ asset(getThumbnailPath(ea.entity.getInstance.thumbnail)) }}" class="img-fluid">
     {% else %}
         {# Zone d'upload du nouveau média #}
-        <div class="form-group mb-3">
+        <div
+            class="entity-detail-media-card form-group mb-3"
+            data-form-id="{{ form.vars.name }}"
+        >
             <div
                 class="my-dropzone text-center dropzone "
                 data-upload-url="{{ upload_url }}"

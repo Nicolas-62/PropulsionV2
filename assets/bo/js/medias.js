@@ -1,6 +1,4 @@
-// assets/bo/pictures.js
-
-import './picture';
+// assets/bo/medias.js
 
 (function(){ 'use strict';
     console.info('welcome to medias.js');

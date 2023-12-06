@@ -7,17 +7,17 @@ import Cropper from 'cropperjs';
     // ! Variables
 
     // Sélecteur principal de la vue.
-    let $main                   =       $('body');
+    let $main                          =       $('body');
     let dropzoneSelector        =       ".my-dropzone";
     let btnCropSelector         =       ".crop-action";
     let btnValidCropSelector    =       ".crop-valid";
     let cropperSelector         =       ".my-cropper";
-    let imageCropperSelector           =       ".image-cropper";
+    let imageCropperSelector    =       ".image-cropper";
     let imageDataInputSelector  =       "#cropData";
     let formSelector            =       ".entity-detail-media-card";
 
     // Dropzone
-    let $dropzones               =       null;
+    let $dropzones                =       null;
 
     // Fonctions
 
