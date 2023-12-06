@@ -51,7 +51,7 @@ class ActionsController extends LuneController
         $this->data['sous_cat_actions'] = $this->entityManager->getRepository(Category::class)->findBy(['category_id' => $cat_action_id]);
         $this->data['articles']         = $articles;
         $this->data['cat_actu']         = $cat_action;
-        $this->data['page_title']       = 'Action Culturelle';
+        $this->data['page_title']       = $cat_action->getTitle();
         $this->data['actu_childs']      = $events_actus;
         $this->data['locale']           = $this->getParameter('locale');
 
@@ -74,6 +74,7 @@ class ActionsController extends LuneController
         $this->data['articles']    = $articles;
         $this->data['cat']                  = $cat;
 
+        $this->data['page_title']       = 'Projets Culturels';
 
 
         return $this->render('frontoffice/actions/detail.html.twig', $this->data );

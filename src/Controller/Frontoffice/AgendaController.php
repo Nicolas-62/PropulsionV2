@@ -26,7 +26,7 @@ class AgendaController extends LuneController
         // Récupération des articles des sous catégories de la catégorie agenda
         $events_agenda = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $params->get('locale'), true, 'dateEvent', 'ASC');
         $this->data['events_agenda']        = $events_agenda;
-
+        $this->data['page_title']           = $this->entityManager->getRepository(Category::class)->find($this->category_id)->getTitle();
     }
 
     #[Route('', name: 'index')]

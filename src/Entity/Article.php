@@ -82,6 +82,7 @@ class Article
     private ?string $refund  = '';
     private ?string $eventName  = '';
     private ?string $cancelledOrReportedDescription  = '';
+    private ?string $otherArtists  = '';
 
     private array $files = array();
 

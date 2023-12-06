@@ -20,6 +20,7 @@
 "typeMusic","Type de musique","TextField","false","3","",
 "origin","Origine","TextField","false","3","",
 "style","Style","TextField","false","3","",
+"otherArtists","Autres artistes","TextField","false","3","",
 "cancelled","Evenement annulé","BooleanField","false","3","",
 "reported","Reporté","BooleanField","false","3","",
 "full","Complet","BooleanField","false","3","",

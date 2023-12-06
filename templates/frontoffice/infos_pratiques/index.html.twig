@@ -1,6 +1,8 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
 {% block body %}
+<style>
 
+</style>
     <div class="p-lg-3 container-fluid">
         <div class="row gx-0">
             <div id="page-link-container" class="col-lg-3 col-md-12  menu text-md-center text-sm-center">
@@ -25,7 +27,7 @@
             <div id="page-container" class="col-lg-9 col-md-12 mt-4 container-fluid pt-3">
 
                 <!-- COMMENT VENIR -->
-                <div id="entry1"  class="py-lg-5 px-2 px-lg-5 mb-4 mb-lg-0 container-fluid">
+                <div id="entry1"  class="py-lg-5 px-2 px-lg-5 mb-4 mb-lg-0 container-fluid {% if active_entry != 'entry1' %}hidden{% endif %}">
 
                     {% include 'frontoffice/_components/adress.html.twig' %}
 
@@ -40,7 +42,7 @@
 
                 <!-- TARIFS ET BILLETTERIE -->
 
-                <div id="entry2" class="py-lg-5 px-2 px-lg-5  hidden container-fluid">
+                <div id="entry2" class="py-lg-5 px-2 px-lg-5  {% if active_entry != 'entry2' %}hidden{% endif %} container-fluid">
                     {% do article_adress_billetterie.getDatas(locale) %}
 
                     {% include 'frontoffice/_components/adress.html.twig' %}
@@ -104,7 +106,7 @@
                 </div>
 
                 <!-- QUESTIONS -->
-                <div id="entry3" class="py-lg-5 px-lg-5 hidden">
+                <div id="entry3" class="py-lg-5 px-lg-5 {% if active_entry != 'entry3' %}hidden{% endif %}">
                     {% include 'frontoffice/_components/adress.html.twig' %}
 
                     <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -124,7 +126,7 @@
                 </div>
 
                 <!-- Qui Sommes nous -->
-                <div id="entry4" class="py-lg-5 px-lg-5 hidden">
+                <div id="entry4" class="py-lg-5 px-lg-5 {% if active_entry != 'entry4' %}hidden{% endif %}">
                     {% include 'frontoffice/_components/adress.html.twig' %}
 
                     {% for article_qui_sommes in articles_qui_sommes %}
@@ -147,7 +149,7 @@
 
                 </div>
                 <!--  NOUS CONTACTER -->
-                <div id="entry5" class="py-lg-5 px-2 px-lg-5 hidden" >
+                <div id="entry5" class="py-lg-5 px-2 px-lg-5 {% if active_entry != 'entry5' %}hidden{% endif %}" >
                     {% include 'frontoffice/_components/adress.html.twig' %}
 
                     <div class="fs-5 my-5">
@@ -212,7 +214,7 @@
 
 
         <!-- BAS COMMENT VENIR -->
-        <div id="footer1" class="bg-grey container-fluid">
+        <div id="footer1" class="bg-grey container-fluid {% if active_entry != 'entry1' %}hidden{% endif %}">
             <div class="py-5 px-2 px-lg-5">
                 <div class="row">
                     <div class="col-lg-9 col-md-12">
@@ -248,7 +250,7 @@
         </div>
 
         <!-- BILLETTERIE BAS -->
-        <div id="footer2" class="hidden container-fluid bg-grey">
+        <div id="footer2" class="container-fluid bg-grey {% if active_entry != 'entry2' %}hidden{% endif %}">
             <div class="wrapper">
             <div class="py-5 px-2 px-md-2 px-lg-5 ">
                 <div class="row-header">
@@ -308,18 +310,18 @@
             </div>
         </div>
 
-        <div id="footer3" class="hidden">
+        <div id="footer3" class="{% if active_entry != 'entry3' %}hidden{% endif %}">
 
         </div>
 
-        <div id="footer4" class="hidden">
+        <div id="footer4" class="{% if active_entry != 'entry4' %}hidden{% endif %}">
 
 
         </div>
 
 
         <!-- BAS CONTACT -->
-        <div id="footer5" class="hidden bg-grey">
+        <div id="footer5" class="{% if active_entry != 'entry5' %}hidden{% endif %} bg-grey">
             <div class="wrapper">
                 <div class="py-5 px-2 px-lg-5">
                     <div class="row gx-0">

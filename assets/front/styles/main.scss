@@ -618,3 +618,23 @@ body {
     padding:0 40px 0 40px;
   }
 }
+
+
+
+
+.menu-header-item {
+  position: relative;
+  height: 30px; /* Assure une hauteur définie */
+}
+
+.menu-header-item.active::before {
+  content: "";
+  position: absolute;
+  top: 40px;
+  left: 47%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #09b2FF;
+  transform: translate(0, -50%);
+}

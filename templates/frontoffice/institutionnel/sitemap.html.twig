@@ -1,5 +1,132 @@
-{% extends '/frontoffice/_components/layout.html.twig' %}
-{% block body %}
-    <h2>Plan du site</h2>
 
+{% block body %}
+    <style>
+        .maDiv {
+            position: relative;
+        }
+
+        .maDiv::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 40%;
+            border-bottom: 2px solid black; /* Remplacez la couleur et l'épaisseur par vos préférences */
+        }
+        .maDiv::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40%;
+            border-bottom: 2px solid black; /* Bordure en bas à gauche */
+
+            transform: translateX(50%);
+            transform: translateY(100%);
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 20px solid black; /* Ajustez la taille et la couleur du triangle */
+        }
+        p.speech {
+            position: relative;
+            width: 200px;
+            height: 100px;
+            text-align: center;
+            line-height: 100px;
+            background-color: #fff;
+            border: 8px solid #666;
+            border-radius: 30px;
+            box-shadow: 2px 2px 4px #888;
+        }
+        p.speech:before {
+            content: ' ';
+            position: absolute;
+            width: 0;
+            height: 0;
+            left: 40%;
+            top: 100px;
+            border: 25px solid;
+            border-color: #666 transparent transparent #666;
+        }
+        p.speech:after {
+            content: ' ';
+            position: absolute;
+            width: 0;
+            height: 0;
+            left: 44%;
+            top: 100px;
+            border: 15px solid;
+            border-color: #fff transparent transparent #fff;
+        }
+
+
+        .triangle {
+            width: 20px;
+            height: 20px;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-bottom: 87px solid black;
+            border-bottom-style: dashed;
+        }
+
+
+        .new-field-popup{
+            position: absolute;
+            width: 200px;
+            height: 57px;
+            padding: 20px;
+            border-radius: 5px;
+            top: 10px;
+            left: 10px;
+            border: 1px dashed rgb(177, 177, 177);
+        }
+
+        .new-field-popup:after{
+            content: '';
+            border: 1px dashed rgb(177, 177, 177);
+            position: absolute;
+            left: 110px;
+            bottom: -10px;
+            width: 20px;
+            height: 20px;
+            transform: rotate(45deg);
+        }
+
+        .triangle2 {
+            position: absolute;
+            margin: auto;
+            top: 100px;
+            left:100px;
+            width: 137px;
+            height: 137px;
+            transform: rotate(-45deg);
+            border-right: 4px dashed #e74c3c;
+            border-bottom: 4px dashed #e74c3c;
+        }
+    </style>
+    <div class="wrapper container" style="padding: 100px">
+        <div class="row">
+            <div class="col-5 offset-3">
+                <a href="{{ path('gallery') }}" class="ms-2 text-decoration-none position-relative" style="padding-bottom: 30px; display: inline-block;">
+                    <img style="width: 62px; height: 62px; margin-left: -24px;" src="{{ asset(getSiteImagePath('header-galerie.svg')) }}" alt="Description de l'image">
+                    <div style="position: absolute; top: 0; left: 150px; transform: translateX(-50%); text-align: center; font-size: 14px;  width:190px">
+                        <div class="maDiv" style="display: inline-block; position: relative; padding: 0 10px;">
+                            Galerie Photos
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <p class="speech">SitePoint Rocks!</p>
+    <div style="position: relative" >
+        <div>
+            Galerie Photos
+        </div>
+        <div class="triangle"></div>
+        <div class="small-triangle"></div>
+    </div>
+
+    <div class="triangle2"></div>
+    <div class="new-field-popup"></div>
 {% endblock %}

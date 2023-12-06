@@ -43,7 +43,7 @@ class InfosPratiquesController extends LuneController
     #[Route('contact', name: 'contact')]
     public function contact(Request $request, ContactNotification $notification): Response
     {
-
+        $this->data['page_title']                              = $this->entityManager->getRepository(Category::class)->find(39)->getTitle();
         $this->data['cat_contact']                             = $this->entityManager->getRepository(Category::class)->find(40);
         $this->data['cat_comment_venir']                       = $this->entityManager->getRepository(Category::class)->find(41);
         $this->data['articles_comment_venir']                  = $this->entityManager->getRepository(Category::class)->getArticles(array(41), $this->getParameter('locale'),1);
@@ -60,8 +60,19 @@ class InfosPratiquesController extends LuneController
         $this->data['articles_qui_sommes']                     = array_reverse(($this->entityManager->getRepository(Category::class)->getArticles(array(49), $this->getParameter('locale'),1)->toArray()));
 
 
+        $entry = $request->query->get('entry');
+        // Vérifiez si 'entry' existe
+        if ($entry !== null) {
+            // Utilisez la valeur récupérée si elle existe
+            if($entry == "entry0"){
+                $this->data['active_entry'] = '$entry5';
+            }else{
+                $this->data['active_entry'] = $entry;
+            }
+        } else {
+            $this->data['active_entry'] = 'entry1';
+        }
 
-        $this->data['active_entry']                     = 'entry1';
 //        $this->data['sous_categories_infos']            = $this->entityManager->getRepository(Category::class)->findBy(['parent' => 39]);
         // Envois des catégories dans le sens d'apparition
         $this->data['sous_categories_infos']            = [$this->entityManager->getRepository(Category::class)->find(41),$this->entityManager->getRepository(Category::class)->find(42),$this->entityManager->getRepository(Category::class)->find(43),$this->entityManager->getRepository(Category::class)->find(49),$this->entityManager->getRepository(Category::class)->find(40)];

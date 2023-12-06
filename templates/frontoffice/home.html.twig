@@ -3,7 +3,7 @@
 {% block title %}{{ seo.title }}{% endblock %}
 {% block body %}
     <!-- Image Vedette - Carroussel -->
-    <div class="container-fluid px-0">
+    <div class="container-fluid px-0 mt-5">
         <div class="position-relative">
             <div id="carousel" class="carousel slide shadow-lg" data-bs-ride="carousel">
 
@@ -74,7 +74,7 @@
                                         {% endif %}
                                     </div>
                                     <a href="{% if event.ticketingLink is not empty %}{{ event.ticketingLink }}{% else %}https://billetterie.lalune.net/{% endif %}">
-                                        <img class="btn-billetterie-card" src="{{ asset(getSiteImagePath('LIEN_BILLETTERIE.jpg')) }}" alt="...">
+                                        <img style="height: 50px" class="btn-billetterie-card" src="{{ asset(getSiteImagePath('picto-billet.svg')) }}" alt="...">
                                     </a>
                                 </div>
                             </div>

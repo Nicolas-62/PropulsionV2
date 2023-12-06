@@ -1,5 +1,29 @@
 <!-- HEADER LG -->
 <!-- Mode desktop -->
+<style>
+    .triangle,
+    .small-triangle {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(0%);
+        width: 0;
+        height: 0;
+        border-style: solid;
+    }
+
+    .triangle {
+        border-width: 10px 10px 0;
+        top:21px;
+        border-color: #000 transparent transparent transparent; /* Couleur du triangle */
+    }
+
+    .small-triangle {
+        border-width: 10px 10px 0;
+        top:20px;
+        border-color: #fff transparent transparent transparent; /* Couleur du petit triangle */
+    }
+</style>
 <div class="container-fluid d-none d-lg-block" style="margin-top:35px">
     <div class="row">
         <div class="col-3">
@@ -46,10 +70,14 @@
                     {% endfor %}
                     <a href="{{ path('gallery') }}" class="ms-2 text-decoration-none position-relative" style="padding-bottom: 30px; display: inline-block;">
                         <img style="width: 62px; height: 62px; margin-left: -24px;" src="{{ asset(getSiteImagePath('header-galerie.svg')) }}" alt="Description de l'image">
-                        <div style="position: absolute; top: -30px; left: 10px; transform: translateX(-50%); text-align: center; font-size: 14px;  width:190px">
-                            <div style="border-bottom: solid black 1px; display: inline-block; position: relative; padding: 0 10px;">
+                        <div style="position: absolute; top: -35px; left: 0px; transform: translateX(-50%); text-align: center; font-size: 14px;  width:190px">
+                            <div style="border-bottom: solid black 1px; display: inline-block; position: relative;">
                                 Galerie Photos
                             </div>
+                            <div class="triangle">
+
+                            </div>
+                            <div class="small-triangle"></div>
                         </div>
                     </a>
 
@@ -74,22 +102,33 @@
             <div class="d-none justify-content-end d-lg-flex block navbar-expand-lg col-12" style="padding-right: 30px">
                 <div class="row row-cols-auto">
                     {% for url, category_header in menu_category_datas %}
-                        <div class="px-4 col {% if loop.index0 != 0 %} border-dotted-black {% endif %}">
+                        <div class="px-4 col {% if loop.index0 != 0 %} border-dotted-black {% endif %}menu-header-item {% if  (page_title | upper) == (category_header.title|upper) %}active{% endif %}">
                             {% do category_header.getDatas(locale) %}
-                                {% if category_header.id == 6 or category_header.id == 53 %}
+                                {% if category_header.id == 6 or category_header.id == 53 or category_header.id == 39 %}
                                     <div class="dropdown">
                                         <a class="dropdown-toggle text-decoration-none fs-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             {{ category_header.title|upper }}
                                         </a>
                                         <ul class="dropdown-menu">
                                             {% if category_header.id == 53  %}
-                                            <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path(url ~ category_header.url) }}">{{ category_header.title|upper }} - INDEX</a></li>
+                                                <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path(url ~ category_header.url) }}">{{ category_header.title|upper }} - INDEX</a></li>
                                             {% endif %}
                                             {% for sous_categories in category_header.children %}
                                                 {% if category_header.id == 6 %}
-                                                <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path(url ~ sous_categories.url) }}#{{ sous_categories.title }}">{{ sous_categories.title|upper }}</a></li>
+                                                    <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path(url ~ sous_categories.url) }}#{{ sous_categories.title }}">{{ sous_categories.title|upper }}</a></li>
                                                 {% elseif category_header.id == 53 %}
                                                     <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path(url ~ sous_categories.url) }}{{ sous_categories.title }}">{{ sous_categories.title|upper }}</a></li>
+                                                {% elseif category_header.id == 39 %}
+                                                    {% if loop.index !=1 %}
+                                                        <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" {% if loop.index0 != 0 %} href="{{ path('fo_infos_contact', {'entry': 'entry' ~ loop.index0 }) }}"{% else %} href="{{ path('fo_infos_contact', {'entry': 'entry5' }) }}"{% endif %}>{{ sous_categories.title|upper }}</a></li>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% for sous_categories in category_header.children %}
+                                                {% if category_header.id == 39 %}
+                                                    {% if loop.index == 1 %}
+                                                        <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" {% if loop.index0 != 0 %} href="{{ path('fo_infos_contact', {'entry': 'entry' ~ loop.index0 }) }}"{% else %} href="{{ path('fo_infos_contact', {'entry': 'entry5' }) }}"{% endif %}>{{ sous_categories.title|upper }}</a></li>
+                                                    {% endif %}
                                                 {% endif %}
                                             {% endfor %}
                                         </ul>
@@ -145,8 +184,27 @@
                     <hr>
                     {% for url, category in menu_category_datas %}
                         <div class="nav-link fs-3" href=""><a class="text-decoration-none" style="color: black" href="{{ path(url) }}">> {{ category.title|upper }}</a></div>
+                        {% for sous_categories in category.children %}
+
+                            {% if category.id == 6 %}
+                                <div class="ps-5 nav-link fs-6" href=""><a class="text-decoration-none fermer-canvas" href="{{ path(url ~ sous_categories.url) }}#{{ sous_categories.title }}">> {{ sous_categories.title|upper }}</a></div>
+                            {% elseif category.id == 53 %}
+                                <div class="ps-5 nav-link fs-6" href=""><a class="text-decoration-none fermer-canvas" href="{{ path(url ~ sous_categories.url) }}{{ sous_categories.title }}">> {{ sous_categories.title|upper }}</a></div>
+                            {% elseif category.id == 39 %}
+                                {% if loop.index != 1 %}
+                                    <div class="ps-5 nav-link fs-6" href=""><a class="text-decoration-none fermer-canvas" {% if loop.index0 != 0 %} href="{{ path('fo_infos_contact', {'entry': 'entry' ~ loop.index0 }) }}"{% else %} href="{{ path('fo_infos_contact', {'entry': 'entry5' }) }}"{% endif %}>> {{ sous_categories.title|upper }}</a></div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        {% for sous_categories in category.children %}
+                            {% if category.id == 39 %}
+                                {% if loop.index == 1 %}
+                                    <div class="ps-5 nav-link fs-6" href=""><a class="text-decoration-none fermer-canvas" {% if loop.index0 != 0 %} href="{{ path('fo_infos_contact', {'entry': 'entry' ~ loop.index0 }) }}"{% else %} href="{{ path('fo_infos_contact', {'entry': 'entry5' }) }}"{% endif %}>> {{ sous_categories.title|upper }}</a></div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
                         {% if not loop.last %}
-                        <hr>
+                            <hr>
                         {% endif %}
                     {% endfor %}
                 </li>
@@ -155,3 +213,16 @@
 
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    // Ajoutez un écouteur d'événements "click" à tous les éléments <a> avec la classe "fermer-canvas"
+    $('.fermer-canvas').on('click', function () {
+        // Sélectionnez le canvas par son ID
+        let offcanvasRight = $('#offcanvasRight');
+        let offcanvasFade = $('.offcanvas-backdrop');
+        offcanvasRight.removeClass('show');
+        offcanvasFade.removeClass('show');
+
+    });
+</script>

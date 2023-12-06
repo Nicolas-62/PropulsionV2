@@ -54,6 +54,9 @@ $(document).ready(function() {
     * Affiche le contenu correspondant à l'entrée sélectionnée
     * */
     function showContent() {
+        let triangle = $main.find('.triangle2');
+        let triangle3 = $main.find('.triangle3');
+
         // Récupérer l'entrée sélectionnée
         let entryId = $(this).attr('data-entry');
         // Récupérer le footer séléctionné
@@ -67,9 +70,15 @@ $(document).ready(function() {
         // Move the blue dot to all menu items
         let menuItems = $main.find('.menu-item');
         menuItems.removeClass('active');
+        triangle.removeClass('active');
+        triangle3.removeClass('active');
         // Move the blue dot to the selected menu item
         let selectedMenuItem = $main.find('.menu-item[data-entry="' + entryId + '"]');
+        let selectedTriangle = $main.find('.triangle2[data-entry="' + entryId + '"]');
+        let selectedTriangle3 = $main.find('.triangle3[data-entry="' + entryId + '"]');
         selectedMenuItem.addClass('active');
+        selectedTriangle.addClass('active');
+        selectedTriangle3.addClass('active');
     }
 
 

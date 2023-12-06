@@ -62,7 +62,7 @@
         {% else %}
             {% do event.getDatas(locale) %}
             <div class="col-5 fs-6 theme-1 text-uppercase"  style="background-color:  {{ event.parent.themeBackColor }}">
-                Action Culturelle
+                Projets Culturels
             </div>
         {% endif %}
         {% if event.style is not null and event.style is not empty %}
@@ -82,7 +82,7 @@
         <!-- Titre -->
         {% if agenda or actu %}
         <div class="my-3 fs-4 mb-0 fw-bold" style="line-height: 1">
-            {% if event.eventName is not empty %}{{ event.eventName }} :{% endif%} {{ event.titleByLanguage | upper }}
+            {% if event.eventName is not empty %}{{ event.eventName }} :{% endif %} {{ event.titleByLanguage | upper }} {{ event.otherArtists | upper }}
         </div>
         {% endif %}
         <!-- CONTENU -->

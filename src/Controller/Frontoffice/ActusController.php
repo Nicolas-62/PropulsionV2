@@ -30,6 +30,8 @@ class ActusController extends LuneController
         // Appel du constructeur du controller parent
         parent::__construct($entityManager, $params, $requestStack);
         // ! Configuration de la page :
+        $this->data['page_title']           = $this->entityManager->getRepository(Category::class)->find($this->category_id)->getTitle();
+
     }
 
     #[Route('', name: 'index')]

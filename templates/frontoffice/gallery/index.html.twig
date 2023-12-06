@@ -1,14 +1,14 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
 
 {% block body %}
-    <div class="wrapper">
+    <div class="wrapper mt-5">
         {% include 'frontoffice/_components/title.html.twig' with {'events': null, 'filter': false, 'historic': false, 'title': "Galerie photos",'linkToSorted' : false, logo : null } %}
-        <div class="mb-4 fs-4 px-2">
+        <div class="mb-4 fs-4 px-4">
             {% do cat_galery.getDatas(locale)  %}
             {{ cat_galery.description | raw }}
         </div>
         <!-- Liste des vignettes -->
-        <div class="row px-2">
+        <div class="row px-4">
             {% for article_datas in gallery_articles %}
                 {% if article_datas['photos'] != null %}
                     <div class="col-lg-3">

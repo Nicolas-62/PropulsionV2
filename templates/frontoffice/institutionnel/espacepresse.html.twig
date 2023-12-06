@@ -1,20 +1,66 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
 {% block body %}
+    <style>
+        #page-link-container {
+            position: relative;
+        }
+
+        .menu-container {
+            position: relative; /* Assurez-vous que cette div intermédiaire a une position relative */
+        }
+
+        .menu-item {
+            position: relative;
+        }
+
+        @media (min-width: 992px) {
+            .triangle3.active {
+                position: absolute;
+                margin: auto;
+                top: -35px;
+                right: -65px;
+                width: 40px;
+                height: 40px;
+                transform: rotate(-45deg);
+                border-right: 20px solid #FFF;
+                border-bottom: 20px solid #FFF;
+            }
+            #page-link-container {
+                border: 3px;border-style: dotted; border-bottom: 0; border-top: 0; border-left:0;
+            }
+            .triangle2.active {
+                position: absolute;
+                margin: auto;
+                top: -35px;
+                right: -69px;
+                width: 40px;
+                height: 40px;
+                transform: rotate(-45deg);
+                border-right: 3px dotted #000;
+                border-bottom: 3px dotted #000;
+            }
+        }
+
+
+    </style>
 
     <div class="px-4 p-lg-5 ">
         <div class="row">
-            <div id="page-link-container" class="col-lg-3 col-md-12 p-5 menu text-md-center text-sm-center">
+            <div id="page-link-container" class="col-lg-3 col-md-12 p-5 menu text-md-center text-sm-center position-relative">
+
+
                 <div class="row">
-                    <div class="col-lg-10 col-md-12 pt-lg-5">
+                    <div class="col-lg-12 col-md-12 pt-lg-5" style="">
                         {% for article in articles %}
                             <div class="text-center text-lg-start h3 py-3 menu-item {% if active_entry == 'entry' ~ loop.index %}active{% endif %}" data-entry="entry{{ loop.index }}">
                                 {{ article.title | upper}}
+                                <div class="w-100 position-relative" style="">
+                                    <div class="triangle2 {% if active_entry == 'entry' ~ loop.index %}active{% endif %}" data-entry="entry{{ loop.index }}"></div>
+                                    <div class="triangle3 {% if active_entry == 'entry' ~ loop.index %}active{% endif %}" data-entry="entry{{ loop.index }}"></div>
+                                </div>
                             </div>
-                            <div id="blue-dot{{ loop.index0 }}" class="blue-dot"></div>
+
                         {% endfor %}
-                    </div>
-                    <div class="col-2 d-sm-none d-md-none d-lg-block">
-                        <img src="{{ asset(getSiteImagePath('SOUTIENS_MENU.png')) }}" class="d-none d-lg-block">
                     </div>
                 </div>
             </div>

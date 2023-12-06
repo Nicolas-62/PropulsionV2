@@ -49,7 +49,7 @@ class SoutiensController extends LuneController
 
         $category_actu = $this->entityManager->getRepository(Category::class)->find(4);
         $this->data['category_actu'] = $category_actu;
-        $this->data['page_title']           = 'Soutiens aux artistes';
+        $this->data['page_title']           = $category_soutiens->getTitle();
         $this->data['category_accomp']      = $this->entityManager->getRepository(Category::class)->find(7);
         $this->data['category_audition']    = $this->entityManager->getRepository(Category::class)->find(8);
         $this->data['category_event']       = $this->entityManager->getRepository(Category::class)->find(9);
