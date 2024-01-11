@@ -36,3 +36,5 @@ yarn-error.log
 ###> liip/imagine-bundle ###
 /public/media/cache/
 /public/assets/
+
+/.nova/
