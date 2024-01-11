@@ -21,6 +21,8 @@
 
 ### PHPStorm ###
 /.idea/
+### Nova ###
+/.nova/
 
 public/assets/images/
 public/assets/upload/
