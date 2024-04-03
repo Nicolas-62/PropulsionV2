@@ -50,9 +50,9 @@ class DossierCrudController extends ProjetCrudController
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm()->setPermission('ROLE_DEV');
-        yield TextField::new('client', 'Client');
+        yield TextField::new('client', 'Client')->setRequired(true);
         yield DateField::new('dateCreation', 'Date')->setEmptyData('');
-        yield TextField::new('refInterne', 'Ref. Interne');
+        yield TextField::new('refInterne', 'Ref. Interne')->setRequired(true);
         yield TextField::new('refExterne', 'Ref. Client')->hideOnIndex();
         yield MontantHTField::new('montantHT', 'Montant HT')->onlyOnForms();
         // Etapes

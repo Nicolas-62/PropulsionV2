@@ -81,11 +81,18 @@ class ProjetCrudController extends AbstractCrudController
     protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
     {
         // Redirige sur la page d'édit si l'entité a une erreur
-        if ($context->getEntity()->getInstance()->hasError()) {
-            $url = $this->container->get(AdminUrlGenerator::class)
-                ->setAction(Action::EDIT)
-                ->setEntityId($context->getEntity()->getPrimaryKeyValue())
-                ->generateUrl();
+        $entity = $context->getEntity()->getInstance();
+        if ($entity->hasError()) {
+            if($entity->getId() == 0){
+                $url = $this->container->get(AdminUrlGenerator::class)
+                    ->setAction(Action::NEW)
+                    ->generateUrl();
+            }else {
+                $url = $this->container->get(AdminUrlGenerator::class)
+                    ->setAction(Action::EDIT)
+                    ->setEntityId($context->getEntity()->getPrimaryKeyValue())
+                    ->generateUrl();
+            }
             return $this->redirect($url);
         }
 
