@@ -129,6 +129,12 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::linkToCrud('Configuration', 'fas fa-gear', Config::class)->setAction(Crud::PAGE_EDIT)->setEntityId(1);
             // Liste des utilisateurs.
             yield MenuItem::linkToCrud('Uilisateurs', 'fa-solid fa-user', User::class);
+            yield MenuItem::section('Test');
+            yield MenuItem::subMenu('Blog', 'fa fa-article')->setSubItems([
+                MenuItem::linkToCrud('Categories', 'fa fa-tags', Projet::class),
+                MenuItem::linkToCrud('Posts', 'fa fa-file-text', Config::class),
+                MenuItem::linkToCrud('Comments', 'fa fa-comment', User::class),
+            ]);
 
         }
         // Lien de déconnexion.
