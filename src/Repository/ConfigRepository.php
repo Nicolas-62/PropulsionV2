@@ -39,6 +39,16 @@ class ConfigRepository extends ServiceEntityRepository
         }
     }
 
+
+    /**
+     * Récupère la config du site
+     * @return Config
+     */
+    public function getConfig(): Config
+    {
+        return $this->findOneBy(['id'=> 1]);
+    }
+
 //    /**
 //     * @return Config[] Returns an array of Config objects
 //     */

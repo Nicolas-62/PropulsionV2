@@ -42,15 +42,11 @@ class HomeController extends LuneController
 
         // Récupération des articles des sous catégories de la catégorie actu
         $events_actus = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
-        $date_today = new \DateTimeImmutable();
-        $date_yesterday = $date_today->modify('-1 day');
-
 
         //Récupération de la catégorie Agenda pour le placeholder
         $category_agenda = $this->entityManager->getRepository(Category::class)->find(3);
 
         $this->data['category_agenda'] = $category_agenda;
-        $this->data['date_yesterday']       = $date_yesterday;
         $this->data['events_actus']     = $events_actus;
         $this->data['events_agenda']    = $events_agenda;
         $this->data['lien_billetterie'] = '';

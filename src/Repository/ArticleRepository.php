@@ -107,6 +107,39 @@ class ArticleRepository extends CMSRepository
     }
 
     /**
+     * Duplique un article
+     * @param Article $article
+     * @return Article
+     */
+    public function clone(Article $article){
+        // Copie de l'objet
+        $new_article = clone $article;
+        // Suppression de l'id
+        $new_article->setId(null);
+        // Mise à jour des dates
+        $new_article->setCreatedAt(new \DateTimeImmutable());
+        $new_article->setUpdatedAt(new \DateTimeImmutable());
+        // Copie des datas
+        foreach($article->data as $data){
+            $new_data = clone $data;
+            $new_data->setObject($new_article);
+            $this->save($new_data);
+        }
+        // Copie de la SEO
+        $seo = $article->getSeo();
+        if($seo){
+            $new_seo = clone $seo;
+            $new_seo->setArticle($new_article);
+            $this->save($new_seo);
+
+        }
+        // Sauvegarde de l'article et des objets associés.
+        $this->save($new_article, true);
+        return $new_article;
+
+    }
+
+    /**
      * Récupère un média pour une médiapsec donnée
      *
      * @param Article $entity

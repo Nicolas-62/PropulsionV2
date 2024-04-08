@@ -28,6 +28,7 @@ class Config
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
+
     #[ORM\Column]
     private ?\DateTimeImmutable $updated_at = null;
 
@@ -40,6 +41,58 @@ class Config
     #[ORM\Column]
     private ?array $seoKeywords = array();
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $emailBilletterie = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $emailComptabilite = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $emailPartenariats = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $emailCommunication = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $emailProjets = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $emailProgrammation = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $emailTechnique = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $emailBilletterieObject = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $emailComptabiliteObject = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $emailPartenariatsObject = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $emailCommunicationObject = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $emailProjetsObject = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $emailProgrammationObject = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $emailTechniqueObject = null;
+
+
+    public function getSubjectEmailById($subject_id){
+        $subject = Contact::SUBJECTS[$subject_id];
+        return $this->{'getEmail'.ucfirst($subject['variable'])}();
+    }
+
+    public function getSubjectObjectById($subject_id){
+        $subject = Contact::SUBJECTS[$subject_id];
+        return $this->{'getEmail'.ucfirst($subject['variable']).'Object'}();
+    }
 
     /**
      * Retournes les données SEO du site
@@ -167,6 +220,174 @@ class Config
     public function setSeoKeywords(?array $seoKeywords): void
     {
         $this->seoKeywords = $seoKeywords;
+    }
+
+    public function getEmailBilletterie(): ?string
+    {
+        return $this->emailBilletterie;
+    }
+
+    public function setEmailBilletterie(?string $emailBilletterie): self
+    {
+        $this->emailBilletterie = $emailBilletterie;
+
+        return $this;
+    }
+
+    public function getEmailComptabilite(): ?string
+    {
+        return $this->emailComptabilite;
+    }
+
+    public function setEmailComptabilite(string $emailComptabilite): self
+    {
+        $this->emailComptabilite = $emailComptabilite;
+
+        return $this;
+    }
+
+    public function getEmailPartenariats(): ?string
+    {
+        return $this->emailPartenariats;
+    }
+
+    public function setEmailPartenariats(?string $emailPartenariats): self
+    {
+        $this->emailPartenariats = $emailPartenariats;
+
+        return $this;
+    }
+
+    public function getEmailCommunication(): ?string
+    {
+        return $this->emailCommunication;
+    }
+
+    public function setEmailCommunication(?string $emailCommunication): self
+    {
+        $this->emailCommunication = $emailCommunication;
+
+        return $this;
+    }
+
+    public function getEmailProjets(): ?string
+    {
+        return $this->emailProjets;
+    }
+
+    public function setEmailProjets(?string $emailProjets): self
+    {
+        $this->emailProjets = $emailProjets;
+
+        return $this;
+    }
+
+    public function getEmailProgrammation(): ?string
+    {
+        return $this->emailProgrammation;
+    }
+
+    public function setEmailProgrammation(?string $emailProgrammation): self
+    {
+        $this->emailProgrammation = $emailProgrammation;
+
+        return $this;
+    }
+
+    public function getEmailTechnique(): ?string
+    {
+        return $this->emailTechnique;
+    }
+
+    public function setEmailTechnique(?string $emailTechnique): self
+    {
+        $this->emailTechnique = $emailTechnique;
+
+        return $this;
+    }
+
+    public function getEmailBilletterieObject(): ?string
+    {
+        return $this->emailBilletterieObject;
+    }
+
+    public function setEmailBilletterieObject(?string $emailBilletterieObject): self
+    {
+        $this->emailBilletterieObject = $emailBilletterieObject;
+
+        return $this;
+    }
+
+    public function getEmailComptabiliteObject(): ?string
+    {
+        return $this->emailComptabiliteObject;
+    }
+
+    public function setEmailComptabiliteObject(?string $emailComptabiliteObject): self
+    {
+        $this->emailComptabiliteObject = $emailComptabiliteObject;
+
+        return $this;
+    }
+
+    public function getEmailPartenariatsObject(): ?string
+    {
+        return $this->emailPartenariatsObject;
+    }
+
+    public function setEmailPartenariatsObject(?string $emailPartenariatsObject): self
+    {
+        $this->emailPartenariatsObject = $emailPartenariatsObject;
+
+        return $this;
+    }
+
+    public function getEmailCommunicationObject(): ?string
+    {
+        return $this->emailCommunicationObject;
+    }
+
+    public function setEmailCommunicationObject(?string $emailCommunicationObject): self
+    {
+        $this->emailCommunicationObject = $emailCommunicationObject;
+
+        return $this;
+    }
+
+    public function getEmailProjetsObject(): ?string
+    {
+        return $this->emailProjetsObject;
+    }
+
+    public function setEmailProjetsObject(?string $emailProjetsObject): self
+    {
+        $this->emailProjetsObject = $emailProjetsObject;
+
+        return $this;
+    }
+
+    public function getEmailProgrammationObject(): ?string
+    {
+        return $this->emailProgrammationObject;
+    }
+
+    public function setEmailProgrammationObject(?string $emailProgrammationObject): self
+    {
+        $this->emailProgrammationObject = $emailProgrammationObject;
+
+        return $this;
+    }
+
+    public function getEmailTechniqueObject(): ?string
+    {
+        return $this->emailTechniqueObject;
+    }
+
+    public function setEmailTechniqueObject(?string $emailTechniqueObject): self
+    {
+        $this->emailTechniqueObject = $emailTechniqueObject;
+
+        return $this;
     }
 
 }

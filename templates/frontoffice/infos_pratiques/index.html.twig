@@ -164,7 +164,7 @@
                             <label class="pb-2" for="select-contact">{{ field_label(form.subject) }} (obligatoire)</label>
                             <select class="form-control rounded-0 border-secondary fs-5 select-infos"  name="{{ field_name(form.subject) }}" id="contact">
                                 <option>Sélectionner ...</option>
-                                {% for value, subject in field_choices(form.subject) %}
+                                {% for subject, value in field_choices(form.subject) %}
                                     <option value="{{ value }}">{{ subject }}</option>
                                 {% endfor %}
                             </select>

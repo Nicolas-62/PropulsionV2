@@ -479,6 +479,41 @@ class ArticleCrudController extends BoController
     }
 
     /**
+     * Clone un article
+     *
+     * @param AdminContext $context
+     * @return KeyValueStore|RedirectResponse|Response
+     */
+    public function clone(AdminContext $context)
+    {
+        // Récupération de l'article
+        $this->entity = $context->getEntity()->getInstance();
+        // Récupération des datas de l'article
+        $this->entity->getDatas($this->locale);
+        $new_entity = $this->entityManager->getRepository(Article::class)->clone($this->entity);
+        if($new_entity){
+            // Génération de l'URL, ajout en paramètre de l'id de l'article
+            $url = $this->adminUrlGenerator->setAction(Action::EDIT)
+                ->set('entityId', $new_entity->getId())
+                ->generateUrl();
+            $this->addFlash('success', "Elément dupliqué");
+
+            // Redirection
+            return $this->redirect($url);
+        }else{
+            $this->addFlash('error', "Impossible de dupliquer l'élément");
+        }
+
+        // Si ce n'est pas un sous article, on récupère sa categorie parent
+        if($this->entity->getParent() == null)
+        {
+            $this->category = $this->entity->getCategory();
+        }
+
+
+        return parent::edit($context);
+    }
+    /**
      * supprime l'identifiant de la publication dans l'url pour rediriger vers une liste d'articles.
      *
      * @param AdminContext $context
@@ -632,6 +667,18 @@ class ArticleCrudController extends BoController
      */
     public function configureActions(Actions $actions): Actions
     {
+        // Bouton de retour au détail du parent.
+        $cloneAction = Action::new('clone', 'Dupliquer', '');
+        //$cloneAction->setTemplatePath('backoffice/actions/return.html.twig');
+        // renders the action as a <a> HTML element
+        $cloneAction->displayAsLink();
+        // associé à l'action index
+        $cloneAction->linkToCrudAction('clone');
+        $cloneAction->setCssClass('text-secondary');
+        // Ajout des boutons à la liste des actions disponibles.
+        $actions->add(Crud::PAGE_INDEX, $cloneAction);
+
+
 
         // Bouton de retour au détail du parent.
         $returnGlobalAction = Action::new('return', 'Revenir', 'fa fa-arrow-left');
@@ -646,14 +693,7 @@ class ArticleCrudController extends BoController
         // Ajout des boutons à la liste des actions disponibles.
         $actions->add(Crud::PAGE_INDEX, $returnGlobalAction);
 
-
-
-
         // Bouton d'envois vers l'article.
-
-
-
-
         $accessPageAction = Action::new('Accès', 'Voir', 'fa fa-eye');
         $accessPageAction->linkToRoute('fo_agenda_detail', function (Article $article) {
                     return [
@@ -674,11 +714,6 @@ class ArticleCrudController extends BoController
         });
         // Ajout des boutons à la liste des actions disponibles.
         $actions->add(Crud::PAGE_EDIT, $accessPageAction);
-
-
-
-
-
 
 
         // Bouton de retour au détail du parent.

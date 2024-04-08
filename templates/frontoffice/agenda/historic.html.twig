@@ -8,7 +8,7 @@
             <div class="row font-primary">
                 <!-- Boucle des cards des événements -->
                 {% for event in events_agenda %}
-                    {% if event.dateEvent <  date_yesterday %}
+                    {% if getDatetimeEvent(event.dateEvent, event.datetimeEvent) <  current_date %}
                         {% set media = event.getMedia(1) %}
                         {% set CategoryTitle = event.category.title|replace({' ': '-'})|lower %}
                         <div
