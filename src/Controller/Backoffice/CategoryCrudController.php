@@ -204,6 +204,11 @@ class CategoryCrudController extends BoController
                     return 'Categorie : '.$this->entity->getTitle();
                 }
             })
+            ->setPageTitle('edit', function (){
+                if($this->entity != null){
+                    return 'Categorie : '.$this->entity->getTitle();
+                }
+            })
             ->setHelp('index', 'Liste des sous catégories')
             // Template personnalisé
             ->overrideTemplate('crud/index', 'backoffice/category/categories.html.twig')
@@ -345,7 +350,7 @@ class CategoryCrudController extends BoController
     {
         $ancestorId = $this->entity?->getParent()?->getId();
         if (Crud::PAGE_INDEX === $responseParameters->get('pageName')) {
-            $responseParameters->set('ancestorKeyName', 'categoryId');
+            $responseParameters->set('ancestorKeyName', 'entityId');
         }
         // Si édite un article
         else if (Crud::PAGE_EDIT === $responseParameters->get('pageName')) {

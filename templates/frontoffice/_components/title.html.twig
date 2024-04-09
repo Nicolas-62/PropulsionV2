@@ -6,10 +6,10 @@
         <div class="w-sm-100 col" style="margin-bottom: 10px">
             <div class="row row-cols-1 row-cols-lg-auto align-items-center">
                 {% if filter == true %}
-                    <div class="w-sm-100 col mb-3 mb-lg-0">
-                        <div class="dropdown mx-auto text-center text-lg-start">
+                    <div class="col">
+                        <div class="dropdown mb-3 d-grid gap-2">
                             <!-- Dropdown button / Sélecteur -->
-                            <button class="text-center btn btn-secondary dropdown-toggle dropdown-toggle-select text-uppercase dropdown-select-button dropdown-select" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button type="button" class="text-center btn btn-secondary dropdown-toggle dropdown-toggle-select text-uppercase dropdown-select-button dropdown-select" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Tous les évènements
                             </button>
                             <!-- Options du dropdown -->
@@ -39,8 +39,8 @@
                     </div>
                 {% endif %}
                 {% if historic == true %}
-                    <div class="w-sm-100 col text-center text-lg-start">
-                        <a class="btn-read-card" href="{{ path('fo_agenda_historic')}}">HISTORIQUE  ></a>
+                    <div class="w-sm-100 col text-center text-lg-start btn-group dropend">
+                        <a type="button" class="btn-read-card btn btn-secondary dropdown-toggle" href="{{ path('fo_agenda_historic')}}">HISTORIQUE&nbsp;</a>
                     </div>
                 {% endif %}
                 {% if logo %}
@@ -53,58 +53,3 @@
         </div>
     </div>
 </div>
-
-
-{#<div class="px-lg-5 container-fluid">#}
-{#    <div class="px-lg-2  px-md-5 pt-3 pt-lg-5 row row-cols-auto d-flex align-items-center">#}
-{#        <!-- Titre de la catégorie Actu -->#}
-{#        <div class="px-md-2 px-lg-0 {% if logo %}col-lg-10{% else %}col-lg-4{% endif%} col-md-6 col-sm-6 fs-1 blue-title text-center text-lg-start mb-3 mb-lg-0" style="padding-bottom: 10px; padding-left: 30px !important">{% if title %}{{ title | upper }}{% else %}{{ page_title | upper }}{% endif %}</div>#}
-
-{#        {% if filter == true %}#}
-{#        <!-- Sélecteur de catégorie -->#}
-{#        <div class="custom-select col-lg-2 col-md-6 col-sm-6 d-flex align-items-end " style="bottom: 17px">#}
-{#            <div class="dropdown mx-auto">#}
-{#                <!-- Dropdown button / Sélecteur -->#}
-{#                <button class="text-center btn btn-secondary dropdown-toggle dropdown-toggle-select text-uppercase dropdown-select-button dropdown-select" type="button" data-bs-toggle="dropdown" aria-expanded="false">#}
-{#                    Tous les évènements#}
-{#                </button>#}
-{#                <!-- Options du dropdown -->#}
-{#                <ul class="dropdown-menu">#}
-{#                    {% if linkToSorted == true %}#}
-{#                        <a class="text-decoration-none" href="{{ path('fo_actus_index', {'tri': 'Tous les évènements'}) }}">#}
-{#                    {% endif %}#}
-{#                    <li class="dropdown-select-item-li dropdown-select-item text-uppercase w-100 fs-5">Tous les évènements</li>#}
-{#                    {% if linkToSorted == true %}#}
-{#                        </a>#}
-{#                    {% endif %}#}
-{#                    {% for event in events %}#}
-
-{#                    {% if linkToSorted == true %}#}
-{#                        <a class="text-decoration-none" href="{{ path('fo_actus_index', {'tri': event.id } ) }}">#}
-{#                        {% endif %}#}
-{#                            <li#}
-{#                                    class="dropdown-select-item-li dropdown-select-item w-100 fs-5"#}
-{#                                    data-id="{{ event.id }}"#}
-{#                            >#}
-{#                                {{ event.title | upper }}#}
-{#                            </li>#}
-{#                        </a>#}
-{#                    {% endfor %}#}
-{#                </ul>#}
-{#            </div>#}
-{#        </div>#}
-{#        {% endif %}#}
-
-{#        {% if historic == true %}#}
-{#        <!-- Bouton Historique -->#}
-{#        <div class="col-12 col-lg-3  h1 text-center text-lg-start mb-4"> <a class="btn-read-card" href="{{ path('fo_agenda_historic')}}">HISTORIQUE  ></a></div>#}
-{#        {% endif %}#}
-
-{#        {% if logo %}#}
-{#        <!-- Image Logo -->#}
-{#            <div class="col-12 col-lg-2">#}
-{#                <img class="img-fluid" src="{{ asset(getSiteImagePath(logo)) }}" alt="Logo">#}
-{#            </div>#}
-{#        {% endif %}#}
-{#    </div>#}
-{#</div>#}

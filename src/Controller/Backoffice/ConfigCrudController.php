@@ -4,6 +4,7 @@ namespace App\Controller\Backoffice;
 
 use App\Entity\Category;
 use App\Entity\Config;
+use App\Entity\Contact;
 use Doctrine\DBAL\Types\TextType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
@@ -50,8 +51,10 @@ class ConfigCrudController extends AbstractCrudController
 
         // Onglet Informations Contact
         yield FormField::addPanel('Informations Contact');
-        yield TextField::new('email_contact','Email Contact')->setColumns(6);
-        yield TextField::new('email_objet',"Objet de l'email")->setColumns(6);
+        foreach(Contact::SUBJECTS as $subject){
+            yield TextField::new('email_'.$subject['variable'],'Email '.$subject['label'])->setColumns(6);
+            yield TextField::new('email_'.$subject['variable'].'_object', 'Titre '.$subject['label'])->setColumns(6);
+        }
         yield FormField::addPanel('SEO du site');
         yield TextField::new('seo_title',"Titre du site")->setColumns(6);
         yield TextField::new('seo_description',"Description du site")->setColumns(6);

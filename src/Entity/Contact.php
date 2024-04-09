@@ -8,13 +8,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Contact {
 
     const SUBJECTS = [
-            0 => ['label' => 'Billetterie', 'email' => 'marie.yachkouri@lalune.net'],
-            1 => ['label' => 'Comptabilité', 'email' => 'sandrine.darlot@lalune.net'],
-            2 => ['label' => 'Partenariats', 'email' => 'antoine.grillon@lalune.net'],
-            3 => ['label' => 'Presse et communication', 'email' => 'jimmy.bourbier@lalune.net'],
-            4 => ['label' => 'Projets scolaires, ateliers, actions culturelles', 'email' => ['anais.frapsauce@lalune.net', 'marine.salvat@lalune.net'] ],
-            5 => ['label' => 'Programmation', 'email' => 'antoine.grillon@lalune.net'],
-            6 => ['label' => 'Technique', 'email' => 'antoine.breny@lalune.net'],
+        0 => ['label' => 'Billetterie', 'variable' => 'billetterie'],
+        1 => ['label' => 'Comptabilité', 'variable' => 'comptabilite'],
+        2 => ['label' => 'Partenariats', 'variable' => 'partenariats'],
+        3 => ['label' => 'Communication', 'variable' => 'communication'],
+        4 => ['label' => 'Projets', 'variable' => 'projets' ],
+        5 => ['label' => 'Programmation', 'variable' => 'programmation'],
+        6 => ['label' => 'Technique', 'variable' => 'technique'],
     ];
 
     /**
@@ -45,12 +45,8 @@ class Contact {
     #[Assert\NotBlank]
     private ?string $message;
 
-    #[Assert\Choice(
-        callback: 'getSubjects',
-        message: 'Veuillez choisir un sujet valide'
-    )]
     #[Assert\NotBlank]
-    private string $subject;
+    private int $subject;
 
 
     private ?string $replyTo = null;
@@ -66,8 +62,8 @@ class Contact {
     public function __construct(){
         // Email du client par défaut.
         $this->email = $_ENV['CLIENT_EMAIL'];
-        // MEssage par défaut
-        $this->subject = 'Message en provenance du site - '.$_ENV['SITE'];
+        // Message par défaut
+        $this->subject = 0;
     }
 
 
@@ -127,54 +123,6 @@ class Contact {
     }
 
     /**
-     * @return mixed
-     */
-    public function getSubject()
-    {
-        return $this->subject;
-    }
-
-
-    /**
-     * Retourne le label des sujets
-     *
-     * @return array
-     */
-    public static function getSubjects()
-    {
-        $subjects = array();
-        foreach(Contact::SUBJECTS as $subject){
-            $subjects[] = $subject['label'];
-        }
-        return $subjects;
-    }
-
-    /**
-     * Retourne l'adresse mail en fonction du sujet passé en parametre
-     * @param string $subject_send
-     * @return string|array|false
-     */
-    public static function getEmailBySubjectLabel(string $subject_send): string|array|false
-    {
-        foreach(Contact::SUBJECTS as $subject){
-            if($subject['label'] == $subject_send){
-                return $subject['email'];
-            }
-        }
-        return false;
-    }
-
-
-
-    /**
-     * @param string $subject
-     */
-    public function setSubject(string $subject): void
-    {
-        $this->subject = $subject;
-    }
-
-    /**
      * @return string|null
      */
     public function getName(): string
@@ -204,6 +152,16 @@ class Contact {
     public function setGetNewsletter(?bool $getNewsletter): void
     {
         $this->getNewsletter = $getNewsletter;
+    }
+
+    public function getSubject(): int
+    {
+        return $this->subject;
+    }
+
+    public function setSubject(int $subject): void
+    {
+        $this->subject = $subject;
     }
 
 }

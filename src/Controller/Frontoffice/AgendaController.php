@@ -27,6 +27,11 @@ class AgendaController extends LuneController
         $events_agenda = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $params->get('locale'), true, 'dateEvent', 'ASC');
         $this->data['events_agenda']        = $events_agenda;
         $this->data['page_title']           = $this->entityManager->getRepository(Category::class)->find($this->category_id)->getTitle();
+        //Récupération de la catégorie Agenda pour le placeholder
+        $category_agenda = $this->entityManager->getRepository(Category::class)->find(3);
+        $this->data['category_agenda'] = $category_agenda;
+        $categories = $this->entityManager->getRepository(Category::class)->findBy(['category_id'=>$category_agenda->getId()]);
+        $this->data['categories_child_agenda'] = $categories;
     }
 
     #[Route('', name: 'index')]
@@ -34,14 +39,6 @@ class AgendaController extends LuneController
     {
 
         $categories = $this->entityManager->getRepository(Category::class)->findBy(['category_id'=>3]);
-        // Récupération de la date d'hier pour la comparaison de dates
-        $date_today = new \DateTimeImmutable();
-        $date_yesterday = $date_today->modify('-1 day');
-        //Récupération de la catégorie Agenda pour le placeholder
-        $category_agenda = $this->entityManager->getRepository(Category::class)->find(3);
-
-        $this->data['category_agenda'] = $category_agenda;
-        $this->data['date_yesterday']          = $date_yesterday;
         $this->data['categories_child_agenda'] = $categories;
 
         //TODO : récupérer les thèmes de catégories
@@ -52,35 +49,24 @@ class AgendaController extends LuneController
     public function detail(?Article $event): Response
     {
 
-        //Récupération de la catégorie Agenda pour le placeholder
-        $category_agenda = $this->entityManager->getRepository(Category::class)->find(3);
-
-        $this->data['category_agenda'] = $category_agenda;
         // Récupération des enfants de l'article
         $children = $this->entityManager->getRepository(Article::class)->findBy(['article_id' => $event->getId()]);
         if(is_array($children) && count($children)){
-        $children[0]->getDatas($this->getParameter('locale'));
-        if($children[0]->isOnline($this->getParameter('locale'))){
+            $children[0]->getDatas($this->getParameter('locale'));
+            if($children[0]->isOnline($this->getParameter('locale'))){
 
-            $this->data['children']             = $children;
+                $this->data['children']             = $children;
+            }else{
+                $this->data['children']             = "";
+            }
         }else{
             $this->data['children']             = "";
         }
-        }
-        else{
-            $this->data['children']             = "";
-
-        }
-
         $cat_actu_id = 4;
-        // Récupération des sous catégories de la catégorie actu
+        // Récupération des sous catégories de la catégorie agenda
         $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_actu_id)->getChildrenIds();
-        // Récupération des articles des sous catégories de la catégorie actu
+        // Récupération des articles des sous catégories de la catégorie agenda
         $events_actus = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
-        $date_today = new \DateTimeImmutable();
-        $date_yesterday = $date_today->modify('-1 day');
-
-        $this->data['date_yesterday']       = $date_yesterday;
         $this->data['actu_childs']          = $events_actus;
         return parent::detail($event);
     }
@@ -92,24 +78,13 @@ class AgendaController extends LuneController
         $this->category_id  = 3;
         // Initialisation du controller.
 
-        parent::__construct($entityManager, $params);
         // Appel du constructeur du controller parent
         // Récupération des sous catégories de la catégorie agenda
         $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($this->category_id)->getChildrenIds();
-        //Récupération de la catégorie Agenda pour le placeholder
-        $category_agenda = $this->entityManager->getRepository(Category::class)->find(3);
+        // Récupération des articles des sous catégories de la catégorie agenda
+        $events_agenda      = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $params->get('locale'), true, 'dateEvent', 'DESC');
+        $this->data['events_agenda']           = $events_agenda;
 
-        $this->data['category_agenda'] = $category_agenda;
-        $categories = $this->entityManager->getRepository(Category::class)->findBy(['category_id'=>3]);
-        $events_agenda = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $params->get('locale'), true, 'dateEvent', 'DESC');
-        $this->data['events_agenda']        = $events_agenda;
-        $date_today = new \DateTimeImmutable();
-        $date_yesterday = $date_today->modify('-1 day');
-        $category_agenda = $this->entityManager->getRepository(Category::class)->find(3);
-
-        $this->data['categories_child_agenda'] = $categories;
-
-        $this->data['date_yesterday']       = $date_yesterday;
         return $this->render('frontoffice/agenda/historic.html.twig', $this->data);
     }
 

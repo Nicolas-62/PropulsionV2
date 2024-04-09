@@ -21,6 +21,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('truncateHtml', [$this, 'truncateHtml']),
             new TwigFunction('formatCustomDate', [$this, 'formatCustomDate']),
             new TwigFunction('formatCustomDateWithoutYears', [$this, 'formatCustomDateWithoutYears']),
+            new TwigFunction('getDatetimeEvent', [$this, 'getDatetimeEvent']),
 
 
         ];
@@ -81,6 +82,9 @@ class AppExtension extends AbstractExtension
 
     }
 
+    public function getDatetimeEvent($date, $datetime){
+        return str_replace('00:00:00', $datetime->format('H:i:s'), $date->format('Y-m-d H:i:s'));
+    }
 
     public function formatCustomDate($date)
     {

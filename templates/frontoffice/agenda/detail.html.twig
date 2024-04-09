@@ -53,7 +53,7 @@
                             <p class="fs-5">{{ article.datetimeEventOpening | date("H:i") }} </p>
                         {% endif %}
                         <!-- EVENT TERMINE -->
-                        {% if article.dateEvent <  date_yesterday %}
+                        {% if article.dateEvent <  current_date %}
                             <p class="text-bg-danger p-3 text-center fs-2">Cet évènement est terminé.</p>
                         {% else %}
 
@@ -91,7 +91,7 @@
                         {% endif %}
 
                         <!-- Tarifs -->
-                        {% if article.dateEvent >  date_yesterday %}
+                        {% if article.dateEvent >  current_date %}
 
                         <div class="container-fluid">
 
@@ -191,11 +191,11 @@
                         <div class="fs-1 lh-1">{{ article.titleByLanguage }}</div>
                     </div>
                     <div class="col-lg-4 col-md-6">
-                        <div class="h4 d-flex align-items-center">{{ article.typeMusic}}  {% if article.origin != "" %} | {{ article.origin }}{% endif %}</div>
+                        <div class="fs-1 lh-1 d-flex align-items-center">{{ article.typeMusic}}  {% if article.origin != "" %} | {{ article.origin }}{% endif %}</div>
                     </div>
                     <div class="col-lg-2 col-md-6 d-flex justify-content-end">
                         {% if article.datetimeEvent is not null and article.datetimeEvent  is not empty %}
-                            <div class="fs-2">{{ article.datetimeEvent| date('H:i') }}</div>
+                            <div class="fs-1 lh-1">{{ article.datetimeEvent| date('H:i') }}</div>
                         {% endif %}
                     </div>
                 </div>
@@ -454,7 +454,7 @@
             {#Compteur pour afficher le nombre souhaité dans la vue #}
             {% set count = 0 %}
             {% for event in events_agenda %}
-                {% if event.dateEvent > date_yesterday and count < 4 %}
+                {% if getDatetimeEvent(event.dateEvent, event.datetimeEvent) > current_date and count < 4 %}
                     {% if article.id != event.id %}
                         {% set media = event.getMedia(1) %}
                         {% set CategoryTitle = event.category.title|replace({' ': '-'})|lower %}

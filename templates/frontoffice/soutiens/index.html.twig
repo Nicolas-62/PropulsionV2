@@ -6,7 +6,7 @@
 
     {% do category_accomp.getDatas(locale) %}
 
-    <div id="{{ category_accomp.title }}">
+    <div id="{{ category_accomp.slug }}">
         <div class="wrapper">
             {% include 'frontoffice/_components/title_soutiens.html.twig' with {'events': null, 'filter': false, 'historic': false, 'title': 'DISPOSITIF D’ACCOMPAGNEMENT DE LA LUNE DES PIRATES' , linkToSorted: false, logo : 'Logo_ObjectifLune_NB.png' } %}
 
@@ -34,7 +34,7 @@
     </div>
     <!-- AUDITIONS -->
     {% do category_audition.getDatas(locale) %}
-    <div id="{{ category_audition.title }}" class="bg-grey container-fluid px-0">
+    <div id="{{ category_audition.slug }}" class="bg-grey container-fluid px-0">
         <div class="wrapper">
             {% include 'frontoffice/_components/title_soutiens.html.twig' with {'events': null, 'filter': false, 'historic': false, 'title': category_audition.description, linkToSorted: false, logo: 'inouis.png' } %}
 
@@ -62,7 +62,7 @@
     </div>
 
     <!-- Évènements Actualités -->
-    <div id="{{ category_event.title }}">
+    <div id="{{ category_event.slug }}">
         <div class="wrapper">
             {% do category_event.getDatas(locale) %}
             {% include 'frontoffice/_components/title_soutiens.html.twig' with {'events': null, 'filter': false, 'historic': false, 'title': category_event.description , linkToSorted: false, logo : false } %}

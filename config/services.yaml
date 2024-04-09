@@ -15,6 +15,7 @@ parameters:
     app.dyn_img_path: '%env(DYN_IMG_PATH)%'
     app.static_img_path: '%env(STATIC_IMG_PATH)%'
     app.upload_path: '%env(DYN_UPLOAD_PATH)%'
+    app.env: '%env(APP_ENV)%'
 
 
 services:

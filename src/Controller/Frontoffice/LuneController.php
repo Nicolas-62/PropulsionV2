@@ -39,10 +39,13 @@ class LuneController extends FOController
         ];
         parent::__construct($entityManager, $params);
 
+        $date_today = new \DateTimeImmutable();
+        $this->data['current_date']       = $date_today->format('Y-m-d H:i:s');
         // Récupération des infos du header.
         $this->buildHeader();
         // Récupération des infos du footer.
         $this->buildFooter();
+
 
     }
 

@@ -2,10 +2,10 @@
 
     {% block stylesheets %}
         {{ encore_entry_script_tags('maquette_infos_css') }}
-        <style>.menu-item.active {
+        <style>
+            .menu-item.active {
                 position: relative;
             }
-
             .menu-item.active::before {
                 content: "";
                 position: absolute;
@@ -17,9 +17,6 @@
                 background-color: #09b2FF;
                 transform: translate(0, -50%);
             }
-
-
-
         </style>
     {% endblock %}
 {% block javascripts %}
@@ -27,6 +24,8 @@
         let activeFooter = null;
 
         function showContent(entry, footer) {
+            console.log('show content')
+
             // Cacher tous les contenus
             let contentDivs = document.getElementsByClassName('content')[0].children;
             for (let i = 0; i < contentDivs.length; i++) {
@@ -49,20 +48,17 @@
             // Mettre à jour le footer actif
             activeFooter = selectedFooter;
 
-
-
             // Move the blue dot to the selected menu item
             const menuItems = document.getElementsByClassName('menu-item');
             for (let i = 0; i < menuItems.length; i++) {
                 menuItems[i].classList.remove('active');
                 const blueDot = document.getElementById('blue-dot' + i);
-                console.log(blueDot);
+
                 blueDot.style.visibility = 'hidden'; // Hide all blue dots first
             }
 
             const selectedMenuItem = document.querySelector('.menu-item[data-entry="' + entry + '"]');
             selectedMenuItem.classList.add('active');
-            const selectedBlueDot = document.getElementById('blue-dot' + selectedMenuItem.dataset.index);
         }
 
         // On page load, show "footer0" as the active footer
@@ -99,10 +95,8 @@
                     <div class="row">
                         <div class="col-lg-2 col-md-3">
                             <img src="{{ asset(('build/maquette/images/arrow_contact.png')) }}" class="">
-
                         </div>
                         <div class="col-3 h3 pb-5">
-
                             <p>
                                 Accueil & Bureaux
                             </p>
@@ -119,11 +113,9 @@
                     </div>
 
                     <h1>HORAIRES</h1>
-
                     <p class="h3 pt-3 pb-5">Ouverture des bureaux du mardi au vendredi de 14h à 18h</p>
 
                     <h1 class="">NOUS ECRIRE</h1>
-
                     <!-- Formulaire -->
                     <form class="h4">
                         <div class="form-group py-2">
@@ -166,22 +158,16 @@
                         <p>Pour en savoir plus, consultez notre Politique de confidentialité.</p>
 
                     </form>
-
                 </div>
-
 
 
                 <!-- COMMENT VENIR -->
                 <div id="entry2"  class="py-5 px-5 hidden">
-
                     <div class="row">
                         <div class="col-lg-2 col-md-3">
-
-
                             <img src="{{ asset(('build/maquette/images/point_venir.png')) }}" class="">
                         </div>
                         <div class="col-3 h3">
-
                             <p>
                                 Scène de Musiques Actuelles
                             </p>
@@ -201,7 +187,6 @@
                     <p class="h3 py-2">
                         Les horaires indiqués sur le programme et le site sont ceux de l'ouverture des portes. Début des concerts à 21h (sauf cas particuliers).
                     </p>
-
                     <p class="h3 py-4">
                         Tous les concerts sont en placement libre assis et debout.
                     </p>
@@ -214,24 +199,15 @@
                     <p class="h3 py-2">
                         Des bouchons d'oreilles sont disponibles qratuitement au bar ainsi que des casques adaptés aux enfants (en échange d'une pièce d'identité).
                     </p>
-
-
-
-
                 </div>
 
                 <!-- TARIFS ET BILLETTERIE -->
-
                 <div id="entry3" class="py-5 px-5 hidden ">
-
                     <div class="row pb-5">
                         <div class="col-lg-2 col-md-3">
-
                             <img src="{{ asset(('build/maquette/images/la_lune_infos.png')) }}" class="">
-
                         </div>
                         <div class="col-3 fs-3">
-
                             <p>
                                 Scène de Musiques Actuelles
                             </p>
@@ -246,12 +222,10 @@
                             </p>
                         </div>
                     </div>
-
                     <div>
                         <h1 class="py-5">POINT ACCUEIL BILLETTERIE & EN LIGNE SANS FRAIS DE LOCATION</h1>
                         <div class="row">
                             <div class="col-lg-2 col-md-3">
-
                                 <img src="{{ asset(('build/maquette/images/bureaux_infos.png')) }}" class="">
                             </div>
                             <div class="col-3 fs-3">
@@ -266,15 +240,10 @@
                                 </p>
 
                             </div>
-
                         </div>
                         <p class="h2 pt-2 pb-5">Le point accueil / billetterie est ouvert du mardi au vendredi de 14h à 18h</p>
-
-
                         <h1 class="pt-5">TARIFS</h1>
                         <p class="h2">Les tarifs sont indiqués pour chaque spectacle sur le site</p>
-
-
                         <h1 class="pt-5">ABONNEMENT - LA CARTE LUNE - <b>10€</b></h1>
                         <p class="h2">
                             Valable 1 an de date à date : des économies dès votre deuxième concert !
@@ -492,15 +461,10 @@
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
         </div>
     </div>
-
-
 
 
 <!-- BAS CONTACT -->
@@ -511,8 +475,6 @@
                 <!-- Les Pirates -->
                 <div class="col-md-12 col-lg-9 offset-lg-3">
                     <!-- LOGO LUNE DES PIRATES -->
-
-
                     <h1 class="pb-5"><img src="{{ asset(('build/maquette/images/MINI_LOGO.png')) }}" class="">Les Pirates</h1>
                     <div class="row">
                         <div class="col-8">
@@ -525,8 +487,6 @@
                                 {% endfor %}
                             </div>
                         </div>
-
-
                         <!-- L'équipe technique / Bénévoles -->
                         <div class="col-4">
 
@@ -545,17 +505,10 @@
                             </p>
                         </div>
                     </div>
-
                 </div>
-
-
-
             </div>
-
         </div>
     </div>
-
-
 
     <!-- BAS COMMENT VENIR -->
     <div id="footer1" class="hidden bg-grey">
@@ -576,17 +529,12 @@
                                 <h1 class="py-2">{{ transport }}</h1>
                                 <p class="h2">{{ texte }}</p>
                             </div>
-
                         </div>
-
-
-
                     {% endfor %}
                 </div>
             </div>
         </div>
         <!-- PLAN -->
-
         <a href="https://www.google.fr/maps/place/17+Quai+Belu,+80000+Amiens/@49.8964876,2.3023015,17z/data=!3m1!4b1!4m6!3m5!1s0x47e7843770099b73:0x65a4335dc8d72f5b!8m2!3d49.8964876!4d2.3048764!16s%2Fg%2F11cs8245jj?entry=ttu"><img src="{{ asset('build/maquette/images/PLAN.png') }}" class="w-100"></a>
     </div>
 
@@ -595,10 +543,8 @@
         <div class="py-5 px-5 bg-grey">
             <div class="row">
                 <div class="col-3">
-
                 </div>
                 <div class="col-lg-9 col-md-12">
-
                     <div class="row">
                         <div class="col-12">
                             <h1>TARIF PASSEPORT VIE ÉTUDIANTE - <b>5 € LE CONCERT</b> </h1>
@@ -606,7 +552,6 @@
                         </div>
                         <!-- Image tarifs -->
                         <div class="col-1">
-
                         </div>
                         <div class="col-11 h2">
                             <p>
@@ -644,29 +589,19 @@
                 <p>
                     Profite de ton pass Culture pour commander tes places de concerts à La Lune !
                 </p>
-
                 <div class="row pt-2">
                     <div class="col-6">
-
                         <img class="img-fluid" src="{{ asset('build/maquette/images/PASS_CULTURE.png') }}" class="">
                     </div>
                     <div class="col-6">
-
                         <img class="img-fluid" src="{{ asset('build/maquette/images/CAPTCHA_CULTURE.png') }}" class="">
                     </div>
-
-
                 </div>
-
-
             </div>
         </div>
     </div>
 
     <div id="footer3" class="hidden">
-
     </div>
-
-
     {{ encore_entry_script_tags('maquette_infos_js') }}
 {% endblock %}

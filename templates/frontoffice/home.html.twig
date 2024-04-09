@@ -12,8 +12,7 @@
                     {% set conditionIterator = 0 %}
                     {% for event in events_agenda %}
                         {% if event.star == 1  %}
-                        {% if event.dateEvent >  date_yesterday %}
-
+                        {% if getDatetimeEvent(event.dateEvent, event.datetimeEvent) >  current_date %}
 
                             <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{ conditionIterator }}" class="active" aria-label="Slide {{ conditionIterator + 1 }}" aria-current="true"></button>
                             {% set conditionIterator = conditionIterator + 1 %}
@@ -27,60 +26,59 @@
                     {% for event in events_agenda %}
                         <a href="{{ url('fo_agenda_detail',{'slug':event.slug }) }}" class="text-decoration-none">
                         {% if event.star == 1  %}
-                            {% if event.dateEvent >  date_yesterday %}
-
+                            {% if getDatetimeEvent(event.dateEvent, event.datetimeEvent) >  current_date %}
                                 {% set conditionIterator = conditionIterator + 1 %}
-                        <div class="carousel-item {% if conditionIterator == 1 %} active{% endif %}" data-bs-interval="4000">
-                            {% set media = event.getMedia(9) %}
-                            {% if media is not null %}
-                                    <img src="{{ url('ressources_image', {'width':'large','height':'large', 'media':media.media} ) }}" class="d-block w-100" alt="...">
-                                {% else %}
-                                    {% set mediaCategoryAgenda = category_agenda.getMedia(21) %}
-                                    {% if mediaCategoryAgenda is not null %}
-                                        <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':mediaCategoryAgenda.media} ) }}" class="d-block w-100" alt="...">
-                                    {% endif %}
-                                {% endif %}
-                            <div class="position-absolute d-none d-lg-block card-vedette-home" >
-                                <div class="row mx-0">
-                                    <div
-                                        class="col-5 white theme-1 text-uppercase bg-black"
-                                    >
-                                        {{ event.category.title }}
-                                    </div>
-                                    {% if event.style is not empty and event.style is not null %}
-                                        {% do event.category.getDatas(locale) %}
-                                        <div class="col-7 theme-2 text-uppercase" style="background-color: {{ event.category.themeBackColor }}" >
-                                            <img class="card-ticketing " src="{{ asset(getSiteImagePath('MINI_BILLETTERIE.svg')) }}" alt="">{{ event.style }}
-                                        </div>
-                                    {% endif %}
-                                </div>
-                                <div class="p-4">
-                                    <!-- Titre -->
-                                    <div class="my-3 fs-3 mb-0 lh-1">
-                                        {{ event.title }}
-                                    </div>
-                                    <!-- CONTENU -->
-                                    <div class="fs-5 card-text">
-                                        {{ event.subtitle }}
-                                    </div>
-                                </div>
-                                <div class="p-4 d-flex justify-content-between">
-                                    <div class="pb-3 d-flex">
-                                        <div class= "fs-3 ">
-                                            {{ formatCustomDateWithoutYears(event.dateEvent) }}
-                                        </div>
-                                        {% if event.dateTimeEvent is not null and event.dateTimeEvent is not empty %}
-                                            <div class="fs-5">{{ event.dateTimeEvent| date("H:i") }}</div>
+                                <div class="carousel-item {% if conditionIterator == 1 %} active{% endif %}" data-bs-interval="3000">
+                                    {% set media = event.getMedia(9) %}
+                                    {% if media is not null %}
+                                        <img src="{{ url('ressources_image', {'width':'large','height':'large', 'media':media.media} ) }}" class="d-block w-100" alt="...">
+                                    {% else %}
+                                        {% set mediaCategoryAgenda = category_agenda.getMedia(21) %}
+                                        {% if mediaCategoryAgenda is not null %}
+                                            <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':mediaCategoryAgenda.media} ) }}" class="d-block w-100" alt="...">
                                         {% endif %}
+                                    {% endif %}
+                                    <div class="position-absolute d-none d-lg-block card-vedette-home" >
+                                        <div class="row mx-0">
+                                            <div
+                                                class="col-5 white theme-1 text-uppercase bg-black"
+                                            >
+                                                {{ event.category.title }}
+                                            </div>
+                                            {% if event.style is not empty and event.style is not null %}
+                                                {% do event.category.getDatas(locale) %}
+                                                <div class="col-7 theme-2 text-uppercase" style="background-color: {{ event.category.themeBackColor }}" >
+                                                    <img class="card-ticketing " src="{{ asset(getSiteImagePath('MINI_BILLETTERIE.svg')) }}" alt="">{{ event.style }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="p-4">
+                                            <!-- Titre -->
+                                            <div class="my-3 fs-3 mb-0 lh-1">
+                                                {{ event.title }}
+                                            </div>
+                                            <!-- CONTENU -->
+                                            <div class="fs-5 card-text">
+                                                {{ event.subtitle }}
+                                            </div>
+                                        </div>
+                                        <div class="p-4 d-flex justify-content-between">
+                                            <div class="pb-3 d-flex">
+                                                <div class= "fs-3 ">
+                                                    {{ formatCustomDateWithoutYears(event.dateEvent) }}
+                                                </div>
+                                                {% if event.dateTimeEvent is not null and event.dateTimeEvent is not empty %}
+                                                    <div class="fs-5">{{ event.dateTimeEvent| date("H:i") }}</div>
+                                                {% endif %}
+                                            </div>
+                                            <a href="{% if event.ticketingLink is not empty %}{{ event.ticketingLink }}{% else %}https://billetterie.lalune.net/{% endif %}">
+                                                <img style="height: 50px" class="btn-billetterie-card" src="{{ asset(getSiteImagePath('picto-billet.svg')) }}" alt="...">
+                                            </a>
+                                        </div>
                                     </div>
-                                    <a href="{% if event.ticketingLink is not empty %}{{ event.ticketingLink }}{% else %}https://billetterie.lalune.net/{% endif %}">
-                                        <img style="height: 50px" class="btn-billetterie-card" src="{{ asset(getSiteImagePath('picto-billet.svg')) }}" alt="...">
-                                    </a>
                                 </div>
-                            </div>
-                        </div>
-                        {% endif %}
                             {% endif %}
+                        {% endif %}
                     {% endfor %}
                     </a>
                 </div>
@@ -88,53 +86,6 @@
 
         </div>
     </div>
-
-            <!-- Artiste Vedette MD/SM -->
-{#            <div class="d-sm-block d-md-block d-lg-none  ">#}
-{#                <!-- Themes -->#}
-{#                <div class="row">#}
-{#                    <div#}
-{#                            class="col-5 theme-1 text-uppercase"#}
-{#                            style="background-color: {{ event.themeBackColor }};color: {{ event.themeTextColor }};"#}
-
-{#                    >#}
-{#                        {{ event.category.title }}#}
-{#                    </div>#}
-{#                    <div class="col-7 theme-2  justify-content-start" style="background-color: {{ event.styleBackColor }};color: {{ event.styleTextColor }};"#}
-{#                    >#}
-{#                        <img class="card-ticketing" src="{{ asset(('build/maquette/images/MINI_BILLETTERIE.svg')) }}">{{ event.style }}#}
-{#                    </div>#}
-{#                </div>#}
-
-{#                <div class="card-container lh-1">#}
-{#                    <div class="py-3">#}
-{#                        <!-- ARTISTES -->#}
-{#                        <div class="fs-2 text-uppercase fw-bold">{{ event.title }}</div>#}
-{#                        <div class="fs-4 text-uppercase">{{ event.subtitle }}</div>#}
-{#                    </div>#}
-{#                    <!-- DATE CONCERT ET HEURE -->#}
-{#                    <div class="row pt-4">#}
-{#                        <div class="col-9 lh-1">#}
-{#                            <div class="card-date">{{ formatCustomDate(event.dateEvent) }}</div>#}
-{#                            {% if event.datetimeEvent is not null and event.datetimeEvent is not empty %}#}
-{#                                <div class="card-hour">{{ event.datetimeEvent| date("H:i") }}</div>#}
-{#                            {% endif %}#}
-{#                        </div>#}
-{#                        <div class="col-2 offset-1">#}
-{#                            {% if event.ticketingLink is not empty and event.ticketingLink is not null %}#}
-{#                                <a href="{{ event.ticketingLink }}">#}
-{#                                    <img class="btn-billetterie-card" src="{{ asset(('build/front/images/LIEN_BILLETTERIE.jpg')) }}" alt="...">#}
-{#                                </a>#}
-{#                            {% else %}#}
-{#                                <a href="https://billetterie.lalune.net/">#}
-{#                                    <img class="btn-billetterie-card" src="{{ asset(('build/front/images/LIEN_BILLETTERIE.jpg')) }}" alt="...">#}
-{#                                </a>#}
-{#                            {% endif %}#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-
     <!-- Programmation à venir -->
     <div class="wrapper">
         <div class="container-fluid">
@@ -144,7 +95,7 @@
             <div class="row">
                 {% set temoin = 0 %}
                 {% for event in events_agenda %}
-                    {% if event.dateEvent >  date_yesterday %}
+                    {% if getDatetimeEvent(event.dateEvent, event.datetimeEvent) >  current_date %}
                         {% set temoin = temoin + 1 %}
                         {% if temoin < 5 %}
                         {% set media = event.getMedia(1) %}
@@ -200,7 +151,7 @@
                     <div class=" pb-5 text-center">
                         <div class=" pb-3">
                             <a rel="nofollow" href="http://www.lalune.net/concert-amiens/bruits-de-lune/">
-                                <img class="img-fluid" src="{{ asset(getSiteImagePath('bruits-de-lune.png')) }}">
+                                <img class="img-fluid" style="max-width: 313px" src="{{ asset(getSiteImagePath('bruits-de-lune.png')) }}">
                             </a>
                         </div>
                         <div class="py-3">
@@ -217,7 +168,7 @@
                         <div class="py-3">
     {#                        <div class="h2"> Playlist</div>#}
                             <a rel="nofollow" href="https://open.spotify.com/user/lalunedespirates">
-                                <img class="img-fluid" src="{{ asset(getSiteImagePath('spotify.png')) }}">
+                                <img class="img-fluid" style="min-width: 313px" src="{{ asset(getSiteImagePath('spotify.png')) }}">
                             </a>
     {#                        <div class="fs-5">#}
     {#                            <b>Abonnez-vous</b> à notre playlist#}

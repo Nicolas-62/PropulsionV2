@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Contact;
 use App\Entity\Property;
+use App\Repository\ConfigRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -16,6 +17,11 @@ use Symfony\Component\Validator\Constraints\Length;
 
 class ContactType extends AbstractType
 {
+    public function __construct(
+        private ConfigRepository $configRepository,
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -33,7 +39,7 @@ class ContactType extends AbstractType
                 'label' => 'Message',
             ])
             ->add('getNewsletter', CheckboxType::class, [
-                'label'    => 'Je souhaite recevoir la newsletter de La Lune',
+                'label'    => 'Je souhaite recevoir la newsletter La Lune',
                 'required' => false,
             ]);
         ;
@@ -55,10 +61,12 @@ class ContactType extends AbstractType
      */
     private function getChoices(): array
     {
-        $choices = Contact::getSubjects();
+        $config = $this->configRepository->getConfig();
         $output = [];
-        foreach($choices as $value => $choice){
-            $output[$choice] = $choice;
+        foreach(Contact::SUBJECTS as $index => $subject){
+            //$output[$index] = $config->{'getEmail'.ucfirst($subject['variable']).'Object'}();
+            $output[$config->{'getEmail'.ucfirst($subject['variable']).'Object'}()] = $index;
+
         }
         return $output;
     }

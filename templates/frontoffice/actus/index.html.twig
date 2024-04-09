@@ -2,34 +2,6 @@
 {% block body %}
     <div class="wrapper">
         {% include 'frontoffice/_components/title.html.twig' with {'events': categories_actu, 'filter': true, 'historic': false, 'title': null, linkToSorted: false, logo :  null } %}
-    {#    <div class="px-lg-5 container-fluid">#}
-    {#        <div class="row">#}
-    {#            <div class="px-lg-5  px-md-5 pt-5 row">#}
-    {#                <!-- Titre de la catégorie Actu -->#}
-    {#                <div class="px-md-2 px-lg-0 col-lg-2 col-md-6 col-sm-6 fs-1 blue-title text-center text-lg-start mb-3 mb-lg-0" style="padding-bottom: 10px; padding-left: 30px !important">{{ page_title | upper }}</div>#}
-    {#                <div class="custom-select col-lg-3 col-md-6 col-sm-6 d-flex align-items-end " style="bottom: 17px">#}
-    {#                    <div class="dropdown mx-auto">#}
-    {#                        <!-- Dropdown button / Sélecteur -->#}
-    {#                        <button class="text-center btn btn-secondary dropdown-toggle dropdown-toggle-select text-uppercase dropdown-select-button dropdown-select" type="button" data-bs-toggle="dropdown" aria-expanded="false">#}
-    {#                            Tous les évènements#}
-    {#                        </button>#}
-    {#                        <!-- Options du dropdown -->#}
-    {#                        <ul class="dropdown-menu">#}
-    {#                            <li class="dropdown-select-item-li dropdown-select-item text-uppercase w-100 fs-5">Tous les évènements</li>#}
-    {#                            {% for categorie_actu in categories_actu %}#}
-    {#                                <li#}
-    {#                                        class="dropdown-select-item-li dropdown-select-item w-100 fs-5"#}
-    {#                                        data-id="{{ categorie_actu.id }}"#}
-    {#                                >#}
-    {#                                    {{ categorie_actu.title | upper }}#}
-    {#                                </li>#}
-    {#                            {% endfor %}#}
-    {#                        </ul>#}
-    {#                    </div>#}
-    {#                </div>#}
-    {#            </div>#}
-    {#        </div>#}
-    {#    </div>#}
         <div class="container-fluid">
             <div class="row">
 

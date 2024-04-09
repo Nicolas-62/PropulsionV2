@@ -65,7 +65,7 @@ class InfosPratiquesController extends LuneController
         if ($entry !== null) {
             // Utilisez la valeur récupérée si elle existe
             if($entry == "entry0"){
-                $this->data['active_entry'] = '$entry5';
+                $this->data['active_entry'] = 'entry5';
             }else{
                 $this->data['active_entry'] = $entry;
             }
@@ -85,17 +85,13 @@ class InfosPratiquesController extends LuneController
         $form->handleRequest($request);
         // Récupération des données du formulaire de contact.
         if($form->isSubmitted()) {
+
             if ($form->isValid()) {
-                // Récupération du destinataire en fonction du seujet choisi.
-                $destinataire_emails = Contact::getEmailBySubjectLabel($contact->getSubject());
-                if($destinataire_emails){
-                    $contact->setEmail($destinataire_emails);
-                    // Envoi du mail
-                    $notification->notify($contact);
-                    $this->addFlash('success', 'Votre email a bien été envoyé');
-                }else{
-                    $this->addFlash('error', "Impossible de récupérer l'adresse du destinataire");
-                }
+
+                // Envoi du mail
+                $notification->notify($contact);
+                $this->addFlash('success', 'Votre email a bien été envoyé');
+
             }else{
                 $this->addFlash('error', 'Formulaire non valide');
             }
