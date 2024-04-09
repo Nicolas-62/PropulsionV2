@@ -63,14 +63,14 @@ class EntityListener implements EventSubscriberInterface
         // Récupération de l'entité.
         $entity = $event->getEntityInstance();
         // Si l'entité est une catégorie ou un article.
-        if ($entity instanceof Article) {
+        if ($entity instanceof Article or $entity instanceof Category ) {
             // Création du slug
             $slugger = new Slugify();
             $entity->setSlug($slugger->slugify($entity->getTitle()));
             // Vérification de l'unicité du slug
             $slug = $entity->getSlug();
             // On récupère les articles qui possèdent le même slug avec un numéro à la fin.
-            $article = $this->entityManager->getRepository(Article::class)->getArticleWithSameSlug($entity);
+            $article = $this->entityManager->getRepository(Article::class)->getElementWithSameSlug($entity);
             // Si un article possède déjà ce slug.
             if($article != null){
                 // On tente d'ajouter un numéro à la fin du slug.
@@ -78,7 +78,7 @@ class EntityListener implements EventSubscriberInterface
                     // On ajoute un caractère à la fin du slug.
                     $entity->setSlug($slug.'-'.$number);
                     // On récupère l'article qui possède le même slug.
-                    $article = $this->entityManager->getRepository(Article::class)->getArticleWithSameSlug($entity);
+                    $article = $this->entityManager->getRepository(Article::class)->getElementWithSameSlug($entity);
                     // Si aucun article ne possède ce slug.
                     if($article == null){
                         // On sort de la boucle.

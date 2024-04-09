@@ -152,30 +152,6 @@ class ArticleRepository extends CMSRepository
         return $this->registry->getRepository(MediaLink::class)->findOneByEntity($entity, $mediaspec)?->getMedia();
     }
 
-
-    /**
-     * Récupère l'article ayant le même slug et le même parent ou la même catégorie
-     *
-     * @param Article $entity
-     * @return Article|null
-     * @throws NonUniqueResultException
-     */
-    public function getArticleWithSameSlug(Article $entity): Article|null
-    {
-        // On récupère l'article ayant le même parent et le même slug
-        $query = $this->createQueryBuilder('a')->andWhere('a.slug = :slug');
-
-        if($entity->getId() != null) {
-             $query->andWhere('a.id != :id')->setParameter('id', $entity->getId());
-        }
-        $query->andWhere('a.id != :id')
-            ->setParameter('slug', $entity->getSlug())
-            ->setParameter('id', $entity->getId())
-            ->setMaxResults(1);
-
-        return $query->getQuery()->getOneOrNullResult();
-    }
-
     /**
      * Modifie l'ordre d'un article
      * @param Article $entity

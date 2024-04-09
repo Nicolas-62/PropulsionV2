@@ -39,7 +39,7 @@ class ContactType extends AbstractType
                 'label' => 'Message',
             ])
             ->add('getNewsletter', CheckboxType::class, [
-                'label'    => 'Je souhaite recevoir la newsletter de La Lune',
+                'label'    => 'Je souhaite recevoir la newsletter La Lune',
                 'required' => false,
             ]);
         ;

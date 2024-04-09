@@ -33,21 +33,6 @@ body {
   max-height: 50px;
 }
 
-.btn-read-card,
-.btn-read-card:hover{
-
-  font-size: 1.25rem;
-  padding: 0.5rem 0.5rem;
-  text-align: center;
-  border: 1px solid #343a40;
-  border-radius: 0;
-  height: 50px;
-  background-color: white;
-  text-decoration: none;
-  color: black;
-
-}
-
 .btn-rate-card,
 .btn-rate:hover{
 
@@ -303,7 +288,7 @@ body {
   color : black;
   background-color: white;
   border-radius: 0;
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 
 .dropdown-select-item-li {
@@ -330,13 +315,24 @@ body {
 
 
 .dropdown-toggle-select {
-  text-align: start;
   min-width: 300px;
-  padding: 0.45rem;
+  padding: 0.5rem;
   &:hover {
     background-color: white;
     color: black;
   }
+}
+
+.btn-read-card,
+.btn-read-card:hover{
+
+  font-size: 1.25rem;
+  padding: 0.5rem;
+  border-radius: 0;
+  background-color: white;
+  text-decoration: none;
+  color: black;
+
 }
 
 /* Image */
@@ -627,6 +623,8 @@ body {
   height: 30px; /* Assure une hauteur définie */
 }
 
+
+/* Pages infos pratiques et espace presse, gestion du point bleu et de la flêche */
 .menu-header-item.active::before {
   content: "";
   position: absolute;
@@ -637,4 +635,44 @@ body {
   border-radius: 50%;
   background-color: #09b2FF;
   transform: translate(0, -50%);
+}
+
+#page-link-container {
+  position: relative;
+}
+
+.menu-container {
+  position: relative; /* Assurez-vous que cette div intermédiaire a une position relative */
+}
+
+.menu-item {
+  position: relative;
+}
+
+@media (min-width: 992px) {
+  .triangle3.active {
+    position: absolute;
+    margin: auto;
+    top: -35px;
+    right: -65px;
+    width: 40px;
+    height: 40px;
+    transform: rotate(-45deg);
+    border-right: 20px solid #FFF;
+    border-bottom: 20px solid #FFF;
+  }
+  #page-link-container {
+    border: 3px;border-style: dotted; border-bottom: 0; border-top: 0; border-left:0;
+  }
+  .triangle2.active {
+    position: absolute;
+    margin: auto;
+    top: -35px;
+    right: -69px;
+    width: 40px;
+    height: 40px;
+    transform: rotate(-45deg);
+    border-right: 3px dotted #000;
+    border-bottom: 3px dotted #000;
+  }
 }

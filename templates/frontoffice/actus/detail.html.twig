@@ -199,33 +199,5 @@
                         </div>
                     </div>
         </div>
-        <!-- Voir aussi -->
-    {#    <div class="bg-grey container-fluid">#}
-    {#        <div class="p-lg-5 ">#}
-    {#            <h1>Voir aussi >> >> >></h1>#}
-    {#            <div class="row p-2 ">#}
-    {#                {% set test = 0 %}#}
-    {#                {% for actu in actu_childs %}#}
-    {#                    <!-- Récupération des datas de l'article -->#}
-    {#                    {% do actu.getDatas(locale) %}#}
-    {#                    {% set media = actu.getMedia(2) %}#}
-    {#                    {% if actu.titleByLanguage|upper != article.titleByLanguage|upper %}#}
-    {#                        {% set themesChild = actu.category.title %}#}
-    {#                            {% if actu.category.title == themeArticle %}#}
-    {#                                {% set test = test + 1 %}#}
-    {#                                <div class="col-lg-4 col-md-12 py-2">#}
-    {#                                    <!-- Card-Actu -->#}
-    {#                                    {% include 'frontoffice/_components/card.html.twig' with {'event': actu, 'agenda': false, 'showButton': true, 'actu': true, 'billetterie': false, 'soutiens': false, 'actions' : false } %}#}
-    {#                                </div>#}
-    {#                            {% endif %}#}
-    {#                    {% endif %}#}
-    {#                {% endfor %}#}
-    {#                {% if test == 0 %}#}
-    {#                    <div class="h2">Pas d'autres articles dans ce thème</div>#}
-    {#                {% endif %}#}
-    {#            </div>#}
-    {#        </div>#}
-    {#    </div>#}
-
     </div>
 {% endblock %}

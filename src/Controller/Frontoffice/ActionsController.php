@@ -58,21 +58,16 @@ class ActionsController extends LuneController
         return parent::lister();
     }
 
-    #[Route('{title}', name: 'detail')]
-    public function test($title): Response
+    #[Route('{slug}', name: 'detail')]
+    public function getChild(?Category $category): Response
     {
-
-
-        // Récupération des sous-catégories de la catégorie actions
-        $cat = $this->entityManager->getRepository(Category::class)->findOneBy(['title' => $title]);
-
         // Récupération des articles de la catégorie Actions PVE
-        $articles = $this->entityManager->getRepository(Category::class)->getArticles([$cat->getId()], $this->getParameter('locale'), true, 'dateEvent', 'DESC');
+        $articles = $this->entityManager->getRepository(Category::class)->getArticles([$category->getId()], $this->getParameter('locale'), true, 'dateEvent', 'DESC');
 
 
         // Envois à la vue
         $this->data['articles']    = $articles;
-        $this->data['cat']                  = $cat;
+        $this->data['cat']         = $category;
 
         $this->data['page_title']       = 'Projets Culturels';
 

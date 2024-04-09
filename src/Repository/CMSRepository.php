@@ -9,6 +9,7 @@ use App\Entity\Seo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -209,6 +210,29 @@ Abstract class CMSRepository extends ServiceEntityRepository
             }
         }
         return $seo;
+    }
+
+    /**
+     * Récupère l'article ayant le même slug et le même parent ou la même catégorie
+     *
+     * @param Article|Category $entity
+     * @return Article|null
+     * @throws NonUniqueResultException
+     */
+    public function getElementWithSameSlug(Article|Category $entity): Article|Category|null
+    {
+        // On récupère l'article ayant le même parent et le même slug
+        $query = $this->createQueryBuilder($this->model_alias)->andWhere("$this->model_alias.slug = :slug");
+
+        if($entity->getId() != null) {
+            $query->andWhere("$this->model_alias.id != :id")->setParameter('id', $entity->getId());
+        }
+        $query->andWhere("$this->model_alias.id != :id")
+            ->setParameter('slug', $entity->getSlug())
+            ->setParameter('id', $entity->getId())
+            ->setMaxResults(1);
+
+        return $query->getQuery()->getOneOrNullResult();
     }
 
 }

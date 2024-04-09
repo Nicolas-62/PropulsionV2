@@ -27,6 +27,17 @@ class HomeController extends LuneController
 
     }
 
+    #[Route('rdd', name: 'rdd')]
+    public function rdd(){
+        $categories = $this->entityManager->getRepository(Category::class)->findAll();
+        foreach($categories as $category){
+            $category->setSlug($category->getSlug());
+            $this->entityManager->getRepository(Category::class)->save($category, true);
+            dump($category->getSlug());
+        }
+        exit('end');
+    }
+
     #[Route('home', name: 'index')]
     public function index(): Response
     {

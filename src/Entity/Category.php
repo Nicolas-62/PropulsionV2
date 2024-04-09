@@ -141,6 +141,9 @@ class Category
     #[ORM\Column]
     private ?bool $internal = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug = null;
+
     /**
      * @return Collection<int, Article>
      */
@@ -856,6 +859,13 @@ class Category
     public function setHasOrdre(?bool $hasOrdre): void
     {
         $this->hasOrdre = $hasOrdre;
+    }
+
+    public function setSlug(?string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 
 

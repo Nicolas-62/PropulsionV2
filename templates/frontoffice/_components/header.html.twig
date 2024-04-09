@@ -115,9 +115,9 @@
                                             {% endif %}
                                             {% for sous_categories in category_header.children %}
                                                 {% if category_header.id == 6 %}
-                                                    <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path(url ~ sous_categories.url) }}#{{ sous_categories.title }}">{{ sous_categories.title|upper }}</a></li>
+                                                    <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path(url ~ sous_categories.url) }}#{{ sous_categories.slug }}">{{ sous_categories.title|upper }}</a></li>
                                                 {% elseif category_header.id == 53 %}
-                                                    <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path(url ~ sous_categories.url) }}{{ sous_categories.title }}">{{ sous_categories.title|upper }}</a></li>
+                                                    <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path(url ~ sous_categories.url) }}{{ sous_categories.slug }}">{{ sous_categories.title|upper }}</a></li>
                                                 {% elseif category_header.id == 39 %}
                                                     {% if loop.index !=1 %}
                                                         <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" {% if loop.index0 != 0 %} href="{{ path('fo_infos_contact', {'entry': 'entry' ~ loop.index0 }) }}"{% else %} href="{{ path('fo_infos_contact', {'entry': 'entry5' }) }}"{% endif %}>{{ sous_categories.title|upper }}</a></li>
