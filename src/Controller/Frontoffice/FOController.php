@@ -15,6 +15,7 @@ use App\Entity\Online;
 use App\Entity\OpenGraph;
 use App\Entity\Seo;
 use App\Form\ContactType;
+use App\Library\Imagique;
 use App\Notification\BoNotification;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -96,7 +97,7 @@ class FOController extends AbstractController
         // A SURCHARGER
     }
 
-    public function buildOpenGraph(Article|Category $entity = null,$link){
+    public function buildOpenGraph(Article|Category $entity = null){
 
         // On récupère l'url du site depuis le service request
         $siteUrl = $this->container->get('request_stack')->getCurrentRequest()->getHost();
@@ -109,21 +110,18 @@ class FOController extends AbstractController
         $openGraph->setSiteName($this->getParameter('app.site'));
         // Locale
         $openGraph->setLocale($this->getParameter('locale'));
+        $openGraph->setType('website');
 
         // Si on a une entité
         if($entity !=null) {
             // Récupération de notre SEO selon la langue
-
             $seo = $entity->getSeo($this->getParameter('locale'));
-
             // Titre
             if ($entity->getTitle() != null || trim($entity->getTitle()) != '') {
                 $openGraph->setTitle($entity->getTitle());
             }
             // Description
-
             if ($seo != null){
-
                 if ($seo->getDescription() != null || trim($seo->getDescription()) != '') {
                     $openGraph->setDescription($seo->getDescription());
                 }
@@ -136,14 +134,17 @@ class FOController extends AbstractController
             // Si une image est définie
             if ($media != null) {
                 // Ajout url de l'image
-                $openGraph->setImage('https://' . $siteUrl  . $this->getParameter('app.dyn_img_path') . $media->getMedia());
+                $media_path = 'https://' . $siteUrl  . '/' . $this->getParameter('app.dyn_img_path') . $media->getMedia();
+                dump($media_path);
+                $openGraph->setImage($media_path);
                 // Récupératin du média link pour récupérer la médiaspec
                 $medialink = $this->entityManager->getRepository(MediaLink::class)->findOneBy(['media' => $media->getId()]);
                 $mediaspec = $medialink->getMediaspec();
                 $openGraph->setImageWidth($mediaspec->getWidth());
-
                 // Image height
                 $openGraph->setImageHeight($mediaspec->getHeight());
+                $imagique = new Imagique($media_path);
+                $openGraph->setImageType($imagique->getImageMimeType());
             }else {
                 $openGraph->setImage('https://' . $siteUrl . $this->getParameter('app.static_img_path') . 'PLACEHOLDER_OPENGRAPH.png');
 
@@ -156,12 +157,15 @@ class FOController extends AbstractController
             $openGraph->setTitle($defaultSeo->getTitle());
             // Description
             $openGraph->setDescription($defaultSeo->getDescription());
+            $media_path = 'https://' . $siteUrl . '/' . $this->getParameter('app.static_img_path') . 'PLACEHOLDER_OPENGRAPH.png';
             // Image (url image)
-            $openGraph->setImage('https://' . $siteUrl . $this->getParameter('app.static_img_path') . 'PLACEHOLDER_OPENGRAPH.png');
+            $openGraph->setImage($media_path);
             // Image width
             $openGraph->setImageWidth(347);
             // Image height
             $openGraph->setImageHeight(261);
+            $imagique = new Imagique($media_path);
+            $openGraph->setImageType($imagique->getImageMimeType());
             // Type
             $openGraph->setType('article');
         }
@@ -223,7 +227,7 @@ class FOController extends AbstractController
             }
         }
         $link = $this->getParameter('app.fo_path'). $this->list_partial;
-        $this->data['openGraph'] = $this->buildOpenGraph($category ?? null,$link);
+        $this->data['openGraph'] = $this->buildOpenGraph($category ?? null);
 
         // Pas utilisé pour l'instant
         // Récupération des enfants des catégories concernées.

@@ -5,10 +5,6 @@ body {
   width: 100%;
 }
 
-.menu-item {
-  cursor: pointer;
-}
-
 .hidden {
   display: none;
 }
@@ -647,32 +643,108 @@ body {
 
 .menu-item {
   position: relative;
+  cursor: pointer;
 }
 
 @media (min-width: 992px) {
-  .triangle3.active {
-    position: absolute;
-    margin: auto;
-    top: -35px;
-    right: -65px;
-    width: 40px;
-    height: 40px;
-    transform: rotate(-45deg);
-    border-right: 20px solid #FFF;
-    border-bottom: 20px solid #FFF;
-  }
   #page-link-container {
     border: 3px;border-style: dotted; border-bottom: 0; border-top: 0; border-left:0;
   }
-  .triangle2.active {
-    position: absolute;
-    margin: auto;
-    top: -35px;
-    right: -69px;
-    width: 40px;
-    height: 40px;
-    transform: rotate(-45deg);
-    border-right: 3px dotted #000;
-    border-bottom: 3px dotted #000;
+  .wrapper.infos {
+    .triangle2.active {
+      position: absolute;
+      margin: auto;
+      top: -35px;
+      right: -69px;
+      width: 40px;
+      height: 40px;
+      transform: rotate(-45deg);
+      border-right: 3px dotted #000;
+      border-bottom: 3px dotted #000;
+    }
+    .triangle3.active {
+      position: absolute;
+      margin: auto;
+      top: -35px;
+      right: -65px;
+      width: 40px;
+      height: 40px;
+      transform: rotate(-45deg);
+      border-right: 20px solid #FFF;
+      border-bottom: 20px solid #FFF;
+    }
   }
+  .wrapper.mentions{
+    .triangle2.active {
+      position: absolute;
+      margin: auto;
+      top: -35px;
+      right: -112px;
+      width: 40px;
+      height: 40px;
+      transform: rotate(-45deg);
+      border-right: 3px dotted #000;
+      border-bottom: 3px dotted #000;
+    }
+    .triangle3.active {
+      position: absolute;
+      margin: auto;
+      top: -35px;
+      right: -108px;
+      width: 40px;
+      height: 40px;
+      transform: rotate(-45deg);
+      border-right: 20px solid #FFF;
+      border-bottom: 20px solid #FFF;
+    }
+  }
+  .wrapper.confidentialites {
+    .triangle2.active {
+      position: absolute;
+      margin: auto;
+      top: -35px;
+      right: -130px;
+      width: 40px;
+      height: 40px;
+      transform: rotate(-45deg);
+      border-right: 3px dotted #000;
+      border-bottom: 3px dotted #000;
+    }
+    .triangle3.active {
+      position: absolute;
+      margin: auto;
+      top: -35px;
+      right: -125px;
+      width: 40px;
+      height: 40px;
+      transform: rotate(-45deg);
+      border-right: 20px solid #FFF;
+      border-bottom: 20px solid #FFF;
+    }
+  }
+  .wrapper.espacepresse {
+    .triangle2.active {
+      position: absolute;
+      margin: auto;
+      top: -35px;
+      right: -72px;
+      width: 40px;
+      height: 40px;
+      transform: rotate(-45deg);
+      border-right: 3px dotted #000;
+      border-bottom: 3px dotted #000;
+    }
+    .triangle3.active {
+      position: absolute;
+      margin: auto;
+      top: -35px;
+      right: -67px;
+      width: 40px;
+      height: 40px;
+      transform: rotate(-45deg);
+      border-right: 20px solid #FFF;
+      border-bottom: 20px solid #FFF;
+    }
+  }
+
 }

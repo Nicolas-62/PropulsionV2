@@ -1,4 +1,6 @@
 function showContent(entry) {
+    console.log('show content infoss')
+
     // Cacher tous les contenus
     let contentDivs = document.getElementsByClassName('content')[0].children;
     for (let i = 0; i < contentDivs.length; i++) {

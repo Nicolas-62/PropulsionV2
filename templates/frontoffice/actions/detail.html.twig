@@ -23,9 +23,8 @@
                     <!-- Média -->
                     {% set media = article.getMedia(31) %}
                     {% if media %}
-                        {% set url = '/assets/images/' ~ media.media  %}
                         <div class="mb-5 col">
-                            <img src="{{ asset((url)) }}" alt="{{ media.legend }}" class="img-fluid w-100">
+                            <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':media.media} ) }}" alt="{{ media.legend }}" class="img-fluid w-100">
                         </div>
                     {% endif %}
 
@@ -65,23 +64,20 @@
                     <div class="row text-center">
                         {% set media = article.getMedia(28) %}
                         {% if media %}
-                            {% set url = '/assets/images/' ~ media.media  %}
                             <div class="mb-5 col-md-12 col-lg-4">
-                                <img src="{{ asset((url)) }}" alt="{{ media.legend }}" class="img-fluid">
+                                <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':media.media} ) }}" alt="{{ media.legend }}" class="img-fluid">
                             </div>
                         {% endif %}
                         {% set media1 = article.getMedia(29) %}
                         {% if media1 %}
-                            {% set url1 = '/assets/images/' ~ media1.media  %}
                             <div class="mb-5 col-md-12 col-lg-4">
-                                <img src="{{ asset((url1)) }}" alt="{{ media.legend }}" class="img-fluid">
+                                <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':media1.media} ) }}" alt="{{ media1.legend }}" class="img-fluid">
                             </div>
                         {% endif %}
                         {% set media2 = article.getMedia(30) %}
                         {% if media2 %}
-                            {% set url2 = '/assets/images/' ~ media2.media  %}
                             <div class="mb-5 col-md-12 col-lg-4">
-                                <img src="{{ asset((url2)) }}" alt="{{ media.legend }}" class="img-fluid">
+                                <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':media2.media} ) }}" alt="{{ media2.legend }}" class="img-fluid">
                             </div>
                         {% endif %}
                     </div>

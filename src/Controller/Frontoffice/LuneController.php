@@ -46,7 +46,12 @@ class LuneController extends FOController
         // Récupération des infos du footer.
         $this->buildFooter();
 
-
+        $contact_entries = $this->entityManager->getRepository(Category::class)->findBy(
+            ['category_id' => 39],
+            ['ordre' => 'ASC']
+        );
+        $this->data['contact_entries'] = $contact_entries;
+        $this->data['active_entry']    = $contact_entries[0];
     }
 
     public function buildHeader(){
@@ -109,9 +114,8 @@ class LuneController extends FOController
 
 
     #[Route('/espacepresse', name: 'espacepresse')]
-    public function Espacepresse(): Response
+    public function espacepresse(): Response
     {
-
 
         $all_articles = $this->entityManager->getRepository(Article::class)->findBy(['category'=>48]);
         $articles = array();
@@ -122,10 +126,10 @@ class LuneController extends FOController
                 $articles[] = $article;
             }
         }
+        $this->data['active_entry'] = $articles[0];
+
         // Envois des articles à la vue
         $this->data['articles'] = $articles;
-        $this->data['active_entry'] = 'entry1';
-
         // Vue renvoyée.
         return $this->render('frontoffice/institutionnel/espacepresse.html.twig', $this->data);
     }
@@ -152,7 +156,8 @@ class LuneController extends FOController
             }
         }
         $this->data['articles'] = $articles;
-        $this->data['active_entry'] = 'entry1';
+
+        $this->data['active_entry'] = $articles[0];
 
 
         // Vue renvoyée.
@@ -203,9 +208,9 @@ class LuneController extends FOController
                 $articles[] = $article;
             }
         }
+        $this->data['active_entry'] = $articles[0];
 
         $this->data['articles']          = $articles;
-        $this->data['active_entry']        = 'entry1';
 
         return $this->render('frontoffice/institutionnel/confidentialite.html.twig', $this->data);
     }

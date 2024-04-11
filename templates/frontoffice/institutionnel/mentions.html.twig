@@ -1,24 +1,23 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
 {% block body %}
-    <div class="wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div  id="page-link-container" class="col-lg-3 col-md-12 p-5 menu text-md-center text-sm-center">
+    <div class="wrapper mentions">
+        <div class="container-fluid p-lg-3">
+            <div class="row gx-0">
+                <div  id="page-link-container" class="col-lg-3 col-md-12 p-5 menu text-md-center text-sm-center position-relative">
                     <div class="row">
                         <div class="col-lg-10 col-md-12 pt-lg-5">
                             {% for article in articles %}
-                                <div class="text-center text-lg-start h3 py-3 menu-item {% if active_entry == 'entry' ~ loop.index %}active{% endif %}" data-entry="entry{{ loop.index }}">
+                                <div class="text-center text-lg-start h3 py-3 menu-item {% if active_entry.id == article.id %}active{% endif %}" data-entry="entry{{ article.id }}">
                                     {{ article.title | upper}}
+                                    <div class="w-100 position-relative">
+                                        <div class="triangle2 {% if active_entry.id == article.id %}active{% endif %}" data-entry="entry{{ article.id }}"></div>
+                                        <div class="triangle3 {% if active_entry.id == article.id %}active{% endif %}" data-entry="entry{{ article.id }}"></div>
+                                    </div>
                                 </div>
-                                <div id="blue-dot{{ loop.index0 }}" class="blue-dot"></div>
                             {% endfor %}
-                        </div>
-                        <div class="col-2 d-sm-none d-md-none d-lg-block">
-                            <img src="{{ asset(getSiteImagePath('SOUTIENS_MENU.png')) }}" class="d-none d-lg-block">
                         </div>
                     </div>
                 </div>
-
                 <div class="d-lg-none">
 
                     <hr>

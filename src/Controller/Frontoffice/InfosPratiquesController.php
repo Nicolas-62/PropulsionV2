@@ -30,7 +30,6 @@ class InfosPratiquesController extends LuneController
         parent::__construct($entityManager, $params);
         // Vue liste
         $this->list_partial     =       'infos_pratiques/index.html.twig';
-
     }
 
     #[Route('', name: 'index')]
@@ -40,8 +39,8 @@ class InfosPratiquesController extends LuneController
     }
 
 
-    #[Route('contact', name: 'contact')]
-    public function contact(Request $request, ContactNotification $notification): Response
+    #[Route('contact/{entrySlug}/{subjectId}', name: 'contact')]
+    public function contact(Request $request, ContactNotification $notification, string $entrySlug = 'comment-venir', int $subjectId = 0): Response
     {
         $this->data['page_title']                              = $this->entityManager->getRepository(Category::class)->find(39)->getTitle();
         $this->data['cat_contact']                             = $this->entityManager->getRepository(Category::class)->find(40);
@@ -59,23 +58,16 @@ class InfosPratiquesController extends LuneController
         $this->data['cat_qui_sommes']                          = $this->entityManager->getRepository(Category::class)->find(49);
         $this->data['articles_qui_sommes']                     = array_reverse(($this->entityManager->getRepository(Category::class)->getArticles(array(49), $this->getParameter('locale'),1)->toArray()));
 
+        $entry = $this->entityManager->getRepository(Category::class)->findOneBy(['category_id' => 39, 'slug' => $entrySlug]);
+        $this->data['active_entry'] = $entry;
+        // Sujet sélectionné pour le formulaire de contact
+        $this->data['active_subject'] = Contact::SUBJECTS[$subjectId];
 
-        $entry = $request->query->get('entry');
-        // Vérifiez si 'entry' existe
-        if ($entry !== null) {
-            // Utilisez la valeur récupérée si elle existe
-            if($entry == "entry0"){
-                $this->data['active_entry'] = 'entry5';
-            }else{
-                $this->data['active_entry'] = $entry;
-            }
-        } else {
-            $this->data['active_entry'] = 'entry1';
-        }
-
-//        $this->data['sous_categories_infos']            = $this->entityManager->getRepository(Category::class)->findBy(['parent' => 39]);
         // Envois des catégories dans le sens d'apparition
-        $this->data['sous_categories_infos']            = [$this->entityManager->getRepository(Category::class)->find(41),$this->entityManager->getRepository(Category::class)->find(42),$this->entityManager->getRepository(Category::class)->find(43),$this->entityManager->getRepository(Category::class)->find(49),$this->entityManager->getRepository(Category::class)->find(40)];
+        $this->data['sous_categories_infos']    =    $this->entityManager->getRepository(Category::class)->findBy(
+            ['category_id' => 39],
+            ['ordre' => 'ASC']
+        );
         // CONSTANTES GENERALES
         $this->data['locale']                           = $this->getParameter('locale');
 

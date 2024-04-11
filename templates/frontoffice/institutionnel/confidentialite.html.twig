@@ -1,31 +1,29 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
 {% block body %}
-
-    <div class="px-4 p-lg-5">
-        <div class="row">
+<div class="wrapper confidentialites">
+    <div class="container-fluid p-lg-3">
+        <div class="row gx-0">
             <div id="page-link-container" class="col-lg-4 col-md-12 p-5 menu text-md-center text-sm-center">
                 <div class="row">
                     <div class="col-lg-10 col-md-12 pt-lg-5">
                         {% for article in articles %}
-                            <div class="text-center text-lg-start h3 py-3 menu-item {% if active_entry == 'entry' ~ loop.index %}active{% endif %}" data-entry="entry{{ loop.index }}">
+                            <div class="text-center text-lg-start h3 py-3 menu-item {% if active_entry.id == article.id %}active{% endif %}" data-entry="entry{{ article.id }}">
                                 {{ article.title | upper}}
                             </div>
-                            <div id="blue-dot{{ loop.index0 }}" class="blue-dot"></div>
+                            <div class="w-100 position-relative">
+                                <div class="triangle2 {% if active_entry.id == article.id %}active{% endif %}" data-entry="entry{{ article.id }}"></div>
+                                <div class="triangle3 {% if active_entry.id == article.id %}active{% endif %}" data-entry="entry{{ article.id }}"></div>
+                            </div>
                         {% endfor %}
-                    </div>
-                    <div class="col-2 d-none d-lg-block">
-                        <img src="{{ asset(getSiteImagePath('SOUTIENS_MENU.png')) }}" class="">
                     </div>
                 </div>
             </div>
             <div class="d-lg-none">
                 <hr>
             </div>
-
-
             <div id="page-container"  class="col-lg-8 col-md-12">
                 {% for article in articles %}
-                    <div id="entry{{ loop.index }}" class="py-5 px-lg-5 {% if loop.index > 1 %}hidden{% endif %}" >
+                    <div id="entry{{  article.id }}" class="py-5 px-lg-5 {% if loop.index > 1 %}hidden{% endif %}" >
                         <div class="row">
                             <div class="col-12 text-center pb-5">
                                 {% do article.getDatas(locale) %}
@@ -72,6 +70,7 @@
             </div>
         </div>
     </div>
+</div>
 
 
 

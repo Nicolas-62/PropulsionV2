@@ -1,17 +1,10 @@
-
+<meta property="og:locale" content="fr_FR">
 {% if openGraph.title is defined %}
     {% if openGraph.title is not null and openGraph.title is not empty %}
         <meta property="og:title" content="{{ openGraph.title }}">
         <meta name="twitter:title" content="{{ openGraph.title }}">
-
     {% endif %}
 {% endif %}
-
-{#{% if openGraph.locale is defined %}#}
-{#    {% if openGraph.locale is not null and openGraph.locale is not empty %}#}
-{#        <meta property="og:locale" content="{{ openGraph.locale }}">#}
-{#    {% endif %}#}
-{#{% endif %}#}
 
 <meta property="og:url" content="{{ app.request.uri }}">
 <meta property="twitter:url" content="{{ app.request.uri }}">
@@ -37,6 +30,11 @@
 {% if openGraph.imageHeight is defined %}
     {% if openGraph.imageHeight is not null and openGraph.imageHeight is not empty %}
         <meta property="og:image:height" content="{{ openGraph.imageHeight }}">
+    {% endif %}
+{% endif %}
+{% if openGraph.imageType is defined %}
+    {% if openGraph.imageType is not null and openGraph.imageType is not empty %}
+        <meta property="og:image:type" content="{{ openGraph.imageType }}">
     {% endif %}
 {% endif %}
 
