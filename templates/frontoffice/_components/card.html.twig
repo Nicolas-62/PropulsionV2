@@ -2,13 +2,13 @@
     <div class="prog">
         <!-- Image -->
         {% if agenda %}
-            <a class="text-decoration-none stretched-link" href="{{ path('fo_agenda_detail', { 'slug': event.slug,}) }}">
+            <a class="text-decoration-none stretched-link" href="{{ path('fo_agenda_detail', { 'slug': event.slug}) }}">
         {% elseif soutiens %}
-            <a class="text-decoration-none stretched-link" href="{{ path('fo_soutiens_detail', { 'slug': event.slug,}) }}">
+            <a class="text-decoration-none stretched-link" href="{{ path('fo_soutiens_detail', { 'slug': event.slug}) }}">
         {% elseif  linkActu %}
-            <a class="text-decoration-none stretched-link" href="{{ path('fo_actus_detail', { 'slug': event.slug,}) }}">
+            <a class="text-decoration-none stretched-link" href="{{ path('fo_actus_detail', { 'slug': event.slug}) }}">
         {% else %}
-            <a class="text-decoration-none stretched-link" href="{{ path('fo_actions_detail', { 'slug': event.slug,}) }}">
+            <a class="text-decoration-none stretched-link" href="{{ path('fo_actions_detail', { 'slug': event.slug}) }}">
         {% endif %}
 
         {% if media is not null %}
@@ -21,8 +21,7 @@
         {% elseif actu %}
             {% set mediaCategoryActu = category_actu.getMedia(23) %}
             {% if mediaCategoryActu is not null %}
-                {% set url = 'assets/images/' ~ mediaCategoryActu.media %}
-                <img src="{{ asset((url)) }}" class="d-block w-100" alt="...">
+                <img src="{{ url('ressources_image', {'width':'medium','height':'medium', 'media':mediaCategoryActu.media} ) }}" class="d-block w-100" alt="...">
             {% endif %}
         {% elseif soutiens %}
 

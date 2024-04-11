@@ -8,13 +8,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Contact {
 
     const SUBJECTS = [
-        0 => ['label' => 'Billetterie', 'variable' => 'billetterie'],
-        1 => ['label' => 'Comptabilité', 'variable' => 'comptabilite'],
-        2 => ['label' => 'Partenariats', 'variable' => 'partenariats'],
-        3 => ['label' => 'Communication', 'variable' => 'communication'],
-        4 => ['label' => 'Projets', 'variable' => 'projets' ],
-        5 => ['label' => 'Programmation', 'variable' => 'programmation'],
-        6 => ['label' => 'Technique', 'variable' => 'technique'],
+        0 => ['index' => 0, 'label' => 'Billetterie', 'variable' => 'billetterie'],
+        1 => ['index' => 1, 'label' => 'Comptabilité', 'variable' => 'comptabilite'],
+        2 => ['index' => 2, 'label' => 'Partenariats', 'variable' => 'partenariats'],
+        3 => ['index' => 3, 'label' => 'Communication', 'variable' => 'communication'],
+        4 => ['index' => 4, 'label' => 'Projets', 'variable' => 'projets' ],
+        5 => ['index' => 5, 'label' => 'Programmation', 'variable' => 'programmation'],
+        6 => ['index' => 6, 'label' => 'Technique', 'variable' => 'technique'],
     ];
 
     /**

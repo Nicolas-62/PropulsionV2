@@ -7,10 +7,10 @@
                 <div class="row">
                     <div class="col-lg-10 col-md-12">
                         {% for categorie in categories %}
-                            <div class="h1 py-3 menu-item {% if active_entry == 'entry' ~ loop.index %}active{% endif %}" data-entry="entry{{ loop.index }}">
+                            <div class="h1 py-3 menu-item {% if active_entry.id == categorie.id %}active{% endif %}" data-entry="{{ categorie.id  }}">
                                 {{ categorie.title | upper}}
                             </div>
-                            <div id="blue-dot{{ loop.index0 }}" class="blue-dot"></div>
+                            <div id="blue-dot{{ categorie.id  }}" class="blue-dot"></div>
                         {% endfor %}
                     </div>
                     <div class="col-2 d-sm-none d-md-none d-lg-block">
@@ -22,7 +22,7 @@
 
             <div class="content col-lg-8 col-md-12">
                 {% for categorie in categories %}
-                    <div id="entry{{ loop.index }}" class="py-5 px-5 {% if loop.index > 1 %}hidden{% endif %}" >
+                    <div id="entry{{ categorie.id  }}" class="py-5 px-5 {% if loop.index > 1 %}hidden{% endif %}" >
                         <div class="row">
                             <div class="col-12 text-center pb-5">
                                 {% do categorie.getDatas(locale) %}

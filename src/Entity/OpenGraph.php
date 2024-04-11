@@ -22,6 +22,8 @@ class OpenGraph
 
     private ?int $imageHeight = null;
 
+    private ?string $imageType = null;
+
 
     public function getSiteName(): ?string
     {
@@ -127,6 +129,15 @@ class OpenGraph
         $this->type = $type;
     }
 
+    public function getImageType(): ?string
+    {
+        return $this->imageType;
+    }
+
+    public function setImageType(?string $imageType): void
+    {
+        $this->imageType = $imageType;
+    }
 
 
 }

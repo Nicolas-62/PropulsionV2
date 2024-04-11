@@ -46,9 +46,10 @@ class ActionsController extends LuneController
         $cat_action = $this->entityManager->getRepository(Category::class)->find($cat_action_id);
         $articles = $this->entityManager->getRepository(Category::class)->getArticles([$cat_action_id], $this->getParameter('locale'), true, 'dateEvent', 'DESC');
 
-
-        $this->data['active_entry']     = 'entry1';
         $this->data['sous_cat_actions'] = $this->entityManager->getRepository(Category::class)->findBy(['category_id' => $cat_action_id]);
+
+        $this->data['active_entry']    = $articles[0];
+
         $this->data['articles']         = $articles;
         $this->data['cat_actu']         = $cat_action;
         $this->data['page_title']       = $cat_action->getTitle();
