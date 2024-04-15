@@ -1,4 +1,4 @@
-<div class="card mb-3 mx-lg-2 shadow-lg rounded-0 h-100" style="max-height: 1100px; display: flex; flex-direction: column;">
+<div class="card mb-3 shadow-lg rounded-0 h-100" style="max-height: 1100px; display: flex; flex-direction: column;">
     <div class="prog">
         <!-- Image -->
         {% if agenda %}
@@ -12,7 +12,9 @@
         {% endif %}
 
         {% if media is not null %}
-            <img src="{{ url('ressources_image', {'width':'medium','height':'medium', 'media':media.media} ) }}" class="card-img-top rounded-0" style="object-fit: cover; max-height: 35vh;" alt="...">
+            <img src="{{ url('ressources_image', {'width':'medium','height':'medium', 'media':media.media} ) }}" class="card-img-top rounded-0"
+                 alt="..."
+            >
         {% elseif agenda %}
             {% set mediaCategoryAgenda = category_agenda.getMedia(22) %}
             {% if mediaCategoryAgenda is not null %}
@@ -80,10 +82,10 @@
     </div>
 
     <!-- CARD CONTENT -->
-    <div class="card-container" style="flex: 1;">
+    <div class="card-body px-4 pb-0">
         <!-- Titre -->
         {% if agenda or actu %}
-        <div class="my-3 fs-4 mb-0 fw-bold" style="line-height: 1">
+        <div class="fs-4 mb-0 fw-bold" style="line-height: 1">
             {% if event.eventName is not empty %}{{ event.eventName }} :{% endif %} {{ event.titleByLanguage | upper }} {{ event.otherArtists | upper }}
         </div>
         {% endif %}
@@ -102,7 +104,7 @@
     </div>
 
     <!-- CARD ACTIONS -->
-    <div class="card-container mb-3 d-flex justify-content-between align-items-center">
+    <div class="card-body px-4 pt-0 d-flex justify-content-between align-items-center">
         {% if agenda %}
             <div class="row">
                 <div class= "fs-5 " style="align-self: flex-end;">

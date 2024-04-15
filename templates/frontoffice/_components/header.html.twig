@@ -63,7 +63,11 @@
                                         </a>
                                     </div>
                                 {% else %}
-                                    <a  href="{{ url('ressources_image', {'width':'src','height':'src', 'media':photo.media}) }}" data-lightbox="image-header-{{ loop.parent.loop.index0 }}"></a>
+                                    <a
+                                        href="{{ url('ressources_image', {'width':'src','height':'src', 'media':photo.media}) }}"
+                                        data-lightbox="image-header-{{ loop.parent.loop.index0 }}"
+                                        data-title="{{ article_datas['article'].title ~ ' - ' ~ article_datas['article'].dateEvent | date("d/m/Y")  }}"
+                                    ></a>
                                 {% endif %}
                             {% endfor %}
                         {% endif %}

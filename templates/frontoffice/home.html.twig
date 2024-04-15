@@ -5,40 +5,35 @@
     <!-- Image Vedette - Carroussel -->
     <div class="container-fluid px-0 mt-5">
         <div class="position-relative">
-            <div id="carousel" class="carousel slide shadow-lg" data-bs-ride="carousel">
+            <div
+                id="carousel"
+                class="carousel slide shadow-lg"
+                data-bs-ride="carousel"
+                data-bs-pause="false"
+            >
 
                 <div class="carousel-indicators">
-
-                    {% set conditionIterator = 0 %}
                     {% for event in events_agenda %}
                         {% if event.star == 1  %}
-                        {% if getDatetimeEvent(event.dateEvent, event.datetimeEvent) >  current_date %}
-
-                            <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{ conditionIterator }}" class="active" aria-label="Slide {{ conditionIterator + 1 }}" aria-current="true"></button>
-                            {% set conditionIterator = conditionIterator + 1 %}
-
-                        {% endif %}
+                            <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{ loop.index0 }}" class="active" aria-label="Slide {{ loop.index }}" aria-current="true"></button>
                         {% endif %}
                     {% endfor %}
                 </div>
                 <div class="carousel-inner">
-                    {% set conditionIterator = 0 %}
                     {% for event in events_agenda %}
-                        <a href="{{ url('fo_agenda_detail',{'slug':event.slug }) }}" class="text-decoration-none">
                         {% if event.star == 1  %}
-                            {% if getDatetimeEvent(event.dateEvent, event.datetimeEvent) >  current_date %}
-                                {% set conditionIterator = conditionIterator + 1 %}
-                                <div class="carousel-item {% if conditionIterator == 1 %} active{% endif %}" data-bs-interval="3000">
-                                    {% set media = event.getMedia(9) %}
-                                    {% if media is not null %}
-                                        <img src="{{ url('ressources_image', {'width':'large','height':'large', 'media':media.media} ) }}" class="d-block w-100" alt="...">
-                                    {% else %}
-                                        {% set mediaCategoryAgenda = category_agenda.getMedia(21) %}
-                                        {% if mediaCategoryAgenda is not null %}
-                                            <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':mediaCategoryAgenda.media} ) }}" class="d-block w-100" alt="...">
+                                <div class="carousel-item {% if loop.index == 1 %} active{% endif %}" data-bs-interval="3000">
+                                    <a href="{{ url('fo_agenda_detail',{'slug':event.slug }) }}" class="text-decoration-none">
+                                        {% set media = event.getMedia(9) %}
+                                        {% if media is not null %}
+                                            <img src="{{ url('ressources_image', {'width':'large','height':'large', 'media':media.media} ) }}" class="d-block w-100" alt="...">
+                                        {% else %}
+                                            {% set mediaCategoryAgenda = category_agenda.getMedia(21) %}
+                                            {% if mediaCategoryAgenda is not null %}
+                                                <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':mediaCategoryAgenda.media} ) }}" class="d-block w-100" alt="...">
+                                            {% endif %}
                                         {% endif %}
-                                    {% endif %}
-                                    <div class="position-absolute d-none d-lg-block card-vedette-home" >
+                                        <div class="position-absolute d-none d-lg-block card-vedette-home" >
                                         <div class="row mx-0">
                                             <div
                                                 class="col-5 white theme-1 text-uppercase bg-black"
@@ -76,11 +71,10 @@
                                             </a>
                                         </div>
                                     </div>
+                                    </a>
                                 </div>
-                            {% endif %}
                         {% endif %}
                     {% endfor %}
-                    </a>
                 </div>
             </div>
 
@@ -89,22 +83,18 @@
     <!-- Programmation à venir -->
     <div class="wrapper">
         <div class="container-fluid">
-            <div class="mt-5">
-                <div class="px-lg-3 pt-lg-0 pb-lg-4 h2 text-center text-lg-start">Programmation <strong>à venir</strong></div>
+            <div class="row my-4">
+                <div class="col px-3 h2 text-center text-lg-start">Programmation <strong>à venir</strong></div>
             </div>
             <div class="row">
-                {% set temoin = 0 %}
                 {% for event in events_agenda %}
-                    {% if getDatetimeEvent(event.dateEvent, event.datetimeEvent) >  current_date %}
-                        {% set temoin = temoin + 1 %}
-                        {% if temoin < 5 %}
+                    {% if loop.index < 5 %}
                         {% set media = event.getMedia(1) %}
                         {% set CategoryTitle = event.category.title|replace({' ': '-'})|lower %}
-                        <div class="col-12 col-lg py-3 pb-lg-5 px-lg-3 category-{{ CategoryTitle }} category-tous-les-evenements {% if temoin == 4 %}show-xxl{% endif %}">
+                        <div class="col-12 {% if loop.length == 1 %}col-lg-6{% else %}col-lg{% endif %} pb-3 px-3 pb-lg-5 category-{{ CategoryTitle }} category-tous-les-evenements {% if loop.index == 4 %}show-xxl{% endif %}">
                             <!-- Card-Actu -->
                             {% include 'frontoffice/_components/card.html.twig' with {'event': event, 'agenda': true, 'showButton': false, 'actu': false, 'billetterie': true, 'soutiens': false, 'actions': false } %}
                         </div>
-                            {% endif %}
                     {% endif %}
                 {% endfor %}
             </div>
@@ -113,11 +103,9 @@
         <!-- Event / Playlistes -->
         <div class="container-fluid pb-4">
             <div class="row">
-
                 <!-- Event -->
                 <div class="col-md-12 col-lg-8">
-                    <div class="px-md-3 px-lg-5 ">
-                        <div class="row"  data-masonry='{"percentPosition": true }'>
+                    <div class="row px-3" data-masonry='{"percentPosition": true }'>
                             {% for event in events_actus %}
                                 {% if loop.index0 < 4 %}
                                     <div class="col-lg-6 col-md-12 border-event mb-md-3  mb-lg-0 mb-sm-3 px-0">
@@ -143,7 +131,6 @@
                                 {% endif %}
                             {% endfor %}
                         </div>
-                    </div>
                 </div>
 
                 <!-- Playlists -->
