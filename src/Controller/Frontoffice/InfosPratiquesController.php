@@ -40,7 +40,7 @@ class InfosPratiquesController extends LuneController
 
 
     #[Route('contact/{entrySlug}/{subjectId}', name: 'contact')]
-    public function contact(Request $request, ContactNotification $notification, string $entrySlug = 'comment-venir', int $subjectId = 0): Response
+    public function contact(Request $request, ContactNotification $notification, string $entrySlug = 'comment-venir', int $subjectId = null): Response
     {
         $this->data['page_title']                              = $this->entityManager->getRepository(Category::class)->find(39)->getTitle();
         $this->data['cat_contact']                             = $this->entityManager->getRepository(Category::class)->find(40);
@@ -60,8 +60,14 @@ class InfosPratiquesController extends LuneController
 
         $entry = $this->entityManager->getRepository(Category::class)->findOneBy(['category_id' => 39, 'slug' => $entrySlug]);
         $this->data['active_entry'] = $entry;
-        // Sujet sélectionné pour le formulaire de contact
-        $this->data['active_subject'] = Contact::SUBJECTS[$subjectId];
+
+
+        $this->data['active_subject'] = null;
+        if($subjectId !== null)
+        {
+            // Sujet sélectionné pour le formulaire de contact
+            $this->data['active_subject'] = Contact::SUBJECTS[$subjectId];
+        }
 
         // Envois des catégories dans le sens d'apparition
         $this->data['sous_categories_infos']    =    $this->entityManager->getRepository(Category::class)->findBy(
