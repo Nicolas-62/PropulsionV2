@@ -4,11 +4,13 @@ namespace App\Controller\Frontoffice;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Twig\AppExtension;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\TwigFunction;
 
 #[Route('/', name: 'fo_home_')]
 class HomeController extends LuneController
@@ -47,6 +49,16 @@ class HomeController extends LuneController
 
         // Récupération des articles des sous catégories de la catégorie agenda
         $events_agenda = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'ASC');
+        $twig = $this->container->get('twig')->getExtension(AppExtension::class);
+        $date_today = new \DateTimeImmutable();
+        $current_date = $date_today->format('Y-m-d H:i:s');
+        // Récupération des concerts à venir
+        $events_agenda = $events_agenda->filter(function($event_agenda) use($current_date, $twig) {
+            if($twig->getDatetimeEvent($event_agenda->getDateEvent(), $event_agenda->getDatetimeEvent()) >  $current_date){
+                return true;
+            }
+            return false;
+        });
         $cat_actu_id = 4;
         // Récupération des sous catégories de la catégorie actu
         $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_actu_id)->getChildrenIds();

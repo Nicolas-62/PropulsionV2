@@ -1,9 +1,9 @@
 <div class="container-fluid">
     <div class="row row-cols-auto align-items-center px-lg-3" style="margin-top:20px">
         <div class="w-sm-100 col ">
-            <h1 class="blue-title text-center text-lg-start" style="">{% if title %}{{ title | upper }}{% else %}{{ page_title | upper }}{% endif %}</h1>
+            <p class="blue-title text-center text-lg-start h1" style="">{% if title %}{{ title | upper }}{% else %}{{ page_title | upper }}{% endif %}</p>
         </div>
-        <div class="w-sm-100 col" style="margin-bottom: 10px">
+        <div class="w-sm-100 col">
             <div class="row row-cols-1 row-cols-lg-auto align-items-center">
                 {% if filter == true %}
                     <div class="col">
@@ -39,7 +39,7 @@
                     </div>
                 {% endif %}
                 {% if historic == true %}
-                    <div class="w-sm-100 col text-center text-lg-start btn-group dropend">
+                    <div class="w-sm-100 col text-center text-lg-start btn-group dropend mb-3">
                         <a type="button" class="btn-read-card btn btn-secondary dropdown-toggle" href="{{ path('fo_agenda_historic')}}">HISTORIQUE&nbsp;</a>
                     </div>
                 {% endif %}

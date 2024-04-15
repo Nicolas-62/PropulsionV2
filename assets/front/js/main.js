@@ -54,7 +54,6 @@ $(document).ready(function() {
     * Affiche le contenu correspondant à l'entrée sélectionnée
     * */
     function showContent() {
-        console.log('show content main')
         let triangle = $main.find('.triangle2');
         let triangle3 = $main.find('.triangle3');
 

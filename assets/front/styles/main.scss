@@ -9,22 +9,6 @@ body {
   display: none;
 }
 
-/* Container */
-
-
-/* Card */
-@media (max-width: 991px) {
-  .card-container {
-    padding : 10px 40px 10px 40px !important;
-  }
-}
-
-@media (min-width: 992px) {
-  .card-container {
-    padding : 0 40px 0 40px !important;
-  }
-}
-
 .btn-billetterie-card {
   max-height: 50px;
 }
@@ -412,6 +396,9 @@ body {
 .pass-culture-infos{
   max-height: 86px;
 }
+
+
+.card
 
 .card-vedette-home{
   right: 0;
