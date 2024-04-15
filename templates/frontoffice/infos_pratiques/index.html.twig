@@ -163,7 +163,7 @@
                                     <option>Sélectionner ...</option>
                                     {% for subject, value in field_choices(form.subject) %}
 
-                                        <option value="{{ value }}" {%  if loop.index0 == active_subject.index %}selected{% endif %}>{{ subject }}</option>
+                                        <option value="{{ value }}" {%  if active_subject is not null and loop.index0 == active_subject.index %}selected{% endif %}>{{ subject }}</option>
                                     {% endfor %}
                                 </select>
                                 {{ form_errors(form.subject) }}
