@@ -1,1 +1,10 @@
-<svg viewBox="0 0 51.01 50.69" xmlns="http://www.w3.org/2000/svg"><path d="m50.54 25.35c0 13.72-11.12 24.84-24.85 24.84s-24.83-11.12-24.83-24.84 11.12-24.85 24.84-24.85 24.85 11.12 24.85 24.84" fill="#fff"/><path d="m50.54 25.35c0 13.72-11.12 24.84-24.85 24.84s-24.83-11.12-24.83-24.84 11.12-24.85 24.84-24.85 24.85 11.12 24.85 24.84z" fill="none" stroke="#c5c5c5" stroke-miterlimit="10" stroke-width=".81"/><path d="m48.29 25.35c0 12.47-10.11 22.59-22.59 22.59s-22.59-10.12-22.59-22.59 10.12-22.59 22.59-22.59 22.59 10.11 22.59 22.59" fill="#fff"/><circle cx="25.7" cy="25.35" fill="none" r="22.59" stroke="#000" stroke-miterlimit="10" transform="matrix(.25662676 -.96651058 .96651058 .25662676 -5.4 43.68)"/><path d="m22.77 18.56v3.05h-2.24v3.73h2.24v11.11h4.59v-11.11h3.1s.05-.38.16-1.13c.1-.76.19-1.63.26-2.62h-3.5v-2.56c0-.19.1-.39.31-.59s.43-.3.68-.3h2.5v-3.89h-3.39c-2.42 0-3.81.65-4.17 1.94s-.55 2.08-.55 2.36"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g transform="matrix(12.4028,0,0,12.1746,-237.914,-200.431)">
+        <ellipse cx="29.502" cy="26.977" rx="9.836" ry="10.021" style="fill:none;stroke:black;stroke-width:0.68px;"/>
+    </g>
+    <g transform="matrix(5.40541,0,0,5.40541,-10.9459,-9.02703)">
+        <path d="M22.77,18.56L22.77,21.61L20.53,21.61L20.53,25.34L22.77,25.34L22.77,36.45L27.36,36.45L27.36,25.34L30.46,25.34C30.46,25.34 30.51,24.96 30.62,24.21C30.72,23.45 30.81,22.58 30.88,21.59L27.38,21.59L27.38,19.03C27.38,18.84 27.48,18.64 27.69,18.44C27.9,18.24 28.12,18.14 28.37,18.14L30.87,18.14L30.87,14.25L27.48,14.25C25.06,14.25 23.67,14.9 23.31,16.19C22.95,17.48 22.76,18.27 22.76,18.55" style="fill-rule:nonzero;"/>
+    </g>
+</svg>

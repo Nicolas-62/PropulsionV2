@@ -31,13 +31,25 @@ class HomeController extends LuneController
 
     #[Route('rdd', name: 'rdd')]
     public function rdd(){
-        $categories = $this->entityManager->getRepository(Category::class)->findAll();
+        // Maj ordre des articles des catégories
+
+//        $categories = $this->entityManager->getRepository(Category::class)->findBy(['id'=> [43,44,45,46]]);
+        $categories = $this->entityManager->getRepository(Category::class)->findBy(['id'=> '43']);
+
         foreach($categories as $category){
-            $category->setSlug($category->getSlug());
-            $this->entityManager->getRepository(Category::class)->save($category, true);
-            dump($category->getSlug());
+            dump($category->id);
+
+            $articles = $this->entityManager->getRepository(Article::class)->findBy(['category'=> $category], ['id' => 'ASC']);
+            foreach($articles as $index =>  $article){
+                dump($article->id);
+                $article->setOrdre($index+1);
+                $this->entityManager->persist($article);
+            }
+
         }
-        exit('end');
+        $this->entityManager->flush();
+
+        return new Response('end');
     }
 
     #[Route('home', name: 'index')]

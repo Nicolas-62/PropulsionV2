@@ -108,27 +108,34 @@
                     {% for url, category_header in menu_category_datas %}
                         <div class="px-4 col {% if loop.index0 != 0 %} border-dotted-black {% endif %}menu-header-item {% if  (page_title | upper) == (category_header.title|upper) %}active{% endif %}">
                             {% do category_header.getDatas(locale) %}
+                                {# Soutien aux artistes, Projets culturels, Infos pratiques #}
                                 {% if category_header.id == 6 or category_header.id == 53 or category_header.id == 39 %}
                                     <div class="dropdown">
                                         <a class="dropdown-toggle text-decoration-none fs-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             {{ category_header.title|upper }}
                                         </a>
                                         <ul class="dropdown-menu">
+                                            {# Projets culturels #}
                                             {% if category_header.id == 53  %}
                                                 <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path(url ~ category_header.url) }}">{{ category_header.title|upper }} - INDEX</a></li>
                                             {% endif %}
+                                            {# Infos pratiques #}
                                             {% if category_header.id != 39 %}
-                                                {% for sous_categories in category_header.children %}
+                                                {% for sous_categorie in category_header.children %}
+                                                    {# Soutien aux artistes #}
                                                     {% if category_header.id == 6 %}
-                                                        <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path(url ~ sous_categories.url) }}#{{ sous_categories.slug }}">{{ sous_categories.title|upper }}</a></li>
+                                                        <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path(url ~ sous_categorie.url) }}#{{ sous_categorie.slug }}">{{ sous_categorie.title|upper }}</a></li>
+                                                    {# Projets culturels #}
                                                     {% elseif category_header.id == 53 %}
-                                                        <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path(url ~ sous_categories.url) }}{{ sous_categories.slug }}">{{ sous_categories.title|upper }}</a></li>
+                                                        <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path(url ~ sous_categorie.url) }}{{ sous_categorie.slug }}">{{ sous_categorie.title|upper }}</a></li>
                                                     {% endif %}
                                                 {% endfor %}
+                                            {% else %}
+                                                {% for contact_entry in contact_entries %}
+                                                    <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path('fo_infos_contact', {'entrySlug': contact_entry.slug }) }}">{{ contact_entry.title|upper }}</a></li>
+                                                {% endfor %}
                                             {% endif %}
-                                            {% for contact_entry in contact_entries %}
-                                                <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path('fo_infos_contact', {'entrySlug': contact_entry.slug }) }}">{{ contact_entry.title|upper }}</a></li>
-                                            {% endfor %}
+
 
                                         </ul>
                                     </div>

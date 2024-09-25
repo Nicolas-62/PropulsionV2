@@ -350,19 +350,23 @@ class ArticleCrudController extends BoController
     {
         // Récupération de l'id de la catégorie si on vient d'une catégorie.
         $referrer   =   $this->adminUrlGenerator->get('referrer');
+        $nb_ordre = 1;
         // Si on créer un article depuis une catégorie
         if($referrer != null) {
             $categoryId = Request::create($referrer)->get('categoryId');
             if($categoryId != null){
                 // On pré-rempli le champ category.
                 $this->category = $this->entityManager->getRepository(Category::class)->find($categoryId);
+                // On compte le nombre d'articles de la category
+                $nb_ordre = $this->entityManager->getRepository(Article::class)->count(['category' => $this->category]);
+                $nb_ordre ++;
             }
         }
 
         $article = new Article();
         $article->setCreatedAt( new DateTimeImmutable() );
         $article->setUpdatedAt( new DateTimeImmutable() );
-        $article->setOrdre( $this->entityManager->getRepository(Article::class)->count([]) + 1 );
+        $article->setOrdre( $nb_ordre);
 
         return $article;
     }
@@ -695,24 +699,72 @@ class ArticleCrudController extends BoController
 
         // Bouton d'envois vers l'article.
         $accessPageAction = Action::new('Accès', 'Voir', 'fa fa-eye');
-        $accessPageAction->linkToRoute('fo_agenda_detail', function (Article $article) {
-                    return [
-                        'slug' => $article->getSlug()
-                    ];
-                });;
-        $accessPageAction->addCssClass(' btn btn-primary');
+        $accessPageAction
+            ->linkToUrl(function (Article $article) {
+                $parent      = $article->getParent();
+                $slugArticle = $article->getSlug();
+                // Si ce n'est pas un sous article, on récupère sa categorie parent
+                if($parent == null)
+                {
+                    $category = $article->getCategory();
+                }
+                // Si c'est un sous article
+                else{
+                    $parent      = $article->getParent();
+                    $slugArticle = $parent->getSlug();
+                    $category    = $parent->getCategory();
+                }
+                // Si pas de parent
+                if($category->getAncestors()->isEmpty()){
+                    $categoryParent = $category;
+                }else{
+                    // On récupère le plus grand parent
+                    $categoryParent = $category->getAncestors()->last();
+                }
+                // Si agenda, actus, soutien
+                if(in_array($categoryParent->getId(), array(3,4,6))){
+                    return '/'.$categoryParent->getSlug().'/'.$slugArticle;
+                }
+            });
+//        $accessPageAction->addCssClass(' btn btn-primary');
         $accessPageAction->displayIf(function (Article $article) {
+
+
             // On récupère la preview en passant par la session.
             $session        = $this->requestStack->getSession();
             $preview        = $session->get('preview');
 
-            if( $preview == '1' || $article->isOnline($this->locale)){
-                return true;
-            }else {
-                return false;
+            $parent = $article->getParent();
+            // Si ce n'est pas un sous article, on récupère sa categorie parent
+            if($parent == null)
+            {
+                $category = $article->getCategory();
             }
+            // Si c'est un sous article
+            else{
+                $parent = $article->getParent();
+                $category = $parent->getCategory();
+            }
+            // Si pas de parent
+            if($category->getAncestors()->isEmpty()){
+                $categoryParent = $category;
+            }else{
+                // On récupère le plus grand parent
+                $categoryParent = $category->getAncestors()->last();
+            }
+            // Si agenda, actus, soutien
+            if(in_array($categoryParent->getId(), array(3,4,6))) {
+                // Si préview ou en ligne
+                if ($preview == '1' || $article->isOnline($this->locale)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return false;
         });
         // Ajout des boutons à la liste des actions disponibles.
+        $actions->add(Crud::PAGE_INDEX, $accessPageAction);
         $actions->add(Crud::PAGE_EDIT, $accessPageAction);
 
 

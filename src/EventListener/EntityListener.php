@@ -62,30 +62,31 @@ class EntityListener implements EventSubscriberInterface
     {
         // Récupération de l'entité.
         $entity = $event->getEntityInstance();
+        $repository = "App\\Entity\\" . ucfirst($entity->getClassName());
         // Si l'entité est une catégorie ou un article.
         if ($entity instanceof Article or $entity instanceof Category ) {
-            // Création du slug
-            $slugger = new Slugify();
-            $entity->setSlug($slugger->slugify($entity->getTitle()));
+            // Création du slug à partir du titre
+            $entity->setSlug();
             // Vérification de l'unicité du slug
             $slug = $entity->getSlug();
+
             // On récupère les articles qui possèdent le même slug avec un numéro à la fin.
-            $article = $this->entityManager->getRepository(Article::class)->getElementWithSameSlug($entity);
+            $element = $this->entityManager->getRepository($repository)->getElementWithSameSlug($entity);
             // Si un article possède déjà ce slug.
-            if($article != null){
+            if($element != null){
                 // On tente d'ajouter un numéro à la fin du slug.
-                foreach(range(1, 3) as $number) {
+                foreach(range(1, 5) as $number) {
                     // On ajoute un caractère à la fin du slug.
                     $entity->setSlug($slug.'-'.$number);
                     // On récupère l'article qui possède le même slug.
-                    $article = $this->entityManager->getRepository(Article::class)->getElementWithSameSlug($entity);
+                    $element = $this->entityManager->getRepository($repository)->getElementWithSameSlug($entity);
                     // Si aucun article ne possède ce slug.
-                    if($article == null){
+                    if($element == null){
                         // On sort de la boucle.
                         break;
                     }else{
                         // Si c'est le dernier tour de boucle.
-                        if($number == 3){
+                        if($number == 5){
                             // On génère une erreur.
                             $this->session->getFlashBag()->add('danger', new TranslatableMessage('content_admin.flash_message.error.slug.unique', [
                                 '%slug%' => ($entity->getSlug()),

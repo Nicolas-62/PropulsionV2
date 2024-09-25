@@ -110,8 +110,8 @@
                 <div class= "fs-5 " style="align-self: flex-end;">
                     {{ formatCustomDate(event.dateEvent) }}
                 </div>
-                {% if event.datetimeEvent is not null and event.datetimeEvent is not empty %}
-                    <div class="fs-5">{{ event.datetimeEvent| date("H:i") }}</div>
+                {% if event.datetimeEventOpening is not null and event.datetimeEventOpening is not empty %}
+                    <div class="fs-5">{{ event.datetimeEventOpening| date("H:i") }}</div>
                 {% endif %}
             </div>
         {% endif %}

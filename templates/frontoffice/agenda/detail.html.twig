@@ -242,22 +242,22 @@
                             <div class="row text-center">
                                 {% if article.instagramLink != '' %}
                                     <div class="col text-center">
-                                        <a href="{{ article.instagramLink }}"><img class="mh-45"  src="{{ asset(getSiteImagePath('PICTURE.svg')) }}"></a>
+                                        <a href="{{ article.instagramLink }}"><img class="mh-45"  src="{{ asset(getSiteImagePath('artiste-insta.svg')) }}"></a>
                                     </div>
                                 {% endif %}
                                 {% if article.twitterLink != '' %}
                                     <div class="col">
-                                        <a href="{{ article.twitterLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('TWITTER.svg')) }}"></a>
+                                        <a href="{{ article.twitterLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('artiste-tw.svg')) }}"></a>
                                     </div>
                                 {% endif %}
                                 {% if article.facebookLink != '' %}
                                     <div class="col">
-                                        <a href="{{ article.facebookLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('FACEBOOK.svg')) }}"></a>
+                                        <a href="{{ article.facebookLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('artiste-fb.svg')) }}"></a>
                                     </div>
                                 {% endif %}
                                 {% if article.siteInternet != '' %}
                                     <div class="col">
-                                        <a href="{{ article.siteInternet }}"><img class="mh-45" src="{{ asset(getSiteImagePath('INTERNET.svg')) }}"></a>
+                                        <a href="{{ article.siteInternet }}"><img class="mh-45" src="{{ asset(getSiteImagePath('artiste-web.svg')) }}"></a>
                                     </div>
                                 {% endif %}
                             </div>
@@ -322,7 +322,7 @@
                     </div>
                     <!-- CONTENU ARTISTE -->
                     <div class="fs-5">
-                        {{ child.content | raw }}
+                        {{ child.description | raw }}
                     </div>
                     <!-- Image Artiste Ou vidéos artistes-->
                     {% set media3 = child.getMedia(33) %}
@@ -379,22 +379,22 @@
                                     <div class="row text-center">
                                         {% if child.instagramLink != '' %}
                                             <div class="col">
-                                                <a href="{{ child.instagramLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('PICTURE.svg')) }}"></a>
+                                                <a href="{{ child.instagramLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('artiste-insta.svg')) }}"></a>
                                             </div>
                                         {% endif %}
                                         {% if child.twitterLink != '' %}
                                             <div class="col">
-                                                <a href="{{ child.twitterLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('TWITTER.svg')) }}"></a>
+                                                <a href="{{ child.twitterLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('artiste-tw.svg')) }}"></a>
                                             </div>
                                         {% endif %}
                                         {% if child.facebookLink != '' %}
                                             <div class="col">
-                                                <a href="{{ child.facebookLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('FACEBOOK.svg')) }}"></a>
+                                                <a href="{{ child.facebookLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('artiste-fb.svg')) }}"></a>
                                             </div>
                                         {% endif %}
                                         {% if child.siteInternet != '' %}
                                             <div class="col">
-                                                <a href="{{ child.siteInternet }}"><img class="mh-45" src="{{ asset(getSiteImagePath('INTERNET.svg')) }}"></a>
+                                                <a href="{{ child.siteInternet }}"><img class="mh-45" src="{{ asset(getSiteImagePath('artiste-web.svg')) }}"></a>
                                             </div>
                                         {% endif %}
                                     </div>

@@ -1,1 +1,7 @@
-<svg viewBox="0 0 92.28 92.28" xmlns="http://www.w3.org/2000/svg"><g fill="none"><circle cx="46.14" cy="46.14" r="45.74" stroke="#c7c6c6" stroke-miterlimit="10" stroke-width=".81" transform="matrix(.70710678 -.70710678 .70710678 .70710678 -19.11 46.14)"/><path d="m2.92 46.14c0 23.87 19.35 43.22 43.22 43.22s43.22-19.35 43.22-43.22-19.35-43.22-43.22-43.22-43.22 19.35-43.22 43.22"/></g></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g transform="matrix(12.4028,0,0,12.1746,-237.914,-200.431)">
+        <ellipse cx="29.502" cy="26.977" rx="9.836" ry="10.021" style="fill:white;stroke:black;stroke-width:0.68px;"/>
+    </g>
+</svg>

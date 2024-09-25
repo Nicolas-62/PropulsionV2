@@ -135,7 +135,6 @@ class FOController extends AbstractController
             if ($media != null) {
                 // Ajout url de l'image
                 $media_path = 'https://' . $siteUrl  . '/' . $this->getParameter('app.dyn_img_path') . $media->getMedia();
-                dump($media_path);
                 $openGraph->setImage($media_path);
                 // Récupératin du média link pour récupérer la médiaspec
                 $medialink = $this->entityManager->getRepository(MediaLink::class)->findOneBy(['media' => $media->getId()]);
