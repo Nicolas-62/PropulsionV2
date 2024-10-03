@@ -4,7 +4,7 @@
     <!-- IMAGE DU HAUT -->
     <div class="container-fluid px-0 shadow-lg mt-5" >
         <div class="row gx-0">
-            <div class="col-12 col-lg-8 p-0 position-relative w-sm-100" style="">
+            <div class="col-12 col-lg-8 p-0 " style="">
                 {% if article.cancelled %}
                     <div class="cancelled-overlay">
                         <p class="cancelled-text">ANNULÉ</p>
@@ -32,56 +32,53 @@
             </div>
             <!-- BILLETTERIE AU DESSUS DE L'IMAGE -->
             <div class="col-12 col-lg-4" style="z-index: 600; border-left: #C8C8C8 solid 1px" >
-                <div class="d-flex white text-uppercase align-items-center">
-                    <div
-                            class="p-3"
-                            style="background-color:{{ article.category.themeBackColor }};color: {{ article.themeTextColor }};"
-                    >
-                        {{ category.title | upper }}
-                    </div>
-
-                    <div class="flex-grow-1 p-3" style="background-color: black;"><img class="pe-1" style="width: 1.2rem;" src="{{ asset(getSiteImagePath('MINI_BILLETTERIE.svg')) }}"> {{ article.style }}</div>
-                </div>
-                <div class="" >
+                    <table class="table align-middle mb-0">
+                        <tr class=" text-uppercase align-items-center">
+                            <td
+                                    class="py-3"
+                                    style="background-color:{{ article.category.themeBackColor }};color: {{ article.themeTextColor }};"
+                            >
+                                {{ category.title | upper }}
+                            </td>
+                            <td class="py-3 flex-grow-1 text-white" style="background-color: black;"><img class="pe-1" style="width: 1.2rem;" src="{{ asset(getSiteImagePath('MINI_BILLETTERIE.svg')) }}"> {{ article.style }}</td>
+                        </tr>
+                    </table>
+                <div class="">
                     <!-- Titre -->
-                    <div class="p-5">
+                    <div class="p-4">
                         <h1 class="fw-bold mb-0">{% if article.eventName is not empty %}{{ article.eventName }} :{% endif%} {{ article.titleByLanguage }}</h1>
                         <h2 class="">{{ article.subtitle }}</h2>
                         <hr>
-                        <p class="h3 fw-bold mt-5">{{ formatCustomDate(article.dateEvent) }}</p>
+                        <p class="h3 fw-bold mt-4">{{ formatCustomDate(article.dateEvent) }}</p>
                         {% if article.datetimeEventOpening is not empty and article.datetimeEventOpening is not null %}
-                            <p class="fs-5">{{ article.datetimeEventOpening | date("H:i") }} </p>
+                            <p class="ms-1 fs-5"><i class="fa-solid fa-clock"></i><span class="ms-2">{{ article.datetimeEventOpening | date("H:i") }}</span></p>
                         {% endif %}
                         <!-- EVENT TERMINE -->
                         {% if article.dateEvent <  current_date %}
-                            <p class="text-bg-danger p-3 text-center fs-2">Cet évènement est terminé.</p>
+                            <p class="text-bg-danger p-2 text-center fs-4">Cet évènement est terminé.</p>
                         {% else %}
-
                             <!-- EVENT ANNULÉ -->
-                            {% if article.cancelled %}
-                            <div>
-                                <p class="text-bg-danger p-3 text-center fs-2">Cet évènement est annulé.</p>
-                                {% if article.refund %}
-                                    <div class="d-grid">
-                                        <a class="btn btn-read-card " href="{{ article.refund }}">Lien de remboursement</a>
-                                    </div>
-                                {% endif %}
-                            </div>
-                            {% endif %}
-
-                            <!-- EVENT REPORTE -->
-                            {% if article.reported %}
+                          {% if article.cancelled %}
                                 <div>
-                                    <p class="text-bg-danger p-3 text-center fs-2">Cet évènement est reporté.</p>
+                                    <p class="text-bg-danger p-2 text-center fs-4">Cet évènement est annulé.</p>
+                                    {% if article.refund %}
+                                        <div class="d-grid">
+                                            <a class="btn btn-read-card " href="{{ article.refund }}">Lien de remboursement</a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                            <!-- EVENT REPORTE -->
+                          {% if article.reported %}
+                                    <div>
+                                    <p class="text-bg-danger p-2 text-center fs-4">Cet évènement est reporté.</p>
                                     {% if article.cancelledOrReportedDescription %}
                                         <div class="tfs-4">
                                             {{ article.cancelledOrReportedDescription }}
                                         </div>
                                     {% endif %}
-
                                 </div>
                             {% endif %}
-
                             <!-- EVENT COMPLET -->
                             {% if article.full %}
                             <div>
@@ -92,41 +89,37 @@
 
                         <!-- Tarifs -->
                         {% if article.dateEvent >  current_date %}
-
-                        <div class="container-fluid">
-
-                            {% if article.price is not empty and article.price is not null %}
-                            <div class="row mt-3">
-                                <div class="col btn-rate-card"> <a class="text-decoration-none" href="{{ article.ticketingLink }}">Tarif plein : {{ article.price }}</a></div>
-
+                            {% if article.price %}
+                            <div class="row mt-3 row-cols-md-{{ article.nbTarifs }}">
+                                <div class="col-12">
+                                    <div class="btn-rate-card mb-3"> <a class="" href="{{ article.ticketingLink }}">Tarif plein : {{ article.price }}</a></div>
+                                </div>
                                 {% if article.subscriberPrice %}
-                                    <div class="col btn-rate-card mx-2"><a class="text-decoration-none" href="{{ article.ticketingLink }}">Tarif abo : {{ article.subscriberPrice }}</a></div>
+                                    <div class="col-12">
+                                        <div class="btn-rate-card mb-3"> <a class="" href="{{ article.ticketingLink }}">Tarif plein : {{ article.subscriberPrice }}</a></div>
+                                    </div>
                                 {% endif %}
-
                                 {%  if article.reducedPrice %}
-                                    <div class="col btn-rate-card"><a class="text-decoration-none" href="{{ article.ticketingLink }}">Tarif réduit : {{ article.reducedPrice }}</a></div>
+                                    <div class="col-12">
+                                        <div class="btn-rate-card mb-3"> <a class="" href="{{ article.ticketingLink }}">Tarif plein : {{ article.reducedPrice }}</a></div>
+                                    </div>
                                 {% endif %}
                             </div>
                             {% endif %}
-
-                        </div>
                         {% endif %}
 
                         <!-- Cartes Lunes -->
                         <div class="row gx-0 pt-5">
                             <div class="col text-center">
-
-                                <a class="text-decoration-none" href="https://billetterie.lalune.net/abonnements/165251527696b7/renouvellement">
-                                    <img class="rounded rounded-2" style="max-height: 50px" src="{{ asset(getSiteImagePath('abonnement.png')) }}">
+                                <a class="text-decoration-none" href="https://billetterie.lalune.net/abonnements/166f6eac2a539b/renouvellement">
+                                    <img style="max-height: 50px" src="{{ asset(getSiteImagePath('abonnement.svg')) }}">
                                     <div style="font-size: 14px">
                                         Profitez du tarif abonné<br>
-                                        <b>
-                                            avec la carte lune
-                                        </b>
+                                        <b>avec la carte lune</b>
                                     </div>
-
                                 </a>
                             </div>
+                            <!-- Lien pass culture -->
                             {% if article.culturePassLink %}
                             <div class="col text-center">
                                 <a class="text-decoration-none" href="{{ article.culturePassLink }}">
@@ -141,15 +134,18 @@
                             {% endif %}
                         </div>
                         <hr>
-                        <div class="pt-3">
+                        <div class="mt-4">
+                            <!-- Lien facebook-->
                             {% if article.facebookEventLuneLink is not empty and article.facebookEventLuneLink is not null %}
-                                <p class="fs-5"><a class="btn-read-card text-decoration-none" href="{{ article.facebookEventLuneLink }}">Évènement Facebook</a></p>
+                                <p class="fs-5"><i class="fa-brands fa-facebook"></i><a class="ms-2 lien-souligne" href="{{ article.facebookEventLuneLink }}" >Voir l'évènement</a></p>
                             {% endif %}
+                            <!-- Organisteur-->
                             {% if article.organizer is not empty and article.organizer is not null %}
-                                <p style="" class="fs-5">Organisateur : {{ article.organizer }}</p>
+                                <p class="fs-5"><i class="fa-solid fa-circle-user"></i><span class="ms-2">Organisateur : {{ article.organizer }}</span></p>
                             {% endif %}
+                            <!-- Placement-->
                             {% if article.placement is not empty and article.placement is not null %}
-                                <p style="">{{ article.placement }}</p>
+                                <p class="fs-5"><i class="fa-solid fa-users"></i><span class="ms-2">{{ article.placement }}</span></p>
                             {% endif %}
                         </div>
                     </div>
@@ -158,10 +154,10 @@
         </div>
     </div>
     <!-- DETAIL ARTICLE -->
-    <div class="container-fluid">
-        <div class="py-4 px-lg-5 row">
+    <div class="container-fluid shadow-lg">
+        <div class="py-4 row">
             <!-- CONTENU PARTIE GAUCHE-->
-            <div class="col-lg-8 col-md-12">
+            <div class="col-lg-8 col-md-12 px-5">
                 <!-- NOM GROUPE / STYLE / HORAIRE -->
                 <div class="row d-flex justify-content-between pb-3">
                     <div class="col-lg-auto col-md-12">
@@ -188,108 +184,24 @@
                         </div>
                     </div>
                 {% endif %}
-                <!-- PLUS D'INFOS SUR L'ARTISTE -->
-                {% if article.soundcloudLink or article.soundcloudSecondLink or article.soundcloudThirdLink %}
-                <div class="pt-5">
-                    {% if article.soundcloudLink is not null and article.soundcloudLink is not empty %}
-                        {{ article.soundcloudLink | raw }}
-                    {% endif %}
-
-                    {% if article.soundcloudSecondLink is not null and article.soundcloudSecondLink is not empty %}
-                        {{ article.soundcloudSecondLink | raw }}
-                    {% endif %}
-                    {% if article.soundcloudThirdLink is not null and article.soundcloudThirdLink is not empty %}
-                        {{ article.soundcloudThirdLink | raw }}
-                    {% endif %}
-                </div>
-                {% endif %}
-                <div class="row py-5">
-                    <div class="col-lg-12 col-md-12 row">
-                        <div class="mb-3 col-lg-12 col-md-12">
-                            {% if not article.getFiles is empty %}
-                                <div class="row ">
-                                    {% set filesArray = article.getFiles() %}
-                                    {% set arrayLength = filesArray|length %}
-                                    {% if arrayLength > 1 %}
-                                        <div class="d-flex">Fichiers : &nbsp;
-                                            {% for file in article.getFiles() %}
-                                                {% set url_file = '/assets/images/' ~ file.media %}
-                                                <div class="d-inline">
-                                                    <a class="btn-read-card" href="{{ url_file }}" role="button">{{ file.legend }}</a>
-                                                </div>
-                                                &nbsp;
-                                            {% endfor %}
-                                        </div>
-                                    {% elseif arrayLength == 1 %}
-                                        <div>
-                                            Fichier :
-                                                {% for file in article.getFiles() %}
-                                                    {% set url_file = '/assets/images/' ~ file.media %}
-                                                        <a class="btn-read-card" href="{{ url_file }}" role="button">{{ file.legend }}</a>
-                                                {% endfor %}
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            {% endif %}
-                        </div>
-                        <div class="col-12 col-lg-4  text-center mt-3">
-                            {% if article.instagramLink != '' or article.twitterLink != '' or article.facebookLink != '' or article.siteInternet != ''  %}
-                                <div class="fs-4">Plus d'infos sur l'artiste</div>
-                            {% endif %}
-                        </div>
-                        <div class="col-12 col-lg-4 text-center text-lg-start">
-                            <!-- MEDIAS SOCIAUX -->
-                            <div class="row text-center">
-                                {% if article.instagramLink != '' %}
-                                    <div class="col text-center">
-                                        <a href="{{ article.instagramLink }}"><img class="mh-45"  src="{{ asset(getSiteImagePath('artiste-insta.svg')) }}"></a>
-                                    </div>
-                                {% endif %}
-                                {% if article.twitterLink != '' %}
-                                    <div class="col">
-                                        <a href="{{ article.twitterLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('artiste-tw.svg')) }}"></a>
-                                    </div>
-                                {% endif %}
-                                {% if article.facebookLink != '' %}
-                                    <div class="col">
-                                        <a href="{{ article.facebookLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('artiste-fb.svg')) }}"></a>
-                                    </div>
-                                {% endif %}
-                                {% if article.siteInternet != '' %}
-                                    <div class="col">
-                                        <a href="{{ article.siteInternet }}"><img class="mh-45" src="{{ asset(getSiteImagePath('artiste-web.svg')) }}"></a>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {# Artiste infos #}
+                {{ include(fo_path ~ 'agenda/artiste_infos.html.twig') }}
             </div>
-            <!-- LIENS ET INFOS PRATIQUES (PARTIE DROITE) -->
-            <div class="col-lg-4 col-md-12 d-flex align-content-end justify-content-center flex-wrap text-md-center text-lg-start">
 
-                <div class="p-5 d-none d-lg-block">
+            <!-- LIENS ET INFOS PRATIQUES (PARTIE DROITE) -->
+            <div class="col-lg-4 col-md-12 px-5">
+                <div class="p-4 d-none d-lg-block text-center">
                     <!-- CARTE LUNE -->
                     <div class="py-3">
-                        <a rel="nofollow" href="https://billetterie.lalune.net/abonnements/165390773e0ce5/renouvellement">
-                            <img class="img-fluid" style="max-width: 313px" src="{{ asset(getSiteImagePath('abonnement.png')) }}">
+                        <a rel="nofollow" href="https://billetterie.lalune.net/abonnements/166f6eac2a539b/renouvellement">
+                            <img style="max-width: 313px" src="{{ asset(getSiteImagePath('abonnement.svg')) }}">
                         </a>
                         <div class="fs-5">
-                            Concerts Gratuits Abonnés & Réductions
+                            Profitez du tarif abonné
                         </div>
                         <div class="fs-5 fw-bold">
-                            Abonnez-vous !
+                            avec la carte lune
                         </div>
-                    </div>
-                    <div class="py-5 h3">
-                        <a class="text-decoration-none" href="https://pass.culture.fr/">
-                        <img style="max-height: 90px" src="{{ asset(getSiteImagePath('PASS_CULTURE_BIG.svg')) }}">
-                            <div class="fs-5">
-                                <b>Dispo sur le Pass Culture,</b><br>
-                                pour les 15-18 ans,<br>
-                                ou en offre collective
-                            </div>
-                        </a>
                     </div>
                     <div class="py-5">
                         <a class="text-decoration-none" href="{{ path('fo_infos_index') }}">
@@ -298,13 +210,12 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
     <!-- DEUXIEME PARTIE -->
     {% for child in children %}
         {% do child.getDatas(locale) %}
-    <div class="bg-grey container-fluid">
+    <div class="container-fluid shadow-lg">
         <div class="py-4 px-lg-5">
             <div class="row">
                 <div class="col-lg-8 col-md-12">
@@ -350,67 +261,11 @@
                     <div class="fs-5 py-3">
                         {{ child.content | raw }}
                     </div>
-                    <!-- PLUS D'INFOS SUR L'ARTISTE -->
-                    <!-- PLUS D'INFOS SUR L'ARTISTE -->
-                    {% if child.soundcloudLink or child.soundcloudSecondLink or child.soundcloudThirdLink %}
-                        <div class="pt-5">
-                            {% if child.soundcloudLink is not null and child.soundcloudLink is not empty %}
-                                {{ child.soundcloudLink | raw }}
-                            {% endif %}
-
-                            {% if child.soundcloudSecondLink is not null and child.soundcloudSecondLink is not empty %}
-                                {{ child.soundcloudSecondLink | raw }}
-                            {% endif %}
-                            {% if child.soundcloudThirdLink is not null and child.soundcloudThirdLink is not empty %}
-                                {{ child.soundcloudThirdLink | raw }}
-                            {% endif %}
-                        </div>
-                    {% endif %}
-                    <div class="row">
-                        <div class="col-lg-8 offset-lg-4 col-md-12 py-5">
-                            <div class="row">
-                                <div class="col-12 col-lg-6 d-flex align-items-end">
-                                    {% if child.instagramLink != '' or child.twitterLink != '' or child.facebookLink != '' or child.siteInternet != ''  %}
-                                        <div class="fs-4 text-center text-lg-start">Plus d'infos sur l'artiste</div>
-                                    {% endif %}
-                                </div>
-                                <div class="col-12 col-lg-6">
-                                    <!-- MEDIAS SOCIAUX -->
-                                    <div class="row text-center">
-                                        {% if child.instagramLink != '' %}
-                                            <div class="col">
-                                                <a href="{{ child.instagramLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('artiste-insta.svg')) }}"></a>
-                                            </div>
-                                        {% endif %}
-                                        {% if child.twitterLink != '' %}
-                                            <div class="col">
-                                                <a href="{{ child.twitterLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('artiste-tw.svg')) }}"></a>
-                                            </div>
-                                        {% endif %}
-                                        {% if child.facebookLink != '' %}
-                                            <div class="col">
-                                                <a href="{{ child.facebookLink }}"><img class="mh-45" src="{{ asset(getSiteImagePath('artiste-fb.svg')) }}"></a>
-                                            </div>
-                                        {% endif %}
-                                        {% if child.siteInternet != '' %}
-                                            <div class="col">
-                                                <a href="{{ child.siteInternet }}"><img class="mh-45" src="{{ asset(getSiteImagePath('artiste-web.svg')) }}"></a>
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {# Artiste infos #}
+                    {% include fo_path ~ 'agenda/artiste_infos.html.twig'  with {'article' : child} %}
                 </div>
-                <div class="col-lg-4 col-md-12 d-flex align-content-end justify-content-center text-md-center text-lg-start flex-wrap">
-{#                    <div class="p-5 d-none d-lg-block">#}
-{#                        <div class="py-5" style="max-height: 140px; max-width: 266px;min-width: 265px">#}
-{#                            <a class="text-decoration-none" href="{{ path('fo_infos_index') }}">#}
-{#                                <img src="{{ asset(getSiteImagePath('INFOS_PRATIQUES.svg')) }}">#}
-{#                            </a>#}
-{#                        </div>#}
-{#                    </div>#}
+                <!-- LIENS ET INFOS PRATIQUES (PARTIE DROITE) -->
+                <div class="col-lg-4 col-md-12">
                 </div>
             </div>
         </div>
@@ -419,7 +274,7 @@
     <!-- A DECOUVRIR -->
     <hr class="my-0">
     <div class="p-lg-5 container-fluid">
-        <h1 class="pb-lg-5 pt-3 pt-lg-0">
+        <h1 class="pb-lg-3 pt-3 pt-lg-0">
             à découvrir >> >> >>
         </h1>
         <div class="row">

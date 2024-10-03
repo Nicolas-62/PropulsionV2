@@ -113,7 +113,13 @@ class CategoryCrudController extends BoController
         yield TextField::new('title', 'Nom')->setColumns(6);
         yield AssociationField::new('children','Categories')->hideOnForm();
         yield AssociationField::new('articles', 'Articles')->hideOnForm();
-        yield BooleanField::new('isOnline')->hideOnForm();
+        $onlineField = BooleanField::new('isOnline')->hideOnForm();
+        // Champ non éditable si pas admin
+        if( ! $this->isGranted('ROLE_ADMIN')) {
+            $onlineField->setDisabled();
+        }
+        yield $onlineField;
+
         yield DateField::new('created_at', 'creation')->hideOnForm();
         yield DateField::new('updated_at', 'dernière édition')->hideOnForm();
         // Champs du formulaire
@@ -160,6 +166,8 @@ class CategoryCrudController extends BoController
                     // On défini la langue pour la seo
                     $language  = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $this->locale]);
                     $seo->setLanguage($language);
+                    // Le titre est celui du titre de la catégorie par défaut
+                    $seo->setTitle($this->entity->getTitle());
                 }
                 //yield FormField::addPanel('Seo');
                 //yield TextField::new('title','titre')->setColumns(4);
@@ -419,8 +427,14 @@ class CategoryCrudController extends BoController
         $returnAction->addCssClass('btn btn-primary');
         // Ajout des boutons à la liste des actions disponibles.
         $actions->add(Crud::PAGE_INDEX, $returnAction);
+        if ( ! $this->isGranted('ROLE_ADMIN')) {
+            $actions->remove(Crud::PAGE_INDEX, Action::NEW);
+            $actions->remove(Crud::PAGE_INDEX, Action::EDIT);
+            $actions->remove(Crud::PAGE_INDEX, Action::DELETE);
 
-        // Bouton de retour au détail du parent.
+        }
+
+            // Bouton de retour au détail du parent.
         $returnPageAction = Action::new('return', 'Revenir', 'fa fa-arrow-left');
         $returnPageAction->setTemplatePath('backoffice/actions/return.html.twig');
         // renders the action as a <a> HTML element

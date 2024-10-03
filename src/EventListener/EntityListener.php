@@ -62,7 +62,6 @@ class EntityListener implements EventSubscriberInterface
     {
         // Récupération de l'entité.
         $entity = $event->getEntityInstance();
-        $repository = "App\\Entity\\" . ucfirst($entity->getClassName());
         // Si l'entité est une catégorie ou un article.
         if ($entity instanceof Article or $entity instanceof Category ) {
             // Création du slug à partir du titre
@@ -70,6 +69,7 @@ class EntityListener implements EventSubscriberInterface
             // Vérification de l'unicité du slug
             $slug = $entity->getSlug();
 
+            $repository = "App\\Entity\\" . ucfirst($entity->getClassName());
             // On récupère les articles qui possèdent le même slug avec un numéro à la fin.
             $element = $this->entityManager->getRepository($repository)->getElementWithSameSlug($entity);
             // Si un article possède déjà ce slug.

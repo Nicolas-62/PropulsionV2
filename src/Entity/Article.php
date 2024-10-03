@@ -421,6 +421,33 @@ class Article
     }
 
 
+    public function getNbTarifs(): int
+    {
+        $nbTarifs = 0;
+        if($this->getPrice()){
+            $nbTarifs++;
+        }
+        if($this->getSubscriberPrice()){
+            $nbTarifs++;
+        }
+        if($this->getReducedPrice()){
+            $nbTarifs++;
+        }
+        return $nbTarifs;
+    }
+
+    public function hasSocialLink(): bool
+    {
+        $hasSocialLink = false;
+
+        if($this->getInstagramLink() or $this->getTwitterLink() or $this->getFacebookLink() or $this->getSiteInternet()){
+            $hasSocialLink = true;
+        }
+        return $hasSocialLink;
+
+    }
+
+
 }
 
 

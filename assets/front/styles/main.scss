@@ -13,18 +13,35 @@ body {
   max-height: 50px;
 }
 
-.btn-rate-card,
-.btn-rate:hover{
+.btn-rate-card
+{
 
   font-size: 1.25rem;
   padding: 0.5rem 0.5rem;
   text-align: center;
   border: 1px solid #343a40;
   border-radius: 0;
-  background-color: white;
-  text-decoration: none;
-  color: black;
+  a{
+    text-decoration: none;
+    color: black;
+  }
+}
 
+.btn-rate-card:hover{
+  background-color: black;
+  color: white;
+  a{
+    color: white;
+  }
+}
+
+.lien-souligne{
+  color: black;
+  text-decoration: none;
+}
+
+.lien-souligne:hover {
+    text-decoration: underline;
 }
 
 /* Police */
