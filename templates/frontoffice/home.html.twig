@@ -13,16 +13,20 @@
             >
 
                 <div class="carousel-indicators">
+                    {% set index = 0 %}
                     {% for event in events_agenda %}
                         {% if event.star == 1  %}
-                            <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{ loop.index0 }}" class="active" aria-label="Slide {{ loop.index }}" aria-current="true"></button>
+                            <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{ index }}" class="active" aria-label="{{ event.title }}" aria-current="true"></button>
+                            {% set index = index+1 %}
                         {% endif %}
                     {% endfor %}
                 </div>
                 <div class="carousel-inner">
+                    {% set active = true %}
                     {% for event in events_agenda %}
                         {% if event.star == 1  %}
-                                <div class="carousel-item {% if loop.index == 1 %} active{% endif %}" data-bs-interval="3000">
+                                <div class="carousel-item {% if active %} active{% endif %}" data-bs-interval="3000">
+                                    {% set active = false %}
                                     <a href="{{ url('fo_agenda_detail',{'slug':event.slug }) }}" class="text-decoration-none">
                                         {% set media = event.getMedia(9) %}
                                         {% if media is not null %}
@@ -137,13 +141,13 @@
                 <div class="col-md-12 col-lg-4 text-center text-lg-start pt-5 pt-lg-0">
                     <div class=" pb-5 text-center">
                         <div class=" pb-3">
-                            <a rel="nofollow" href="http://www.lalune.net/concert-amiens/bruits-de-lune/">
-                                <img class="img-fluid" style="max-width: 313px" src="{{ asset(getSiteImagePath('bruits-de-lune.png')) }}">
+                            <a rel="nofollow" href="http://www.radiocampusamiens.fr/emissions/bruits-de-lune/">
+                                <img class="img-fluid" style="max-width: 313px" src="{{ asset(getSiteImagePath('bruits-de-lune.svg')) }}">
                             </a>
                         </div>
                         <div class="py-3">
-                            <a rel="nofollow" href="https://billetterie.lalune.net/abonnements/165390773e0ce5/renouvellement">
-                                <img class="img-fluid" style="max-width: 313px" src="{{ asset(getSiteImagePath('abonnement.png')) }}">
+                            <a rel="nofollow" href="https://billetterie.lalune.net/abonnements/166f6eac2a539b/renouvellement">
+                                <img class="img-fluid" style="max-width: 313px" src="{{ asset(getSiteImagePath('abonnement.svg')) }}">
                             </a>
                             <div class="fs-5">
                                 Concerts Gratuits Abonnés & Réductions
@@ -154,8 +158,8 @@
                         </div>
                         <div class="py-3">
     {#                        <div class="h2"> Playlist</div>#}
-                            <a rel="nofollow" href="https://open.spotify.com/user/lalunedespirates">
-                                <img class="img-fluid" style="min-width: 313px" src="{{ asset(getSiteImagePath('spotify.png')) }}">
+                            <a rel="nofollow" href="https://open.spotify.com/user/lalunedespirates/playlists">
+                                <img class="img-fluid" style="max-width: 313px" src="{{ asset(getSiteImagePath('spotify.svg')) }}">
                             </a>
     {#                        <div class="fs-5">#}
     {#                            <b>Abonnez-vous</b> à notre playlist#}

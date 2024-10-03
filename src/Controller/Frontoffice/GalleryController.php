@@ -21,7 +21,7 @@ class GalleryController extends LuneController
     }
 
 
-    #[Route('/gallery', name: 'gallery')]
+    #[Route('/galerie', name: 'gallery')]
     public function index(): Response
     {
         // Récupération des articles de la galerie

@@ -57,10 +57,21 @@ trait CMSTrait
         return $this->id;
     }
 
-    public function getSlug(): ?string
+    public function setSlug(string $new_title = null): self
     {
         $slugify = new Slugify();
-        return $slugify->slugify($this->title);
+
+        if($new_title == null) {
+            $this->slug = $slugify->slugify($this->title);
+        }else{
+            $this->slug = $slugify->slugify($new_title);
+
+        }
+        return $this;
+    }
+    public function getSlug(): ?string
+    {
+        return $this->slug;
     }
 
 

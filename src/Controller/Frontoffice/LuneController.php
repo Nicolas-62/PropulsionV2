@@ -167,9 +167,11 @@ class LuneController extends FOController
     #[Route('/faq', name: 'faq')]
     public function faq(): Response
     {
-        $this->data["categories"] = $this->entityManager->getRepository(Category::class)->findBy(['category_id'=>27]);
+//        $this->data["categories"] = $this->entityManager->getRepository(Category::class)->findBy(['category_id'=>27]);
 
-        $all_articles = $this->entityManager->getRepository(Article::class)->findBy(['category'=>38]);
+        $this->data["categorie_faq"] = $this->entityManager->getRepository(Category::class)->findOneBy(['id'=> 38]);
+
+        $all_articles = $this->entityManager->getRepository(Article::class)->findBy(['category'=> 38]);
         $articles = array();
 
         // Vérification si l'article est en ligne
@@ -178,10 +180,12 @@ class LuneController extends FOController
                 $articles[] = $article;
             }
         }
+        $this->data["articles_faq"] = $articles;
 
 
+        $this->data["categorie_question"] = $this->entityManager->getRepository(Category::class)->findOneBy(['id'=> 43]);
+        $this->data['articles_question']                          = $this->entityManager->getRepository(Category::class)->getArticles(array(43), $this->getParameter('locale'),1, 'ordre', 'ASC');
 
-        $this->data["articles_question"] = $articles;
 
         // Vue renvoyée.
         return $this->render('frontoffice/institutionnel/faq.html.twig', $this->data);

@@ -36,6 +36,8 @@ class ThemeCrudController extends AbstractCrudController
         return $crud
             // Seul les administrateurs peuvent éditer les thèmes
             ->setEntityPermission('ROLE_ADMIN')
+            ->showEntityActionsInlined()
+
             ;
     }
 

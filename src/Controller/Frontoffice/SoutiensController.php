@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/soutiens/', name: 'fo_soutiens_')]
+#[Route('/soutien-aux-artistes/', name: 'fo_soutiens_')]
 class SoutiensController extends LuneController
 {
 

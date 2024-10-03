@@ -351,18 +351,6 @@ class Article
         return $this;
     }
 
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(?string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
     /**
      * Retourne les medias de type pdf
      * @return array
@@ -430,6 +418,33 @@ class Article
             }
         }
         return $media;
+    }
+
+
+    public function getNbTarifs(): int
+    {
+        $nbTarifs = 0;
+        if($this->getPrice()){
+            $nbTarifs++;
+        }
+        if($this->getSubscriberPrice()){
+            $nbTarifs++;
+        }
+        if($this->getReducedPrice()){
+            $nbTarifs++;
+        }
+        return $nbTarifs;
+    }
+
+    public function hasSocialLink(): bool
+    {
+        $hasSocialLink = false;
+
+        if($this->getInstagramLink() or $this->getTwitterLink() or $this->getFacebookLink() or $this->getSiteInternet()){
+            $hasSocialLink = true;
+        }
+        return $hasSocialLink;
+
     }
 
 

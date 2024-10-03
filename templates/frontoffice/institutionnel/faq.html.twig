@@ -1,18 +1,38 @@
 {% extends '/frontoffice/_components/layout.html.twig' %}
 {% block body %}
-    <h2 class="p-5">FAQ</h2>
-    <div class="accordion accordion-flush" id="accordionFlushExample">
+    {% do categorie_faq.getDatas(locale) %}
+    <h2 class="px-5 pt-5">{{ categorie_faq.title | raw }}</h2>
+    <div class="accordion accordion-flush" id="accordionFAQ">
         <div class="p-2 p-lg-5">
-            {% for article in articles_question %}
+            {% for article in articles_faq %}
                 {% do article.getDatas(locale) %}
                 <div class="accordion-item">
                     <div class="accordion-header">
-                        <button class="accordion-button collapsed fs-4 p-2" type="button" style="font-family: 'Akshar', sans-serif" data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{ loop.index }}" aria-expanded="false" aria-controls="flush-collapse-{{ loop.index }}">
+                        <button class="accordion-button collapsed fs-4 p-2" type="button" style="font-family: 'Akshar', sans-serif" data-bs-toggle="collapse" data-bs-target="#flush-collapse-faq-{{ loop.index }}" aria-expanded="false" aria-controls="flush-collapse-faq-{{ loop.index }}">
                             {{ loop.index }} - {{ article.title | raw }}
                         </button>
                     </div>
-                    <div id="flush-collapse-{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div id="flush-collapse-faq-{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#accordionFAQ">
                         <div class="accordion-body fs-5">{{ article.description | raw }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- QUESTIONS -->
+    {% do categorie_question.getDatas(locale) %}
+    <h2 class="px-5 pt-5">{{ categorie_question.title | raw }}</h2>
+    <div class="accordion accordion-flush" id="accordionQuestion">
+        <div class="p-2 p-lg-5">
+            {% for question in articles_question %}
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fs-4 p-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-question-{{ loop.index }}" aria-expanded="false" aria-controls="flush-collapse-{{ loop.index }}">
+                            {{ question.title }}
+                        </button>
+                    </h2>
+                    <div id="flush-collapse-question-{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#accordionQuestion">
+                        <div class="accordion-body fs-5"> {{ question.description | raw}}</div>
                     </div>
                 </div>
             {% endfor %}

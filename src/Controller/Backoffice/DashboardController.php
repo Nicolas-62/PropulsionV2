@@ -167,7 +167,7 @@ class DashboardController extends AbstractDashboardController
 
         // yield MenuItem::linkToDashboard('dashboard', 'fa fa-home');
         //yield MenuItem::section('Contenu','fa-solid fa-folder');
-        if ($this->isGranted('ROLE_ADMIN')) {
+        if ($this->isGranted('ROLE_ADMIN') or $this->isGranted('ROLE_AUTHOR')) {
 
             // Liste des Catégories.
             yield MenuItem::linkToCrud('Categories', 'fa-solid fa-bars', Category::class);

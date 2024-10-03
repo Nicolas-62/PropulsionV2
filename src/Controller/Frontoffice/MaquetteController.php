@@ -383,7 +383,7 @@ class MaquetteController extends AbstractController
     public function programmation(): Response
     {
         $giscard = $this->entityManager->getRepository(Article::class)->findOneBy(['id' => '13']);
-        $citron = $this->entityManager->getRepository(Article::class)->findOneBy(['id' => '39']);
+        $citron = $this->entityManager->getRepository(Article::class)->findOneBy(['id' => '48']);
         $events_agenda = $this->entityManager->getRepository(Category::class)->getGenealogy(10, $this->getParameter('locale'));
         return $this->render('maquette/programmation.html.twig', [
             'controller_name' => 'MaquetteController',

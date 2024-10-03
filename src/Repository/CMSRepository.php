@@ -222,15 +222,13 @@ Abstract class CMSRepository extends ServiceEntityRepository
     public function getElementWithSameSlug(Article|Category $entity): Article|Category|null
     {
         // On récupère l'article ayant le même parent et le même slug
-        $query = $this->createQueryBuilder($this->model_alias)->andWhere("$this->model_alias.slug = :slug");
+        $query = $this->createQueryBuilder($this->model_alias)
+            ->andWhere("$this->model_alias.slug = :slug")->setParameter('slug', $entity->getSlug());
 
         if($entity->getId() != null) {
             $query->andWhere("$this->model_alias.id != :id")->setParameter('id', $entity->getId());
         }
-        $query->andWhere("$this->model_alias.id != :id")
-            ->setParameter('slug', $entity->getSlug())
-            ->setParameter('id', $entity->getId())
-            ->setMaxResults(1);
+        $query->setMaxResults(1);
 
         return $query->getQuery()->getOneOrNullResult();
     }

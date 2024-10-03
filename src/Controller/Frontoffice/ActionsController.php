@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 
-#[Route('/actions/', name: 'fo_actions_')]
+#[Route('/projets-culturels/', name: 'fo_actions_')]
 
 class ActionsController extends LuneController
 {
@@ -63,7 +63,7 @@ class ActionsController extends LuneController
     public function getChild(?Category $category): Response
     {
         // Récupération des articles de la catégorie Actions PVE
-        $articles = $this->entityManager->getRepository(Category::class)->getArticles([$category->getId()], $this->getParameter('locale'), true, 'dateEvent', 'DESC');
+        $articles = $this->entityManager->getRepository(Category::class)->getArticles([$category->getId()], $this->getParameter('locale'), true, 'ordre', 'ASC');
 
 
         // Envois à la vue

@@ -83,7 +83,19 @@ class AppExtension extends AbstractExtension
     }
 
     public function getDatetimeEvent($date, $datetime){
-        return str_replace('00:00:00', $datetime->format('H:i:s'), $date->format('Y-m-d H:i:s'));
+
+        if($date == null){
+            $date = '0000-00-00 00:00:00';
+        }else{
+            $date = $date->format('Y-m-d H:i:s');
+        }
+
+        if($datetime == null){
+            $datetime = '00:00:00';
+        }else{
+            $datetime = $datetime->format('H:i:s');
+        }
+        return str_replace('00:00:00', $datetime, $date);
     }
 
     public function formatCustomDate($date)

@@ -1,0 +1,82 @@
+{# Sons SoundCloud #}
+{% if article.soundcloudLink or article.soundcloudSecondLink or article.soundcloudThirdLink %}
+    <!-- Sons SoundCloud -->
+    <div class="">
+        {% if article.soundcloudLink is not null and article.soundcloudLink is not empty %}
+            <div class="sound-container my-4">
+                {{ article.soundcloudLink | raw }}
+            </div>
+        {% endif %}
+        {% if article.soundcloudSecondLink is not null and article.soundcloudSecondLink is not empty %}
+            <div class="sound-container my-4">
+                {{ article.soundcloudSecondLink | raw }}
+            </div>
+        {% endif %}
+        {% if article.soundcloudThirdLink is not null and article.soundcloudThirdLink is not empty %}
+            <div class="sound-container my-4">
+                {{ article.soundcloudThirdLink | raw }}
+            </div>
+        {% endif %}
+    </div>
+{% endif %}
+{# Fichiers #}
+{% if not article.getFiles is empty %}
+    {% set filesArray = article.getFiles() %}
+    {% set arrayLength = filesArray|length %}
+    {% if arrayLength > 0 %}
+        <!-- Fichiers -->
+        <div class="container py-3">
+            <div class="row row-cols-auto align-items-center justify-content-start">
+                <div class="col-12 col-md-auto mb-2 mb-md-0">
+                    <span class="fs-4">Fichier{{ (arrayLength > 1) ? 's' : ''}} : &nbsp;</span>
+                </div>
+                {% for file in article.getFiles() %}
+                    {% set url_file = '/assets/images/' ~ file.media %}
+                    <div class="col">
+                        <a class="btn-read-card" href="{{ url_file }}" role="button"><i class="fa-solid fa-circle-down"></i><span class="ms-2 lien-souligne">{{ file.legend }}</span></a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4 text-dark">
+                <hr>
+            </div>
+            <div class="col-4 offset-4 text-dark">
+                <hr>
+            </div>
+        </div>
+
+    {% endif %}
+{% endif %}
+{# MEDIAS SOCIAUX #}
+{% if article.hasSocialLink  %}
+    <!-- MEDIAS SOCIAUX -->
+    <div class="container text-center py-3">
+        <div class="row row-cols-auto align-items-center justify-content-center justify-content-md-end">
+            <div class="col-12 col-md-auto mb-2 mb-md-0">
+                <span class="fs-4">Plus d'infos sur l'artiste</span>
+            </div>
+            {% if article.instagramLink != '' %}
+                <div class="col text-center">
+                    <a href="{{ article.instagramLink }}"><img style="height: 50px"  src="{{ asset(getSiteImagePath('artiste-insta.svg')) }}"></a>
+                </div>
+            {% endif %}
+            {% if article.twitterLink != '' %}
+                <div class="col">
+                    <a href="{{ article.twitterLink }}"><img style="height: 50px" src="{{ asset(getSiteImagePath('artiste-tw.svg')) }}"></a>
+                </div>
+            {% endif %}
+            {% if article.facebookLink != '' %}
+                <div class="col">
+                    <a href="{{ article.facebookLink }}"><img style="height: 50px" src="{{ asset(getSiteImagePath('artiste-fb.svg')) }}"></a>
+                </div>
+            {% endif %}
+            {% if article.siteInternet != '' %}
+                <div class="col">
+                    <a href="{{ article.siteInternet }}"><img style="height: 50px" src="{{ asset(getSiteImagePath('artiste-web.svg')) }}"></a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
