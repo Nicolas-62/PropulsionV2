@@ -35,6 +35,23 @@ body {
   }
 }
 
+.btn-read-card{
+  font-size: 1.25rem;
+  padding: 0.5rem;
+  border-radius: 0;
+  background-color: white;
+  text-decoration: none;
+  color: black;
+
+}
+.btn-read-card:hover{
+  background-color: black;
+  color: white;
+  a{
+    color: white;
+  }
+}
+
 .lien-souligne{
   color: black;
   text-decoration: none;
@@ -55,7 +72,6 @@ body {
 }
 
 /* Taille de texte */
-
 
 /* Couleur de fond */
 
@@ -320,23 +336,11 @@ body {
   }
 }
 
-.btn-read-card,
-.btn-read-card:hover{
-
-  font-size: 1.25rem;
-  padding: 0.5rem;
-  border-radius: 0;
-  background-color: white;
-  text-decoration: none;
-  color: black;
-
-}
-
 /* Image */
 
 .round-img-header {
   padding:2px;
-  border: solid 1px #B4B4B4FF;
+  border: solid 2px black;
   background-color: #ffffff;
   margin-left: -16px;
   width: 90px;
@@ -345,8 +349,7 @@ body {
 }
 
 .round-img-header-sm  {
-  padding:2px;
-  border: solid 1px #B4B4B4FF;
+  border: solid 2px black;
   background-color: #ffffff;
   margin-left: -8px;
   max-height: 50px

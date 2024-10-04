@@ -73,13 +73,12 @@
                         {% endif %}
                     {% endfor %}
                     <a href="{{ path('gallery') }}" class="ms-2 text-decoration-none position-relative" style="padding-bottom: 30px; display: inline-block;">
-                        <img style="width: 62px; height: 62px; margin-left: -24px;" src="{{ asset(getSiteImagePath('header-galerie.svg')) }}" alt="Description de l'image">
+                        <img style="width: 62px; height: 62px; margin-left: -24px;" src="{{ asset(getSiteImagePath('header-galerie.svg')) }}" alt="Accès à la galerie">
                         <div style="position: absolute; top: -35px; left: 0px; transform: translateX(-50%); text-align: center; font-size: 14px;  width:190px">
                             <div style="border-bottom: solid black 1px; display: inline-block; position: relative;">
                                 Galerie Photos
                             </div>
                             <div class="triangle">
-
                             </div>
                             <div class="small-triangle"></div>
                         </div>
@@ -94,8 +93,6 @@
             </div>
             <nav class="navbar navbar-expand-lg mt-auto px-lg-5">
                 <ul class="navbar-nav w-100 justify-content-end pt-3 px-lg-5">
-
-
                 </ul>
             </nav>
             <!-- Menu avec dropdowns -->
@@ -157,7 +154,7 @@
         </div>
         <div class="col-9 d-flex justify-content-end align-items-center">
 
-            <a href="/gallery"  class="ms-2 text-decoration-none">
+            <a href="{{ path('gallery') }}"  class="ms-2 text-decoration-none">
                 <img style="width: 44px" src="{{ asset(getSiteImagePath('header-galerie.svg')) }}">
             </a>
             <a rel="nofollow" href="https://billetterie.lalune.net/"  class="ms-2 text-decoration-none">

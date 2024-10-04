@@ -35,8 +35,8 @@ class HomeController extends LuneController
         echo 'méthode de reprise'; exit();
 
         // Reset de l'ordre des articles d'une catégorie
-        $categories = $this->entityManager->getRepository(Category::class)->findBy(['id'=> [43,44,45,46]]);
-//        $categories = $this->entityManager->getRepository(Category::class)->findBy(['id'=> '43']);
+        //$categories = $this->entityManager->getRepository(Category::class)->findBy(['id'=> [43,44,45,46]]);
+        $categories = $this->entityManager->getRepository(Category::class)->findBy(['id'=> '32']);
 
         foreach($categories as $category){
             dump($category->id);
@@ -47,7 +47,6 @@ class HomeController extends LuneController
                 $article->setOrdre($index+1);
                 $this->entityManager->persist($article);
             }
-
         }
         $this->entityManager->flush();
 
