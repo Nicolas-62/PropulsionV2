@@ -12,15 +12,6 @@
                 data-bs-pause="false"
             >
 
-                <div class="carousel-indicators">
-                    {% set index = 0 %}
-                    {% for event in events_agenda %}
-                        {% if event.star == 1  %}
-                            <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{ index }}" class="active" aria-label="{{ event.title }}" aria-current="true"></button>
-                            {% set index = index+1 %}
-                        {% endif %}
-                    {% endfor %}
-                </div>
                 <div class="carousel-inner">
                     {% set active = true %}
                     {% for event in events_agenda %}

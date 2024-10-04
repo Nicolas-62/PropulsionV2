@@ -6,7 +6,7 @@
 {# Définition de l'URL d'accès au détail du parent de l'entité affichée. #}
 {% set url = ea_url()
     .unsetAll()
-    .setController('App\\Controller\\Backoffice\\' ~ crudControllerName ~ 'CrudController')
+    .setController('App\\Controller\\Backoffice\\' ~ crudControllerName)
     .setAction(action.crudActionName).set(ancestorKeyName, ancestorId)
 %}
 

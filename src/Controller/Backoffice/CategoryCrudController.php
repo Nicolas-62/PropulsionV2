@@ -369,7 +369,7 @@ class CategoryCrudController extends BoController
         // Passage du parent des enfants de la liste affichée.
         $responseParameters->set('parentId', $this->entity?->getId());
         $responseParameters->set('ancestorId', $ancestorId);
-        $responseParameters->set('crudControllerName', 'Category');
+        $responseParameters->set('crudControllerName', 'CategoryCrudController');
         $responseParameters->set('keyName', 'entityId');
 
         $twig = $this->container->get('twig');

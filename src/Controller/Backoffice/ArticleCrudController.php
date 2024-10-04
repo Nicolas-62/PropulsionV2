@@ -606,7 +606,7 @@ class ArticleCrudController extends BoController
         // Variables passées pour la navigation dans la vue.
 
         // Nom du controleur parent dans l'arboresence.
-        $crudControllerName     =   'Category';
+        $crudControllerName     =   'CategoryCrudController';
         // nom du champ du modèle parent du parent pour retour à la liste
         $ancestorKeyName        =   'entityId';
         // nom du champ du modèle parent sur lequel filtrer.
@@ -625,14 +625,15 @@ class ArticleCrudController extends BoController
                 $parentId               =   $this->entity->getId();
                 // Envoi de l'id du grand-parent à la vue.
                 $ancestorId             =   $this->entity->getCategory()?->getId();
-                $crudControllerName     =   'Article';
+                $crudControllerName     =   $this->getControllerName();
                 $ancestorKeyName        =   'categoryId';
                 $searchKeyName          =   'entityId';
+
             }
         }
         // Si édite un article
         else if (Crud::PAGE_EDIT === $responseParameters->get('pageName')) {
-            $crudControllerName     =   'Article';
+            $crudControllerName     =   $this->getControllerName();
             // Si on est sur la liste des articles d'une catégorie.
             if ($this->category != null)
             {
@@ -778,7 +779,7 @@ class ArticleCrudController extends BoController
         $returnPageAction->addCssClass('btn btn-secondary');
         // Ajout des boutons à la liste des actions disponibles.
         $actions->add(Crud::PAGE_EDIT, $returnPageAction);
-
+        // Ajout action d'édition sur la page détail
 
         return $actions;
     }
