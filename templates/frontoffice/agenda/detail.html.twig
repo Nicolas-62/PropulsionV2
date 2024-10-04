@@ -112,7 +112,7 @@
                         <div class="row gx-0 pt-5">
                             <div class="col text-center">
                                 <a class="text-decoration-none" href="https://billetterie.lalune.net/abonnements/166f6eac2a539b/renouvellement">
-                                    <img style="max-height: 50px" src="{{ asset(getSiteImagePath('abonnement.svg')) }}">
+                                    <img class="rounded rounded-2" style="max-height: 50px" src="{{ asset(getSiteImagePath('abonnement.png')) }}">
                                     <div style="font-size: 14px">
                                         Profitez du tarif abonné<br>
                                         <b>avec la carte lune</b>
@@ -153,123 +153,13 @@
             </div>
         </div>
     </div>
-    <!-- DETAIL ARTICLE -->
-    <div class="container-fluid shadow-lg">
-        <div class="py-4 row">
-            <!-- CONTENU PARTIE GAUCHE-->
-            <div class="col-lg-8 col-md-12 px-5">
-                <!-- NOM GROUPE / STYLE / HORAIRE -->
-                <div class="row d-flex justify-content-between pb-3">
-                    <div class="col-lg-auto col-md-12">
-                        <div class="fs-1 lh-1">{{ article.titleByLanguage }}</div>
-                    </div>
-                    <div class="col-lg-auto col-md-12">
-                        <div class="fs-1 lh-1 d-flex align-items-center">{{ article.typeMusic}}  {% if article.origin != "" %} | {{ article.origin }}{% endif %}</div>
-                    </div>
-                    <div class="col-lg-auto col-md-12">
-                        {% if article.datetimeEvent is not null and article.datetimeEvent  is not empty %}
-                            <div class="fs-1 lh-1">{{ article.datetimeEvent| date('H:i') }}</div>
-                        {% endif %}
-                    </div>
-                </div>
-                <!-- CONTENU ARTISTE -->
-                <div class="fs-5" style="line-height: 1.3">
-                    {{ article.content | raw }}
-                </div>
-                <!-- VIDEO ARTISTE -->
-                {% if article.youtubeLink %}
-                    <div class="pt-3">
-                        <div class="video-container">
-                            <iframe src="{{ article.youtubeLink }}" allowfullscreen></iframe>
-                        </div>
-                    </div>
-                {% endif %}
-                {# Artiste infos #}
-                {{ include(fo_path ~ 'agenda/artiste_infos.html.twig') }}
-            </div>
-
-            <!-- LIENS ET INFOS PRATIQUES (PARTIE DROITE) -->
-            <div class="col-lg-4 col-md-12 px-5">
-                <div class="p-4 d-none d-lg-block text-center">
-                    <!-- CARTE LUNE -->
-                    <div class="py-3">
-                        <a rel="nofollow" href="https://billetterie.lalune.net/abonnements/166f6eac2a539b/renouvellement">
-                            <img style="max-width: 313px" src="{{ asset(getSiteImagePath('abonnement.svg')) }}">
-                        </a>
-                        <div class="fs-5">
-                            Profitez du tarif abonné
-                        </div>
-                        <div class="fs-5 fw-bold">
-                            avec la carte lune
-                        </div>
-                    </div>
-                    <div class="py-5">
-                        <a class="text-decoration-none" href="{{ path('fo_infos_index') }}">
-                            <img style="max-height: 150px" src="{{ asset(getSiteImagePath('infos.png')) }}">
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- DETAIL ARTISTE PRINCIPAL -->
+    {{ include(fo_path ~ 'agenda/artiste.html.twig', {'article' : article, 'show_right_side' : true}) }}
     <!-- DEUXIEME PARTIE -->
     {% for child in children %}
         {% do child.getDatas(locale) %}
-    <div class="container-fluid shadow-lg">
-        <div class="py-4 px-lg-5">
-            <div class="row">
-                <div class="col-lg-8 col-md-12">
-                    <!-- NOM GROUPE / STYLE / HORAIRE -->
-                    <div class="row d-flex justify-content-between pb-3">
-                        <div class="col-lg-auto col-md-12">
-                            <div class="fs-1 lh-1">{{ child.titleByLanguage }}</div>
-                        </div>
-                        <div class="col-lg-auto col-md-12"  >
-                            <div class="fs-1 lh-1  d-flex align-items-center">{{ child.typeMusic}}  {% if child.origin != "" %} | {{ child.origin }}{% endif %}</div>
-                        </div>
-                        <div class="col-lg-auto col-md-12">
-                            <div class="fs-1 lh-1 ">{{ child.datetimeEvent | date('H:i') }}</div>
-                        </div>
-                    </div>
-                    <!-- CONTENU ARTISTE -->
-                    <div class="fs-5">
-                        {{ child.description | raw }}
-                    </div>
-                    <!-- Image Artiste Ou vidéos artistes-->
-                    {% set media3 = child.getMedia(33) %}
-                    <div class="pt-3">
-
-                        {% if child.youtubeLink is not empty and child.youtubeLink is not null %}
-                            <div class="embed-responsive embed-responsive-16by9">
-                                <div class="video-container">
-                                    <iframe src="{{ child.youtubeLink }}" allowfullscreen></iframe>
-                                </div>
-                            </div>
-                        {% endif %}
-                        {% if child.youtubeSecondLink is not empty and child.youtubeSecondLink is not null %}
-                            <div class="embed-responsive embed-responsive-16by9">
-                                <div class="video-container">
-                                    <iframe src="{{ child.youtubeLink }}" allowfullscreen></iframe>
-                                </div>                            </div>
-                        {% endif %}
-                        {% if media3 is not null and child.youtubeSecondLink is empty  and child.youtubeLink is empty %}
-                            {% set url = '/assets/images/' ~ media3.media  %}
-                            <img src="{{ asset((url)) }}" class="card-img-top rounded-0" alt="...">
-                        {% endif %}
-                    </div>
-                    <!-- CONTENT ARTISTE -->
-                    <div class="fs-5 py-3">
-                        {{ child.content | raw }}
-                    </div>
-                    {# Artiste infos #}
-                    {% include fo_path ~ 'agenda/artiste_infos.html.twig'  with {'article' : child} %}
-                </div>
-                <!-- LIENS ET INFOS PRATIQUES (PARTIE DROITE) -->
-                <div class="col-lg-4 col-md-12">
-                </div>
-            </div>
-        </div>
-    </div>
+        <!-- DETAIL ARTISTES -->
+        {{ include(fo_path ~ 'agenda/artiste.html.twig', {'article' : child, 'show_right_side' : false}) }}
     {% endfor %}
     <!-- A DECOUVRIR -->
     <hr class="my-0">
@@ -278,7 +168,6 @@
             à découvrir >> >> >>
         </h1>
         <div class="row">
-
             {#Compteur pour afficher le nombre souhaité dans la vue #}
             {% set count = 0 %}
             {% for event in events_agenda %}

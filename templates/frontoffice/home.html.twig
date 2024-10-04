@@ -12,15 +12,6 @@
                 data-bs-pause="false"
             >
 
-                <div class="carousel-indicators">
-                    {% set index = 0 %}
-                    {% for event in events_agenda %}
-                        {% if event.star == 1  %}
-                            <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{ index }}" class="active" aria-label="{{ event.title }}" aria-current="true"></button>
-                            {% set index = index+1 %}
-                        {% endif %}
-                    {% endfor %}
-                </div>
                 <div class="carousel-inner">
                     {% set active = true %}
                     {% for event in events_agenda %}
@@ -103,7 +94,6 @@
                 {% endfor %}
             </div>
         </div>
-
         <!-- Event / Playlistes -->
         <div class="container-fluid pb-4">
             <div class="row">
@@ -113,23 +103,29 @@
                             {% for event in events_actus %}
                                 {% if loop.index0 < 4 %}
                                     <div class="col-lg-6 col-md-12 border-event mb-md-3  mb-lg-0 mb-sm-3 px-0">
-                                        {% set mediaArticle = event.getMedia(8) %}
-                                        {% if mediaArticle is not null %}
-                                            <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':mediaArticle.media} ) }}" class="img-fluid w-100" alt="...">
-                                        {% endif %}
-                                        <div class="p-4">
-                                            <!-- TITRE -->
-                                            <div class="h3 mb-3">{{ event.title }}</div>
-                                            <!-- CONTENU -->
-                                            <div class="fs-5">{{ event.description | raw}}</div>
-                                            <!-- DATE ET HEURE -->
-                                            <div class="pt-3" >
-                                                <div class="fs-4 fw-bold">{{ formatCustomDate(event.dateEvent) }}</div>
-                                                {% if event.datetimeEvent is not null and event.datetimeEvent is not empty %}
-                                                    <div class="fs-4">{{ event.datetimeEvent| date("H:i") }}</div>
+                                        <div class="d-flex flex-column justify-content-between h-100">
+                                            <div>
+                                                {% set mediaArticle = event.getMedia(8) %}
+                                                {% if mediaArticle is not null %}
+                                                    <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':mediaArticle.media} ) }}" class="img-fluid w-100" alt="...">
                                                 {% endif %}
+                                                <div class="p-4">
+                                                    <!-- TITRE -->
+                                                    <div class="h3 mb-3">{{ event.title }}</div>
+                                                    <!-- CONTENU -->
+                                                    <div class="fs-5">{{ event.description | raw}}</div>
+                                                    <!-- DATE ET HEURE -->
+                                                    <div class="pt-3" >
+                                                        <div class="fs-4 fw-bold">{{ formatCustomDate(event.dateEvent) }}</div>
+                                                        {% if event.datetimeEvent is not null and event.datetimeEvent is not empty %}
+                                                            <div class="fs-4">{{ event.datetimeEvent| date("H:i") }}</div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <a href="{{ path('fo_actus_detail', { 'slug': event.slug }) }}" class="btn border rounded-0 border-dark mt-3 fs-4">LIRE LA SUITE</a>
+                                            <div class="p-4 pt-0">
+                                                <a href="{{ path('fo_actus_detail', { 'slug': event.slug }) }}" class="btn btn-read-card border rounded-0 border-dark mt-3 fs-4">LIRE LA SUITE</a>
+                                            </div>
                                         </div>
                                     </div>
                                 {% endif %}
@@ -149,12 +145,6 @@
                             <a rel="nofollow" href="https://billetterie.lalune.net/abonnements/166f6eac2a539b/renouvellement">
                                 <img class="img-fluid" style="max-width: 313px" src="{{ asset(getSiteImagePath('abonnement.svg')) }}">
                             </a>
-                            <div class="fs-5">
-                                Concerts Gratuits Abonnés & Réductions
-                            </div>
-                            <div class="fs-5 fw-bold">
-                                Abonnez-vous !
-                            </div>
                         </div>
                         <div class="py-3">
     {#                        <div class="h2"> Playlist</div>#}

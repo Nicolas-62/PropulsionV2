@@ -310,4 +310,14 @@ abstract class BoController extends AbstractCrudController
         return strtolower( (new \ReflectionClass(Media::class))->getShortName() );
     }
 
+    /**
+     * Retourne le nom du modèle géré par le controleur.
+     * ex : App\Entity\Media => media
+     *
+     * @return string
+     */
+    public  function getControllerName(): string
+    {
+        return (new \ReflectionClass($this->getContext()->getCrud()->getControllerFqcn()))->getShortName();
+    }
 }
