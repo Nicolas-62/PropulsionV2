@@ -4,7 +4,7 @@
     <!-- IMAGE DU HAUT -->
     <div class="container-fluid px-0 shadow-lg mt-5" >
         <div class="row gx-0">
-            <div class="col-12 col-lg-8 p-0 " style="">
+            <div class="col-12 col-lg-8 p-0" style="position:relative;">
                 {% if article.cancelled %}
                     <div class="cancelled-overlay">
                         <p class="cancelled-text">ANNULÉ</p>
@@ -92,16 +92,16 @@
                             {% if article.price %}
                             <div class="row mt-3 row-cols-md-{{ article.nbTarifs }}">
                                 <div class="col-12">
-                                    <div class="btn-rate-card mb-3"> <a class="" href="{{ article.ticketingLink }}">Tarif plein : {{ article.price }}</a></div>
+                                    <div class="btn-rate-card mb-3 position-relative"> <a class="stretched-link" href="{{ article.ticketingLink }}">Tarif plein : {{ article.price }}</a></div>
                                 </div>
                                 {% if article.subscriberPrice %}
                                     <div class="col-12">
-                                        <div class="btn-rate-card mb-3"> <a class="" href="{{ article.ticketingLink }}">Tarif plein : {{ article.subscriberPrice }}</a></div>
+                                        <div class="btn-rate-card mb-3 position-relative"> <a class="stretched-link" href="{{ article.ticketingLink }}">Tarif plein : {{ article.subscriberPrice }}</a></div>
                                     </div>
                                 {% endif %}
                                 {%  if article.reducedPrice %}
                                     <div class="col-12">
-                                        <div class="btn-rate-card mb-3"> <a class="" href="{{ article.ticketingLink }}">Tarif plein : {{ article.reducedPrice }}</a></div>
+                                        <div class="btn-rate-card mb-3 position-relative"><a class="stretched-link" href="{{ article.ticketingLink }}">Tarif plein : {{ article.reducedPrice }}</a></div>
                                     </div>
                                 {% endif %}
                             </div>

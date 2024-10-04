@@ -39,9 +39,10 @@
 
 
         <!-- Article -->
-        <div class="container-fluid">
+        <div class="container-fluid py-4 ">
 
-            <div class="py-4 position-relative image-top-corner">
+            <div class="position-relative image-top-corner">
+                <div class="image-bot-corner">
         {#                <img src="{{ asset(('build/maquette/images/actu_cadre_1.svg')) }}" class="position-absolute other-browser" alt="ACTIONCULTURELLE">#}
                         <div class="row px-lg-5 pt-5" >
                             <div class="col-lg-9 col-md-12" style="padding-left: 30px">
@@ -135,7 +136,7 @@
                                 </div>
 
                             </div>
-                            <div class="col-lg-3 col-md-12 image-bot-corner">
+                            <div class="col-lg-3 col-md-12 mb-5">
                                 <!-- Thème -->
                                 {% do article.category.getDatas(locale) %}
                                 <div class="text-center h2 white" style="background-color: {{ article.category.themeBackColor }}; min-height: 50px;">
@@ -151,14 +152,16 @@
                                         {% if actu.titleByLanguage|upper != article.titleByLanguage|upper %}
                                             {% set themesChild = actu.category.title %}
                                             {% if actu.category.title == themeArticle %}
-                                                <div style="" class="mb-4 card rounded rounded-0 p-4">
-                                                    <div class="fs-4 fw-bold">
-                                                        {% if actu.eventName is not empty %}{{ actu.eventName }} :{% endif%} {{ actu.titleByLanguage | upper }}
+                                                <div class="card rounded rounded-0 mb-4">
+                                                    <div class="card-body px-4 pb-0">
+                                                        <div class="fs-4 fw-bold">
+                                                            {% if actu.eventName is not empty %}{{ actu.eventName }} :{% endif%} {{ actu.titleByLanguage | upper }}
+                                                        </div>
+                                                        <div class="card-text py-4 fs-5" style="line-height: 1">
+                                                            {{ actu.description|raw }}
+                                                        </div>
                                                     </div>
-                                                    <div class="card-text py-3 fs-5" style="line-height: 1">
-                                                        {{ actu.description|raw }}
-                                                    </div>
-                                                    <div>
+                                                    <div class="card-body p-4 pt-0 d-flex justify-content-between align-items-end">
                                                         <a href="{{ path('fo_actus_detail', { 'slug': actu.slug}) }}" class="btn-read-card">LIRE LA SUITE</a>
                                                     </div>
                                                 </div>
@@ -166,7 +169,6 @@
                                         {% endif %}
                                     {% endfor %}
                                 </div>
-
                                 <div class="fs-3 ps-3 pb-3">
                                     à voir aussi ...
                                 </div>
@@ -179,14 +181,16 @@
                                             {% if actu.category.title != themeArticle %}
                                                 {% set temoin_nb_actus = temoin_nb_actus + 1 %}
                                                 {% if temoin_nb_actus < 4 %}
-                                                    <div style="" class="mb-4 card rounded rounded-0 p-4">
-                                                        <div class="fs-4 fw-bold">
-                                                            {% if actu.eventName is not empty %}{{ actu.eventName }} :{% endif%} {{ actu.titleByLanguage | upper }}
+                                                    <div class="card rounded rounded-0">
+                                                        <div class="card-body px-4 pb-0">
+                                                            <div class="fs-4 fw-bold">
+                                                                {% if actu.eventName is not empty %}{{ actu.eventName }} :{% endif%} {{ actu.titleByLanguage | upper }}
+                                                            </div>
+                                                            <div class="card-text py-4 fs-5" style="line-height: 1">
+                                                                {{ actu.description|raw }}
+                                                            </div>
                                                         </div>
-                                                        <div class="card-text py-3 fs-5" style="line-height: 1">
-                                                            {{ actu.description|raw }}
-                                                        </div>
-                                                        <div>
+                                                        <div class="card-body p-4 pt-0 d-flex justify-content-between align-items-end">
                                                             <a href="{{ path('fo_actus_detail', { 'slug': actu.slug}) }}" class="btn-read-card">LIRE LA SUITE</a>
                                                         </div>
                                                     </div>
@@ -198,6 +202,7 @@
                             </div>
                         </div>
                     </div>
+            </div>
         </div>
     </div>
 {% endblock %}
