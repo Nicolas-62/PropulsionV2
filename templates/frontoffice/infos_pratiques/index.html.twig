@@ -145,8 +145,7 @@
                                 <select class="form-control rounded-0 border-secondary fs-5 select-infos"  name="{{ field_name(form.subject) }}" id="contact">
                                     <option>Sélectionner ...</option>
                                     {% for subject, value in field_choices(form.subject) %}
-
-                                        <option value="{{ value }}" {%  if active_subject is not null and loop.index0 == active_subject.index %}selected{% endif %}>{{ subject }}</option>
+                                        <option value="{{ value }}" {%  if loop.index0 == active_subject_key %}selected{% endif %}>{{ subject }}</option>
                                     {% endfor %}
                                 </select>
                                 {{ form_errors(form.subject) }}

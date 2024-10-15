@@ -45,7 +45,7 @@ class AgendaController extends LuneController
         return parent::lister();
     }
 
-    #[Route('{slug}', name: 'detail')]
+    #[Route('evenement/{slug}', name: 'detail')]
     public function detail(?Article $event): Response
     {
 
@@ -72,21 +72,37 @@ class AgendaController extends LuneController
     }
 
 
-    #[Route('historic/all', name: 'historic')]
-    public function historic(EntityManagerInterface $entityManager, ContainerBagInterface $params): Response
+    #[Route('historique', name: 'historic')]
+    public function historic(): Response
     {
         $this->category_id  = 3;
         // Initialisation du controller.
 
         // Appel du constructeur du controller parent
         // Récupération des sous catégories de la catégorie agenda
-        $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($this->category_id)->getChildrenIds();
+        $sous_categorie_ids             = $this->entityManager->getRepository(Category::class)->find($this->category_id)->getChildrenIds();
         // Récupération des articles des sous catégories de la catégorie agenda
-        $events_agenda      = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $params->get('locale'), true, 'dateEvent', 'DESC');
-        $this->data['events_agenda']           = $events_agenda;
+        $events_agenda                  = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
+        $this->data['events_agenda']    = $events_agenda;
 
         return $this->render('frontoffice/agenda/historic.html.twig', $this->data);
     }
 
+    #[Route('historique/{filter}', name: 'historic_old')]
+    public function historicAll($filter): Response
+    {
+        if($filter and $filter == 'old'){
+            return $this->render('frontoffice/agenda/historic_all.html.twig', $this->data);
+        }else{
+            $this->redirectToRoute('fo_agenda_index');
+        }
+    }
 
+    public function old_events(): Response
+    {
+        $this->category_id      = 69;
+        $events                 = $this->entityManager->getRepository(Category::class)->getArticles([$this->category_id], $this->getParameter('locale'), false, 'dateEvent', 'DESC');
+        $this->data['events_historic']   = $events;
+        return $this->render('frontoffice/_components/old_events.html.twig', $this->data);
+    }
 }

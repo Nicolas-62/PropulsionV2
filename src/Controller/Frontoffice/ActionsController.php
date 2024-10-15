@@ -5,7 +5,9 @@ namespace App\Controller\Frontoffice;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\CategoryData;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\Collection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,17 +38,20 @@ class ActionsController extends LuneController
     public function index(): Response
     {
 
-        $cat_action_id = 53;
+        $cat_action_id      = 53;
         // Récupération des sous catégories de la catégorie actu
         $sous_categorie_ids = $this->entityManager->getRepository(Category::class)->find($cat_action_id)->getChildrenIds();
 
         // Récupération des articles des sous catégories de la catégorie actu
-        $events_actus = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
+        $events_actus       = $this->entityManager->getRepository(Category::class)->getArticles($sous_categorie_ids, $this->getParameter('locale'), true, 'dateEvent', 'DESC');
 
-        $cat_action = $this->entityManager->getRepository(Category::class)->find($cat_action_id);
-        $articles = $this->entityManager->getRepository(Category::class)->getArticles([$cat_action_id], $this->getParameter('locale'), true, 'dateEvent', 'DESC');
+        $cat_action         = $this->entityManager->getRepository(Category::class)->find($cat_action_id);
+        $articles           = $this->entityManager->getRepository(Category::class)->getArticles([$cat_action_id], $this->getParameter('locale'), true, 'dateEvent', 'DESC');
+        $sous_cat = new ArrayCollection($this->entityManager->getRepository(Category::class)->findBy(['category_id' => $cat_action_id]));
+        $this->data['sous_cat_actions'] = $sous_cat->filter(function (Category $category) {
+            return $category->isOnline();
+        });
 
-        $this->data['sous_cat_actions'] = $this->entityManager->getRepository(Category::class)->findBy(['category_id' => $cat_action_id]);
 
         $this->data['active_entry']    = $articles[0];
 

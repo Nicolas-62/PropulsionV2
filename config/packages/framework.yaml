@@ -24,6 +24,8 @@ framework:
     #fragments: true
     php_errors:
         log: true
+    # pour inclure directement des methodes de controller comme vue embarquée
+    fragments: { path: /_fragment }
 
 #when@prod:
 #    framework:
