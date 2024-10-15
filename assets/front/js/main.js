@@ -31,6 +31,7 @@ import 'bootstrap'; // adds functions to jQuery
 import 'select2';
 import './libs/utilities';
 import './libs/lightBox';
+import './libs/hinclude';
 
 import verge from 'verge';
 $.extend(verge);
@@ -42,6 +43,7 @@ $('.custom-select').select2({
 let urlParams = new URLSearchParams(window.location.search);
 
 $(document).ready(function() {
+
 
     // Sélecteur principal de la vue
     let $main               = $('body');

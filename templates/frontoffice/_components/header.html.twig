@@ -113,19 +113,18 @@
                                                 <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path(url ~ category_header.url) }}">{{ category_header.title|upper }} - INDEX</a></li>
                                             {% endif %}
                                             {# Infos pratiques #}
-                                            {% if category_header.id != 39 %}
-                                                {% for sous_categorie in category_header.children %}
-                                                    {# Soutien aux artistes #}
-                                                    {% if category_header.id == 6 %}
-                                                        <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path(url ~ sous_categorie.url) }}#{{ sous_categorie.slug }}">{{ sous_categorie.title|upper }}</a></li>
-                                                    {# Projets culturels #}
-                                                    {% elseif category_header.id == 53 %}
-                                                        <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path(url ~ sous_categorie.url) }}{{ sous_categorie.slug }}">{{ sous_categorie.title|upper }}</a></li>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            {% else %}
+                                            {% if category_header.id == 39 %}
                                                 {% for contact_entry in contact_entries %}
                                                     <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path('fo_infos_contact', {'entrySlug': contact_entry.slug }) }}">{{ contact_entry.title|upper }}</a></li>
+                                                {% endfor %}
+                                            {% else %}
+                                                {% for sous_categorie in category_header.children %}
+                                                    {%  if sous_categorie.online %}
+                                                        {# Soutien aux artistes, projets culturels #}
+                                                        {% if category_header.id in  [6,53] %}
+                                                            <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path(url ~ sous_categorie.url) }}#{{ sous_categorie.slug }}">{{ sous_categorie.title|upper }}</a></li>
+                                                        {% endif %}
+                                                    {% endif %}
                                                 {% endfor %}
                                             {% endif %}
 

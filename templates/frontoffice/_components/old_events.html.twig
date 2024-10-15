@@ -1,0 +1,11 @@
+<div class="container-fluid">
+    <div class="row font-primary">
+        <!-- Boucle des cards des événements -->
+        {% for event in events_historic %}
+            <div class=" m-2 fs-5" >
+                <div>{{ formatCustomDate(event.dateEvent) }}&nbsp;&nbsp;</div>
+                <span class="" style="line-height: 1">{{ event.titleByLanguage | upper }}</span>
+            </div>
+        {% endfor %}
+    </div>
+</div>

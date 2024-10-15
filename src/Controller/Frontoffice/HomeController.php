@@ -3,13 +3,19 @@
 namespace App\Controller\Frontoffice;
 
 use App\Entity\Article;
+use App\Entity\ArticleData;
 use App\Entity\Category;
+use App\Entity\Language;
 use App\Twig\AppExtension;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Twig\TwigFunction;
 
 #[Route('/', name: 'fo_home_')]
@@ -31,9 +37,55 @@ class HomeController extends LuneController
 
     #[Route('rdd', name: 'rdd')]
     public function rdd(){
+        // Catégorie historique
+        $category_historic = $this->entityManager->getRepository(Category::class)->findOneBy(['id'=> '69']);
+        // Suppression des articles
+        $articles = $this->entityManager->getRepository(Article::class)->findBy(['category'=> $category_historic]);
+        foreach ($articles as $article){
+            $this->entityManager->getRepository(Article::class)->remove($article);
+        }
+        $this->entityManager->flush();
+
+        $language  = $this->entityManager->getRepository(Language::class)->findOneBy(['code' => $_ENV['LOCALE']]);
+        // Lecture du fichier CSV
+        $filesystem = new Filesystem();
+        if($filesystem->exists(__DIR__.'/rdd/liste_concerts.csv')){
+            $file = new File(__DIR__.'/rdd/liste_concerts.csv');
+            $csvEncoder = new CsvEncoder();
+            $events = $csvEncoder->decode($file->getContent(), 'array', ['csv_delimiter' => ';']);
+        }
+        // Création des articles
+        foreach($events as $index => $event){
+            $article = new Article();
+            $article->setTitle($event['Titre']);
+            $article->setCategory($category_historic);
+            $article->setSlug();
+            $article->setOrdre($index+1);
+
+            $this->entityManager->persist($article);
+
+
+            $articleDataTitle = new ArticleData();
+            $articleDataTitle->setObject($article)
+                ->setLanguage($language)
+                ->setFieldKey('titleByLanguage')
+                ->setFieldValue($article->getTitle());
+            $this->entityManager->persist($articleDataTitle);
+
+            $articleDataEvent = new ArticleData();
+            $date = DateTime::createFromFormat('d/m/Y', $event['Date']);
+            $articleDataEvent->setObject($article)
+                ->setLanguage($language)
+                ->setFieldKey('dateEvent')
+                ->setFieldValue($date->format('Y-m-d'));
+            // Sauvegarde
+            $this->entityManager->persist($articleDataEvent);
+
+        }
+        $this->entityManager->flush();
+
         // Maj ordre des articles des catégories
         echo 'méthode de reprise'; exit();
-
         // Reset de l'ordre des articles d'une catégorie
         //$categories = $this->entityManager->getRepository(Category::class)->findBy(['id'=> [43,44,45,46]]);
         $categories = $this->entityManager->getRepository(Category::class)->findBy(['id'=> '32']);

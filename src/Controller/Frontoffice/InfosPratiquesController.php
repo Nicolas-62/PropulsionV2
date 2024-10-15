@@ -7,6 +7,7 @@ use App\Entity\Category;
 use App\Entity\Contact;
 use App\Form\ContactType;
 use App\Notification\ContactNotification;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
@@ -39,8 +40,8 @@ class InfosPratiquesController extends LuneController
     }
 
 
-    #[Route('contact/{entrySlug}/{subjectId}', name: 'contact')]
-    public function contact(Request $request, ContactNotification $notification, string $entrySlug = 'comment-venir', int $subjectId = null): Response
+    #[Route('contact/{entrySlug}/{subjectLabel}', name: 'contact')]
+    public function contact(Request $request, ContactNotification $notification, string $entrySlug = 'comment-venir', string $subjectLabel = null): Response
     {
         $this->data['page_title']                              = $this->entityManager->getRepository(Category::class)->find(39)->getTitle();
         $this->data['cat_contact']                             = $this->entityManager->getRepository(Category::class)->find(40);
@@ -62,13 +63,12 @@ class InfosPratiquesController extends LuneController
         $this->data['active_entry'] = $entry;
 
 
-        $this->data['active_subject'] = null;
-        if($subjectId !== null)
+        $this->data['active_subject_key'] = false;
+        if($subjectLabel !== null)
         {
             // Sujet sélectionné pour le formulaire de contact
-            $this->data['active_subject'] = Contact::SUBJECTS[$subjectId];
+            $this->data['active_subject_key'] = array_search(strtolower($subjectLabel), array_map('strtolower', array_column(Contact::SUBJECTS, 'label')));
         }
-
         // Envois des catégories dans le sens d'apparition
         $this->data['sous_categories_infos']    =    $this->entityManager->getRepository(Category::class)->findBy(
             ['category_id' => 39],

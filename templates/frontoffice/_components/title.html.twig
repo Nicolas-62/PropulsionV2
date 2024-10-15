@@ -1,11 +1,11 @@
 <div class="container-fluid">
-    <div class="row row-cols-auto align-items-center px-lg-3" style="margin-top:20px">
+    <div class="row row-cols-auto px-lg-3" style="margin-top:20px">
         <div class="w-sm-100 col ">
             <p class="blue-title text-center text-lg-start h1" style="">{% if title %}{{ title | upper }}{% else %}{{ page_title | upper }}{% endif %}</p>
         </div>
         <div class="w-sm-100 col">
             <div class="row row-cols-1 row-cols-lg-auto align-items-center">
-                {% if filter == true %}
+                {% if filter is defined and filter %}
                     <div class="col">
                         <div class="dropdown mb-3 d-grid gap-2">
                             <!-- Dropdown button / Sélecteur -->
@@ -38,17 +38,28 @@
                         </div>
                     </div>
                 {% endif %}
-                {% if historic == true %}
+                {% if historic is defined and historic %}
                     <div class="w-sm-100 col text-center text-lg-start btn-group dropend mb-3">
-                        <a type="button" class="btn-read-card btn btn-secondary dropdown-toggle" href="{{ path('fo_agenda_historic')}}">HISTORIQUE&nbsp;</a>
+                        <a type="button" class="btn-read-card btn btn-secondary dropdown-toggle text-uppercase" href="{{ path('fo_agenda_historic')}}">HISTORIQUE&nbsp;</a>
                     </div>
                 {% endif %}
-                {% if logo %}
+                {% if historic_all is defined and historic_all %}
+                    <div class="w-sm-100 col text-center text-lg-start btn-group dropend mb-3">
+                        <a type="button" class="btn-read-card btn btn-secondary dropdown-toggle text-uppercase" href="{{ path('fo_agenda_historic_old', { 'filter': 'old'})}}">Précédents</a>
+                    </div>
+                {% endif %}
+                {% if return is defined and return %}
+                    <div class="w-sm-100 col text-center text-lg-start btn-group dropstart mb-3">
+                        <a type="button" class="btn-read-card btn btn-secondary dropdown-toggle text-uppercase" href="{{ path('fo_agenda_historic')}}">Retour&nbsp;</a>
+                    </div>
+                {% endif %}
+                {% if logo is defined and logo %}
                 <!-- Image Logo -->
                     <div class="col flex-grow-1 text-lg-end text-center">
                         <img class="img-fluid" style="max-height: 150px" src="{{ asset(getSiteImagePath(logo)) }}" alt="Logo">
                     </div>
                 {% endif %}
+
             </div>
         </div>
     </div>

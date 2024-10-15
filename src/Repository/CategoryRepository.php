@@ -30,6 +30,7 @@ class CategoryRepository extends CMSRepository
         parent::__construct($registry, Category::class, $requestStack);
     }
 
+
     /**
      * getArticles
      *
