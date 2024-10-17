@@ -2,8 +2,7 @@
 
 {% block body %}
     <div class="wrapper">
-
-        {% include 'frontoffice/_components/title.html.twig' with {'events': categories_child_agenda, 'filter': true, 'title': "Historique", 'linkToSorted' : false, historic_all : true } %}
+        {% include 'frontoffice/_components/title.html.twig' with {'events': categories_child_agenda, 'filter': true, 'title': "Historique", 'linkToSorted' : false } %}
         <div class="container-fluid">
             <div class="row font-primary">
                 <!-- Boucle des cards des événements -->
@@ -28,8 +27,13 @@
                 </div>
             </div>
         </div>
-
-
+    </div>
+    <div class="wrapper">
+        {{ render_hinclude(
+            controller(
+                'App\\Controller\\Frontoffice\\AgendaController::old_events'
+            ),  {default: 'frontoffice/_components/loader.html.twig'}
+        ) }}
     </div>
 
 {% endblock %}

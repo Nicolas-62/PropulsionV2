@@ -43,11 +43,6 @@
                         <a type="button" class="btn-read-card btn btn-secondary dropdown-toggle text-uppercase" href="{{ path('fo_agenda_historic')}}">HISTORIQUE&nbsp;</a>
                     </div>
                 {% endif %}
-                {% if historic_all is defined and historic_all %}
-                    <div class="w-sm-100 col text-center text-lg-start btn-group dropend mb-3">
-                        <a type="button" class="btn-read-card btn btn-secondary dropdown-toggle text-uppercase" href="{{ path('fo_agenda_historic_old', { 'filter': 'old'})}}">Précédents</a>
-                    </div>
-                {% endif %}
                 {% if return is defined and return %}
                     <div class="w-sm-100 col text-center text-lg-start btn-group dropstart mb-3">
                         <a type="button" class="btn-read-card btn btn-secondary dropdown-toggle text-uppercase" href="{{ path('fo_agenda_historic')}}">Retour&nbsp;</a>

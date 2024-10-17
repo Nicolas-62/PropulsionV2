@@ -105,10 +105,9 @@ class LuneController extends FOController
     public function buildFooter()
     {
         // FOOTER
-        $this->data['sponsors_img']       =     $this->entityManager->getRepository(Article::class)->findBy(['category' => 23]);
+        $this->data['sponsors_img']       = $this->entityManager->getRepository(Category::class)->getArticles(['23'], $this->params->get('locale'), true, 'ordre', 'ASC');
         $this->data['medias']             =     $this->medias = array('FOOTER_TEL' => 'tel:+33322978801', 'FOOTER_INSTA' => 'https://www.instagram.com/lalunedespirates/?hl=fr','FOOTER_FACEBOOK' => 'https://www.facebook.com/lalunedespirates/?locale=fr_FR');
         $this->data['mentions']           =     $this->mentions = array('Plan du site' => "/sitemap", 'FAQ' => "/faq",'Mentions légales' => "/mentions", 'CGV' => "/cgv", 'Politique de Confidentialité' => "/confidentialite", 'Espace presse' => "/espacepresse");
-//        $this->data['icones']             =     $this->icones = array('ARROW.jpg','BUBBLE.jpg','CADDY.jpg');
     }
 
 

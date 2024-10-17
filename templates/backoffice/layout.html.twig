@@ -18,6 +18,16 @@
     {% block head_stylesheets %}
         <link rel="stylesheet" href="{{ asset('app.css', ea.assets.defaultAssetPackageName) }}">
     {% endblock %}
+    <script>
+        {# TextEditorField : ajouter des liens relatifs #}
+        {# https://github.com/basecamp/trix/issues/624 #}
+        addEventListener("trix-initialize", event => {
+            const { toolbarElement } = event.target
+            const inputElement = toolbarElement.querySelector("input[name=href]")
+            inputElement.type = "text"
+            inputElement.pattern = "(https?://|/).+"
+        });
+    </script>
 
     {# CUSTOM : styles #}
     {% block custom_stylesheets %}
