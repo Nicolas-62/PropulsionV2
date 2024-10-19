@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Controller\Backoffice\UserCrudController;
+use App\Controller\Frontoffice\UserCrudController;
 use App\Entity\User;
 use App\Form\DefinePasswordType;
 use App\Form\RegistrationFormType;
@@ -11,9 +11,7 @@ use App\Repository\UserRepository;
 use App\Security\AppCustomAuthenticator;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
