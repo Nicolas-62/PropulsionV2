@@ -40,14 +40,7 @@ Encore
      */
     // BACKOFFICE
     .addEntry('backoffice', './assets/bo/js/main.js')
-    .addEntry('bo_pictures',  './assets/bo/js/pictures.js')
-    .addEntry('bo_files',  './assets/bo/js/files.js')
-    .addEntry('bo_medias',  './assets/bo/js/medias.js')
-    .addEntry('bo_articles','./assets/bo/js/articles.js')
-    .addEntry('bo_article', './assets/bo/js/article.js')
-    .addEntry('bo_gallery', './assets/bo/js/gallery.js')
-    .addEntry('bo_category', './assets/bo/js/category.js')
-    .addEntry('bo_projets', './assets/bo/js/projets.js')
+
 
 
     // FRONTOFFICE
@@ -59,14 +52,9 @@ Encore
     .addEntry('home_js',           './assets/front/js/home.js')
     .addEntry('home_css',           './assets/front/styles/home.scss')
 
-
-
     // MAQUETTE
     .addEntry('maquette_js',    './assets/maquette/js/main.js')
     .addEntry('maquette_css',    './assets/maquette/styles/main.scss')
-    .addEntry('maquette_infos_js',    './assets/maquette/js/infos.js')
-    .addEntry('maquette_infos_css',    './assets/maquette/styles/infos.scss')
-    .addEntry('maquette_event_cancelled_js',    './assets/maquette/js/cancelled.js')
 
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
