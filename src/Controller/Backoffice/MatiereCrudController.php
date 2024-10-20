@@ -76,12 +76,10 @@ class MatiereCrudController extends AbstractCrudController
             'choices' => $this->entityManager->getRepository(Professeur::class)->findAll(),
             // On ajoute dans le label le nom des ancètres
             'choice_label' => function($professeur) {
-
                 return $professeur->getPrenom().' '.$professeur->getNom();
             },
         ];
-
-        yield AssociationField::new('professeur','Professeur')->formatValue(function($value, $matiere) {
+        yield AssociationField::new('professeur','Professeur')->setColumns(6)->formatValue(function($value, $matiere) {
             // Concatenation du nom de la catégorie avec les noms des catégories parentes.
             $professeur = $matiere->getProfesseur();
             if($professeur != null) {

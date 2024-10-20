@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\ErrorTrait;
+use App\Entity\Traits\TimesTampableTrait;
 use App\Repository\ClasseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ClasseRepository::class)]
 class Classe
 {
+
+    use ErrorTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -86,6 +90,20 @@ class Classe
         }
 
         return $this;
+    }
+
+    /**
+     * Methode nessecaire pour appel des elements dans un sélecteur de formulaire.
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        if($this->nom) {
+            return $this->nom;
+        }else{
+            return '';
+        }
     }
 
 }
