@@ -26,34 +26,15 @@ class UserFixtures extends Fixture
     {
         // Dev
         $user = new User();
-        $user->setEmail('bienvenue@e-systemes.com');
-        $user->setPassword($this->encoder->hashPassword($user, 'demo'));
-        $user->setFirstname('esys');
-        $user->setLastname('DEV');
-        $user->setRoles(array('ROLE_DEV'));
-        $user->setIsVerified(true);
-        $manager->persist($user);
-        $manager->flush();
-        // Admin
-        $user = new User();
-        $user->setEmail('lionel@capside.fr');
-        $user->setPassword($this->encoder->hashPassword($user, 'demo'));
-        $user->setFirstname('lionel');
-        $user->setLastname('astol');
-        $user->setRoles(array('ROLE_ADMIN'));
-        $user->setIsVerified(true);
-        $manager->persist($user);
-        $manager->flush();
-
-        // Auteur
-        $user = new User();
         $user->setEmail('nicolas@capside.fr');
         $user->setPassword($this->encoder->hashPassword($user, 'demo'));
         $user->setFirstname('nicolas');
         $user->setLastname('lourdel');
-        $user->setRoles(array('ROLE_USER'));
+        $user->setRoles(array('ROLE_DEV'));
         $user->setIsVerified(true);
         $manager->persist($user);
         $manager->flush();
+
+
     }
 }

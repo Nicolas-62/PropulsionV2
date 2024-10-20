@@ -1,7 +1,7 @@
-easy_admin:
-  entities:
-    Media:
-      form:
-        fields:
-          - { property: 'category', type: 'text', required: true }
-          - { property: 'article', type: 'text', required: true }
+#easy_admin:
+#  entities:
+#    Media:
+#      form:
+#        fields:
+#          - { property: 'category', type: 'text', required: true }
+#          - { property: 'article', type: 'text', required: true }
