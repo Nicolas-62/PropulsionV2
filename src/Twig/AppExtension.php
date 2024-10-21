@@ -22,6 +22,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('formatCustomDate', [$this, 'formatCustomDate']),
             new TwigFunction('formatCustomDateWithoutYears', [$this, 'formatCustomDateWithoutYears']),
             new TwigFunction('getDatetimeEvent', [$this, 'getDatetimeEvent']),
+            new TwigFunction('getTacLink', [$this, 'getTacLink']),
 
 
         ];
@@ -170,6 +171,90 @@ class AppExtension extends AbstractExtension
         }else{
             return '';
         }
+    }
+
+    /**
+     * Récupère les infos d'une balise et la remplace par une balise spécifique tarteaucitron (TAC)
+     * @param $service : nom du service
+     * @param $html_tag : balise html à remplacer par la balise tarteaucitron
+     * @return string
+     */
+    public function getTacLink($service, $html_tag): string
+    {
+        // Contenu balise TAC
+        $tac_html = '';
+        // Service Soundcloud
+        if($service == 'soundcloud'){
+            /*
+             * exemple de lien :
+             * <iframe
+             * height="300"
+             * ...
+             * src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1677565218&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
+             * >
+             * </iframe>
+             * <div ...><a href="https://soundcloud.com/danyl-sc"...>Danyl</a> · <a href="https://soundcloud.com/danyl-sc/mazel"...">Mazel</a></div>
+             */
+            // Récupération de l'iframe
+            $iframe = substr($html_tag, 0, strpos($html_tag,'</iframe>')+9);
+            // Récupération du footer
+            $infos =  substr($html_tag, strpos($html_tag,'</iframe>')+9, strlen($html_tag));
+            // Suppression des balises
+            $iframe = preg_replace('/<iframe\s|<\/iframe|>/', '', $iframe);
+            // Attributs de la balise
+            $iframe_attributs = explode(' ', $iframe);
+            // Hauteur par défaut
+            $height = '300';
+            // Récupération des attributs
+            foreach($iframe_attributs as $attribut){
+                // Attribut src
+                if(str_starts_with($attribut, 'src')){
+                    $source = $attribut;
+                }
+                // Attribut height
+                if(str_starts_with($attribut, 'height')){
+                    $height = preg_replace('/height=|"/', '', $attribut);
+                }
+            }
+            // Si on a récupéré l'attribut src
+            if(isset($source)) {
+                // Attributs TAC
+                $attributs = [
+                    'data_playable_id' => substr($source, strpos($source, '/tracks/') + 8, ( - strlen($source) + strpos($source, '&')) ),
+                    'data_playable_type'=> 'tracks',
+                    'data_height' => $height,
+                    'data_color' => substr($source, strpos($source, '&color=') + 7, ( -strlen($source) + strpos($source, '&color=') +16) ),
+                    'data_auto_play' => 'false',
+                    'data_hide_related' => 'false',
+                    'data_show_comments' => 'true',
+                    'data_show_user' => 'true',
+                    'data_show_reposts' => 'false',
+                    'data_show_teaser' => 'true',
+                    'data_visual' => 'true',
+                    'data_artwork' => 'false',
+                ];
+                $attributs = (object) $attributs;
+                // Balise TAC
+                $tac_html = "
+                    <div
+                      class='soundcloud_player'
+                      data-playable-id='$attributs->data_playable_id'
+                      data-playable-type='$attributs->data_playable_type'
+                      data-height='$attributs->data_height'
+                      data-color='$attributs->data_color'
+                      data-auto-play='$attributs->data_auto_play)'
+                      data-hide-related='$attributs->data_hide_related'
+                      data-show-comments='$attributs->data_show_comments'
+                      data-show-user='$attributs->data_show_user'
+                      data-show-reposts='$attributs->data_show_reposts'
+                      data-show-teaser='$attributs->data_show_teaser'
+                      data-visual='$attributs->data_visual'
+                      data-artwork='$attributs->data_artwork'
+                     >
+                    </div>";
+            }
+        }
+        return $tac_html;
     }
 
 
