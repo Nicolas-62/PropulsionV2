@@ -123,12 +123,12 @@
                                         <!-- VIDEO ARTISTE -->
                                         {% if article.youtubeLink is not null and article.youtubeLink is not empty  %}
                                             <div class="video-container">
-                                                <iframe src="{{ article.youtubeLink }}" allowfullscreen></iframe>
+                                                <div class="youtube_player" videoID="{{ article.youtubeLink|replace({'https://www.youtube.com/embed/': ''}) }}"></div>
                                             </div>
                                         {% endif %}
                                         {% if article.youtubeSecondLink is not null and article.youtubeSecondLink is not empty  %}
                                             <div class="video-container">
-                                                <iframe src="{{ article.youtubeSecondLink }}" allowfullscreen></iframe>
+                                                <div class="youtube_player" videoID="{{ article.youtubeSecondLink|replace({'https://www.youtube.com/embed/': ''}) }}"></div>
                                             </div>
                                         {% endif %}
                                     </div>

@@ -89,13 +89,13 @@
                     <!-- Vidéos de l'article -->
                     <div class="mt-4">
                         <div class="video-container">
-                            <iframe src="{{ article.youtubeLink }}" allowfullscreen></iframe>
+                            <div class="youtube_player" videoID="{{ article.youtubeLink|replace({'https://www.youtube.com/embed/': ''}) }}"></div>
                         </div>
                     </div>
                     <div class="mt-4">
                         <div class="embed-responsive embed-responsive-16by9">
                             <div class="video-container">
-                                <iframe src="{{ article.youtubeSecondLink }}" allowfullscreen></iframe>
+                                <div class="youtube_player" videoID="{{ article.youtubeSecondLink|replace({'https://www.youtube.com/embed/': ''}) }}"></div>
                             </div>
                         </div>
                     </div>
@@ -104,19 +104,19 @@
                     <div class="mt-4">
                         <div class="sound-container">
                         {% if article.soundcloudLink is not null and article.soundcloudLink is not empty %}
-                            {{ article.soundcloudLink | raw }}
+                            {{ getTacLink('soundcloud', article.soundcloudLink) | raw }}
                         {% endif %}
                         </div>
 
                         <div class="sound-container">
                         {% if article.soundcloudSecondLink is not null and article.soundcloudSecondLink is not empty %}
-                            {{ article.soundcloudSecondLink | raw }}
+                            {{ getTacLink('soundcloud', article.soundcloudSecondLink) | raw }}
                         {% endif %}
                         </div>
 
                         <div class="sound-container">
                         {% if article.soundcloudThirdLink is not null and article.soundcloudThirdLink is not empty %}
-                            {{ article.soundcloudThirdLink | raw }}
+                            {{ getTacLink('soundcloud', article.soundcloudThirdLink) | raw }}
                         {% endif %}
                 </div>
                     </div>

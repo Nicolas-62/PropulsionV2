@@ -4,17 +4,19 @@
     <div class="">
         {% if article.soundcloudLink is not null and article.soundcloudLink is not empty %}
             <div class="sound-container my-4">
-                {{ article.soundcloudLink | raw }}
+                {{ getTacLink('soundcloud', article.soundcloudLink) | raw }}
             </div>
         {% endif %}
         {% if article.soundcloudSecondLink is not null and article.soundcloudSecondLink is not empty %}
             <div class="sound-container my-4">
-                {{ article.soundcloudSecondLink | raw }}
+                {{ getTacLink('soundcloud', article.soundcloudSecondLink) | raw }}
+
             </div>
         {% endif %}
         {% if article.soundcloudThirdLink is not null and article.soundcloudThirdLink is not empty %}
             <div class="sound-container my-4">
-                {{ article.soundcloudThirdLink | raw }}
+                {{ getTacLink('soundcloud', article.soundcloudThirdLink) | raw }}
+
             </div>
         {% endif %}
     </div>

@@ -51,15 +51,15 @@
                 {% if event.youtubeLink is not null and event.youtubeLink is not empty %}
 
                     <div class=" embed-responsive embed-responsive-16by9 p-5">
-                        {{ event.youtubeLink | raw }}
+                        <div class="youtube_player" videoID="{{ event.youtubeLink|replace({'https://www.youtube.com/embed/': ''}) }}"></div>
+
                     </div>
                 {% endif %}
             </div>
             <div class="col">
                 {% if event.youtubeSecondLink is not null and event.youtubeSecondLink is not empty %}
-
                     <div class=" embed-responsive embed-responsive-16by9 p-5">
-                        {{ event.youtubeSecondLink | raw }}
+                        <div class="youtube_player" videoID="{{ event.youtubeSecondLink|replace({'https://www.youtube.com/embed/': ''}) }}"></div>
                     </div>
                 {% endif %}
             </div>

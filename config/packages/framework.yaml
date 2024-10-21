@@ -17,8 +17,11 @@ framework:
         handler_id: null
         cookie_secure: auto
         cookie_samesite: lax
-        cookie_lifetime: 36000 # 10 heures
+        cookie_lifetime: 0 # 12 heures
         storage_factory_id: session.storage.factory.native
+        gc_maxlifetime: 43200
+        gc_divisor: 1000
+
 
     #esi: true
     #fragments: true
@@ -27,9 +30,9 @@ framework:
     # pour inclure directement des methodes de controller comme vue embarquée
     fragments: { path: /_fragment }
 
-#when@prod:
-#    framework:
-#        http_cache: true
+when@prod:
+    framework:
+        http_cache: true
 
 when@test:
     framework:

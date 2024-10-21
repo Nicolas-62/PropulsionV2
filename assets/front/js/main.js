@@ -4,6 +4,7 @@
  * We recommend including the built version of this JavaScript file
  * (and its CSS file) in your base layout (layout.html.twig).
  */
+console.log('this is the main file');
 
 const $ = require('jquery');
 // import $ from 'jquery';

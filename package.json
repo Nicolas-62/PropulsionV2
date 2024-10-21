@@ -36,6 +36,7 @@
         "lightbox2": "^2.11.4",
         "masonry-layout": "^4.2.2",
         "select2": "^4.1.0-rc.0",
+        "tarteaucitronjs": "^1.19.0",
         "verge": "^1.10.2"
     }
 }

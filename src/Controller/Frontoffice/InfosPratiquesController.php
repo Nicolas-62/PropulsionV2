@@ -41,7 +41,7 @@ class InfosPratiquesController extends LuneController
 
 
     #[Route('contact/{entrySlug}/{subjectLabel}', name: 'contact')]
-    public function contact(Request $request, ContactNotification $notification, string $entrySlug = 'comment-venir', string $subjectLabel = null): Response
+    public function contact(Request $request, ContactNotification $notification, string $entrySlug = 'nous-contacter', string $subjectLabel = null): Response
     {
         $this->data['page_title']                              = $this->entityManager->getRepository(Category::class)->find(39)->getTitle();
         $this->data['cat_contact']                             = $this->entityManager->getRepository(Category::class)->find(40);
