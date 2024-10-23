@@ -37,9 +37,6 @@ class PageController extends LuneController
     public function detail(?Article $event): Response
     {
 
-
-
-
         if($event != null){
             $event_page = $this->entityManager->getRepository(Article::class)->findOneBy(['id' => $event->getId()]);
             $online = $this->entityManager->getRepository(Online::class)->findOneBy(['article' => $event->getId(),'language' => 2]);

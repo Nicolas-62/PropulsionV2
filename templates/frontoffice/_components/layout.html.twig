@@ -15,7 +15,7 @@
         <meta name="description" content="{% block description %}{{ seo.description }}{% endblock %}">
         <meta name="keywords" content="{% block keywords %}{{ seo.keywords|join(', ') }}{% endblock %}">
         <link rel="icon" type="image/png" href="{{ asset(getSiteImagePath('favicon.ico')) }}" />
-        <script src="https://kit.fontawesome.com/b28217b7bb.js" crossorigin="anonymous"></script>
+        <scrip t src="https://kit.fontawesome.com/b28217b7bb.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/tarteaucitronjs@1.19.0/tarteaucitron.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/tarteaucitronjs@1.19.0/css/tarteaucitron.min.css" rel="stylesheet">
         {% block cookie_scripts %}
@@ -27,7 +27,6 @@
         {% block stylesheets %}
             {{ include(fo_path ~ '_components/styles.html.twig') }}
         {% endblock %}
-
     </head>
 
 

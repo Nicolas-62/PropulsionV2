@@ -92,15 +92,15 @@
                         {% if article.youtubeLink %}
                             <div class="w-50">
                                 <div class="video-container">
-                                    <div class="youtube_player" videoID="{{ article.youtubeLink|replace({'https://www.youtube.com/embed/': ''}) }}"></div>
-
+                                    <iframe src="{{ article.youtubeLink }}" allowfullscreen></iframe>
                                 </div>
                             </div>
                         {% endif %}
                         {% if article.youtubeSecondLink %}
                             <div class="w-50">
                                 <div class="video-container">
-                                    <div class="youtube_player" videoID="{{ article.youtubeSecondLink|replace({'https://www.youtube.com/embed/': ''}) }}"></div>
+                                    <iframe src="{{ article.youtubeSecondLink }}" allowfullscreen></iframe>
+{#                                    <div class="youtube_player" videoID="{{ article.youtubeSecondLink|replace({'https://www.youtube.com/embed/': ''}) }}"></div>#}
                                 </div>
                             </div>
                         {% endif %}

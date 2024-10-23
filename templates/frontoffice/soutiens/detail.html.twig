@@ -85,20 +85,24 @@
                             <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':media.media} ) }}" alt="{{ media.media}}" class="w-100 img-fluid">
                         {% endif %}
                     </div>
-
-                    <!-- Vidéos de l'article -->
-                    <div class="mt-4">
-                        <div class="video-container">
-                            <div class="youtube_player" videoID="{{ article.youtubeLink|replace({'https://www.youtube.com/embed/': ''}) }}"></div>
-                        </div>
-                    </div>
-                    <div class="mt-4">
-                        <div class="embed-responsive embed-responsive-16by9">
+                    {% if article.youtubeLink is not null and article.youtubeLink is not empty  %}
+                        <!-- Vidéos de l'article -->
+                        <div class="mt-4">
                             <div class="video-container">
-                                <div class="youtube_player" videoID="{{ article.youtubeSecondLink|replace({'https://www.youtube.com/embed/': ''}) }}"></div>
+                                <iframe src="{{ article.youtubeLink }}" allowfullscreen></iframe>
                             </div>
                         </div>
-                    </div>
+                    {% endif %}
+                    {% if article.youtubeLink is not null and article.youtubeLink is not empty  %}
+                        <div class="mt-4">
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <div class="video-container">
+                                    <iframe src="{{ article.youtubeSecondLink }}" allowfullscreen></iframe>
+    {#                                <div class="youtube_player" videoID="{{ article.youtubeSecondLink|replace({'https://www.youtube.com/embed/': ''}) }}"></div>#}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
 
                     <!-- Sons SoundCloud de l'article -->
                     <div class="mt-4">

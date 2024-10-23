@@ -123,16 +123,16 @@
                                         <!-- VIDEO ARTISTE -->
                                         {% if article.youtubeLink is not null and article.youtubeLink is not empty  %}
                                             <div class="video-container">
-                                                <div class="youtube_player" videoID="{{ article.youtubeLink|replace({'https://www.youtube.com/embed/': ''}) }}"></div>
+                                                <iframe src="{{ article.youtubeLink }}" allowfullscreen></iframe>
                                             </div>
                                         {% endif %}
                                         {% if article.youtubeSecondLink is not null and article.youtubeSecondLink is not empty  %}
                                             <div class="video-container">
-                                                <div class="youtube_player" videoID="{{ article.youtubeSecondLink|replace({'https://www.youtube.com/embed/': ''}) }}"></div>
+                                                <iframe src="{{ article.youtubeSecondLink }}" allowfullscreen></iframe>
+{#                                                <div class="youtube_player" videoID="{{ article.youtubeSecondLink|replace({'https://www.youtube.com/embed/': ''}) }}"></div>#}
                                             </div>
                                         {% endif %}
                                     </div>
-                                    {#                        <img src="{{ asset(('build/maquette/images/actu_cadre_2.svg')) }}" class="position-absolute" style="height: 50px; bottom:0; left: 95%;" alt="ACTIONCULTURELLE">#}
                                 </div>
 
                             </div>

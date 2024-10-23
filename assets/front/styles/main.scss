@@ -1,7 +1,7 @@
 @import "../../../node_modules/lightbox2/dist/css/lightbox.min.css";
 
 body {
-  font-family: 'Akshar', sans-serif;
+  font-family: 'Akshar', 'Roboto', sans-serif;
   width: 100%;
 }
 
@@ -320,7 +320,7 @@ body {
     background-color: #09b2FF;
     color: white !important;
     cursor: pointer;
-    width: 300px;
+    min-width: 300px;
   }
 
 }
@@ -607,8 +607,8 @@ body {
   height: 100%;
 }
 
-.sound-container {
-  height: 100px;
+.sound-container div {
+  height: 100px !important;
 }
 .sound-container iframe{
   height: 100px;

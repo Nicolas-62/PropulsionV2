@@ -51,7 +51,8 @@
                 {% if event.youtubeLink is not null and event.youtubeLink is not empty %}
 
                     <div class=" embed-responsive embed-responsive-16by9 p-5">
-                        <div class="youtube_player" videoID="{{ event.youtubeLink|replace({'https://www.youtube.com/embed/': ''}) }}"></div>
+                        <iframe src="{{ event.youtubeLink }}" allowfullscreen></iframe>
+{#                        <div class="youtube_player" videoID="{{ event.youtubeLink|replace({'https://www.youtube.com/embed/': ''}) }}"></div>#}
 
                     </div>
                 {% endif %}
@@ -59,7 +60,8 @@
             <div class="col">
                 {% if event.youtubeSecondLink is not null and event.youtubeSecondLink is not empty %}
                     <div class=" embed-responsive embed-responsive-16by9 p-5">
-                        <div class="youtube_player" videoID="{{ event.youtubeSecondLink|replace({'https://www.youtube.com/embed/': ''}) }}"></div>
+                        <iframe src="{{ event.youtubeSecondLink }}" allowfullscreen></iframe>
+{#                        <div class="youtube_player" videoID="{{ event.youtubeSecondLink|replace({'https://www.youtube.com/embed/': ''}) }}"></div>#}
                     </div>
                 {% endif %}
             </div>
