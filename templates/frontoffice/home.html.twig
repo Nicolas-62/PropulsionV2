@@ -11,64 +11,59 @@
                 data-bs-ride="carousel"
                 data-bs-pause="false"
             >
-
+                <div class="carousel-indicators">
+                    {% set index = 0 %}
+                    {% set star_events = [] %}
+                    {% for event in events_agenda %}
+                        {% if event.star == 1 and not event.cancelled %}
+                            {%  set star_events = star_events|merge([event]) %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if star_events|length > 1 %}
+                        {% for event in star_events %}
+                            <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{ index }}" class="{%  if index == 0 %}active{% endif %}" aria-label="{{ event.title }}" aria-current="true"></button>
+                            {% set index = index+1 %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
                 <div class="carousel-inner">
                     {% set active = true %}
-                    {% for event in events_agenda %}
-                        {% if event.star == 1  %}
-                                <div class="carousel-item {% if active %} active{% endif %}" data-bs-interval="3000">
-                                    {% set active = false %}
-                                    <a href="{{ url('fo_agenda_detail',{'slug':event.slug }) }}" class="text-decoration-none">
-                                        {% set media = event.getMedia(9) %}
-                                        {% if media is not null %}
-                                            <img src="{{ url('ressources_image', {'width':'large','height':'large', 'media':media.media} ) }}" class="d-block w-100" alt="...">
-                                        {% else %}
-                                            {% set mediaCategoryAgenda = category_agenda.getMedia(21) %}
-                                            {% if mediaCategoryAgenda is not null %}
-                                                <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':mediaCategoryAgenda.media} ) }}" class="d-block w-100" alt="...">
-                                            {% endif %}
+                    {% for event in star_events %}
+                        <div class="carousel-item {% if active %} active{% endif %}" data-bs-interval="0">
+                            {% set active = false %}
+                            <a href="{{ url('fo_agenda_detail',{'slug':event.slug }) }}" class="text-decoration-none">
+                                {% set media = event.getMedia(9) %}
+                                {% if media is not null %}
+                                    <img src="{{ url('ressources_image', {'width':'large','height':'large', 'media':media.media} ) }}" class="d-block w-100" alt="...">
+                                {% else %}
+                                    {% set mediaCategoryAgenda = category_agenda.getMedia(21) %}
+                                    {% if mediaCategoryAgenda is not null %}
+                                        <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':mediaCategoryAgenda.media} ) }}" class="d-block w-100" alt="...">
+                                    {% endif %}
+                                {% endif %}
+                                <div class="d-none card-vedette-home" >
+                                    <div class="d-none row mx-0">
+                                        <div
+                                            class="col-5 white theme-1 text-uppercase bg-black"
+                                        >
+                                            {{ event.category.title }}
+                                        </div>
+                                        {% if event.style is not empty and event.style is not null %}
+                                            {% do event.category.getDatas(locale) %}
+                                            <div class="col-7 theme-2 text-uppercase" style="background-color: {{ event.category.themeBackColor }}" >
+                                                <img class="card-ticketing " src="{{ asset(getSiteImagePath('MINI_BILLETTERIE.svg')) }}" alt="">{{ event.style }}
+                                            </div>
                                         {% endif %}
-                                        <div class="position-absolute d-none d-lg-block card-vedette-home" >
-                                        <div class="row mx-0">
-                                            <div
-                                                class="col-5 white theme-1 text-uppercase bg-black"
-                                            >
-                                                {{ event.category.title }}
-                                            </div>
-                                            {% if event.style is not empty and event.style is not null %}
-                                                {% do event.category.getDatas(locale) %}
-                                                <div class="col-7 theme-2 text-uppercase" style="background-color: {{ event.category.themeBackColor }}" >
-                                                    <img class="card-ticketing " src="{{ asset(getSiteImagePath('MINI_BILLETTERIE.svg')) }}" alt="">{{ event.style }}
-                                                </div>
-                                            {% endif %}
-                                        </div>
-                                        <div class="p-4">
-                                            <!-- Titre -->
-                                            <div class="my-3 fs-3 mb-0 lh-1">
-                                                {{ event.title }}
-                                            </div>
-                                            <!-- CONTENU -->
-                                            <div class="fs-5 card-text">
-                                                {{ event.subtitle }}
-                                            </div>
-                                        </div>
-                                        <div class="p-4 d-flex justify-content-between">
-                                            <div class="pb-3 d-flex">
-                                                <div class= "fs-3 ">
-                                                    {{ formatCustomDateWithoutYears(event.dateEvent) }}
-                                                </div>
-                                                {% if event.dateTimeEvent is not null and event.dateTimeEvent is not empty %}
-                                                    <div class="fs-5">{{ event.dateTimeEvent| date("H:i") }}</div>
-                                                {% endif %}
-                                            </div>
-                                            <a href="{% if event.ticketingLink is not empty %}{{ event.ticketingLink }}{% else %}https://billetterie.lalune.net/{% endif %}">
-                                                <img style="height: 50px" class="btn-billetterie-card" src="{{ asset(getSiteImagePath('picto-billet.svg')) }}" alt="...">
-                                            </a>
+                                    </div>
+                                    <div class="p-2">
+                                        <!-- Titre -->
+                                        <div class="fs-4 lh-1 text-end ">
+                                            {{ event.title }}
                                         </div>
                                     </div>
-                                    </a>
                                 </div>
-                        {% endif %}
+                            </a>
+                        </div>
                     {% endfor %}
                 </div>
             </div>

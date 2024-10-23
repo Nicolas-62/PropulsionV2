@@ -25,7 +25,8 @@
             {% if article.youtubeLink %}
                 <div class="pt-3">
                     <div class="video-container">
-                        <div class="youtube_player" videoID="{{ article.youtubeLink|replace({'https://www.youtube.com/embed/': ''}) }}"></div>
+                    {# <div class="youtube_player" videoID="{{ article.youtubeLink|replace({'https://www.youtube.com/embed/': ''}) }}"></div>#}
+                        <iframe src="{{ article.youtubeLink }}" allowfullscreen></iframe>
                     </div>
                 </div>
             {% endif %}

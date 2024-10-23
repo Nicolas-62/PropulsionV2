@@ -99,7 +99,7 @@
             <div class="d-none justify-content-end d-lg-flex block navbar-expand-lg col-12" style="padding-right: 30px">
                 <div class="row row-cols-auto">
                     {% for url, category_header in menu_category_datas %}
-                        <div class="px-4 col {% if loop.index0 != 0 %} border-dotted-black {% endif %}menu-header-item {% if  (page_title | upper) == (category_header.title|upper) %}active{% endif %}">
+                        <div class="px-4 mb-3 col {% if loop.index0 != 0 %} border-dotted-black {% endif %}menu-header-item {% if  (page_title | upper) == (category_header.title|upper) %}active{% endif %}">
                             {% do category_header.getDatas(locale) %}
                                 {# Soutien aux artistes, Projets culturels, Infos pratiques #}
                                 {% if category_header.id == 6 or category_header.id == 53 or category_header.id == 39 %}
@@ -122,7 +122,12 @@
                                                     {%  if sous_categorie.online %}
                                                         {# Soutien aux artistes, projets culturels #}
                                                         {% if category_header.id in  [6,53] %}
-                                                            <li><a class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4" href="{{ path(url ~ sous_categorie.url) }}#{{ sous_categorie.slug }}">{{ sous_categorie.title|upper }}</a></li>
+                                                            <li><a
+                                                                    class="dropdown-item dropdown-select-item-li text-decoration-none black fs-4"
+                                                                    href="{{ path(url ~ sous_categorie.url) }}{# Pour soutien aux artistes, liens = ancres dans la page#}{%  if category_header.id == 6 %}#{% endif %}{{ sous_categorie.slug }}"
+                                                                >
+                                                                    {{ sous_categorie.title|upper }}
+                                                                </a></li>
                                                         {% endif %}
                                                     {% endif %}
                                                 {% endfor %}
