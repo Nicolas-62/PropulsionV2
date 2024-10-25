@@ -11,7 +11,7 @@
                 data-bs-ride="carousel"
                 data-bs-pause="false"
             >
-                <div class="carousel-indicators">
+                <div class="carousel-indicators d-none d-lg-flex mb-4 pb-3">
                     {% set index = 0 %}
                     {% set star_events = [] %}
                     {% for event in events_agenda %}
@@ -41,25 +41,16 @@
                                         <img src="{{ url('ressources_image', {'width':'src','height':'src', 'media':mediaCategoryAgenda.media} ) }}" class="d-block w-100" alt="...">
                                     {% endif %}
                                 {% endif %}
-                                <div class="d-none card-vedette-home" >
-                                    <div class="d-none row mx-0">
-                                        <div
-                                            class="col-5 white theme-1 text-uppercase bg-black"
-                                        >
-                                            {{ event.category.title }}
-                                        </div>
-                                        {% if event.style is not empty and event.style is not null %}
-                                            {% do event.category.getDatas(locale) %}
-                                            <div class="col-7 theme-2 text-uppercase" style="background-color: {{ event.category.themeBackColor }}" >
-                                                <img class="card-ticketing " src="{{ asset(getSiteImagePath('MINI_BILLETTERIE.svg')) }}" alt="">{{ event.style }}
-                                            </div>
-                                        {% endif %}
+                                <div class="card-vedette-home border-top border-light p-2" style="background-color: #212121">
+                                    <!-- Titre -->
+                                    <div class="d-block d-lg-none lh-1 text-end text-light">
+                                        <div>{{ event.dateEvent|date("d/m") }} - {{ event.titleByLanguage|upper }} {{ event.subtitle }}</div>
+                                        <div>({{ event.style }})</div>
                                     </div>
-                                    <div class="p-2">
-                                        <!-- Titre -->
-                                        <div class="fs-4 lh-1 text-end ">
-                                            {{ event.title }}
-                                        </div>
+                                    <!-- Titre -->
+                                    <div class="fs-4 d-none d-lg-block lh-1 text-end text-light">
+                                        <div>{{ event.dateEvent|date("d/m") }} - {{ event.titleByLanguage|upper }} {{ event.subtitle }}</div>
+                                        <div>({{ event.style }})</div>
                                     </div>
                                 </div>
                             </a>

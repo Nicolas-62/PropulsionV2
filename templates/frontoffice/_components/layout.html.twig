@@ -15,7 +15,7 @@
         <meta name="description" content="{% block description %}{{ seo.description }}{% endblock %}">
         <meta name="keywords" content="{% block keywords %}{{ seo.keywords|join(', ') }}{% endblock %}">
         <link rel="icon" type="image/png" href="{{ asset(getSiteImagePath('favicon.ico')) }}" />
-        <scrip t src="https://kit.fontawesome.com/b28217b7bb.js" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/b28217b7bb.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/tarteaucitronjs@1.19.0/tarteaucitron.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/tarteaucitronjs@1.19.0/css/tarteaucitron.min.css" rel="stylesheet">
         {% block cookie_scripts %}
@@ -27,8 +27,10 @@
         {% block stylesheets %}
             {{ include(fo_path ~ '_components/styles.html.twig') }}
         {% endblock %}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Akshar:wght@300;400&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500&display=swap" rel="stylesheet">
     </head>
-
 
     <body>
 
@@ -52,6 +54,7 @@
             {{ include(fo_path ~ '_components/scripts.html.twig') }}
         {% endblock %}
     </body>
+    {%  block recaptcha %}{% endblock %}
     {%  block footer %}
         {%  if footer_partial is defined and footer_partial != '' %}
             <footer>

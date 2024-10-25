@@ -92,16 +92,16 @@
                             {% if article.price %}
                             <div class="row mt-3 row-cols-md-{{ article.nbTarifs }}">
                                 <div class="col-12">
-                                    <div class="btn-rate-card mb-3 position-relative"> <a class="stretched-link" href="{{ article.ticketingLink }}">Tarif plein : {{ article.price }}</a></div>
+                                    <div class="btn-rate-card mb-3 position-relative"> <a class="stretched-link" href="{{ article.ticketingLink }}">Tarif normal : {{ article.price }}</a></div>
                                 </div>
                                 {% if article.subscriberPrice %}
                                     <div class="col-12">
-                                        <div class="btn-rate-card mb-3 position-relative"> <a class="stretched-link" href="{{ article.ticketingLink }}">Tarif plein : {{ article.subscriberPrice }}</a></div>
+                                        <div class="btn-rate-card mb-3 position-relative"> <a class="stretched-link" href="{{ article.ticketingLink }}">Tarif abonné : {{ article.subscriberPrice }}</a></div>
                                     </div>
                                 {% endif %}
                                 {%  if article.reducedPrice %}
                                     <div class="col-12">
-                                        <div class="btn-rate-card mb-3 position-relative"><a class="stretched-link" href="{{ article.ticketingLink }}">Tarif plein : {{ article.reducedPrice }}</a></div>
+                                        <div class="btn-rate-card mb-3 position-relative"><a class="stretched-link" href="{{ article.ticketingLink }}">Tarif réduit : {{ article.reducedPrice }}</a></div>
                                     </div>
                                 {% endif %}
                             </div>
