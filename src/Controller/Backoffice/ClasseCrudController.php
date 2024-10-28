@@ -6,6 +6,8 @@ use App\Entity\Classe;
 use App\Entity\Professeur;
 use App\Factory\ProfesseurFactory;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
@@ -57,6 +59,13 @@ class ClasseCrudController extends AbstractCrudController
             ->showEntityActionsInlined()
             ;
 
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->remove(Crud::PAGE_INDEX, Action::DELETE)
+            ;
     }
 
 

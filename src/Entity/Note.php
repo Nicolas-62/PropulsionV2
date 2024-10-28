@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\NoteRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: NoteRepository::class)]
@@ -13,7 +14,7 @@ class Note
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $valeur = null;
 
     #[ORM\ManyToOne(inversedBy: 'notes')]
@@ -23,6 +24,9 @@ class Note
     #[ORM\ManyToOne(inversedBy: 'notes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Matiere $matiere = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $rate = null;
 
     public function getId(): ?int
     {
@@ -34,7 +38,7 @@ class Note
         return $this->valeur;
     }
 
-    public function setValeur(int $valeur): static
+    public function setValeur(?int $valeur): static
     {
         $this->valeur = $valeur;
 
@@ -61,6 +65,24 @@ class Note
     public function setMatiere(?Matiere $matiere): static
     {
         $this->matiere = $matiere;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getValeur();
+
+    }
+
+    public function getRate(): ?string
+    {
+        return $this->rate;
+    }
+
+    public function setRate(?string $rate): static
+    {
+        $this->rate = $rate;
 
         return $this;
     }

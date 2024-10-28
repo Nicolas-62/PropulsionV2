@@ -6,6 +6,8 @@ use App\Entity\Classe;
 use App\Entity\Matiere;
 use App\Entity\Professeur;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
@@ -79,13 +81,28 @@ class MatiereCrudController extends AbstractCrudController
                 return $professeur->getPrenom().' '.$professeur->getNom();
             },
         ];
-        yield AssociationField::new('professeur','Professeur')->setColumns(6)->formatValue(function($value, $matiere) {
+        yield AssociationField::new('professeurs','professeurs')->setColumns(6)->formatValue(function($value, $matiere) {
             // Concatenation du nom de la catégorie avec les noms des catégories parentes.
-            $professeur = $matiere->getProfesseur();
-            if($professeur != null) {
-                $value = $professeur->getPrenom() . ' ' . $professeur->getNom();
+            $professeurs = $matiere->getProfesseurs();
+            $value = ' ';
+            if( ! $professeurs->isEmpty()) {
+                $professeur_names = [];
+                foreach ($professeurs as $professeur) {
+                    $professeur_names[] = $professeur->getPrenom().' '.$professeur->getNom();
+                }
+                $value = implode(', ', $professeur_names);
             }
             return $value;
-        })->setFormTypeOptions($form_options);
+        })->setFormTypeOptions($form_options)->hideOnForm();
+
+//        yield AssociationField::new('professeurs','professeurs')->autocomplete()->hideOnIndex();
+
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->remove(Crud::PAGE_INDEX, Action::DELETE)
+            ;
     }
 }

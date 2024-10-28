@@ -33,6 +33,64 @@ class Eleve
     #[ORM\ManyToOne(inversedBy: 'eleves')]
     private ?Classe $classe = null;
 
+
+    /**
+     * Fonction d'appel des proprités qui n'ont pas de getter/setter.
+     * @param $name
+     * @param $args
+     * @return \DateTimeImmutable|void|null
+     * @throws \Exception
+     */
+    public function __call($name, $args)
+    {
+        // Nom de la proprieté
+        $property = lcfirst(substr($name, 3));
+        if ('get' === substr($name, 0, 3)) {
+            if(str_starts_with($property, 'note')) {
+                $matiere_id = substr($property, -1);
+                $valeur = $this->notes->findFirst(function ($key, Note $note) use ($matiere_id) {
+                    return $note->getMatiere()->getId() == $matiere_id;
+                })?->getValeur();
+                return $valeur;
+            }
+            else if(str_starts_with($property, 'rate')) {
+                $matiere_id = substr($property, -1);
+                $valeur = $this->notes->findFirst(function ($key, Note $note) use ($matiere_id) {
+                    return $note->getMatiere()->getId() == $matiere_id;
+                })?->getRate();
+                return $valeur;
+            }
+            return $this->{$property} ?? null;
+        }
+        elseif ('set' === substr($name, 0, 3)) {
+            // Valeur de la proprieté
+            $value = 1 == count($args) ? $args[0] : null;
+            if(str_starts_with($property, 'note')) {
+                $matiere_id = substr($property, -1);
+                // Si la note existe déjà
+                $note = $this->notes->findFirst(function ($key, Note $note) use ($matiere_id) {
+                    return $note->getMatiere()->getId() == $matiere_id;
+                });
+                if($note != null){
+                    $note->setValeur($value);
+                }
+            }
+            if(str_starts_with($property, 'rate')) {
+                $matiere_id = substr($property, -1);
+                // Si la note existe déjà
+                $note = $this->notes->findFirst(function ($key, Note $note) use ($matiere_id) {
+                    return $note->getMatiere()->getId() == $matiere_id;
+                });
+                if($note != null){
+                    $note->setRate($value);
+                }
+            }
+            else{
+                $this->{$property} = $value;
+            }
+        }
+    }
+
     public function __construct()
     {
         $this->notes = new ArrayCollection();
@@ -86,6 +144,18 @@ class Eleve
     {
         return $this->notes;
     }
+
+    /**
+     * @param $matiere
+     * @return Note|null
+     */
+    public function getNote($matiere): ?Note
+    {
+        return $this->notes->findFirst(function (Note $note) use ($matiere) {
+            return $note->getMatiere() === $matiere;
+        });
+    }
+
 
     public function addNote(Note $note): static
     {

@@ -53,7 +53,6 @@ final class MatiereFactory extends PersistentProxyObjectFactory
 
         return [
             'nom' => self::faker()->text(255),
-            'professeur' => ProfesseurFactory::new(),
         ];
     }
 

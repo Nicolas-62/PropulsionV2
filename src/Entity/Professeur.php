@@ -29,13 +29,13 @@ class Professeur
     #[ORM\OneToMany(mappedBy: 'professeur', targetEntity: Classe::class)]
     private Collection $classes;
 
-    #[ORM\OneToMany(mappedBy: 'professeur', targetEntity: Matiere::class)]
-    private Collection $matieres;
+    #[ORM\ManyToOne(inversedBy: 'professeurs')]
+    private ?Matiere $matiere = null;
+
 
     public function __construct()
     {
         $this->classes = new ArrayCollection();
-        $this->matieres = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -48,7 +48,7 @@ class Professeur
         return $this->nom;
     }
 
-    public function setNom(string $nom): static
+    public function setNom(string $nom): self
     {
         $this->nom = $nom;
 
@@ -60,7 +60,7 @@ class Professeur
         return $this->prenom;
     }
 
-    public function setPrenom(string $prenom): static
+    public function setPrenom(string $prenom): self
     {
         $this->prenom = $prenom;
 
@@ -72,7 +72,7 @@ class Professeur
         return $this->sexe;
     }
 
-    public function setSexe(string $sexe): static
+    public function setSexe(string $sexe): self
     {
         $this->sexe = $sexe;
 
@@ -87,52 +87,22 @@ class Professeur
         return $this->classes;
     }
 
-    public function addClass(Classe $class): static
+    public function addClasse(Classe $classe): self
     {
-        if (!$this->classes->contains($class)) {
-            $this->classes->add($class);
-            $class->setProfesseur($this);
+        if (!$this->classes->contains($classe)) {
+            $this->classes->add($classe);
+            $classe->setProfesseur($this);
         }
 
         return $this;
     }
 
-    public function removeClass(Classe $class): static
+    public function removeClasse(Classe $classe): self
     {
-        if ($this->classes->removeElement($class)) {
+        if ($this->classes->removeElement($classe)) {
             // set the owning side to null (unless already changed)
-            if ($class->getProfesseur() === $this) {
-                $class->setProfesseur(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Matiere>
-     */
-    public function getMatieres(): Collection
-    {
-        return $this->matieres;
-    }
-
-    public function addMatiere(Matiere $matiere): static
-    {
-        if (!$this->matieres->contains($matiere)) {
-            $this->matieres->add($matiere);
-            $matiere->setProfesseur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMatiere(Matiere $matiere): static
-    {
-        if ($this->matieres->removeElement($matiere)) {
-            // set the owning side to null (unless already changed)
-            if ($matiere->getProfesseur() === $this) {
-                $matiere->setProfesseur(null);
+            if ($classe->getProfesseur() === $this) {
+                $classe->setProfesseur(null);
             }
         }
 
@@ -151,5 +121,26 @@ class Professeur
         }else{
             return '';
         }
+    }
+
+    public function getMatiere(): ?Matiere
+    {
+        return $this->matiere;
+    }
+
+    public function setMatiere(?Matiere $matiere): self
+    {
+        $this->matiere = $matiere;
+
+        return $this;
+    }
+
+    public function setClasses(Collection $classes): Professeur
+    {
+        $this->classes = $classes;
+        foreach ($classes as $classe) {
+            $classe->setProfesseur($this);
+        }
+        return $this;
     }
 }

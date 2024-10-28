@@ -24,7 +24,7 @@ class AppFixtures extends Fixture
         ProfesseurFactory::new()->setInfos()->createMany(
             12,
             function() { // note the callback - this ensures that each of the 5 comments has a different Post
-                return ['matieres' => MatiereFactory::randomSet(1)]; // each comment set to a random Post from those already in the database
+                return ['matiere' => MatiereFactory::random()];
             }
         );
 
