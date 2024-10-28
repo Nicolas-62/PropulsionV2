@@ -126,6 +126,24 @@ class ProfesseurCrudController extends AbstractCrudController
                 return $value;
             })
         ;
+        yield AssociationField::new('classes','Classes')->formatValue(function($value, $professeur) {
+            $value = '';
+            foreach($professeur->getClasses() as $classe){
+                $value .= '<a href='
+                    .
+                    $this->container->get(AdminUrlGenerator::class)
+                        ->setController(ClasseCrudController::class)
+                        ->setAction(Action::DETAIL)
+                        ->setEntityId($classe->getId())
+                        ->generateUrl()
+                    .
+                    '>'.$classe->getNom().'</a>';
+                $value .= '<br>';
+            }
+            return $value;
+        })->onlyOnDetail()
+            ->setTemplatePath('backoffice/field/eleves.html.twig')
+        ;
     }
     public function configureActions(Actions $actions): Actions
     {
