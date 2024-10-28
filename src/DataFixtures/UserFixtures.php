@@ -26,10 +26,10 @@ class UserFixtures extends Fixture
     {
         // Dev
         $user = new User();
-        $user->setEmail('nicolas@capside.fr');
-        $user->setPassword($this->encoder->hashPassword($user, 'demo'));
-        $user->setFirstname('nicolas');
-        $user->setLastname('lourdel');
+        $user->setEmail('admin@demo-monsite.online');
+        $user->setPassword($this->encoder->hashPassword($user, '@monsite2024!'));
+        $user->setFirstname('Admin');
+        $user->setLastname('monsite');
         $user->setRoles(array('ROLE_DEV'));
         $user->setIsVerified(true);
         $manager->persist($user);

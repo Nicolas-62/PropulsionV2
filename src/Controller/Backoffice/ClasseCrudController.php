@@ -18,6 +18,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Provider\FieldProvider;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use http\Client\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -52,11 +53,15 @@ class ClasseCrudController extends AbstractCrudController
             })
             ->setPageTitle('edit', function (){
                 if($this->entity != null){
-                    return $this->entity->getNom();
+                    return 'Classe : '.$this->entity->getNom();
                 }
+            })
+            ->setPageTitle('detail', function (Classe $entity){
+                return 'Classe : '.$entity->getNom();
             })
 
             ->showEntityActionsInlined()
+            ->setDefaultSort(['nom' => 'ASC'])
             ;
 
     }
@@ -65,6 +70,7 @@ class ClasseCrudController extends AbstractCrudController
     {
         return $actions
             ->remove(Crud::PAGE_INDEX, Action::DELETE)
+            ->remove(Crud::PAGE_DETAIL, Action::DELETE)
             ;
     }
 
@@ -85,8 +91,22 @@ class ClasseCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        yield FormField::addTab('Paramètres');
-        yield TextField::new('Nom', 'Nom')->setColumns(6);
+        yield FormField::addColumn(6);
+        if($pageName == Crud::PAGE_DETAIL){
+            yield FormField::addFieldset('infos');
+
+        }
+        yield TextField::new('Nom', 'Nom')->hideOnIndex();
+        if($pageName == Crud::PAGE_INDEX){
+            yield TextField::new('Nom', 'Nom')->formatValue(function ($value, $entity){
+                return '<a href="'.
+                    $this->container->get(AdminUrlGenerator::class)
+                        ->setAction(Action::DETAIL)
+                        ->setEntityId($entity->getId())
+                        ->generateUrl()
+                    .'">'.$entity->getNom().'</a>';
+            });
+        }
 
         // Professeur
         // On récupère les prefesseur
@@ -100,15 +120,35 @@ class ClasseCrudController extends AbstractCrudController
                 return $professeur->getPrenom() . ' ' . $professeur->getNom();
             },
         ];
-        yield AssociationField::new('professeur','Professeur')->setColumns(6)->formatValue(function($value, $classe) {
+        yield AssociationField::new('professeur','Professeur')->formatValue(function($value, $classe) {
             // Concatenation du nom de la catégorie avec les noms des catégories parentes.
             $professeur = $classe->getProfesseur();
             if($professeur != null) {
                 $value = $professeur->getPrenom() . ' ' . $professeur->getNom();
             }
             return $value;
-        })->setFormTypeOptions($form_options);
+        })->setFormTypeOptions($form_options)
+        ;
         // Nombre d'élèves
-        yield AssociationField::new('eleves','Eleves')->hideOnForm();
+        yield AssociationField::new('eleves','Eleves')->hideOnForm()->hideOnDetail();
+        yield AssociationField::new('eleves','Eleves')->formatValue(function($value, $classe) {
+            $value = '';
+            foreach($classe->getEleves() as $eleve){
+                $value .= '<a href='
+                    .
+                    $this->container->get(AdminUrlGenerator::class)
+                        ->setController(EleveCrudController::class)
+                        ->setAction(Action::DETAIL)
+                        ->setEntityId($eleve->getId())
+                        ->generateUrl()
+                    .
+                    '>'.$eleve->getPrenom().' '.$eleve->getNom().'</a>';
+                $value .= '<br>';
+            }
+            return $value;
+        })->onlyOnDetail()
+            ->setTemplatePath('backoffice/field/eleves.html.twig')
+        ;
+
     }
 }

@@ -17,6 +17,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -50,8 +51,12 @@ class ProfesseurCrudController extends AbstractCrudController
                     return 'Professeur : '.$this->entity;
                 }
             })
+            ->setPageTitle('detail', function (Professeur $entity){
+                return 'Professeur : '.$entity->getPrenom() . ' ' . $entity->getNom();
+            })
 
             ->showEntityActionsInlined()
+            ->setDefaultSort(['nom' => 'ASC'])
             ;
     }
 
@@ -68,21 +73,30 @@ class ProfesseurCrudController extends AbstractCrudController
         return parent::edit($context);
     }
 
-    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
-    {
-
-        parent::updateEntity($entityManager, $entityInstance);
-    }
-
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addColumn(6);
-        yield TextField::new('prenom', 'Prenom');
-        yield TextField::new('nom', 'Nom');
+        if($pageName == Crud::PAGE_DETAIL){
+            yield FormField::addFieldset('infos');
+
+        }
+        yield TextField::new('prenom', 'Prenom')->hideOnIndex();
+        yield TextField::new('nom', 'Nom')->hideOnIndex();
+
+        if($pageName == Crud::PAGE_INDEX){
+            yield TextField::new('Nom', 'Nom')->formatValue(function ($value, $entity){
+                return '<a href="'.
+                    $this->container->get(AdminUrlGenerator::class)
+                        ->setAction(Action::DETAIL)
+                        ->setEntityId($entity->getId())
+                        ->generateUrl()
+                    .'">'.$entity->getNom().' '.$entity->getPrenom().'</a>';
+            });
+        }
         yield TextField::new('sexe', 'Genre')->hideOnForm();
         yield ChoiceField::new('sexe', 'Genre')->setChoices([
             'genre' => ['Homme' => 'Homme', 'Femme' => 'Femme', 'Non binaire' => 'Non binaire'],
-        ])->hideOnIndex()->autocomplete();
+        ])->hideOnIndex()->autocomplete()->hideOnDetail();
 
         yield AssociationField::new('classes','Classes')
             ->formatValue(function($value, $professeur) {
@@ -97,7 +111,7 @@ class ProfesseurCrudController extends AbstractCrudController
                 $value = implode(', ', $classe_names);
             }
             return $value;
-        })->hideOnForm()
+        })->hideOnForm()->hideOnDetail()
         ;
 //        yield AssociationField::new('classes','Classes')->autocomplete()->hideOnIndex();
 
@@ -117,6 +131,8 @@ class ProfesseurCrudController extends AbstractCrudController
     {
         return $actions
             ->remove(Crud::PAGE_INDEX, Action::DELETE)
+            ->remove(Crud::PAGE_DETAIL, Action::DELETE)
+
             ;
     }
 }

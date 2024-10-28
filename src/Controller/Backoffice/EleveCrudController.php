@@ -26,6 +26,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use function Zenstruck\Foundry\Persistence\persist;
@@ -62,8 +63,13 @@ class EleveCrudController extends AbstractCrudController
                     return 'Elève : '.$this->entity->getPrenom() . ' ' . $this->entity->getNom();
                 }
             })
+            ->setPageTitle('detail', function (Eleve $eleve){
+                return 'Elève : '.$eleve->getPrenom() . ' ' . $eleve->getNom();
+            })
 
             ->showEntityActionsInlined()
+            ->setDefaultSort(['nom' => 'ASC'])
+
             ;
     }
     public function configureFields(string $pageName): iterable
@@ -71,15 +77,26 @@ class EleveCrudController extends AbstractCrudController
 
         yield FormField::addTab('Description');
         yield FormField::addColumn(6);
-        yield TextField::new('prenom', 'Prenom');
-        yield TextField::new('nom', 'Nom');
+        yield TextField::new('prenom', 'Prenom')->hideOnIndex();
+        yield TextField::new('nom', 'Nom')->hideOnIndex();
+
+        if($pageName == Crud::PAGE_INDEX){
+            yield TextField::new('nom', 'Nom')->formatValue(function ($value, $entity){
+                return '<a href="'.
+                    $this->container->get(AdminUrlGenerator::class)
+                        ->setAction(Action::DETAIL)
+                        ->setEntityId($entity->getId())
+                        ->generateUrl()
+                    .'">'.$entity->getNom().' '.$entity->getPrenom().'</a>';
+            });
+        }
+
         yield TextField::new('sexe', 'Genre')->hideOnForm();
         yield ChoiceField::new('sexe', 'Genre')->setChoices([
             'genre' => ['Homme' => 'Homme', 'Femme' => 'Femme', 'Non binaire' => 'Non binaire'],
         ])->hideOnIndex()->autocomplete();
         yield AssociationField::new('classe','Classe');
-        if($pageName == Crud::PAGE_EDIT) {
-
+        if($pageName != Crud::PAGE_INDEX) {
             yield FormField::addTab('Notes');
             // Gestion des notes et appréciations par matière
             $matieres = $this->entityManager->getRepository(Matiere::class)->findAll();
@@ -141,8 +158,6 @@ class EleveCrudController extends AbstractCrudController
     {
         // récupération des articles.
         $response = $this->entityRepository->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
-        // Ordonne par id
-        $response->orderBy('entity.id', 'DESC');
         return $response;
     }
 }
