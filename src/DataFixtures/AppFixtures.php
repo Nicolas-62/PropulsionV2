@@ -32,8 +32,7 @@ class AppFixtures extends Fixture
             function() use ($matieres) {
                 $alphabet = str_split('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 
-                foreach (range(1, 10) as $i) {
-
+                foreach (range(0, 10) as $i) {
                     yield [
                         'professeur' => ProfesseurFactory::random(),
                         'eleves' => EleveFactory::new()->afterPersist(function(Eleve $eleve, array $attributes) use ($matieres) {
@@ -44,6 +43,7 @@ class AppFixtures extends Fixture
                                         'eleve' => $eleve
                                     ];
                                 });
+
                             }
                         })->setInfos()->many(20),
                         'nom' => 'Classe '.$alphabet[$i]

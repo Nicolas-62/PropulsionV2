@@ -130,6 +130,18 @@ class EleveCrudController extends AbstractCrudController
         return parent::edit($context);
     }
 
+    /**
+     *  Detail
+     * @param AdminContext $context
+     * @return KeyValueStore|RedirectResponse|Response
+     */
+    public function detail(AdminContext $context)
+    {
+        // Récupération de l'article
+        $this->entity = $context->getEntity()->getInstance();
+        return parent::detail($context);
+    }
+
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         // Gestion des notes et appréciations par matière

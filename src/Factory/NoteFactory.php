@@ -55,6 +55,7 @@ final class NoteFactory extends PersistentProxyObjectFactory
             'eleve' => EleveFactory::new(),
             'matiere' => MatiereFactory::new(),
             'valeur' => self::faker()->randomNumber(2),
+            'rate' => self::faker()->realTextBetween(150, 400)
         ];
     }
 

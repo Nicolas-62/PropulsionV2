@@ -9,22 +9,30 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex, notranslate, nocache" />
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-        <meta name="generator" content="EasyAdmin" />
     {% endblock head_metas %}
-
     {% set page_title_block_output %}{% block page_title %}{{ block('content_title') }}{% endblock %}{% endset %}
     <title>{{ page_title_block_output|striptags|raw }}</title>
 
     {% block head_stylesheets %}
         <link rel="stylesheet" href="{{ asset('app.css', ea.assets.defaultAssetPackageName) }}">
     {% endblock %}
+    <script>
+        {# TextEditorField : ajouter des liens relatifs #}
+        {# https://github.com/basecamp/trix/issues/624 #}
+        addEventListener("trix-initialize", event => {
+            const { toolbarElement } = event.target
+            const inputElement = toolbarElement.querySelector("input[name=href]")
+            inputElement.type = "text"
+            inputElement.pattern = "(https?://|/).+"
+        });
+    </script>
 
     {# CUSTOM : styles #}
     {% block custom_stylesheets %}
-        
+
         {#    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />#}
-{#        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />#}
-{#        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />#}
+        {#        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />#}
+        {#        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />#}
     {%  endblock %}
 
     {% block configured_stylesheets %}
@@ -38,8 +46,8 @@
     {# CUSTOM : scripts #}
     {% block custom_javascript %}
         <!-- Scripts -->
-                {# ToDo : bootstrap est déjà importé par EasyAdmin, mais popper ne semble pas fonctionner (pour les dropdown par exemple, d'uù le besoin d'importer bootstrap.bundle ici (embarque popper) #}
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        {# ToDo : bootstrap est déjà importé par EasyAdmin, mais popper ne semble pas fonctionner (pour les dropdown par exemple, d'uù le besoin d'importer bootstrap.bundle ici (embarque popper) #}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         {#        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>#}
         {#        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>#}
     {% endblock custom_javascript %}
@@ -361,7 +369,6 @@
                                 <section id="main" class="content-body">
                                     {% block main %}{% endblock %}
                                 </section>
-
                                 {% block content_footer_wrapper %}
                                     {% set content_footer = block('content_footer') is defined ? block('content_footer') : '' %}
                                     {% if content_footer is not empty %}

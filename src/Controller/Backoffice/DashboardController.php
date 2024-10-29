@@ -46,6 +46,16 @@ class DashboardController extends AbstractDashboardController
 
     }
 
+    public function configureCrud(): Crud
+    {
+        return Crud::new()
+            // the first argument is the "template name", which is the same as the
+            // Twig path but without the `@EasyAdmin/` prefix
+            ->overrideTemplates([
+                'layout' => 'backoffice/layout.html.twig'
+            ]);
+    }
+
     #[Route('/clearCache', name: 'clear_cache')]
     public function clearCache(CacheItemPoolInterface $cache): Response
     {
