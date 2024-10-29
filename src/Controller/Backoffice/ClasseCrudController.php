@@ -133,7 +133,7 @@ class ClasseCrudController extends AbstractCrudController
         yield AssociationField::new('eleves','Eleves')->hideOnForm()->hideOnDetail();
         yield AssociationField::new('eleves','Eleves')->formatValue(function($value, $classe) {
             $value = '';
-            foreach($classe->getEleves() as $eleve){
+            foreach($classe->getEleves('nom', 'asc') as $eleve){
                 $value .= '<a href='
                     .
                     $this->container->get(AdminUrlGenerator::class)
@@ -142,7 +142,7 @@ class ClasseCrudController extends AbstractCrudController
                         ->setEntityId($eleve->getId())
                         ->generateUrl()
                     .
-                    '>'.$eleve->getPrenom().' '.$eleve->getNom().'</a>';
+                    '>'.$eleve->getNom().' '.$eleve->getPrenom().'</a>';
                 $value .= '<br>';
             }
             return $value;

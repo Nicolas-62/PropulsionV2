@@ -96,7 +96,7 @@ class EleveCrudController extends AbstractCrudController
             'genre' => ['Homme' => 'Homme', 'Femme' => 'Femme', 'Non binaire' => 'Non binaire'],
         ])->hideOnIndex()->autocomplete();
         yield AssociationField::new('classe','Classe');
-        if($pageName != Crud::PAGE_INDEX) {
+        if($pageName != Crud::PAGE_INDEX and $this->entity != null) {
             yield FormField::addTab('Notes');
             // Gestion des notes et appréciations par matière
             $matieres = $this->entityManager->getRepository(Matiere::class)->findAll();

@@ -24,6 +24,7 @@ class Matiere
     private Collection $notes;
 
     #[ORM\OneToMany(mappedBy: 'matiere', targetEntity: Professeur::class)]
+    #[ORM\OrderBy(['nom' => 'ASC'])]
     private Collection $professeurs;
 
     public function __construct()

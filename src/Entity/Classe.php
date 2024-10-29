@@ -26,6 +26,7 @@ class Classe
     private ?Professeur $professeur = null;
 
     #[ORM\OneToMany(mappedBy: 'classe', targetEntity: Eleve::class)]
+    #[ORM\OrderBy(['nom' => 'ASC'])]
     private Collection $eleves;
 
     public function __construct()
