@@ -5,6 +5,7 @@ namespace App\Controller\Backoffice;
 use App\Entity\Eleve;
 use App\Entity\Matiere;
 use App\Entity\Note;
+use App\Form\NoteType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -19,6 +20,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
@@ -69,7 +71,7 @@ class EleveCrudController extends AbstractCrudController
 
             ->showEntityActionsInlined()
             ->setDefaultSort(['nom' => 'ASC'])
-
+            ->setFormThemes(['backoffice/field/notes.html.twig', '@EasyAdmin/crud/form_theme.html.twig'])
             ;
     }
     public function configureFields(string $pageName): iterable
@@ -98,14 +100,15 @@ class EleveCrudController extends AbstractCrudController
         yield AssociationField::new('classe','Classe');
         if($pageName != Crud::PAGE_INDEX and $this->entity != null) {
             yield FormField::addTab('Notes');
-            // Gestion des notes et appréciations par matière
-            $matieres = $this->entityManager->getRepository(Matiere::class)->findAll();
-            foreach ($matieres as $matiere) {
-                yield FormField::addColumn(6);
-                yield FormField::addFieldset(ucfirst($matiere->getNom()));
-                yield NumberField::new('note'.$matiere->getId(), 'Note');
-                yield TextareaField::new('rate'.$matiere->getId(), 'Appréciation');
-            }
+            yield FormField::addColumn(12);
+            yield CollectionField::new('notes', '')
+                ->setEntryType(NoteType::class)
+                ->allowAdd(false)->allowDelete(false)
+                ->renderExpanded()
+                ->setFormTypeOptions([
+                    'block_name' => 'notes',
+                ])
+            ;
         }
     }
     public function configureActions(Actions $actions): Actions
@@ -115,6 +118,20 @@ class EleveCrudController extends AbstractCrudController
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
             ->add(Crud::PAGE_NEW, Action::SAVE_AND_CONTINUE)
             ;
+    }
+    /**
+     * Fourni à la vue les variables dont elle a besoin pour fonctionner.
+     *
+     * @param KeyValueStore $responseParameters
+     * @return KeyValueStore
+     */
+    public function configureResponseParameters(KeyValueStore $responseParameters): KeyValueStore
+    {
+        if (Crud::PAGE_EDIT === $responseParameters->get('pageName')) {
+            $twig = $this->container->get('twig');
+            $twig->addGlobal('matieres', $this->entityManager->getRepository(Matiere::class)->findAll());
+        }
+        return parent::configureResponseParameters($responseParameters);
     }
 
     /**

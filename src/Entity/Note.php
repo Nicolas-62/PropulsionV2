@@ -71,7 +71,7 @@ class Note
 
     public function __toString(): string
     {
-        return $this->getValeur();
+        return $this->getMatiere()->getNom();
 
     }
 

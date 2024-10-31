@@ -1,0 +1,23 @@
+{% extends "@EasyAdmin/crud/form_theme.html.twig" %}
+{% block _Eleve_notes_widget %}
+    <div class="row">
+    {% for note in form.children %}
+        <div class="form-column form-column-no-header field-form_column col-md-6">
+            <div class="form-fieldset  field-form_fieldset">
+            <fieldset>
+                <div class="form-fieldset-header">
+                    <div class="form-fieldset-title">
+                        <span class="not-collapsible form-fieldset-title-content">
+                            {{ note.vars.data.matiere.nom }}
+                        </span>
+                    </div>
+                </div>
+                <div class="form-fieldset-body">
+                    {{ form_widget(note) }}
+                </div>
+            </fieldset>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}
