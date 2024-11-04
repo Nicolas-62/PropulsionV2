@@ -51,7 +51,7 @@ class ContactNotification {
                 $message->to($this->params->get('app.admin_email'));
             }else{
                 // Sinon on met l'admin en copie cachée. (à désactiver..)
-                $message->addBcc($this->params->get('app.admin_email'));
+                //$message->addBcc($this->params->get('app.admin_email'));
             }
             $message
             ->replyTo($contact->getReplyTo())
