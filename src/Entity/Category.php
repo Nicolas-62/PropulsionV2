@@ -129,7 +129,7 @@ class Category
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Mediaspec::class)]
     private Collection $mediaspecs;
 
-    #[ORM\OneToMany(mappedBy: 'object', targetEntity: CategoryData::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'object', targetEntity: CategoryData::class, orphanRemoval: true, fetch: "EAGER")]
     private Collection $data;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Seo::class, cascade: ['persist','remove'])]

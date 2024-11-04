@@ -1,4 +1,14 @@
 {% extends 'frontoffice/_components/layout.html.twig' %}
+{%  block recaptcha %}
+    {%  if app.environment == 'prod' %}
+        <script src="https://www.google.com/recaptcha/api.js"></script>
+        <script>
+            function onSubmit(token) {
+                document.getElementById("contact-form").submit();
+            }
+        </script>
+    {%  endif %}
+{% endblock %}
 {% block body %}
     <div class="wrapper infos">
         <div class="container-fluid p-lg-3">
@@ -112,19 +122,12 @@
                         {% for article_qui_sommes in articles_qui_sommes %}
                             {% do article_qui_sommes.getDatas(locale) %}
                             <h3 class="blue-title mb-3 mt-5">{{ article_qui_sommes.title | upper }}</h3>
-
                             <div class="fs-5 p-2 mb-5">
-
                                 {{ article_qui_sommes.description | raw }}
-
                             </div>
                             <div class="fs-5 p-2">
-
                                 {{ article_qui_sommes.content | raw }}
-
                             </div>
-
-
                         {% endfor %}
 
                     </div>
@@ -139,7 +142,7 @@
                         <div class="h4 mb-4">NOUS ÉCRIRE</div>
 
                         <!-- Formulaire -->
-                        <form class="fs-5"  method="post" action="{{ path('fo_infos_contact') }}" >
+                        <form class="fs-5"  method="post" action="{{ path('fo_infos_contact') }}" id="contact-form" >
                             <div class="form-group mb-4">
                                 <label class="pb-2" for="select-contact">{{ field_label(form.subject) }} (obligatoire)</label>
                                 <select class="form-control rounded-0 border-secondary fs-5 select-infos"  name="{{ field_name(form.subject) }}" id="contact">
@@ -165,33 +168,26 @@
                                 <textarea class="form-control  rounded-0 border-secondary"  name="{{ field_name(form.message) }}" style="min-height: 348px" id="messageInput" rows="3">{{ field_value(form.message) }}</textarea>
                                 {{ form_errors(form.message) }}
                             </div>
-
-                            <!-- Checkbox -->
-                            <div class="form-check">
-                                <input class="form-check-input  rounded-0 border-secondary"  name="{{ field_name(form.getNewsletter) }}" type="checkbox" value="{{ field_value(form.getNewsletter) }}" id="newsCheck">
-                                <label class="pb-2" class="form-check-label" for="newsCheck">
-                                    {{ field_label(form.getNewsletter) }}
-                                </label>
-                            </div>
                             {{ form_row(form._token) }}
-
                             <!-- Submit -->
-                            <div class="py-4">
-                                <button type="submit" class="btn border border-secondary rounded-0 fs-4"><div>ENVOYER</div></button>
+                            <div class="pb-4">
+                                <button
+                                    class="btn border border-secondary rounded-0 fs-4 g-recaptcha"
+                                    data-sitekey="{{ recaptcha_site_key }}"
+                                    data-callback='onSubmit'
+                                    data-action='submit'
+                                ><div>ENVOYER</div></button>
                             </div>
                             <div class="fs-6 pb-4">
                                 En cliquant sur "Envoyer", vous acceptez de fournir les informations permettant qu'une réponse vous soit délivrée et que votre demande soit traitée. En indiquant votre adresse email, et en cochant la ou les cases associées, vous consentez à recevoir nos lettres d'information par voie électronique. Vous pouvez vous désinscrire à tout moment via les liens de désinscription ou en nous contactant.
                                 <br><br>Pour en savoir plus, consultez notre <a class="black" href="https://dev-lalune.e-systemes.fr/confidentialite">Politique de confidentialité</a>.</div>
                         </form>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
     <div id="footer-container">
-
-
         <!-- BAS COMMENT VENIR -->
         <div id="footer41" class="bg-grey container-fluid {% if active_entry.id != 41 %}hidden{% endif %}">
             <div class="py-5 px-2 px-lg-5">

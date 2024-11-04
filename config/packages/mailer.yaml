@@ -2,9 +2,9 @@ framework:
     mailer:
         dsn: '%env(MAILER_DSN)%'
         envelope:
-            sender: 'no-reply@e-systemes.com'
+            sender: 'no-reply@lalune.net'
             # Bcc
             # recipients: ['nicolas@capside.fr']
         headers:
-            From: '%env(SITE)% <no-reply@e-systemes.com>'
+            From: '%env(SITE)% <no-reply@lalune.net>'
             To: '%env(CLIENT_EMAIL)%'

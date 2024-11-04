@@ -6,6 +6,7 @@ twig:
         upload_path: '%app.upload_path%'
         fo: '%app.fo%'
         fo_path: '%app.fo_path%/'
+        recaptcha_site_key: '%app.recaptcha_site_key%'
 
     date:
         format: 'F j, Y H:i'

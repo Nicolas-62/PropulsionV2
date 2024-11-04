@@ -135,7 +135,7 @@ class Article
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Mediaspec::class)]
     private Collection $mediaspecs;
 
-    #[ORM\OneToMany(mappedBy: 'object', targetEntity: ArticleData::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'object', targetEntity: ArticleData::class, orphanRemoval: true, fetch: "EAGER")]
     private Collection $data;
 
     #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'articles')]
